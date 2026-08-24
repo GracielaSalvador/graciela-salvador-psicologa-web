@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Madrería · Psicología perinatal y crianza — Graciela Salvador</title>
+<meta name="description" content="La Madrería: acompañamiento psicológico en embarazo, posparto, duelo perinatal y crianza, con Graciela Salvador, psicóloga online.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,440;0,9..144,560;1,9..144,440&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/favicon-180.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="brand" href="index.html"><img src="assets/logo-icono.png" alt="Graciela Salvador — Psicóloga" class="brand-logo">Graciela Salvador</a>
+    <div class="nav-right">
+      <a href="#contacto" class="btn btn-teal nav-mobile-cta">Pedir cita</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navlinks">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="navlinks" id="navlinks">
+      <a href="la-madreria.html">La Madrería</a>
+      <a href="psicologia-general.html">Psicología general</a>
+      <a href="/blog/">Blog</a>
+      <a href="index.html#sobre-mi">Sobre mí</a>
+      <a href="#contacto" class="btn btn-teal nav-cta">Pedir cita</a>
+    </nav>
+  </div>
+</header>
+<script>
+  const toggle = document.getElementById('menuToggle');
+  const nav = document.getElementById('navlinks');
+  toggle.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open);
+  });
+  nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+    nav.classList.remove('open');
+    toggle.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }));
+</script>
+
+<main>
+
+  <!-- INNER HERO -->
+  <section class="inner-hero teal">
+    <div class="wrap">
+      <p class="breadcrumb"><a href="index.html">Inicio</a> / La Madrería</p>
+      <div class="inner-hero-grid">
+        <img class="inner-hero-logo" src="assets/madreria-logo-white.png" alt="Logo La Madrería">
+        <div>
+          <p class="eyebrow">Psicología perinatal y crianza</p>
+          <h1>La Madrería</h1>
+          <p class="sub">Un espacio para sostener todo lo que remueve convertirse en madre: el embarazo, el posparto, el duelo, el cansancio y el cambio de identidad — sin juicio y con herramientas reales.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUÉ ES -->
+  <section class="content-section">
+    <div class="wrap content-grid">
+      <div>
+        <p class="eyebrow" style="color:var(--teal)">Qué es La Madrería</p>
+        <h2>Un espacio propio dentro del camino hacia la maternidad</h2>
+        <p>La maternidad no siempre es como se cuenta. Hay alegría, pero también miedo, culpa, agotamiento y una identidad que se transforma de golpe. La Madrería nace para acompañar esa parte que casi nunca se nombra.</p>
+        <p>Trabajo con embarazo, posparto, duelo gestacional y perinatal, y los primeros años de crianza — siempre desde un enfoque cercano, profesional y sin recetas genéricas.</p>
+      </div>
+      <div>
+        <p class="eyebrow" style="color:var(--teal)">Para quién es</p>
+        <h2>Este espacio es para ti si...</h2>
+        <p>Estás embarazada y sientes miedo, ansiedad o dudas que no sabes con quién compartir.</p>
+        <p>Acabas de ser madre y no reconoces cómo te sientes, o notas que "esto no es lo que esperaba".</p>
+        <p>Has atravesado una pérdida gestacional o perinatal y necesitas un espacio para sostenerla.</p>
+        <p>Estás en la crianza y el cansancio, la culpa o la pérdida de identidad te están pesando más de lo que puedes con.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ÁREAS DE ACOMPAÑAMIENTO -->
+  <section class="content-section alt">
+    <div class="wrap">
+      <p class="eyebrow" style="color:var(--teal)">Áreas de acompañamiento</p>
+      <h2>Cómo puedo ayudarte</h2>
+      <div class="care-grid">
+        <div class="care-card">
+          <svg class="care-icon" viewBox="0 0 24 24" fill="none" stroke="#11667D" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3c-2 3-3 6-3 9a6 6 0 0 0 12 0c0-2-.5-4-1.5-6"/><path d="M9 3c1 1 1.5 2 1.5 3.5"/></svg>
+          <h3>Embarazo y posparto</h3>
+          <p>Ansiedad, miedos, cambios de identidad y el ajuste emocional de cada etapa.</p>
+        </div>
+        <div class="care-card">
+          <svg class="care-icon" viewBox="0 0 24 24" fill="none" stroke="#11667D" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5s-7-4.35-7-9.8A4.7 4.7 0 0 1 12 7.5a4.7 4.7 0 0 1 7 3.2c0 5.45-7 9.8-7 9.8Z"/></svg>
+          <h3>Duelo perinatal y gestacional</h3>
+          <p>Un espacio para sostener la pérdida, a tu ritmo y sin prisas externas.</p>
+        </div>
+        <div class="care-card">
+          <svg class="care-icon" viewBox="0 0 24 24" fill="none" stroke="#11667D" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 16a3.8 3.8 0 0 1-.5-7.56A5 5 0 0 1 15.9 7.1 4 4 0 0 1 17.5 15v0"/><path d="M8 19v1.2M12 19v1.8M16 19v1.2"/></svg>
+          <h3>Depresión posparto</h3>
+          <p>Reconocerla, nombrarla y trabajar en ella sin culpa ni juicio.</p>
+        </div>
+        <div class="care-card">
+          <svg class="care-icon" viewBox="0 0 24 24" fill="none" stroke="#11667D" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="12" r="5"/><circle cx="15" cy="12" r="5"/></svg>
+          <h3>Crianza y vínculo</h3>
+          <p>El día a día con criaturas pequeñas y cómo sostenerlo sin perderte a ti.</p>
+        </div>
+        <div class="care-card">
+          <svg class="care-icon" viewBox="0 0 24 24" fill="none" stroke="#11667D" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 3v2.2M12 18.8V21M3 12h2.2M18.8 12H21M5.6 5.6l1.5 1.5M16.9 16.9l1.5 1.5M18.4 5.6l-1.5 1.5M7.1 16.9l-1.5 1.5"/></svg>
+          <h3>Identidad materna</h3>
+          <p>Quién eras antes, quién eres ahora, y cómo integrar ambas.</p>
+        </div>
+        <div class="care-card">
+          <svg class="care-icon" viewBox="0 0 24 24" fill="none" stroke="#11667D" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5.5h4v5.5"/></svg>
+          <h3>Pareja y familia</h3>
+          <p>Cómo se reorganiza el vínculo de pareja y familiar tras la llegada de un hijo o hija.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CÓMO TRABAJAMOS -->
+  <section class="content-section">
+    <div class="wrap">
+      <p class="eyebrow" style="color:var(--teal)">Cómo trabajamos</p>
+      <h2>El proceso, paso a paso</h2>
+      <div class="care-grid">
+        <div class="care-card">
+          <h3>1. Primera sesión</h3>
+          <p>Hablamos de tu momento, qué te trae aquí y qué necesitas ahora mismo.</p>
+        </div>
+        <div class="care-card">
+          <h3>2. Un plan a tu medida</h3>
+          <p>Definimos juntas el enfoque, sin moldes cerrados ni plazos impuestos.</p>
+        </div>
+        <div class="care-card">
+          <h3>3. Acompañamiento online</h3>
+          <p>Sesiones regulares desde donde estés, con espacio para ajustar el camino.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AUTORÍA -->
+  <section class="content-section alt">
+    <div class="wrap content-grid">
+      <img src="assets/madreria-foto.jpg" alt="Graciela Salvador con su bebé recién nacido" style="border-radius:16px;width:100%;height:100%;object-fit:cover;box-shadow:0 30px 60px -30px rgba(43,38,34,.35);">
+      <div>
+        <p class="eyebrow" style="color:var(--teal)">Autora y creadora</p>
+        <h2>Más allá de la consulta</h2>
+        <p>Soy autora del libro <strong>"Soy mamá y muchas cosas más"</strong>, una guía práctica para madres en búsqueda de su identidad propia tras la maternidad.</p>
+        <p style="margin-bottom:24px;"><a href="https://www.amazon.es/Soy-mam%C3%A1-muchas-cosas-m%C3%A1s-ebook/dp/B0BNP8KHXF" target="_blank" rel="noopener" class="btn btn-teal">Ver el libro en Amazon</a></p>
+        <p>También he creado <strong>"Vincula-T"</strong>, un programa para el desarrollo de un vínculo prenatal sano y un vínculo de apego seguro.</p>
+        <p><a href="#" target="_blank" rel="noopener" class="btn btn-ghost">Más información sobre Vincula-T</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-band" style="background:var(--teal-tint);">
+    <div class="wrap">
+      <h2>Demos el primer paso juntas</h2>
+      <p>Escríbeme y te cuento cómo puede ser tu proceso en La Madrería.</p>
+      <a href="#contacto" class="btn btn-teal">Pedir primera cita</a>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contacto">
+    <div class="wrap">
+      <p class="eyebrow">Contacto</p>
+      <h2>Escríbeme y damos el primer paso juntas</h2>
+      <p class="lead">Cuéntame brevemente qué te trae por aquí y te responderé para agendar una primera sesión.</p>
+      <p class="contact-note">Para un contacto más rápido, escríbeme directamente por WhatsApp al <a href="tel:+34698982095">698 98 20 95</a>.</p>
+      <div class="contact-ctas">
+        <a href="https://wa.me/34698982095?text=Hola%20Graciela%2C%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n" class="btn btn-whatsapp" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.04 2c-5.52 0-10 4.48-10 10 0 1.77.46 3.44 1.27 4.89L2 22l5.24-1.37A9.96 9.96 0 0 0 12.04 22c5.52 0 10-4.48 10-10s-4.48-10-10-10zm5.83 14.24c-.25.7-1.24 1.28-2.02 1.44-.55.11-1.26.2-3.66-.78-2.98-1.23-4.9-4.24-5.05-4.44-.15-.2-1.2-1.6-1.2-3.05 0-1.45.75-2.16 1.03-2.46.25-.27.6-.4.95-.4h.34c.3 0 .45 0 .65.5.25.6.85 2.05.92 2.2.07.15.12.33.02.53-.1.2-.15.32-.3.5-.15.17-.3.38-.44.51-.15.15-.3.31-.13.6.17.3.75 1.24 1.62 2 1.12.99 2.05 1.31 2.35 1.46.3.15.47.13.65-.08.17-.2.72-.85.92-1.14.2-.3.4-.24.65-.14.27.1 1.7.8 2 .95.3.15.5.22.57.35.07.13.07.75-.18 1.45z"/></svg>
+          Escribir por WhatsApp
+        </a>
+        <a href="mailto:hola@gracielasalvador.com" class="btn btn-ghost">Escribir un email</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <span>© 2026 Graciela Salvador · Psicóloga · Colegiada CV15554</span>
+    <div class="footer-links">
+      <a href="#">Aviso legal</a>
+      <a href="#">Privacidad</a>
+      <a href="#">Cookies</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
