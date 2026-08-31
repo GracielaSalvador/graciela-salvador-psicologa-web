@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — Graciela Salvador Psicóloga</title>
+<meta name="description" content="Artículos sobre psicología perinatal, crianza, ansiedad y bienestar emocional, escritos por Graciela Salvador, Psicóloga General Sanitaria.">
+<link rel="canonical" href="https://gracielasalvador.com/blog/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,440;0,9..144,560;1,9..144,440&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" href="../assets/favicon-180.png">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="brand" href="../index.html"><img src="../assets/logo-icono.png" alt="Graciela Salvador — Psicóloga" class="brand-logo">Graciela Salvador</a>
+    <div class="nav-right">
+      <a href="../index.html#contacto" class="btn btn-teal nav-mobile-cta">Pedir cita</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navlinks">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="navlinks" id="navlinks">
+      <a href="../la-madreria.html">La Madrería</a>
+      <a href="../psicologia-general.html">Psicología general</a>
+      <a href="index.html">Blog</a>
+      <a href="../index.html#sobre-mi">Sobre mí</a>
+      <a href="../index.html#contacto" class="btn btn-teal nav-cta">Pedir cita</a>
+    </nav>
+  </div>
+</header>
+<script>
+  const toggle = document.getElementById('menuToggle');
+  const nav = document.getElementById('navlinks');
+  toggle.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open);
+  });
+  nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+    nav.classList.remove('open');
+    toggle.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }));
+</script>
+
+<main>
+
+  <section class="blog-listing-hero">
+    <div class="wrap">
+      <p class="eyebrow">Blog</p>
+      <h1>Artículos</h1>
+      <p>Reflexiones sobre psicología perinatal, crianza, ansiedad y bienestar emocional — desde La Madrería y desde la consulta general.</p>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="blog-grid-full">
+
+      <a class="blog-card-full" href="microquimerismo-materno-fetal.html">
+        <div class="thumb">
+          <img src="assets/foto-microquimerismo.jpg" alt="">
+        </div>
+        <div class="body">
+          <span class="blog-tag" style="background:var(--teal-tint);color:var(--teal-deep);margin-bottom:12px;">La Madrería</span>
+          <h3>El vínculo que dejan tus hijos: qué es el microquimerismo materno-fetal</h3>
+          <p>Lo que la ciencia ha descubierto sobre la huella que deja un embarazo.</p>
+        </div>
+      </a>
+
+      <a class="blog-card-full" href="ansiedad-embarazo.html">
+        <div class="thumb">
+          <img src="assets/foto-ansiedad-embarazo.jpg" alt="">
+        </div>
+        <div class="body">
+          <span class="blog-tag" style="background:var(--teal-tint);color:var(--teal-deep);margin-bottom:12px;">La Madrería</span>
+          <h3>Ansiedad durante el embarazo: cuando los miedos empiezan a ocupar demasiado espacio</h3>
+          <p>Tener miedo durante el embarazo es frecuente. Cuándo empieza a ser un problema y qué puedes hacer.</p>
+        </div>
+      </a>
+
+      <a class="blog-card-full" href="fatiga-emocional-carga-mental.html">
+        <div class="thumb">
+          <img src="assets/foto-fatiga-emocional.jpg" alt="">
+        </div>
+        <div class="body">
+          <span class="blog-tag" style="background:var(--terra-tint);color:var(--terra);margin-bottom:12px;">Psicología general</span>
+          <h3>¿Por qué estoy siempre cansada si no hago "tanto"?</h3>
+          <p>El impacto de la fatiga emocional, la carga mental y la autoexigencia en la vida diaria.</p>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <span>© 2026 Graciela Salvador · Psicóloga · Colegiada CV15554</span>
+    <div class="footer-links">
+      <a href="#">Aviso legal</a>
+      <a href="#">Privacidad</a>
+      <a href="#">Cookies</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
