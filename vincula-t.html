@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vincula-T · Programa de vínculo prenatal y apego seguro — Graciela Salvador</title>
+<meta name="description" content="Vincula-T: programa para el establecimiento de un vínculo prenatal sano y un vínculo de apego seguro, desde la gestación hasta el primer año de vida. Para mamás, parejas y centros sanitarios.">
+<link rel="canonical" href="https://gracielasalvador.com/vincula-t.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:title" content="Vincula-T · Programa de vínculo prenatal y apego seguro">
+<meta property="og:description" content="Programa para el establecimiento de un vínculo prenatal sano y un vínculo de apego seguro, desde la gestación hasta el primer año de vida.">
+<meta property="og:url" content="https://gracielasalvador.com/vincula-t.html">
+<meta property="og:image" content="https://gracielasalvador.com/assets/madreria-foto.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,440;0,9..144,560;1,9..144,440&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/favicon-180.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="brand" href="index.html"><img src="assets/logo-icono.png" alt="Graciela Salvador — Psicóloga" class="brand-logo">Graciela Salvador</a>
+    <div class="nav-right">
+      <a href="#contacto" class="btn btn-teal nav-mobile-cta">Pedir cita</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navlinks">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="navlinks" id="navlinks">
+      <a href="la-madreria.html">La Madrería</a>
+      <a href="psicologia-general.html">Psicología general</a>
+      <a href="/blog/">Blog</a>
+      <a href="index.html#sobre-mi">Sobre mí</a>
+      <a href="#contacto" class="btn btn-teal nav-cta">Pedir cita</a>
+    </nav>
+  </div>
+</header>
+<script>
+  const toggle = document.getElementById('menuToggle');
+  const nav = document.getElementById('navlinks');
+  toggle.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open);
+  });
+  nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+    nav.classList.remove('open');
+    toggle.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }));
+</script>
+
+<main>
+
+  <!-- INNER HERO -->
+  <section class="inner-hero teal">
+    <div class="wrap">
+      <p class="breadcrumb"><a href="index.html">Inicio</a> / <a href="la-madreria.html">La Madrería</a> / Vincula-T</p>
+      <p class="eyebrow">Programa de La Madrería</p>
+      <h1>Vincula-T</h1>
+      <p class="sub">Un programa para el establecimiento de un vínculo prenatal sano y un vínculo de apego seguro, desde la gestación hasta el primer año de vida.</p>
+    </div>
+  </section>
+
+  <!-- QUÉ OFRECE -->
+  <section class="content-section">
+    <div class="wrap">
+      <p class="eyebrow" style="color:var(--teal)">Qué te ofrece</p>
+      <h2>Un acompañamiento estructurado para esta etapa</h2>
+      <div class="care-grid">
+        <div class="care-card">
+          <h3>Vínculo prenatal y apego seguro</h3>
+          <p>Para el establecimiento de un vínculo prenatal sano y un vínculo de apego seguro con tu bebé.</p>
+        </div>
+        <div class="care-card">
+          <h3>Dirigido a mamás y parejas</h3>
+          <p>Pensado para que la madre y su pareja puedan participar juntas del proceso.</p>
+        </div>
+        <div class="care-card">
+          <h3>De la gestación al primer año</h3>
+          <p>Acompaña desde el embarazo hasta el primer año de vida del bebé.</p>
+        </div>
+        <div class="care-card">
+          <h3>6 módulos de intervención</h3>
+          <p>Un programa estructurado en 6 módulos, con contenido progresivo.</p>
+        </div>
+        <div class="care-card">
+          <h3>14 sesiones de trabajo</h3>
+          <p>Un total de 14 sesiones a lo largo del programa.</p>
+        </div>
+        <div class="care-card">
+          <h3>Individual o grupal</h3>
+          <p>Dos modalidades disponibles, según lo que mejor encaje contigo o con tu centro.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECURSOS -->
+  <section class="content-section alt">
+    <div class="wrap content-grid">
+      <div>
+        <p class="eyebrow" style="color:var(--teal)">El objetivo</p>
+        <h2>Herramientas reales para afrontar esta etapa</h2>
+        <p>Vincula-T ofrece recursos y herramientas prácticas para afrontar el embarazo, el parto y la crianza temprana cuidando la salud mental — tanto de la madre como del vínculo que se está construyendo con el bebé.</p>
+        <p>No es solo información: es un proceso acompañado, con espacio para trabajar lo que cada etapa remueve.</p>
+      </div>
+      <div>
+        <p class="eyebrow" style="color:var(--teal)">Para quién es</p>
+        <h2>Particulares y centros sanitarios</h2>
+        <p>Puedes acceder a Vincula-T de forma individual, como madre o como pareja.</p>
+        <p>El programa también está pensado para poder implementarse en <strong>centros sanitarios, clínicas o consultas</strong> que quieran ofrecer este acompañamiento a sus pacientes de forma grupal o estructurada.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-band" style="background:var(--teal-tint);">
+    <div class="wrap">
+      <h2>¿Quieres más información sobre Vincula-T?</h2>
+      <p>Ya seas una madre, una pareja, o representes a un centro sanitario interesado en implementar el programa, escríbeme y te cuento todos los detalles.</p>
+      <a href="#contacto" class="btn btn-teal">Pedir información</a>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contacto">
+    <div class="wrap">
+      <p class="eyebrow">Contacto</p>
+      <h2>Hablemos sobre Vincula-T</h2>
+      <p class="lead">Cuéntame si te interesa a nivel particular o si representas a un centro sanitario, y te responderé con toda la información del programa.</p>
+      <p class="contact-note">Para un contacto más rápido, escríbeme directamente por WhatsApp al <a href="tel:+34698982095">698 98 20 95</a>.</p>
+      <div class="contact-ctas">
+        <a href="https://wa.me/34698982095?text=Hola%20Graciela%2C%20me%20gustar%C3%ADa%20m%C3%A1s%20informaci%C3%B3n%20sobre%20Vincula-T" class="btn btn-whatsapp" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.04 2c-5.52 0-10 4.48-10 10 0 1.77.46 3.44 1.27 4.89L2 22l5.24-1.37A9.96 9.96 0 0 0 12.04 22c5.52 0 10-4.48 10-10s-4.48-10-10-10zm5.83 14.24c-.25.7-1.24 1.28-2.02 1.44-.55.11-1.26.2-3.66-.78-2.98-1.23-4.9-4.24-5.05-4.44-.15-.2-1.2-1.6-1.2-3.05 0-1.45.75-2.16 1.03-2.46.25-.27.6-.4.95-.4h.34c.3 0 .45 0 .65.5.25.6.85 2.05.92 2.2.07.15.12.33.02.53-.1.2-.15.32-.3.5-.15.17-.3.38-.44.51-.15.15-.3.31-.13.6.17.3.75 1.24 1.62 2 1.12.99 2.05 1.31 2.35 1.46.3.15.47.13.65-.08.17-.2.72-.85.92-1.14.2-.3.4-.24.65-.14.27.1 1.7.8 2 .95.3.15.5.22.57.35.07.13.07.75-.18 1.45z"/></svg>
+          Escribir por WhatsApp
+        </a>
+        <a href="mailto:hola@gracielasalvador.com?subject=Información sobre Vincula-T" class="btn btn-ghost">Escribir un email</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <span>© 2026 Graciela Salvador · Psicóloga · Colegiada CV15554</span>
+    <div class="footer-links">
+      <a href="#">Aviso legal</a>
+      <a href="#">Privacidad</a>
+      <a href="#">Cookies</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

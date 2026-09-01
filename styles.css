@@ -208,6 +208,14 @@
   .about h2{ font-size:clamp(28px,3.6vw,40px); margin:14px 0 22px; }
   .about p{ color:var(--ink-soft); font-size:16px; margin:0 0 16px; max-width:520px; }
   .about-signature{ font-family:'Fraunces', serif; font-style:italic; font-size:20px; margin-top:24px; color:var(--teal); }
+  .press-mentions{ margin-top:28px; }
+  .press-mentions ul{ list-style:none; padding:0; margin:0; }
+  .press-mentions li{
+    font-size:14.5px; color:var(--ink-soft); padding:8px 0;
+    border-top:1px solid var(--line);
+  }
+  .press-mentions li:last-child{ border-bottom:1px solid var(--line); }
+  .press-mentions a{ color:var(--teal); text-decoration:underline; text-underline-offset:2px; }
 
   /* ---------- Approach strip ---------- */
   .approach{ background:var(--sand); padding:64px 0; }
