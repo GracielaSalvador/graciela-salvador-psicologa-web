@@ -342,6 +342,30 @@
   .blog-card-full h3{ font-family:'Fraunces',serif; font-size:20px; font-weight:500; margin-bottom:8px; }
   .blog-card-full p{ font-size:14.5px; color:var(--ink-soft); margin:0; }
 
+  /* ---------- Reviews ---------- */
+  .reviews-section{ padding:90px 0; background:var(--paper-dim); }
+  .reviews-section h2{ font-size:clamp(26px,3.2vw,36px); margin-top:6px; margin-bottom:36px; }
+  .reviews-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); gap:24px; align-items:start; }
+  @media(max-width:700px){ .reviews-grid{ grid-template-columns:1fr; } }
+  .review-card{
+    background:#fff; border:1px solid var(--line); border-radius:16px;
+    padding:24px;
+  }
+  .review-top{ display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+  .review-avatar{
+    width:38px; height:38px; border-radius:50%; background:var(--teal-tint);
+    color:var(--teal-deep); font-weight:600; font-family:'Fraunces',serif;
+    display:flex; align-items:center; justify-content:center; font-size:16px;
+    flex-shrink:0;
+  }
+  .review-top > div:nth-child(2){ flex:1; }
+  .review-name{ font-size:14.5px; font-weight:600; color:var(--ink); margin:0; }
+  .review-stars{ color:#FBBC05; font-size:13px; letter-spacing:1px; }
+  .google-g{ flex-shrink:0; }
+  .review-text{ font-size:14.5px; color:var(--ink-soft); line-height:1.6; margin:0; font-style:italic; }
+  .reviews-cta{ text-align:center; margin-top:32px; }
+  .reviews-cta a{ color:var(--teal); font-weight:600; font-size:15px; }
+
   /* ---------- Contact ---------- */
   .contact{ padding:120px 0 100px; text-align:center; }
   .contact h2{ font-size:clamp(28px,3.6vw,42px); max-width:620px; margin:0 auto 18px; }
