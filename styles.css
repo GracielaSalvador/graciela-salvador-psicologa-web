@@ -405,3 +405,4 @@
   .map-placeholder p{ font-size:14.5px; color:var(--ink-soft); margin:0 0 14px; }
   .map-placeholder button{ border:0; cursor:pointer; }
   .footer-links{ flex-wrap:wrap; row-gap:6px; }
+  a.care-card .care-icon{ width:34px; height:34px; }
