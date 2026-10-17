@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Condiciones de venta — Graciela Salvador</title>
+<meta name="description" content="Condiciones de venta de los manuales y recursos digitales de La Madrería.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://www.gracielasalvador.com/condiciones-venta.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,440;0,9..144,560;1,9..144,440&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/favicon-180.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="brand" href="index.html"><img src="assets/logo-icono.png" alt="Graciela Salvador — Psicóloga" class="brand-logo">Graciela Salvador</a>
+    <div class="nav-right">
+      <a href="index.html#contacto" class="btn btn-teal nav-mobile-cta">Pedir cita</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navlinks">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="navlinks" id="navlinks">
+      <a href="la-madreria.html">La Madrería</a>
+      <a href="psicologia-general.html">Psicología general</a>
+      <a href="/blog/">Blog</a>
+      <a href="index.html#sobre-mi">Sobre mí</a>
+      <a href="index.html#contacto" class="btn btn-teal nav-cta">Pedir cita</a>
+    </nav>
+  </div>
+</header>
+<script>
+  const toggle = document.getElementById('menuToggle');
+  const nav = document.getElementById('navlinks');
+  toggle.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open);
+  });
+  nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+    nav.classList.remove('open');
+    toggle.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }));
+</script>
+
+<main>
+  <section class="blog-listing-hero">
+    <div class="wrap">
+      <p class="eyebrow">Información legal</p>
+      <h1>Condiciones de venta</h1>
+    </div>
+  </section>
+  <section class="article-body">
+    <div class="wrap">
+      <h2>1. Vendedor</h2>
+      <p><strong>Titular:</strong> Graciela Salvador, NIF 71464092X.<br>
+      <strong>Correo electrónico:</strong> <a href="mailto:hola@gracielasalvador.com">hola@gracielasalvador.com</a></p>
+      <p>La venta se realiza a través de la plataforma de pago Payhip, que procesa el cobro y entrega el producto. Al comprar, también aceptas los términos de Payhip.</p>
+
+      <h2>2. Productos</h2>
+      <p>Los productos son contenidos digitales (manuales en PDF y, en el futuro, webinars), de uso personal. Se entregan por medios electrónicos tras el pago. El precio final, con impuestos, se muestra en la página de compra antes de pagar.</p>
+
+      <h2>3. Uso del contenido</h2>
+      <p>El contenido está protegido por propiedad intelectual. Queda prohibido copiarlo, revenderlo o compartirlo con terceros sin autorización.</p>
+
+      <h2>4. Derecho de desistimiento</h2>
+      <p>Al tratarse de contenido digital entregado de forma inmediata, al realizar la compra aceptas expresamente que la ejecución comience de inmediato y que, una vez descargado o accedido el contenido, pierdes el derecho de desistimiento de 14 días (art. 103.m del Real Decreto Legislativo 1/2007).</p>
+
+      <h2>5. Naturaleza del material</h2>
+      <p>Los materiales tienen finalidad informativa y formativa. No sustituyen una valoración, diagnóstico o tratamiento psicológico individualizado. Si necesitas ayuda profesional, ponte en contacto con un psicólogo. En caso de urgencia, llama al 112.</p>
+
+      <h2>6. Incidencias</h2>
+      <p>Si tienes algún problema con tu compra o no recibes el archivo, escríbenos a <a href="mailto:hola@gracielasalvador.com">hola@gracielasalvador.com</a> y lo resolveremos.</p>
+
+      <h2>7. Legislación</h2>
+      <p>Estas condiciones se rigen por la legislación española.</p>
+      <p style="font-size:14px;color:var(--ink-soft);margin-top:32px;">Última actualización: octubre de 2026.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <span>© 2026 Graciela Salvador · Psicóloga · Colegiada CV15554</span>
+    <div class="footer-links">
+      <a href="aviso-legal.html">Aviso legal</a>
+      <a href="privacidad.html">Privacidad</a>
+      <a href="cookies.html">Cookies</a>
+      <a href="condiciones-venta.html">Condiciones de venta</a>
+      <a href="#" data-cookie-settings>Configurar cookies</a>
+    </div>
+  </div>
+</footer>
+
+<script src="cookies.js" defer></script>
+</body>
+</html>
