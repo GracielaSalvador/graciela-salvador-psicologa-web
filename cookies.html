@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Política de cookies — Graciela Salvador</title>
+<meta name="description" content="Información sobre el uso de cookies y tecnologías similares en el sitio web de Graciela Salvador.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://www.gracielasalvador.com/cookies.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,440;0,9..144,560;1,9..144,440&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/favicon-180.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="brand" href="index.html"><img src="assets/logo-icono.png" alt="Graciela Salvador — Psicóloga" class="brand-logo">Graciela Salvador</a>
+    <div class="nav-right">
+      <a href="index.html#contacto" class="btn btn-teal nav-mobile-cta">Pedir cita</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navlinks">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="navlinks" id="navlinks">
+      <a href="la-madreria.html">La Madrería</a>
+      <a href="psicologia-general.html">Psicología general</a>
+      <a href="/blog/">Blog</a>
+      <a href="index.html#sobre-mi">Sobre mí</a>
+      <a href="index.html#contacto" class="btn btn-teal nav-cta">Pedir cita</a>
+    </nav>
+  </div>
+</header>
+<script>
+  const toggle = document.getElementById('menuToggle');
+  const nav = document.getElementById('navlinks');
+  toggle.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open);
+  });
+  nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+    nav.classList.remove('open');
+    toggle.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }));
+</script>
+
+<main>
+  <section class="blog-listing-hero">
+    <div class="wrap">
+      <p class="eyebrow">Información legal</p>
+      <h1>Política de cookies</h1>
+    </div>
+  </section>
+  <section class="article-body">
+    <div class="wrap">
+
+      <h2>¿Qué son las cookies?</h2>
+      <p>Las cookies son pequeños archivos que un sitio web puede guardar en tu dispositivo para recordar información sobre tu visita.</p>
+
+      <h2>¿Qué usamos en esta web?</h2>
+      <p>Este sitio <strong>no utiliza cookies propias</strong> ni herramientas de analítica o publicidad. Sin embargo, incorpora dos servicios de terceros que pueden tratar datos técnicos de tu navegación (como tu dirección IP):</p>
+      <p><strong>Google Fonts:</strong> para cargar las tipografías del sitio. Google recibe la dirección IP del navegador al descargar las fuentes.</p>
+      <p><strong>Google Maps:</strong> el mapa de la sección de contacto está incrustado desde Google. Al cargarse, Google puede instalar cookies propias en tu navegador, según su <a href="https://policies.google.com/technologies/cookies" target="_blank" rel="noopener">política de cookies</a>.</p>
+
+      <p>El mapa de Google Maps solo se carga si aceptas el aviso de cookies. Puedes cambiar tu elección en cualquier momento desde el enlace "Configurar cookies" del pie de página.</p>
+
+      <h2>Cómo gestionar o eliminar cookies</h2>
+      <p>Puedes bloquear o eliminar las cookies desde la configuración de tu navegador (Chrome, Firefox, Safari, Edge). Ten en cuenta que, si las bloqueas, el mapa podría no mostrarse correctamente.</p>
+
+      <h2>Cambios</h2>
+      <p>Si en el futuro se incorporan herramientas de analítica u otras cookies, esta política se actualizará y se solicitará tu consentimiento cuando sea necesario.</p>
+
+      <p style="font-size:14px;color:var(--ink-soft);margin-top:32px;">Última actualización: octubre de 2026.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <span>© 2026 Graciela Salvador · Psicóloga · Colegiada CV15554</span>
+    <div class="footer-links">
+      <a href="aviso-legal.html">Aviso legal</a>
+      <a href="privacidad.html">Privacidad</a>
+      <a href="cookies.html">Cookies</a>
+      <a href="#" data-cookie-settings>Configurar cookies</a>
+    </div>
+  </div>
+</footer>
+
+<script src="cookies.js" defer></script>
+</body>
+</html>

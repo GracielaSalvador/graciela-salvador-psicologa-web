@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Política de privacidad — Graciela Salvador</title>
+<meta name="description" content="Política de privacidad y protección de datos del sitio web de Graciela Salvador, Psicóloga.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://www.gracielasalvador.com/privacidad.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,440;0,9..144,560;1,9..144,440&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/favicon-180.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="brand" href="index.html"><img src="assets/logo-icono.png" alt="Graciela Salvador — Psicóloga" class="brand-logo">Graciela Salvador</a>
+    <div class="nav-right">
+      <a href="index.html#contacto" class="btn btn-teal nav-mobile-cta">Pedir cita</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navlinks">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="navlinks" id="navlinks">
+      <a href="la-madreria.html">La Madrería</a>
+      <a href="psicologia-general.html">Psicología general</a>
+      <a href="/blog/">Blog</a>
+      <a href="index.html#sobre-mi">Sobre mí</a>
+      <a href="index.html#contacto" class="btn btn-teal nav-cta">Pedir cita</a>
+    </nav>
+  </div>
+</header>
+<script>
+  const toggle = document.getElementById('menuToggle');
+  const nav = document.getElementById('navlinks');
+  toggle.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open);
+  });
+  nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+    nav.classList.remove('open');
+    toggle.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }));
+</script>
+
+<main>
+  <section class="blog-listing-hero">
+    <div class="wrap">
+      <p class="eyebrow">Información legal</p>
+      <h1>Política de privacidad</h1>
+    </div>
+  </section>
+  <section class="article-body">
+    <div class="wrap">
+
+      <h2>1. Responsable del tratamiento</h2>
+      <p><strong>Titular:</strong> Graciela Salvador<br>
+<strong>NIF:</strong> 71464092X<br>
+<strong>Domicilio profesional:</strong> Calle Camp de Morvedre, 5 — Massamagrell (Valencia)<br>
+<strong>Correo electrónico:</strong> <a href="mailto:hola@gracielasalvador.com">hola@gracielasalvador.com</a><br>
+<strong>Teléfono:</strong> +34 698 982 095</p>
+
+      <h2>2. Qué datos tratamos y para qué</h2>
+      <p>Este sitio no dispone de formularios: los datos personales se recogen únicamente cuando tú te pones en contacto por correo electrónico, WhatsApp o teléfono. Tratamos los datos que nos facilites (nombre, medio de contacto y contenido de tu mensaje) con la finalidad de atender tu consulta y, en su caso, gestionar tu primera cita.</p>
+      <p>Si iniciaras un proceso terapéutico, el tratamiento de tus datos de salud se regirá por el consentimiento informado y la documentación que se te entregará en consulta, conforme a la normativa sanitaria y de protección de datos.</p>
+
+      <h2>3. Base jurídica</h2>
+      <p>El consentimiento que otorgas al contactar con nosotros (art. 6.1.a RGPD) y, en su caso, la aplicación de medidas precontractuales a petición tuya (art. 6.1.b RGPD).</p>
+
+      <h2>4. Conservación</h2>
+      <p>Conservaremos tus datos durante el tiempo necesario para atender tu solicitud y, después, durante los plazos legales aplicables. La documentación clínica se conservará durante los plazos que establece la normativa sanitaria.</p>
+
+      <h2>5. Destinatarios</h2>
+      <p>No cedemos tus datos a terceros salvo obligación legal. Para la gestión del correo y la mensajería utilizamos proveedores que actúan como encargados del tratamiento: Zoho Mail (correo electrónico, servidores en la Unión Europea) y WhatsApp (Meta), si eliges este medio de contacto. El sitio web se aloja en Vercel.</p>
+
+      <h2>6. Tus derechos</h2>
+      <p>Puedes ejercer tus derechos de acceso, rectificación, supresión, oposición, limitación y portabilidad escribiendo a <a href="mailto:hola@gracielasalvador.com">hola@gracielasalvador.com</a>. Si consideras que tus derechos no han sido atendidos, puedes presentar una reclamación ante la Agencia Española de Protección de Datos (<a href="https://www.aepd.es" target="_blank" rel="noopener">www.aepd.es</a>).</p>
+
+      <h2>7. Secreto profesional</h2>
+      <p>La información que compartas en el contexto de la relación terapéutica está amparada por el secreto profesional y el código deontológico de la psicología.</p>
+
+      <p style="font-size:14px;color:var(--ink-soft);margin-top:32px;">Última actualización: octubre de 2026.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <span>© 2026 Graciela Salvador · Psicóloga · Colegiada CV15554</span>
+    <div class="footer-links">
+      <a href="aviso-legal.html">Aviso legal</a>
+      <a href="privacidad.html">Privacidad</a>
+      <a href="cookies.html">Cookies</a>
+      <a href="#" data-cookie-settings>Configurar cookies</a>
+    </div>
+  </div>
+</footer>
+
+<script src="cookies.js" defer></script>
+</body>
+</html>

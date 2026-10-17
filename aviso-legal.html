@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aviso legal — Graciela Salvador</title>
+<meta name="description" content="Aviso legal del sitio web de Graciela Salvador, Psicóloga General Sanitaria.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://www.gracielasalvador.com/aviso-legal.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,440;0,9..144,560;1,9..144,440&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/favicon-180.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="brand" href="index.html"><img src="assets/logo-icono.png" alt="Graciela Salvador — Psicóloga" class="brand-logo">Graciela Salvador</a>
+    <div class="nav-right">
+      <a href="index.html#contacto" class="btn btn-teal nav-mobile-cta">Pedir cita</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navlinks">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="navlinks" id="navlinks">
+      <a href="la-madreria.html">La Madrería</a>
+      <a href="psicologia-general.html">Psicología general</a>
+      <a href="/blog/">Blog</a>
+      <a href="index.html#sobre-mi">Sobre mí</a>
+      <a href="index.html#contacto" class="btn btn-teal nav-cta">Pedir cita</a>
+    </nav>
+  </div>
+</header>
+<script>
+  const toggle = document.getElementById('menuToggle');
+  const nav = document.getElementById('navlinks');
+  toggle.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open);
+  });
+  nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+    nav.classList.remove('open');
+    toggle.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }));
+</script>
+
+<main>
+  <section class="blog-listing-hero">
+    <div class="wrap">
+      <p class="eyebrow">Información legal</p>
+      <h1>Aviso legal</h1>
+    </div>
+  </section>
+  <section class="article-body">
+    <div class="wrap">
+
+      <h2>1. Datos identificativos</h2>
+      <p>En cumplimiento de la Ley 34/2002 de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI-CE), se informa de los datos del titular de este sitio web, <strong>www.gracielasalvador.com</strong>:</p>
+      <p><strong>Titular:</strong> Graciela Salvador<br>
+<strong>NIF:</strong> 71464092X<br>
+<strong>Domicilio profesional:</strong> Calle Camp de Morvedre, 5 — Massamagrell (Valencia)<br>
+<strong>Correo electrónico:</strong> <a href="mailto:hola@gracielasalvador.com">hola@gracielasalvador.com</a><br>
+<strong>Teléfono:</strong> +34 698 982 095</p>
+      <p><strong>Profesión:</strong> Psicóloga General Sanitaria, colegiada nº CV15554 en el Colegio Oficial de la Psicología de la Comunitat Valenciana.</p>
+
+      <h2>2. Objeto</h2>
+      <p>Este sitio web tiene carácter informativo sobre los servicios de psicología general sanitaria y psicología perinatal y crianza (La Madrería) ofrecidos por la titular, así como sobre el programa Vincula-T y los contenidos del blog.</p>
+
+      <h2>3. Contenidos del blog</h2>
+      <p>Los artículos tienen finalidad divulgativa y no sustituyen una valoración, diagnóstico o tratamiento psicológico individualizado. Ante cualquier malestar, consulta con un profesional. Si te encuentras en una situación de urgencia, llama al 112.</p>
+
+      <h2>4. Propiedad intelectual</h2>
+      <p>Los textos, imágenes, logotipos y demás elementos de este sitio son propiedad de la titular o se utilizan con la debida autorización, y están protegidos por la normativa de propiedad intelectual. Queda prohibida su reproducción, distribución o transformación sin autorización expresa.</p>
+
+      <h2>5. Responsabilidad</h2>
+      <p>La titular no se hace responsable de los daños derivados de un uso inadecuado de la información publicada ni de la disponibilidad continua del sitio. Los enlaces a sitios de terceros se ofrecen como servicio al usuario, sin que la titular responda de sus contenidos.</p>
+
+      <h2>6. Legislación y jurisdicción</h2>
+      <p>Este aviso se rige por la legislación española. Para cualquier controversia, las partes se someterán a los juzgados y tribunales que resulten competentes conforme a la normativa vigente.</p>
+
+      <p style="font-size:14px;color:var(--ink-soft);margin-top:32px;">Última actualización: octubre de 2026.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <span>© 2026 Graciela Salvador · Psicóloga · Colegiada CV15554</span>
+    <div class="footer-links">
+      <a href="aviso-legal.html">Aviso legal</a>
+      <a href="privacidad.html">Privacidad</a>
+      <a href="cookies.html">Cookies</a>
+      <a href="#" data-cookie-settings>Configurar cookies</a>
+    </div>
+  </div>
+</footer>
+
+<script src="cookies.js" defer></script>
+</body>
+</html>

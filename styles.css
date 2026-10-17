@@ -219,6 +219,8 @@
 
   /* ---------- Approach strip ---------- */
   .approach{ background:var(--sand); padding:64px 0; }
+  .approach-head{ text-align:center; margin-bottom:36px; }
+  .approach-head h2{ margin:6px 0 0; }
   .approach-row{
     display:flex; justify-content:space-between; gap:32px; flex-wrap:wrap;
   }
@@ -392,3 +394,14 @@
     html{ scroll-behavior:auto; }
     .btn{ transition:none; }
   }
+
+  .cookie-banner{ position:fixed; left:16px; right:16px; bottom:16px; max-width:720px; margin:0 auto; background:#fff; border:1px solid var(--line); border-radius:16px; box-shadow:0 20px 50px -20px rgba(43,38,34,.35); padding:18px 20px; z-index:1000; display:flex; gap:18px; align-items:center; flex-wrap:wrap; }
+  .cookie-banner p{ margin:0; font-size:14px; color:var(--ink-soft); flex:1; min-width:240px; }
+  .cookie-banner a{ color:var(--teal); text-decoration:underline; }
+  .cookie-actions{ display:flex; gap:10px; }
+  .cookie-actions .btn{ padding:10px 18px; font-size:14px; cursor:pointer; }
+  .cookie-reject{ background:transparent; border:1px solid var(--line); color:var(--ink); }
+  .map-placeholder{ background:var(--paper-dim); border:1px solid var(--line); border-radius:16px; padding:36px 20px; text-align:center; }
+  .map-placeholder p{ font-size:14.5px; color:var(--ink-soft); margin:0 0 14px; }
+  .map-placeholder button{ border:0; cursor:pointer; }
+  .footer-links{ flex-wrap:wrap; row-gap:6px; }

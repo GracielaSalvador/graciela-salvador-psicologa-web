@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La escuela de La Madrería: programas y recursos — Graciela Salvador</title>
+<meta name="description" content="La escuela de La Madrería: programas de acompañamiento psicológico para embarazo, parto, posparto y crianza, y recursos como webinars y manuales.">
+<link rel="canonical" href="https://www.gracielasalvador.com/la-escuela.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:title" content="La escuela de La Madrería: programas y recursos">
+<meta property="og:description" content="La escuela de La Madrería: programas de acompañamiento psicológico para embarazo, parto, posparto y crianza, y recursos como webinars y manuales.">
+<meta property="og:url" content="https://www.gracielasalvador.com/la-escuela.html">
+<meta property="og:image" content="https://www.gracielasalvador.com/assets/madreria-foto.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,440;0,9..144,560;1,9..144,440&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/favicon-180.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="brand" href="index.html"><img src="assets/logo-icono.png" alt="Graciela Salvador — Psicóloga" class="brand-logo">Graciela Salvador</a>
+    <div class="nav-right">
+      <a href="#contacto" class="btn btn-teal nav-mobile-cta">Pedir cita</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="navlinks">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="navlinks" id="navlinks">
+      <a href="la-madreria.html">La Madrería</a>
+      <a href="psicologia-general.html">Psicología general</a>
+      <a href="/blog/">Blog</a>
+      <a href="index.html#sobre-mi">Sobre mí</a>
+      <a href="#contacto" class="btn btn-teal nav-cta">Pedir cita</a>
+    </nav>
+  </div>
+</header>
+<script>
+  const toggle = document.getElementById('menuToggle');
+  const nav = document.getElementById('navlinks');
+  toggle.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open);
+  });
+  nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+    nav.classList.remove('open');
+    toggle.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }));
+</script>
+
+<main>
+
+  <section class="inner-hero teal">
+    <div class="wrap">
+      <p class="breadcrumb"><a href="index.html">Inicio</a> / <a href="la-madreria.html">La Madrería</a> / La escuela</p>
+      <p class="eyebrow">La Madrería</p>
+      <h1>La escuela de La Madrería</h1>
+      <p class="sub">Programas y recursos para acompañarte en el embarazo, el parto, el posparto y la crianza, estés donde estés.</p>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="wrap">
+      <p class="eyebrow" style="color:var(--teal)">Qué encontrarás</p>
+      <h2>Dos espacios para cada necesidad</h2>
+      <div class="care-grid">
+        <a class="care-card" href="escuela-programas.html" style="display:block;text-decoration:none;color:inherit;">
+          <h3>Programas</h3>
+          <p>Procesos estructurados y acompañados, para mamás y parejas: Vincula-T y Nacer Contigo.</p>
+          <p style="margin-top:14px;color:var(--teal);font-weight:600;">Ver programas →</p>
+        </a>
+        <a class="care-card" href="escuela-recursos.html" style="display:block;text-decoration:none;color:inherit;">
+          <h3>Recursos</h3>
+          <p>Webinars y manuales para que puedas aprender y trabajar a tu ritmo, cuando lo necesites.</p>
+          <p style="margin-top:14px;color:var(--teal);font-weight:600;">Ver recursos →</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contacto">
+    <div class="wrap">
+      <p class="eyebrow">Contacto</p>
+      <h2>¿Hablamos?</h2>
+      <p class="lead">Cuéntame qué necesitas y te oriento sobre qué programa o recurso encaja mejor contigo.</p>
+      <p class="contact-note">Para un contacto más rápido, escríbeme directamente por WhatsApp al <a href="tel:+34698982095">698 98 20 95</a>.</p>
+      <div class="contact-ctas">
+        <a href="https://wa.me/34698982095?text=Hola%20Graciela%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20sobre%20La%20escuela%20de%20La%20Madrer%C3%ADa" class="btn btn-whatsapp" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.04 2c-5.52 0-10 4.48-10 10 0 1.77.46 3.44 1.27 4.89L2 22l5.24-1.37A9.96 9.96 0 0 0 12.04 22c5.52 0 10-4.48 10-10s-4.48-10-10-10zm5.83 14.24c-.25.7-1.24 1.28-2.02 1.44-.55.11-1.26.2-3.66-.78-2.98-1.23-4.9-4.24-5.05-4.44-.15-.2-1.2-1.6-1.2-3.05 0-1.45.75-2.16 1.03-2.46.25-.27.6-.4.95-.4h.34c.3 0 .45 0 .65.5.25.6.85 2.05.92 2.2.07.15.12.33.02.53-.1.2-.15.32-.3.5-.15.17-.3.38-.44.51-.15.15-.3.31-.13.6.17.3.75 1.24 1.62 2 1.12.99 2.05 1.31 2.35 1.46.3.15.47.13.65-.08.17-.2.72-.85.92-1.14.2-.3.4-.24.65-.14.27.1 1.7.8 2 .95.3.15.5.22.57.35.07.13.07.75-.18 1.45z"/></svg>
+          Escribir por WhatsApp
+        </a>
+        <a href="mailto:hola@gracielasalvador.com?subject=Hola%20Graciela%2C%20me%20gustar%C3%ADa%20informaci%C3%B3n%20sobre%20La%20escuela%20de%20La%20Madrer%C3%ADa" class="btn btn-ghost">Escribir un email</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <span>© 2026 Graciela Salvador · Psicóloga · Colegiada CV15554</span>
+    <div class="footer-links">
+      <a href="aviso-legal.html">Aviso legal</a>
+      <a href="privacidad.html">Privacidad</a>
+      <a href="cookies.html">Cookies</a>
+      <a href="#" data-cookie-settings>Configurar cookies</a>
+    </div>
+  </div>
+</footer>
+
+<script src="cookies.js" defer></script>
+</body>
+</html>
