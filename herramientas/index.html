@@ -14,12 +14,12 @@
 :root {
   --bg: #F5F9F9; --surface: #FFFFFF; --ink: #17343B; --muted: #5C747A; --line: #D7E5E8;
   --accent: #166A7E; --deep: #0F4C5C; --tint: #E4EFF1;
-  --c1: #E1EEF1; --c1i: #166A7E; --c2: #F4E3DA; --c2i: #8E4E33; --c3: #E9E8F3; --c3i: #5B5888; --c4: #E2EFEA; --c4i: #2C6E5D; --c5: #F3EEDC; --c5i: #7A6420;
+  --c1: #E1EEF1; --c1i: #166A7E; --c2: #F4E3DA; --c2i: #8E4E33; --c3: #E9E8F3; --c3i: #5B5888; --c4: #E2EFEA; --c4i: #2C6E5D; --c5: #F3EEDC; --c5i: #7A6420; --c6: #F3E4E4; --c6i: #8E4A55; --c7: #E3E9F4; --c7i: #3E5A8A; --c8: #EEF0DC; --c8i: #5E6B1F; --c9: #FCE6D4; --c9i: #A0521A; --c10: #ECE2F7; --c10i: #6A3FA0; --c11: #E3EBEF; --c11i: #3F5866;
   --display: "Lora", Georgia, serif; --body: "Nunito Sans", "Segoe UI", system-ui, sans-serif;
 }
 @media (prefers-color-scheme: dark) { :root {
   --bg: #0C1C21; --surface: #12282E; --ink: #E2EEF0; --muted: #9AB2B8; --line: #234046; --accent: #5FB2C3; --deep: #9AD3DE; --tint: #18343B;
-  --c1: #18343B; --c1i: #7CC3D2; --c2: #3A2A23; --c2i: #E8B39A; --c3: #26263A; --c3i: #B9B6E3; --c4: #183530; --c4i: #8CCDB6; --c5: #35301C; --c5i: #E3CD86; color-scheme: dark } }
+  --c1: #18343B; --c1i: #7CC3D2; --c2: #3A2A23; --c2i: #E8B39A; --c3: #26263A; --c3i: #B9B6E3; --c4: #183530; --c4i: #8CCDB6; --c5: #35301C; --c5i: #E3CD86; --c6: #3A2629; --c6i: #E6AEB6; --c7: #1F2A3D; --c7i: #A9C1EA; --c8: #2C3019; --c8i: #CBD68A; --c9: #3B2718; --c9i: #F0B184; --c10: #2C2240; --c10i: #C9AEF0; --c11: #222D33; --c11i: #B4C8D3; color-scheme: dark } }
 * { box-sizing: border-box; }
 html, body { margin: 0; }
 body { background: var(--bg); color: var(--ink); font-family: var(--body); line-height: 1.55; }
@@ -77,6 +77,18 @@ const APPS = [
     ico: '<path d="M3 12V4h8l10 10-8 8L3 12z"/><circle cx="7.5" cy="8" r="1.5"/>' },
   { titulo: 'Quererme mejor', desc: 'Subir peldaño a peldaño la escalera de la autoestima.', ruta: 'quererme/', listo: true, c: 4,
     ico: '<path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/>' },
+  { titulo: 'Revisar mis pensamientos', desc: 'Descubrir tus espejos de feria y tomar distancia de lo que piensas.', ruta: 'pensamientos/', listo: true, c: 6,
+    ico: '<path d="M12 3c5 0 8 3.5 7.6 8.5-.2 2.6.6 4.4 0 6.6C19 20.6 16 22 12 22s-7-1.4-7.6-3.9c-.6-2.2.2-4 0-6.6C4 6.5 7 3 12 3z"/><path d="M9 9c1-1.2 2-1.6 3-1.6"/>' },
+  { titulo: 'Salir del círculo del miedo', desc: 'Ver cómo se mantiene la ansiedad y cómo romper el círculo poco a poco.', ruta: 'ciclo/', listo: true, c: 7,
+    ico: '<path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/><circle cx="12" cy="12" r="2.5"/>' },
+  { titulo: 'Vínculos sanos', desc: 'Empezar una relación sin dejar de escucharte: señales, citas y tu ruta de los tres meses.', ruta: 'vinculos/', listo: true, c: 8,
+    ico: '<circle cx="9" cy="12" r="5.5"/><circle cx="15" cy="12" r="5.5"/>' },
+  { titulo: 'Ponerme en marcha', desc: 'Para cuando el ánimo está bajo: pequeñas acciones que poco a poco lo levantan.', ruta: 'activar/', listo: true, c: 9,
+    ico: '<path d="M12 21v-8"/><path d="M12 13c0-4 3-6.5 7-6.5 0 4-3 6.5-7 6.5zM12 15c0-3-2.5-5-6-5 0 3 2.5 5 6 5z"/>' },
+  { titulo: 'Darle menos vueltas', desc: 'Para la preocupación y las decisiones: qué depende de mí, cómo decidir y dónde aparcar lo demás.', ruta: 'vueltas/', listo: true, c: 10,
+    ico: '<path d="M4 12a8 8 0 0 1 14-5.3"/><path d="M18 3v4h-4"/><path d="M12 12h8M17 9l3 3-3 3"/>' },
+  { titulo: 'Convivir con la incertidumbre', desc: 'Avanzar sin tenerlo todo claro: la trampa de la certeza y pequeños experimentos.', ruta: 'incertidumbre/', listo: true, c: 11,
+    ico: '<path d="M3 10h18M5 14h14M8 18h8"/><path d="M12 3a4 4 0 0 1 4 4"/>' },
   { titulo: 'Preparar mi sesión', desc: 'Anotar lo que ha pasado esta semana para traerlo a terapia.', ruta: 'sesion/', listo: true, c: 5,
     ico: '<path d="M5 4h11l3 3v13H5z"/><path d="M8 10h8M8 14h8M8 18h5"/>' },
 ];
