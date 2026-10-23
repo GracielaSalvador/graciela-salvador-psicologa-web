@@ -14,12 +14,12 @@
 :root {
   --bg: #F5F9F9; --surface: #FFFFFF; --ink: #17343B; --muted: #5C747A; --line: #D7E5E8;
   --accent: #166A7E; --deep: #0F4C5C; --tint: #E4EFF1;
-  --c1: #E1EEF1; --c1i: #166A7E; --c2: #F4E3DA; --c2i: #8E4E33; --c3: #E9E8F3; --c3i: #5B5888; --c4: #E2EFEA; --c4i: #2C6E5D; --c5: #F3EEDC; --c5i: #7A6420; --c6: #F3E4E4; --c6i: #8E4A55; --c7: #E3E9F4; --c7i: #3E5A8A; --c8: #EEF0DC; --c8i: #5E6B1F; --c9: #FCE6D4; --c9i: #A0521A; --c10: #ECE2F7; --c10i: #6A3FA0; --c11: #E3EBEF; --c11i: #3F5866;
+  --c1: #E1EEF1; --c1i: #166A7E; --c2: #F4E3DA; --c2i: #8E4E33; --c3: #E9E8F3; --c3i: #5B5888; --c4: #E2EFEA; --c4i: #2C6E5D; --c5: #F3EEDC; --c5i: #7A6420; --c6: #F3E4E4; --c6i: #8E4A55; --c7: #E3E9F4; --c7i: #3E5A8A; --c8: #EEF0DC; --c8i: #5E6B1F; --c9: #FCE6D4; --c9i: #A0521A; --c10: #ECE2F7; --c10i: #6A3FA0; --c11: #E3EBEF; --c11i: #3F5866; --c12: #F6E7DD; --c12i: #9A5636; --c13: #ECE7F2; --c13i: #5E4E86; --c14: #E0EDF6; --c14i: #2D6C96; --c15: #E3F0EE; --c15i: #2F6E66;
   --display: "Lora", Georgia, serif; --body: "Nunito Sans", "Segoe UI", system-ui, sans-serif;
 }
 @media (prefers-color-scheme: dark) { :root {
   --bg: #0C1C21; --surface: #12282E; --ink: #E2EEF0; --muted: #9AB2B8; --line: #234046; --accent: #5FB2C3; --deep: #9AD3DE; --tint: #18343B;
-  --c1: #18343B; --c1i: #7CC3D2; --c2: #3A2A23; --c2i: #E8B39A; --c3: #26263A; --c3i: #B9B6E3; --c4: #183530; --c4i: #8CCDB6; --c5: #35301C; --c5i: #E3CD86; --c6: #3A2629; --c6i: #E6AEB6; --c7: #1F2A3D; --c7i: #A9C1EA; --c8: #2C3019; --c8i: #CBD68A; --c9: #3B2718; --c9i: #F0B184; --c10: #2C2240; --c10i: #C9AEF0; --c11: #222D33; --c11i: #B4C8D3; color-scheme: dark } }
+  --c1: #18343B; --c1i: #7CC3D2; --c2: #3A2A23; --c2i: #E8B39A; --c3: #26263A; --c3i: #B9B6E3; --c4: #183530; --c4i: #8CCDB6; --c5: #35301C; --c5i: #E3CD86; --c6: #3A2629; --c6i: #E6AEB6; --c7: #1F2A3D; --c7i: #A9C1EA; --c8: #2C3019; --c8i: #CBD68A; --c9: #3B2718; --c9i: #F0B184; --c10: #2C2240; --c10i: #C9AEF0; --c11: #222D33; --c11i: #B4C8D3; --c12: #3A2A20; --c12i: #EDB896; --c13: #29243A; --c13i: #C3B6E6; --c14: #1C2C3A; --c14i: #9CC6E8; --c15: #17302D; --c15i: #93D0C5; color-scheme: dark } }
 * { box-sizing: border-box; }
 html, body { margin: 0; }
 body { background: var(--bg); color: var(--ink); font-family: var(--body); line-height: 1.55; }
@@ -89,6 +89,14 @@ const APPS = [
     ico: '<path d="M4 12a8 8 0 0 1 14-5.3"/><path d="M18 3v4h-4"/><path d="M12 12h8M17 9l3 3-3 3"/>' },
   { titulo: 'Convivir con la incertidumbre', desc: 'Avanzar sin tenerlo todo claro: la trampa de la certeza y pequeños experimentos.', ruta: 'incertidumbre/', listo: true, c: 11,
     ico: '<path d="M3 10h18M5 14h14M8 18h8"/><path d="M12 3a4 4 0 0 1 4 4"/>' },
+  { titulo: 'Mirar de dónde vengo', desc: 'Entender cómo aprendí a querer y cuidar al niño o la niña que fui.', ruta: 'apego/', listo: true, c: 12,
+    ico: '<path d="M3 17h18l-3 4H6z"/><path d="M12 17V3l7 11h-7"/><path d="M12 6L6 14h6"/>' },
+  { titulo: 'Acompañar mi duelo', desc: 'Para cuando has perdido algo o a alguien: las fases, tus recuerdos y cómo cuidarte mientras duele.', ruta: 'duelo/', listo: true, c: 13,
+    ico: '<path d="M12 3c-3 4-3 7 0 9 3-2 3-5 0-9z"/><rect x="9" y="12" width="6" height="9" rx="1.5"/><path d="M6 21h12"/>' },
+  { titulo: 'Frenar a tiempo', desc: 'Para los impulsos: entender la ola de las ganas, pillarla a tiempo y elegir qué hacer.', ruta: 'impulsos/', listo: true, c: 14,
+    ico: '<path d="M8.5 3h7l5 5v7l-5 5h-7l-5-5V8z"/><path d="M9 12h6"/>' },
+  { titulo: 'Ampliar mi ventana', desc: 'Para cuando las cosas no salen como esperabas: entender la frustración y aprender a tolerarla.', ruta: 'frustracion/', listo: true, c: 15,
+    ico: '<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M12 4v16M4 12h16"/>' },
   { titulo: 'Preparar mi sesión', desc: 'Anotar lo que ha pasado esta semana para traerlo a terapia.', ruta: 'sesion/', listo: true, c: 5,
     ico: '<path d="M5 4h11l3 3v13H5z"/><path d="M8 10h8M8 14h8M8 18h5"/>' },
 ];
