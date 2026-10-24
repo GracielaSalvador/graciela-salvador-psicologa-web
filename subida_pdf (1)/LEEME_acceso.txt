@@ -1,0 +1,86 @@
+SUBIDA: «Guardar en PDF» en las 15 herramientas
+Copiar en el repositorio (sustituyendo), las 15 carpetas y el portal:
+- herramientas/activar, apego, calma, ciclo, duelo, emociones, frustracion, impulsos,
+  incertidumbre, limites, pensamientos, quererme, sesion, vinculos, vueltas  (cada una con su index.html)
+- herramientas/index.html
+No hay que tocar middleware.js ni la contraseña. Después: commit, push y Vercel despliega solo.
+
+Qué hace el botón «Guardar en PDF» (junto a «Copiar resumen»)
+- Abre una hoja con un aviso de privacidad y dos opciones: «Con lo mío» o «Solo herramientas» (sin ningún dato personal).
+- En «Con lo mío» se eligen los apartados con casillas. Los marcados como «Íntimo» salen desmarcados.
+- Opcional: nombre en la cabecera y «Tarjeta de bolsillo» (dos copias para recortar).
+- Usa la impresión del navegador: en el ordenador, «Guardar como PDF»; en el iPhone, Compartir → Imprimir → Compartir.
+- No se envía nada a ningún servidor: el PDF se crea en el propio dispositivo.
+
+Para Claude (mantenimiento)
+- La parte común está en pdf_kit.html (se inserta en cada herramienta donde pone <!-- PDFKIT -->).
+- La configuración de cada herramienta va al final de su archivo fuente, entre <!-- PDFKIT --> y <!-- /PDFCFG -->.
+
+------------------------------------------------------------
+
+SUBIDA DEL 24/10/2026 — 4 herramientas nuevas
+Copiar en el repositorio (sustituyendo si ya existen):
+- herramientas/index.html                (portal nuevo: áreas, buscador, «¿Cómo estás ahora?», favoritas y usadas hace poco)
+- herramientas/apego/index.html          → Mirar de dónde vengo
+- herramientas/duelo/index.html          → Acompañar mi duelo
+- herramientas/impulsos/index.html       → Frenar a tiempo
+- herramientas/frustracion/index.html    → Ampliar mi ventana
+No hay que tocar middleware.js ni la contraseña: las carpetas nuevas quedan protegidas solas.
+Después: commit, push y Vercel despliega automáticamente.
+
+------------------------------------------------------------
+
+Añadir una herramienta nueva en el portal (a partir de ahora)
+- En herramientas/index.html, dentro de la lista TOOLS, añadir una línea con: id (= nombre de la carpeta), título, descripción, color, área y palabras clave para el buscador.
+- Si debe aparecer en «¿Cómo estás ahora?», añadir su id en la lista NEEDS correspondiente.
+- Normalmente esto ya lo hará Claude y te pasará el index.html listo.
+PANTALLA DE ACCESO PARA /herramientas — instrucciones para Rafa
+
+Archivos (copiar tal cual al repositorio)
+- middleware.js                        -> en la RAÍZ del repositorio
+- herramientas/index.html              -> la entrada "¿Qué necesitas hoy?"
+- herramientas/calma/index.html        -> Calmarme o volver a mí
+- herramientas/limites/index.html      -> Poner un límite
+- herramientas/emociones/index.html    -> Entender lo que siento
+- herramientas/quererme/index.html     -> Quererme mejor
+- herramientas/sesion/index.html       -> Preparar mi sesión
+
+Estructura del repositorio
+  /index.html                          (la web)
+  /middleware.js                       (contraseña)
+  /herramientas/...                    (todo lo anterior)
+
+Añadir una app nueva más adelante
+- Crear su carpeta, p. ej. /herramientas/limites/index.html
+- En /herramientas/index.html, en la lista APPS, poner listo: true en esa app.
+- La contraseña ya la protege automáticamente.
+
+Configurar la contraseña (no va en el código)
+1. Vercel -> el proyecto de la web -> Settings -> Environment Variables.
+2. Añadir:  Name = HERRAMIENTAS_PASSWORD   Value = la contraseña que elija Graciela
+   Marcar Production (y Preview si se quiere probar en las previsualizaciones).
+3. Volver a desplegar (Deployments -> el último -> Redeploy). Las variables solo se aplican en un despliegue nuevo.
+
+Cómo funciona
+- Al entrar en gracielasalvador.com/herramientas aparece la pantalla de acceso.
+- Con la contraseña correcta, el dispositivo la recuerda 90 días (cookie segura, HttpOnly).
+- La comprobación la hace Vercel en el servidor: sin contraseña no se descarga la app.
+
+Cambiar la contraseña
+- Cambiar el valor de HERRAMIENTAS_PASSWORD en Vercel y volver a desplegar.
+- Todos los dispositivos tendrán que escribir la contraseña nueva.
+
+Notas
+- Funciona en una web estática (HTML) desplegada en Vercel, sin dependencias ni package.json.
+- Si la web usara Next.js, el middleware tendría que adaptarse a ese formato.
+- Si falta la variable, la página avisa: "Falta configurar la contraseña en Vercel".
+- /herramientas/ciclo/  → Salir del círculo del miedo
+- /herramientas/vinculos/  → Vínculos sanos
+- /herramientas/activar/  → Ponerme en marcha
+- /herramientas/vueltas/  → Darle menos vueltas
+- /herramientas/incertidumbre/  → Convivir con la incertidumbre
+- /herramientas/apego/  → Mirar de dónde vengo
+- /herramientas/duelo/  → Acompañar mi duelo
+- /herramientas/impulsos/  → Frenar a tiempo
+- /herramientas/frustracion/  → Ampliar mi ventana
+
