@@ -195,7 +195,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
       </div>
       <div class="scale-row"><span class="lbl">¿Cuánto tardé en dormirme, más o menos?</span><input type="range" min="0" max="180" step="5" id="dLat" style="accent-color:var(--nt)" aria-label="Minutos hasta dormirme"><span class="big-num" id="vLat"></span></div>
       <div class="nav-row" style="justify-content:flex-start;gap:14px"><span class="lbl" style="font-size:.9rem">¿Cuántas veces me desperté?</span><div class="step"><button id="wMinus" aria-label="Menos">−</button><b id="vWake">0</b><button id="wPlus" aria-label="Más">+</button></div></div>
-      <div class="scale-row" id="wakeRow"><span class="lbl">En total, ¿cuánto rato estuve despierto/a por la noche?</span><input type="range" min="0" max="240" step="5" id="dWaso" style="accent-color:var(--nt)" aria-label="Minutos despierto por la noche"><span class="big-num" id="vWaso"></span></div>
+      <div class="scale-row" id="wakeRow"><span class="lbl">En total, ¿cuánto rato estuve despierto/a por la noche?</span><input type="range" min="0" max="240" step="5" id="dWaso" style="accent-color:var(--nt)" aria-label="Minutos despierto/a por la noche"><span class="big-num" id="vWaso"></span></div>
       <span class="lbl" style="font-size:.9rem">¿Cómo he descansado?</span>
       <div class="seg3" id="dQ"></div>
       <div id="dRes"></div>
@@ -259,7 +259,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
       <div id="habTip"></div>
     </div>
     <div class="card">
-      <span class="eyebrow">Cuándo consultar</span>
+      <span class="eyebrow">Cuándo pedir ayuda</span>
       <ul class="small" style="margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:6px">
         <li>Duermo mal tres o más noches por semana desde hace más de tres meses.</li>
         <li>Ronco fuerte, o alguien ha notado que dejo de respirar un momento mientras duermo.</li>
@@ -301,7 +301,7 @@ const CYC = [
   ['Duermo', 'mal', 'var(--nt)', '1. Duermo mal unas noches', 'Por estrés, un cambio, un bebé, una preocupación… Es muy normal.', ''],
   ['Me preocupa', 'dormir', 'var(--mid)', '2. Me preocupa no dormir', '«¿Y si esta noche tampoco duermo?», «mañana no rendiré». Empiezo a pensar en el sueño todo el día.', 'Aquí puedo cortar: revisar lo que me digo y aparcar las preocupaciones antes de acostarme.'],
   ['Me activo', 'en la cama', 'var(--bad)', '3. Me activo en la cama', 'Me esfuerzo por dormir, miro el reloj, el cuerpo se tensa. Cuanto más lo intento, más despierto/a estoy.', 'Aquí puedo cortar: relajarme sin forzar el sueño, sin mirar el reloj.'],
-  ['La cama =', 'estar despierto', 'var(--clock)', '4. La cama se asocia a estar despierto/a', 'Paso tanto tiempo despierto/a en la cama que el cerebro aprende que la cama es para dar vueltas.', 'Aquí puedo cortar: si no me duermo, levantarme y volver cuando tenga sueño.'],
+  ['La cama =', 'dar vueltas', 'var(--clock)', '4. La cama se asocia a estar despierto/a', 'Paso tanto tiempo despierto/a en la cama que el cerebro aprende que la cama es para dar vueltas.', 'Aquí puedo cortar: si no me duermo, levantarme y volver cuando tenga sueño.'],
   ['Duermo', 'peor', 'var(--muted)', '5. Duermo peor', 'Y el círculo vuelve a empezar.', ''],
 ];
 const MYTHS = [
@@ -748,7 +748,7 @@ const PDFKIT = (() => {
       <div class="sec"><h2>Mitos y lo que se sabe</h2><table>${MYTHS.map(([a, b]) => `<tr><td style="width:36%" class="mut">«${K.esc(a)}»</td><td>${K.esc(b)}</td></tr>`).join('')}</table></div>
       <div class="sec"><h2>Hábitos que ayudan</h2>${K.card(K.list(HAB.map(h => `${h[1]}: ${h[2]}`)), 'good')}</div>
       <div class="sec"><h2>Diario de sueño</h2><table><tr><th>Noche</th><th>Me acosté</th><th>Tardé en dormirme</th><th>Despertares</th><th>Me levanté</th><th>Descansé</th></tr>${Array.from({ length: 7 }, () => '<tr><td style="height:22px"></td><td></td><td></td><td></td><td></td><td></td></tr>').join('')}</table></div>
-      <div class="sec"><h2>Cuándo consultar</h2>${K.card(K.list(['Duermo mal tres o más noches por semana desde hace más de tres meses.', 'Ronco fuerte o alguien ha notado que dejo de respirar mientras duermo.', 'Me quedo dormido/a sin querer de día, sobre todo si conduzco.', 'Piernas inquietas por la noche o conductas raras mientras duermo.', 'Si va con tristeza, ansiedad o ideas de no querer vivir: 024 (24 h) o 112.']))}</div>`,
+      <div class="sec"><h2>Cuándo pedir ayuda</h2>${K.card(K.list(['Duermo mal tres o más noches por semana desde hace más de tres meses.', 'Ronco fuerte o alguien ha notado que dejo de respirar mientras duermo.', 'Me quedo dormido/a sin querer de día, sobre todo si conduzco.', 'Piernas inquietas por la noche o conductas raras mientras duermo.', 'Si va con tristeza, ansiedad o ideas de no querer vivir: 024 (24 h) o 112.']))}</div>`,
     pocketNote: 'Para cuando no me duermo',
     pocket: (generic) => { const own = generic ? '' : (S.th.length ? myAlt(S.th[0]) : '');
       return { title: 'Si no me duermo', html: K.steps(['No miro el reloj. No puedo forzar el sueño.', 'Si llevo un rato largo dando vueltas, me levanto.', 'Algo tranquilo con poca luz, sin pantallas.', 'Vuelvo cuando tengo sueño. Mañana, a mi hora.']) + `<p><span class="k">Me digo</span>«${K.esc(own || 'Puedo descansar el cuerpo y dejar que el sueño llegue.')}»</p>` }; },

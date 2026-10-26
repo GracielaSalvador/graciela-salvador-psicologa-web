@@ -296,7 +296,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
       <div class="chips" id="gestures"></div>
     </div>
     <div class="card">
-      <span class="eyebrow">Cuándo pedir más ayuda</span>
+      <span class="eyebrow">Cuándo pedir ayuda</span>
       <p class="small">Cada duelo lleva su tiempo, y no hay un plazo. Aun así, conviene hablarlo en sesión o pedir ayuda si…</p>
       <div class="stack">
         <div class="signal"><i></i><span>pasa mucho tiempo y el dolor sigue igual de intenso que al principio o va a más;</span></div>
@@ -868,7 +868,7 @@ const PDFKIT = (() => {
       <div class="sec long"><h2>Las fases, y qué ayuda en cada una</h2><table>${PH.map(p => `<tr><td style="width:22%"><b style="color:${p.c}">${p.n}</b></td><td>${K.esc(p.t)}<br><span class="mut"><b>Qué ayuda:</b> ${K.esc(p.h)}</span></td></tr>`).join('')}</table><p class="mut" style="margin-top:4px">No son una escalera: se va y se vuelve, y no significa ir hacia atrás.</p></div>
       <div class="sec"><h2>Ir y venir</h2><div class="grid2">${K.card('<span class="k" style="color:#8470B0">Mirar la pérdida</span>Llorar, recordar, mirar fotos, hablar de lo que pasó.')}${K.card('<span class="k" style="color:#4F9A7C">Seguir con la vida</span>Trabajar, quedar, reír, aprender, descansar. No es olvidar.', 'good')}</div></div>
       <div class="sec"><h2>Lo que se dice y lo que pasa de verdad</h2>${K.card(K.list(MYTHS.map(([f, b]) => `${f}: ${b}`)))}</div>
-      <div class="sec"><h2>Cuándo pedir más ayuda</h2>${K.card(K.list(['Pasa mucho tiempo y el dolor sigue igual de intenso o va a más.', 'Dejo de poder con lo básico: comer, dormir, trabajar, cuidar de mí o de los míos.', 'Siento que la vida no tiene sentido o pienso en no querer vivir: llamo al 024 (24 h) o al 112.', 'La culpa o la rabia no me dejan en paz, o evito por completo todo lo que me lo recuerda.']))}</div>`,
+      <div class="sec"><h2>Cuándo pedir ayuda</h2>${K.card(K.list(['Pasa mucho tiempo y el dolor sigue igual de intenso o va a más.', 'Dejo de poder con lo básico: comer, dormir, trabajar, cuidar de mí o de los míos.', 'Siento que la vida no tiene sentido o pienso en no querer vivir: llamo al 024 (24 h) o al 112.', 'La culpa o la rabia no me dejan en paz, o evito por completo todo lo que me lo recuerda.']))}</div>`,
     pocketNote: 'Para cuando llega una ola de pena',
     pocket: (generic) => { const g = generic ? [] : P.gest.slice(0, 3), nx = generic ? null : soon().find(d => d.nx[1] <= 60);
       return { title: 'Cuando llega una ola de pena', html: K.steps(['No hace falta pararla. La dejo pasar, como una ola.', 'Respiro despacio, o nombro 5 cosas que veo, 4 que oigo y 3 que puedo tocar.', 'Empujo los pies contra el suelo y noto el apoyo.', `Me cuido con algo pequeño${g.length ? ': ' + K.esc(g.join(', ').toLowerCase()) : ''}.`]) + (nx ? `<p><span class="k">Se acerca</span>${K.esc(nx.n)}, ${nx.nx[0].toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}</p>` : '') }; },

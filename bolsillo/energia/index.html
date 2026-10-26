@@ -280,7 +280,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
       <div class="stack" id="ifs"></div>
     </div>
     <div class="card">
-      <span class="eyebrow">Cuándo pedir más ayuda</span>
+      <span class="eyebrow">Cuándo pedir ayuda</span>
       <ul class="small" style="margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:6px">
         <li>Llevo semanas agotado/a y descansar no me recupera.</li>
         <li>Me cuesta mucho funcionar en el trabajo, en casa o con los míos.</li>
@@ -768,7 +768,7 @@ const PDFKIT = (() => {
       <div class="sec"><h2>Señales de que me estoy agotando</h2><div class="grid2">${SIGNS.map(([, n, , , l, h]) => K.card(`<span class="k">${n}</span>${K.list(l)}<p class="mut" style="margin-top:3px">${K.esc(h)}</p>`)).join('')}</div></div>
       <div class="sec"><h2>Lo que más recarga</h2>${K.card(K.list(['Desconectar: dejar de pensar en el trabajo y las obligaciones.', 'Relajarme: bajar el ritmo del cuerpo.', 'Algo que me guste y me absorba: aprender, crear, un reto pequeño.', 'Decidir yo: un rato en el que elijo qué hago.']), 'good')}</div>
       <div class="sec"><h2>Micropausas</h2>${K.card(K.list(PAUSES.map(([, n, s, d]) => `${n} (${s < 60 ? s + ' s' : s / 60 + ' min'}): ${d}`)))}</div>
-      <div class="sec"><h2>Cuándo pedir más ayuda</h2>${K.card(K.list(['Llevo semanas agotado/a y descansar no me recupera.', 'Me cuesta mucho funcionar en el trabajo, en casa o con los míos.', 'Duermo muy mal casi todos los días.', 'Tengo molestias físicas que no se van: conviene consultarlo con el médico.', 'Siento que no puedo más o pienso en no querer vivir: 024 (24 h) o 112.']))}</div>`,
+      <div class="sec"><h2>Cuándo pedir ayuda</h2>${K.card(K.list(['Llevo semanas agotado/a y descansar no me recupera.', 'Me cuesta mucho funcionar en el trabajo, en casa o con los míos.', 'Duermo muy mal casi todos los días.', 'Tengo molestias físicas que no se van: conviene consultarlo con el médico.', 'Siento que no puedo más o pienso en no querer vivir: 024 (24 h) o 112.']))}</div>`,
     pocketNote: 'Para cuando estoy al límite',
     pocket: (generic) => { const r = generic ? [] : E.favR.slice(0, 2), a = generic ? [] : [...E.ifs.r, ...E.ifs.a].slice(0, 2);
       return { title: 'Cuando estoy al límite', html: K.steps(['Paro. Esto es agotamiento, no debilidad.', '¿Qué tipo de cansancio tengo? Elijo el descanso que lo repone.', 'Una micropausa ahora: respiro, me estiro o miro lejos.', `Quito algo de hoy y pido ayuda${a.length ? ': ' + K.esc(a.join(', ').toLowerCase()) : ''}.`]) + (r.length ? `<p><span class="k">Me funciona</span>${K.esc(r.join(' · '))}</p>` : '') }; },

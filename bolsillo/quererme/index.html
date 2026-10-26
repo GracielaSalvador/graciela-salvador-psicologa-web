@@ -372,7 +372,7 @@ const M_OLD = [
     { r: () => head(0, '¿Qué es importante para ti?', 'Elige hasta 5 valores: lo que da sentido a tu vida y guía tus decisiones.') + chips('val', VALORES, D.valores),
       a: () => bindChips('val', 'valores', 5), c: () => D.valores.length ? '' : 'Elige al menos un valor.' },
     { r: () => head(0, '¿Qué se te da bien?', 'Elige tus fortalezas. Si te cuesta, piensa en lo que haces sin esfuerzo o en lo que te agradecen.') + chips('fo', FORTALEZAS, D.fortalezas) +
-        `<div class="stack"><span class="lbl">¿Y qué destacarían de ti las personas que te quieren?</span><p class="hint">A veces los demás ven cosas que nosotros no vemos.</p>${chips('ot', FORTALEZAS, D.otros, 'rose')}</div>`,
+        `<div class="stack"><span class="lbl">¿Y qué destacarían de ti las personas que te quieren?</span><p class="hint">A veces los demás ven en ti cosas que tú no ves.</p>${chips('ot', FORTALEZAS, D.otros, 'rose')}</div>`,
       a: () => { bindChips('fo', 'fortalezas'); bindChips('ot', 'otros'); }, c: () => (D.fortalezas.length || D.otros.length) ? '' : 'Elige al menos una fortaleza, tuya o vista por otros.' },
     { r: () => head(0, '¿Qué te gusta y qué te cuesta?') + `<div class="stack"><span class="lbl">Cosas que me gustan o disfruto <span class="hint">(opcional)</span></span><input type="text" id="gus" value="${esc(D.gustos)}" placeholder="Leer, caminar por la playa, cocinar con calma…"></div>
         <div class="stack"><span class="lbl">Cosas que me cuestan</span>${chips('cu', CUESTA, D.cuesta)}</div><div class="note">Lo que te cuesta no te define: es parte de quién eres hoy, y se puede trabajar.</div>`,
