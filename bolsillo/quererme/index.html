@@ -19,7 +19,7 @@
   --bg: #F5F9F9; --surface: #FFFFFF; --ink: #17343B; --muted: #5C747A; --line: #D7E5E8;
   --accent: #166A7E; --deep: #0F4C5C; --tint: #E4EFF1; --on-accent: #FFFFFF;
   --s1: #A9C6CD; --s2: #7FB0BC; --s3: #4F93A4; --s4: #2A7387; --s5: #0F4C5C;
-  --rose: #F3E4E4; --rose-ink: #8E4A55; --gold: #D9A23A; --sage: #E2EFEA; --sage-ink: #2C6E5D; --warn: #F4E3DA; --warn-ink: #8E4E33;
+  --rose: #F3E4E4; --rose-ink: #8E4A55; --gold: #D9A23A; --sage: #E2EFEA; --sage-ink: #2C6E5D; --warn: #F4E3DA; --warn-ink: #8E4E33; --onc: #FFFFFF;
   --display: "Lora", Georgia, "Times New Roman", serif;
   --body: "Nunito Sans", "Segoe UI", system-ui, sans-serif;
 }
@@ -27,12 +27,12 @@
   --bg: #0C1C21; --surface: #12282E; --ink: #E2EEF0; --muted: #9AB2B8; --line: #234046;
   --accent: #5FB2C3; --deep: #9AD3DE; --tint: #18343B; --on-accent: #0C1C21;
   --s1: #2A4950; --s2: #2F5F6B; --s3: #3A7A8A; --s4: #4E98A8; --s5: #79BCCB;
-  --rose: #3A2629; --rose-ink: #E6AEB6; --gold: #E7B95A; --sage: #183530; --sage-ink: #8CCDB6; --warn: #3A2A23; --warn-ink: #E8B39A; color-scheme: dark } }
+  --rose: #3A2629; --rose-ink: #E6AEB6; --gold: #E7B95A; --sage: #183530; --sage-ink: #8CCDB6; --warn: #3A2A23; --warn-ink: #E8B39A; --onc: #0C1C21; color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #0C1C21; --surface: #12282E; --ink: #E2EEF0; --muted: #9AB2B8; --line: #234046;
   --accent: #5FB2C3; --deep: #9AD3DE; --tint: #18343B; --on-accent: #0C1C21;
   --s1: #2A4950; --s2: #2F5F6B; --s3: #3A7A8A; --s4: #4E98A8; --s5: #79BCCB;
-  --rose: #3A2629; --rose-ink: #E6AEB6; --gold: #E7B95A; --sage: #183530; --sage-ink: #8CCDB6; --warn: #3A2A23; --warn-ink: #E8B39A; color-scheme: dark }
+  --rose: #3A2629; --rose-ink: #E6AEB6; --gold: #E7B95A; --sage: #183530; --sage-ink: #8CCDB6; --warn: #3A2A23; --warn-ink: #E8B39A; --onc: #0C1C21; color-scheme: dark }
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
@@ -52,7 +52,7 @@ header.top { display: flex; align-items: center; gap: 12px; margin-bottom: 18px;
 .brand { font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .brand b { color: var(--deep); font-weight: 700; }
 nav.tabs { display: flex; gap: 6px; background: var(--tint); padding: 5px; border-radius: 999px; margin-bottom: 22px; }
-nav.tabs button { flex: 1; border: 0; background: transparent; padding: 9px 8px; border-radius: 999px; font-weight: 600; color: var(--muted); font-size: .95rem; }
+nav.tabs button { flex: 1; border: 0; background: transparent; padding: 9px 4px; white-space: nowrap; border-radius: 999px; font-weight: 600; color: var(--muted); font-size: .95rem; }
 nav.tabs button[aria-selected="true"] { background: var(--surface); color: var(--deep); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
 section.view { display: flex; flex-direction: column; gap: 18px; }
 .stack { display: flex; flex-direction: column; gap: 10px; }
@@ -188,6 +188,23 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 @media (max-width: 360px) { .flips { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { .tw, .beat, .spin, .petal, .vcard, .flip .fi, .balance .beam, .balance .pan { animation: none !important; transition: none !important; } }
 @media (prefers-reduced-motion: reduce) { .celebrate svg .glow, .stairs .walker, .breath .ball { animation: none; transition: none; } }
+.box { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.fig { width: 100%; height: auto; display: block; }
+.popin { animation: popin .45s ease-out; } @keyframes popin { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+.seg button[aria-pressed="true"].cc { background: var(--c); color: var(--onc); font-weight: 700; }
+.seg button.cc { font-size: .82rem; line-height: 1.25; }
+.info { border-radius: 16px; padding: 12px 14px; font-size: .92rem; background: color-mix(in srgb, var(--c) 10%, var(--surface)); border-left: 4px solid var(--c); display: flex; flex-direction: column; gap: 6px; }
+.mflips { display: grid; gap: 10px; }
+.mflip { border: 0; padding: 0; background: transparent; perspective: 900px; text-align: left; width: 100%; }
+.mflip .in { display: grid; transition: transform .6s cubic-bezier(.3,1.2,.5,1); transform-style: preserve-3d; }
+.mflip[aria-pressed="true"] .in { transform: rotateY(180deg); }
+.mflip .ff, .mflip .fb { grid-area: 1 / 1; border-radius: 16px; padding: 12px 14px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; gap: 3px; min-height: 80px; justify-content: center; }
+.mflip .ff { background: var(--rose); color: var(--rose-ink); border: 1.5px solid var(--line); }
+.mflip .fb { background: var(--sage); color: var(--sage-ink); transform: rotateY(180deg); }
+.mflip small { font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
+.mflip b { font-family: var(--display); font-weight: 500; font-size: 1.02rem; }
+.mflip i { font-style: normal; font-size: .76rem; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { .popin { animation: none !important; } .mflip .in { transition: none; } }
 </style>
 
 </head>
@@ -199,12 +216,42 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
     <div class="brand"><b>Graciela Salvador</b> · Psicóloga</div>
   </header>
   <nav class="tabs" role="tablist" id="tabs">
-    <button role="tab" id="tab-escalera" aria-selected="true" data-view="escalera">Mi escalera</button>
+    <button role="tab" id="tab-ent" aria-selected="true" data-view="ent">Entender</button>
+    <button role="tab" id="tab-escalera" aria-selected="false" data-view="escalera">Mi escalera</button>
     <button role="tab" id="tab-tarro" aria-selected="false" data-view="tarro">Mi tarro</button>
     <button role="tab" id="tab-resumen" aria-selected="false" data-view="resumen">Sobre mí</button>
   </nav>
 
-  <section class="view" id="view-escalera">
+  <section class="view" id="view-ent">
+    <h1>Quererme mejor</h1>
+    <p class="muted">La autoestima es la forma en que te miras, te valoras y te tratas. No es creerte mejor que nadie ni estar siempre contento/a contigo: es saber que vales también cuando te equivocas.</p>
+    <div class="box">
+      <span class="eyebrow">Tres formas de mirarme</span>
+      <p class="small">A una persona le sale mal una presentación en el trabajo. Mira cómo se habla en cada caso.</p>
+      <div class="seg" id="mySeg"></div>
+      <svg class="fig" id="my" viewBox="0 0 320 200" role="img" aria-label="Una persona hablándose a sí misma después de un error"></svg>
+      <div id="myTxt"></div>
+    </div>
+    <div class="box">
+      <span class="eyebrow">¿De qué depende lo que valgo?</span>
+      <p class="small">Cuando nuestro valor depende de lo que conseguimos, la autoestima sube y baja como una montaña rusa. Compara.</p>
+      <div class="seg" id="coSeg"></div>
+      <svg class="fig" id="co" viewBox="0 0 320 190" role="img" aria-label="Cómo cambia la autoestima con lo que pasa"></svg>
+      <div id="coTxt"></div>
+    </div>
+    <div class="box">
+      <span class="eyebrow">Peldaño a peldaño</span>
+      <p class="small">La autoestima se construye como una escalera de cinco peldaños. Cada uno se apoya en el anterior. En «Mi escalera» puedes subirlos a tu ritmo.</p>
+      <svg class="fig" id="pel" viewBox="0 0 320 170" role="img" aria-label="Los cinco peldaños de la autoestima"></svg>
+    </div>
+    <div class="box">
+      <span class="eyebrow">Cosas que nos decimos</span>
+      <p class="small">Toca cada tarjeta para ver lo que se sabe.</p>
+      <div class="mflips" id="myths"></div>
+    </div>
+  </section>
+
+  <section class="view" id="view-escalera" hidden>
     <h1>Quererme mejor</h1>
     <p class="muted">La autoestima se construye peldaño a peldaño. Cada uno se apoya en el anterior, así que se abren en orden. Ve a tu ritmo: puedes hacer uno hoy y el siguiente otro día.</p>
     <div id="stairsBox"></div>
@@ -643,12 +690,70 @@ $('#resetBtn').onclick = () => $('#resetConfirm').hidden = false;
 $('#resetNo').onclick = () => $('#resetConfirm').hidden = true;
 $('#resetYes').onclick = () => { D = DEF(); save(); $('#resetConfirm').hidden = true; switchTab('escalera'); toast('Escalera reiniciada'); };
 
+
+// ---------- Entender ----------
+const wrapT = (t, n) => { const w = t.split(' '), Lx = []; let l = ''; w.forEach(x => { if ((l + ' ' + x).trim().length > n) { Lx.push(l.trim()); l = x; } else l += ' ' + x; }); if (l.trim()) Lx.push(l.trim()); return Lx; };
+function face(x, y, c, mood, label, extra = '') {
+  const mouth = mood === 'ok' ? `<path d="M${x - 6} ${y + 4} q6 6 12 0" fill="none" stroke="var(--onc)" stroke-width="2" stroke-linecap="round"/>` : mood === 'hurt' ? `<path d="M${x - 6} ${y + 7} q6 -6 12 0" fill="none" stroke="var(--onc)" stroke-width="2" stroke-linecap="round"/>` : mood === 'proud' ? `<path d="M${x - 6} ${y + 4} q6 4 12 -2" fill="none" stroke="var(--onc)" stroke-width="2" stroke-linecap="round"/>` : `<path d="M${x - 5} ${y + 5} h10" stroke="var(--onc)" stroke-width="2" stroke-linecap="round"/>`;
+  return `<circle cx="${x}" cy="${y}" r="15" fill="${c}"/><circle cx="${x - 5}" cy="${y - 3}" r="1.8" fill="var(--onc)"/><circle cx="${x + 5}" cy="${y - 3}" r="1.8" fill="var(--onc)"/>${mouth}${extra}<path d="M${x - 22} ${y + 50} q0 -32 22 -32 q22 0 22 32 z" fill="${c}"/>${label ? `<text x="${x}" y="${y + 64}" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="${c}">${label}</text>` : ''}`;
+}
+function think(x, y, w, txt, c, tailX) { const Lx = wrapT(txt, Math.floor(w / 6.4)), h = 14 + Lx.length * 14;
+  return `<g class="popin"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="18" fill="var(--surface)" stroke="${c}" stroke-width="2"/><circle cx="${tailX}" cy="${y + h + 7}" r="4" fill="var(--surface)" stroke="${c}" stroke-width="2"/><circle cx="${tailX - 4}" cy="${y + h + 16}" r="2.5" fill="var(--surface)" stroke="${c}" stroke-width="1.5"/>${Lx.map((l, i) => `<text x="${x + 12}" y="${y + 19 + i * 14}" font-family="var(--display)" font-size="11" font-style="italic" fill="var(--ink)">${esc(l)}</text>`).join('')}</g>`; }
+const MY = {
+  baja: { n: 'Hundirme', c: 'var(--rose-ink)', mood: 'hurt', t: 'Soy un desastre. Nunca hago nada bien. Todos se han dado cuenta de que no valgo.', x: 'Un error se convierte en la prueba de que no vales. Duele mucho, y además hace que te cueste volver a intentarlo.' },
+  inflada: { n: 'Inflarme', c: 'var(--gold)', mood: 'proud', t: 'No ha sido culpa mía. Yo lo hago todo bien; el problema son los demás.', x: 'Parece seguridad, pero es una armadura frágil: para no sentirte mal, no puedes reconocer ningún error. Por eso tampoco puedes aprender de él.' },
+  sana: { n: 'Mirarme con cariño', c: 'var(--sage-ink)', mood: 'ok', t: 'Hoy no me ha salido bien, y me fastidia. Me equivoqué y sigo valiendo. ¿Qué puedo aprender?', x: 'Reconoces el error y lo que sientes, sin que eso cambie lo que vales. Esta es la autoestima sana: ni por encima ni por debajo de nadie.' },
+};
+let my = 'baja';
+function drawMy() {
+  $('#mySeg').innerHTML = Object.entries(MY).map(([k, v]) => `<button class="cc" data-my="${k}" aria-pressed="${my === k}" style="--c:${v.c}">${v.n}</button>`).join('');
+  document.querySelectorAll('[data-my]').forEach(b => b.onclick = () => { my = b.dataset.my; drawMy(); });
+  const v = MY[my];
+  let g = `<rect width="320" height="200" rx="16" fill="${v.c}" opacity=".08"/>`;
+  g += `<rect x="20" y="96" width="76" height="52" rx="6" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/><path d="M30 136 l14 -12 12 8 14 -18 16 10" stroke="var(--rose-ink)" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M58 148 v40 M44 188 h28" stroke="var(--muted)" stroke-width="3" stroke-linecap="round"/><text x="58" y="88" text-anchor="middle" font-family="var(--body)" font-size="9.5" font-weight="800" fill="var(--rose-ink)">la presentación</text>`;
+  const extra = my === 'inflada' ? `<path d="M190 116 h20 l-2 -13 l-4.5 6 l-3.5 -9 l-3.5 9 l-4.5 -6 z" fill="var(--gold)" stroke="var(--surface)" stroke-width="1.5" stroke-linejoin="round"/>` : '';
+  g += `<g class="popin" ${my === 'baja' ? 'transform="translate(0 6)"' : ''}>${face(200, 132, v.c, v.mood, '', extra)}</g>`;
+  g += think(120, 8, 194, v.t, v.c, 196);
+  $('#my').innerHTML = g;
+  $('#myTxt').innerHTML = `<div class="info popin" style="--c:${v.c}"><p class="small">${v.x}</p></div>`;
+}
+let co = 'cond';
+function drawCo() {
+  $('#coSeg').innerHTML = [['cond', 'Valgo si consigo', 'var(--rose-ink)'], ['inc', 'Valgo por ser yo', 'var(--sage-ink)']].map(([k, l, c]) => `<button class="cc" data-co="${k}" aria-pressed="${co === k}" style="--c:${c}">${l}</button>`).join('');
+  document.querySelectorAll('[data-co]').forEach(b => b.onclick = () => { co = b.dataset.co; drawCo(); });
+  const ev = [['me felicitan', 1], ['me critican', -1], ['apruebo', 1], ['me equivoco', -1], ['me dejan', -1], ['logro algo', 1]];
+  const C = co === 'cond', c = C ? 'var(--rose-ink)' : 'var(--sage-ink)';
+  const xs = ev.map((_, i) => 34 + i * 52), ys = ev.map(([, s], i) => C ? 95 - s * 52 : 74 - s * 8 - i * 2);
+  let d = `M14 95 ` + xs.map((x, i) => `S ${x - 18} ${ys[i]} ${x} ${ys[i]}`).join(' ');
+  let g = `<rect width="320" height="190" rx="16" fill="${c}" opacity=".07"/><path d="M14 95 H306" stroke="var(--line)" stroke-width="2" stroke-dasharray="4 5"/><text x="306" y="16" text-anchor="end" font-family="var(--body)" font-size="9.5" font-weight="800" fill="var(--muted)">lo que siento que valgo</text>`;
+  g += `<path class="popin" d="${d}" stroke="${c}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+  ev.forEach(([t, sgn], i) => { g += `<circle cx="${xs[i]}" cy="${ys[i]}" r="4.5" fill="${c}"/><text x="${xs[i]}" y="${i % 2 ? 178 : 166}" text-anchor="middle" font-family="var(--body)" font-size="9" font-weight="700" fill="${sgn > 0 ? 'var(--sage-ink)' : 'var(--rose-ink)'}">${t}</text>`; });
+  $('#co').innerHTML = g;
+  $('#coTxt').innerHTML = C ? `<div class="info popin" style="--c:var(--rose-ink)"><p class="small">Si lo que vales depende de lo que consigues o de lo que opinan los demás, cada cosa que pasa te sube o te hunde. Es agotador, y te deja a merced de lo que pase fuera.</p></div>`
+    : `<div class="info popin" style="--c:var(--sage-ink)"><p class="small">Lo que pasa te sigue afectando, y está bien sentirlo. Pero tu valor como persona no sube y baja con cada logro o cada error: está ahí, como una base firme desde la que intentarlo.</p></div>`;
+}
+function drawPel() {
+  let g = '';
+  PELDANOS.forEach((p, i) => { const x = 10 + i * 61, h = 26 + i * 26, y = 160 - h;
+    g += `<rect x="${x}" y="${y}" width="58" height="${h}" rx="7" fill="${STEPC[i]}"/><text x="${x + 29}" y="${y + 18}" text-anchor="middle" font-family="var(--display)" font-size="14" fill="var(--onc)">${i + 1}</text><text x="${x + 29}" y="${y - 6}" text-anchor="middle" font-family="var(--body)" font-size="8.5" font-weight="800" fill="var(--deep)">${p.q.replace(/[¿?]/g, '')}</text>`; });
+  $('#pel').innerHTML = g;
+}
+const MYTHS = [['Quererme es ser egoísta', 'Quererte no te hace pensar menos en los demás. Al contrario: quien se trata bien suele tener más que dar.'],
+  ['Si me quiero, dejaré de esforzarme', 'La exigencia dura agota; el cariño sostiene. Las personas que se tratan con cariño se recuperan antes de los errores y lo vuelven a intentar.'],
+  ['Cuando consiga lo que quiero, me querré', 'Si tu valor depende de una meta, siempre habrá otra más. La autoestima se cuida ahora, no cuando llegues.'],
+  ['La autoestima se tiene o no se tiene', 'Se construye y se cuida, como un músculo. Por eso se puede trabajar peldaño a peldaño.'],
+  ['Si los demás me lo dicen, acabaré creyéndomelo', 'Los halagos ayudan, pero no bastan si por dentro la voz crítica dice lo contrario. Lo que cambia la autoestima es cómo te hablas tú.']];
+let entDone = false;
+function renderEnt() { drawMy(); drawCo(); drawPel();
+  if (!entDone) { entDone = true; $('#myths').innerHTML = MYTHS.map(([a, b], i) => `<button class="mflip" aria-pressed="false" data-mt="${i}"><span class="in"><span class="ff"><small>Me digo</small><b>«${esc(a)}»</b><i>Toca para ver lo que se sabe ↻</i></span><span class="fb"><small>Lo que se sabe</small><span class="small">${esc(b)}</span></span></span></button>`).join('');
+    document.querySelectorAll('[data-mt]').forEach(f => f.onclick = () => f.setAttribute('aria-pressed', f.getAttribute('aria-pressed') !== 'true')); } }
+
 // ---------- Navegación ----------
 function showView(v) { document.querySelectorAll('section.view').forEach(s => s.hidden = s.id !== 'view-' + v); $('#tabs').hidden = v === 'modulo'; window.scrollTo({ top: 0 }); }
 function switchTab(v) { document.querySelectorAll('nav.tabs button').forEach(x => x.setAttribute('aria-selected', x.dataset.view === v)); showView(v);
-  if (v === 'escalera') renderHome(); if (v === 'tarro') renderJar(); if (v === 'resumen') renderSum(); }
+  if (v === 'escalera') renderHome(); if (v === 'tarro') renderJar(); if (v === 'resumen') renderSum(); if (v === 'ent') renderEnt(); }
 document.querySelectorAll('nav.tabs button').forEach(b => b.onclick = () => switchTab(b.dataset.view));
-renderHome();
+renderHome(); renderEnt();
 </script>
 
 <!-- ===== Módulo común «Guardar en PDF» (se inserta en cada herramienta en lugar del marcador PDFKIT) ===== -->

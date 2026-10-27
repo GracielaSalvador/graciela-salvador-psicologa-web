@@ -19,7 +19,7 @@
   --bg: #F5F9F9; --surface: #FFFFFF; --ink: #17343B; --muted: #5C747A; --line: #D7E5E8;
   --accent: #166A7E; --deep: #0F4C5C; --tint: #E4EFF1; --on-accent: #FFFFFF;
   --warm: #F4E3DA; --warm-ink: #8E4E33; --amber: #F3EBD6; --amber-ink: #8A6A1E; --green: #E2EFEA; --green-ink: #2C6E5D;
-  --red: #C9523F; --yel: #D9A441; --grn: #4F9A7C;
+  --red: #C9523F; --yel: #D9A441; --grn: #4F9A7C; --onc: #FFFFFF;
   --display: "Lora", Georgia, "Times New Roman", serif;
   --body: "Nunito Sans", "Segoe UI", system-ui, sans-serif;
   --r: 18px;
@@ -27,11 +27,11 @@
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #0C1C21; --surface: #12282E; --ink: #E2EEF0; --muted: #9AB2B8; --line: #234046;
   --accent: #5FB2C3; --deep: #9AD3DE; --tint: #18343B; --on-accent: #0C1C21;
-  --warm: #3A2A23; --warm-ink: #E8B39A; --amber: #35301C; --amber-ink: #E3CD86; --green: #183530; --green-ink: #8CCDB6; color-scheme: dark } }
+  --warm: #3A2A23; --warm-ink: #E8B39A; --amber: #35301C; --amber-ink: #E3CD86; --green: #183530; --green-ink: #8CCDB6; --onc: #0C1C21; color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #0C1C21; --surface: #12282E; --ink: #E2EEF0; --muted: #9AB2B8; --line: #234046;
   --accent: #5FB2C3; --deep: #9AD3DE; --tint: #18343B; --on-accent: #0C1C21;
-  --warm: #3A2A23; --warm-ink: #E8B39A; --amber: #35301C; --amber-ink: #E3CD86; --green: #183530; --green-ink: #8CCDB6; color-scheme: dark }
+  --warm: #3A2A23; --warm-ink: #E8B39A; --amber: #35301C; --amber-ink: #E3CD86; --green: #183530; --green-ink: #8CCDB6; --onc: #0C1C21; color-scheme: dark }
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
@@ -56,7 +56,7 @@ header.top { display: flex; align-items: center; gap: 12px; margin-bottom: 18px;
 .brand b { color: var(--deep); font-weight: 700; }
 
 nav.tabs { display: flex; gap: 6px; background: var(--tint); padding: 5px; border-radius: 999px; margin-bottom: 24px; }
-nav.tabs button { flex: 1; border: 0; background: transparent; padding: 9px 8px; border-radius: 999px; font-weight: 600; color: var(--muted); font-size: .95rem; }
+nav.tabs button { flex: 1; border: 0; background: transparent; padding: 9px 4px; white-space: nowrap; border-radius: 999px; font-weight: 600; color: var(--muted); font-size: .95rem; }
 nav.tabs button[aria-selected="true"] { background: var(--surface); color: var(--deep); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
 
 section.view { display: flex; flex-direction: column; gap: 20px; }
@@ -180,6 +180,26 @@ ul.rights li { display: flex; gap: 10px; align-items: flex-start; background: va
 footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px; font-size: .84rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
 .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); background: var(--deep); color: var(--bg); padding: 10px 18px; border-radius: 999px; font-weight: 600; z-index: 30; }
 @media (prefers-reduced-motion: reduce) { .waves i, .fence .p-cur { animation: none; } .gate .door { animation: none; transform: skewY(-10deg) scaleX(.45); } .progress span { transition: none; } }
+.box { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.fig { width: 100%; height: auto; display: block; }
+.popin { animation: popin .45s ease-out; } @keyframes popin { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+.seg { display: flex; gap: 6px; background: var(--tint); padding: 4px; border-radius: 999px; }
+.seg button { flex: 1; border: 0; background: transparent; border-radius: 999px; padding: 8px 6px; font-weight: 700; font-size: .82rem; color: var(--muted); line-height: 1.25; }
+.seg button[aria-pressed="true"] { background: var(--c, var(--accent)); color: var(--onc); }
+.info { border-radius: 16px; padding: 12px 14px; font-size: .92rem; background: color-mix(in srgb, var(--c) 10%, var(--surface)); border-left: 4px solid var(--c); display: flex; flex-direction: column; gap: 6px; }
+.flips { display: grid; gap: 10px; }
+.flip { border: 0; padding: 0; background: transparent; perspective: 900px; text-align: left; width: 100%; }
+.flip .in { display: grid; transition: transform .6s cubic-bezier(.3,1.2,.5,1); transform-style: preserve-3d; }
+.flip[aria-pressed="true"] .in { transform: rotateY(180deg); }
+.flip .ff, .flip .fb { grid-area: 1 / 1; border-radius: 16px; padding: 12px 14px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; gap: 3px; min-height: 80px; justify-content: center; }
+.flip .ff { background: var(--warm); color: var(--warm-ink); border: 1.5px solid var(--line); }
+.flip .fb { background: var(--green); color: var(--green-ink); transform: rotateY(180deg); }
+.flip small { font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
+.flip b { font-family: var(--display); font-weight: 500; font-size: 1.02rem; }
+.flip i { font-style: normal; font-size: .76rem; color: var(--muted); }
+.phrase .pb { grid-column: 2; grid-row: 1 / span 2; display: flex; flex-direction: column; gap: 6px; }
+.phrase.on { box-shadow: 0 0 0 3px var(--accent); }
+@media (prefers-reduced-motion: reduce) { .popin { animation: none !important; } .flip .in { transition: none; } }
 </style>
 
 </head>
@@ -192,12 +212,42 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
   </header>
 
   <nav class="tabs" role="tablist">
-    <button role="tab" id="tab-paso" aria-selected="true" data-view="paso">Paso a paso</button>
+    <button role="tab" id="tab-ent" aria-selected="true" data-view="ent">Entender</button>
+    <button role="tab" id="tab-paso" aria-selected="false" data-view="paso">Preparar</button>
     <button role="tab" id="tab-frases" aria-selected="false" data-view="frases">Frases</button>
     <button role="tab" id="tab-mis" aria-selected="false" data-view="mis">Mis límites</button>
   </nav>
 
-  <section class="view" id="view-paso">
+  <section class="view" id="view-ent">
+    <h1>Poner un límite</h1>
+    <p class="muted">Un límite es una forma de cuidarte y de cuidar la relación: le dice a la otra persona qué necesitas y hasta dónde llegas. Sentir miedo o culpa al ponerlo es muy normal, sobre todo si nunca lo has hecho.</p>
+    <div class="box">
+      <span class="eyebrow">Tres formas de responder</span>
+      <p class="small">Te piden algo que no quieres hacer. Elige una forma de responder y mira qué pasa.</p>
+      <div class="seg" id="rsSeg"></div>
+      <svg class="fig" id="rs" viewBox="0 0 320 230" role="img" aria-label="Dos personas: una pide algo y la otra responde"></svg>
+      <div id="rsTxt"></div>
+    </div>
+    <div class="box">
+      <span class="eyebrow">Un límite habla de ti</span>
+      <p class="small">No podemos controlar lo que hace la otra persona, pero sí lo que hacemos nosotros. Toca cada tarjeta para pasar de pedir a poner un límite.</p>
+      <div class="flips" id="habla"></div>
+    </div>
+    <div class="box">
+      <span class="eyebrow">La culpa se hace pequeña con la práctica</span>
+      <p class="small">La primera vez suele costar mucho. Mueve el control y mira qué pasa al practicar.</p>
+      <svg class="fig" id="gu" viewBox="0 0 320 170" role="img" aria-label="La culpa se hace más pequeña con cada vez que practicas"></svg>
+      <input type="range" id="guR" min="1" max="5" value="1" aria-label="Veces que he practicado">
+      <div id="guTxt"></div>
+    </div>
+    <div class="box">
+      <span class="eyebrow">Cosas que nos decimos</span>
+      <p class="small">Toca cada tarjeta para ver lo que se sabe.</p>
+      <div class="flips" id="myths"></div>
+    </div>
+  </section>
+
+  <section class="view" id="view-paso" hidden>
     <div class="progress" id="progress"></div>
     <div id="stepBox" class="stack"></div>
     <p class="err" id="stepErr" hidden></p>
@@ -210,7 +260,8 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
   <section class="view" id="view-frases" hidden>
     <div class="spot"><svg viewBox="0 0 240 110" aria-hidden="true"><path d="M20 14h110a10 10 0 0 1 10 10v22a10 10 0 0 1-10 10H54l-12 10V56H20a10 10 0 0 1-10-10V24a10 10 0 0 1 10-10z" fill="var(--tint)" stroke="var(--accent)" stroke-width="2"/><text x="75" y="40" text-anchor="middle" font-family="var(--display)" font-size="13" fill="var(--deep)">Déjame pensarlo.</text><path d="M110 50h110a10 10 0 0 1 10 10v22a10 10 0 0 1-10 10h-22v10l-12-10h-76a10 10 0 0 1-10-10V60a10 10 0 0 1 10-10z" fill="var(--warm)" stroke="var(--warm-ink)" stroke-width="2"/><text x="165" y="76" text-anchor="middle" font-family="var(--display)" font-size="13" fill="var(--warm-ink)">Esta vez no puedo.</text></svg></div>
     <h1>Frases que te pueden ayudar</h1>
-    <p class="muted">Cortas, claras y amables. Cópialas, cámbialas a tu manera o guárdalas para cuando las necesites.</p>
+    <p class="muted">Cortas, claras y amables. Toca «Ver» para probarla en una escena, cópiala o cámbiala a tu manera.</p>
+    <div class="box"><svg class="fig" id="frScene" viewBox="0 0 320 200" role="img" aria-label="Escena con la frase elegida"></svg></div>
     <div class="stack" id="phraseList"></div>
     <h2 style="margin-top:8px">Mis derechos</h2>
     <p class="muted small">Léelos en voz alta. Los que más te cueste creerte son los que más necesitas recordar.</p>
@@ -493,13 +544,77 @@ $('#nextBtn').onclick = () => {
 };
 
 // Frases
-$('#phraseList').innerHTML = PHRASES.map(([s, f], i) => `<div class="phrase ${i % 2 ? 'alt' : ''}"><span class="sit">${esc(s)}</span><q>${esc(f)}</q><button class="btn ghost small" data-copy="${i}">Copiar</button></div>`).join('');
+$('#phraseList').innerHTML = PHRASES.map(([s, f], i) => `<div class="phrase ${i % 2 ? 'alt' : ''}" data-ph="${i}"><span class="sit">${esc(s)}</span><q>${esc(f)}</q><span class="pb"><button class="btn small" data-see="${i}">Ver</button><button class="btn ghost small" data-copy="${i}">Copiar</button></span></div>`).join('');
 $('#rights').innerHTML = RIGHTS.map(r => `<li>${I('<path d="M5 12l4 4 10-10"/>').replace('<svg', '<svg style="width:20px;height:20px;flex:none;margin-top:2px"')}<span>${esc(r)}</span></li>`).join('');
 function copyText(txt, ok) {
   const fb = () => { const t = $('#copyFallback'); t.value = txt; t.hidden = false; switchTab('mis'); t.focus(); t.select(); toast('Selecciona y copia el texto'); };
   try { navigator.clipboard.writeText(txt).then(() => toast(ok), fb); } catch (e) { fb(); }
 }
 document.addEventListener('click', (e) => { const c = e.target.closest('[data-copy]'); if (c) copyText(PHRASES[+c.dataset.copy][1], 'Frase copiada'); });
+
+
+// Entender
+const wrapT = (t, n) => { const w = t.split(' '), L = []; let l = ''; w.forEach(x => { if ((l + ' ' + x).trim().length > n) { L.push(l.trim()); l = x; } else l += ' ' + x; }); if (l.trim()) L.push(l.trim()); return L; };
+function face(x, y, c, mood, label, extra = '') {
+  const mouth = mood === 'ok' ? `<path d="M${x - 6} ${y + 4} q6 6 12 0" fill="none" stroke="var(--onc)" stroke-width="2" stroke-linecap="round"/>` : mood === 'hurt' ? `<path d="M${x - 6} ${y + 7} q6 -6 12 0" fill="none" stroke="var(--onc)" stroke-width="2" stroke-linecap="round"/>` : `<path d="M${x - 5} ${y + 5} h10" stroke="var(--onc)" stroke-width="2" stroke-linecap="round"/>`;
+  return `<circle cx="${x}" cy="${y}" r="15" fill="${c}"/><circle cx="${x - 5}" cy="${y - 3}" r="1.8" fill="var(--onc)"/><circle cx="${x + 5}" cy="${y - 3}" r="1.8" fill="var(--onc)"/>${mouth}${extra}<path d="M${x - 22} ${y + 50} q0 -32 22 -32 q22 0 22 32 z" fill="${c}"/>${label ? `<text x="${x}" y="${y + 64}" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="${c}">${label}</text>` : ''}`;
+}
+function bub(x, y, w, txt, c, tailX, think) { const L = wrapT(txt, Math.floor(w / 6.4)), h = 14 + L.length * 14;
+  const tail = think ? `<circle cx="${tailX}" cy="${y + h + 7}" r="4" fill="var(--surface)" stroke="${c}" stroke-width="2"/>` : `<path d="M${tailX - 7} ${y + h - 1} L${tailX} ${y + h + 12} L${tailX + 7} ${y + h - 1}" fill="var(--surface)" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><rect x="${tailX - 8}" y="${y + h - 3}" width="16" height="4" fill="var(--surface)"/>`;
+  return `<g class="popin"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${think ? 18 : 12}" fill="var(--surface)" stroke="${c}" stroke-width="2"/>${tail}${L.map((l, i) => `<text x="${x + 10}" y="${y + 19 + i * 14}" font-family="var(--display)" font-size="11" ${think ? 'font-style="italic"' : ''} fill="var(--ink)">${esc(l)}</text>`).join('')}</g>`; }
+const angry = (x, y) => `<path d="M${x - 9} ${y - 9} l6 3 M${x + 9} ${y - 9} l-6 3" stroke="var(--onc)" stroke-width="2" stroke-linecap="round"/>`;
+const RS = {
+  ceder: { n: 'Callarme y ceder', c: 'var(--amber-ink)', me: ['hurt', 'Vale, no pasa nada…'], think: 'Otra vez igual. Estoy agotada/o.', other: ['ok', ''], t: 'Por fuera parece que todo va bien, pero la otra persona no se entera de lo que necesitas. El cansancio y el malestar se van acumulando, y a veces acaban saliendo de golpe.' },
+  estallar: { n: 'Estallar', c: 'var(--red)', me: ['hurt', '¡Siempre igual! ¡Estoy harta/o de ti!', true], think: '', other: ['hurt', '¿Y ahora qué te pasa?'], t: 'Dices lo que te pasa, pero de una forma que hace daño. La otra persona se defiende, la conversación acaba en pelea y lo que necesitabas se queda sin escuchar.' },
+  limite: { n: 'Poner un límite', c: 'var(--grn)', me: ['ok', 'Esta vez no puedo. Necesito descansar.'], think: '', other: ['neutral', 'Vale, lo entiendo.'], t: 'Dices lo que necesitas con claridad y con respeto, hacia ti y hacia la otra persona. Puede que no le guste, y aun así la relación tiene espacio para los dos.' },
+};
+let rs = 'ceder';
+function drawRs() {
+  $('#rsSeg').innerHTML = Object.entries(RS).map(([k, v]) => `<button data-rs="${k}" aria-pressed="${rs === k}" style="--c:${v.c}">${v.n}</button>`).join('');
+  document.querySelectorAll('[data-rs]').forEach(b => b.onclick = () => { rs = b.dataset.rs; drawRs(); });
+  const v = RS[rs];
+  let g = `<rect width="320" height="230" rx="16" fill="${v.c}" opacity=".07"/>`;
+  g += bub(10, 8, 136, '¿Me cubres el sábado otra vez?', 'var(--accent)', 70, false);
+  g += `<g class="popin">${face(70, 146, 'var(--accent)', v.other[0], 'me lo pide')}</g>`;
+  g += `<g class="popin">${face(250, 146, v.c, v.me[0], 'yo', v.me[2] ? angry(250, 146) : '')}</g>`;
+  g += bub(174, v.think ? 74 : 52, 140, v.me[1], v.c, 250, false);
+  if (v.think) g += bub(176, 6, 136, v.think, 'var(--muted)', 290, true).replace('<g class="popin">', '<g class="popin" opacity=".9">');
+  if (v.other[1]) g += bub(10, 80, 120, v.other[1], 'var(--accent)', 70, false);
+  $('#rs').innerHTML = g;
+  $('#rsTxt').innerHTML = `<div class="info popin" style="--c:${v.c}"><p class="small">${v.t}</p></div>`;
+}
+const HABLA = [['«No me grites.»', '«Si me gritas, voy a dejar la conversación y la retomamos más tarde.»'], ['«Tienes que dejar de llamarme tan tarde.»', '«A partir de las diez no voy a coger el teléfono. Te contesto al día siguiente.»'], ['«No deberías opinar sobre cómo crío a mis hijos.»', '«Agradezco tu interés, y las decisiones sobre mis hijos las tomo yo.»']];
+function drawGu() {
+  const n = +$('#guR').value, r = 46 - (n - 1) * 8, h = 40 + (n - 1) * 6;
+  $('#gu').innerHTML = `<rect width="320" height="170" rx="16" fill="var(--warm)" opacity=".5"/>
+    <g style="transition:all .5s"><circle cx="220" cy="${70}" r="${r}" fill="var(--warm-ink)" opacity="${.15 + .1 * (6 - n)}"/><text x="220" y="${74}" text-anchor="middle" font-family="var(--display)" font-size="${10 + r / 6}" fill="var(--warm-ink)">culpa</text></g>
+    <g class="popin">${face(90, 92, 'var(--accent)', n >= 3 ? 'ok' : 'neutral', '')}</g>
+    ${Array.from({ length: 5 }, (_, i) => `<circle cx="${40 + i * 22}" cy="160" r="6" fill="${i < n ? 'var(--grn)' : 'var(--line)'}"/>`).join('')}
+    <text x="160" y="164" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--muted)">${n === 1 ? 'la primera vez' : `${n} veces practicado`}</text>`;
+  $('#guTxt').innerHTML = `<div class="info" style="--c:${n >= 3 ? 'var(--grn)' : 'var(--warm-ink)'}"><p class="small">${n === 1 ? 'La culpa no significa que hayas hecho algo mal: significa que estás haciendo algo nuevo. Es normal que la primera vez se haga grande.' : n < 4 ? 'Cada vez que lo practicas, tu cuerpo aprende que no pasa nada terrible y la culpa va perdiendo fuerza.' : 'Con la práctica, poner un límite se vuelve algo tuyo. La culpa puede seguir apareciendo de vez en cuando, pero ya no decide por ti.'}</p></div>`;
+}
+const MYTHS = [['Poner límites es egoísta', 'Cuidar de ti no te hace mala persona. Te permite cuidar mejor a los demás, sin agotarte ni acumular rabia.'],
+  ['Si me quisieran, sabrían lo que necesito sin decirlo', 'Nadie puede leer la mente. Decir lo que necesitas es una forma de cuidar la relación, no de exigir.'],
+  ['Un límite necesita una buena explicación', 'Basta con una explicación breve, o ninguna. «No me apetece» también es una razón válida.'],
+  ['Si pongo un límite, la relación se romperá', 'Las relaciones sanas no solo aguantan los límites: se apoyan en ellos. Si alguien solo te quiere cuando cedes, eso también es información.'],
+  ['Poner un límite es controlar al otro', 'Un límite habla de lo que harás tú. La otra persona sigue siendo libre de hacer lo que quiera, y tú también.']];
+const flips = (box, list, f, b, key) => { $(box).innerHTML = list.map(([a, c], i) => `<button class="flip" aria-pressed="false" data-${key}="${i}"><span class="in"><span class="ff"><small>${f}</small><b>${esc(a)}</b><i>Toca para darle la vuelta ↻</i></span><span class="fb"><small>${b}</small><b>${esc(c)}</b></span></span></button>`).join('');
+  document.querySelectorAll(`[data-${key}]`).forEach(x => x.onclick = () => x.setAttribute('aria-pressed', x.getAttribute('aria-pressed') !== 'true')); };
+let entDone = false;
+function renderEnt() { drawRs(); drawGu();
+  if (!entDone) { entDone = true; $('#guR').oninput = drawGu; flips('#habla', HABLA, 'Pido al otro', 'Mi límite', 'hb'); flips('#myths', MYTHS.map(([a, b]) => [`«${a}»`, b]), 'Me digo', 'Lo que se sabe', 'my');
+    document.querySelectorAll('#myths .fb b').forEach(b => { b.style.fontFamily = 'var(--body)'; b.style.fontSize = '.9rem'; }); } }
+// Frases en escena
+let phSel = 1;
+function drawFr() {
+  const [sit, f] = PHRASES[phSel];
+  let g = `<rect width="320" height="200" rx="16" fill="var(--tint)" opacity=".6"/><text x="160" y="22" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--muted)">${esc(sit.toUpperCase())}</text>`;
+  g += `<g>${face(70, 130, 'var(--warm-ink)', 'neutral', '')}</g><g>${face(250, 130, 'var(--accent)', 'ok', 'yo')}</g>` + bub(140, 34, 174, f, 'var(--accent)', 250, false);
+  $('#frScene').innerHTML = g;
+  document.querySelectorAll('[data-ph]').forEach(x => x.classList.toggle('on', +x.dataset.ph === phSel));
+}
+document.addEventListener('click', (e) => { const v = e.target.closest('[data-see]'); if (v) { phSel = +v.dataset.see; drawFr(); $('#frScene').scrollIntoView({ behavior: 'smooth', block: 'center' }); } });
+drawFr();
 
 // Mis límites
 const STAIR_COLORS = ['#A9C6CD', '#8DB5BF', '#5C9AA9', '#2A7387', '#166A7E', '#0F4C5C'];
@@ -560,10 +675,10 @@ $('#copyBtn').onclick = () => copyText(summary(), 'Resumen copiado. Pégalo en u
 function switchTab(v) {
   document.querySelectorAll('nav.tabs button').forEach(x => x.setAttribute('aria-selected', x.dataset.view === v));
   document.querySelectorAll('section.view').forEach(s => s.hidden = s.id !== 'view-' + v);
-  if (v === 'mis') renderMis();
+  if (v === 'mis') renderMis(); if (v === 'ent') renderEnt(); window.scrollTo({ top: 0 });
 }
 document.querySelectorAll('nav.tabs button').forEach(b => b.onclick = () => switchTab(b.dataset.view));
-renderStep(); renderMis();
+renderStep(); renderMis(); renderEnt();
 </script>
 
 <!-- ===== Módulo común «Guardar en PDF» (se inserta en cada herramienta en lugar del marcador PDFKIT) ===== -->

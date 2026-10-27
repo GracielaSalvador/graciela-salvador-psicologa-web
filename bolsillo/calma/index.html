@@ -20,7 +20,7 @@
   --bg: #F5F9F9; --surface: #FFFFFF; --ink: #17343B; --muted: #5C747A; --line: #D7E5E8;
   --accent: #166A7E; --deep: #0F4C5C; --tint: #E4EFF1; --on-accent: #FFFFFF;
   --hiper: #F4E3DA; --hiper-ink: #8E4E33; --hipo: #E2E9F3; --hipo-ink: #435C83;
-  --good: #2F7D62;
+  --good: #2F7D62; --onc: #FFFFFF; --ok: #E2EFEA; --ok-ink: #2C6E5D;
   --display: "Lora", Georgia, "Times New Roman", serif;
   --body: "Nunito Sans", "Segoe UI", system-ui, sans-serif;
   --r: 18px;
@@ -28,11 +28,11 @@
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #0C1C21; --surface: #12282E; --ink: #E2EEF0; --muted: #9AB2B8; --line: #234046;
   --accent: #5FB2C3; --deep: #9AD3DE; --tint: #18343B; --on-accent: #0C1C21;
-  --hiper: #3A2A23; --hiper-ink: #E8B39A; --hipo: #222D3D; --hipo-ink: #A9BCDD; --good: #7CC9A8; --r-aa: #18343B; --r-aa-ink: #7CC3D2; --r-ab: #183530; --r-ab-ink: #8CCDB6; --r-su: #26263A; --r-su-ink: #B9B6E3; color-scheme: dark } }
+  --hiper: #3A2A23; --hiper-ink: #E8B39A; --hipo: #222D3D; --hipo-ink: #A9BCDD; --good: #7CC9A8; --r-aa: #18343B; --r-aa-ink: #7CC3D2; --r-ab: #183530; --r-ab-ink: #8CCDB6; --r-su: #26263A; --r-su-ink: #B9B6E3; --onc: #0C1C21; --ok: #183530; --ok-ink: #8CCDB6; color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #0C1C21; --surface: #12282E; --ink: #E2EEF0; --muted: #9AB2B8; --line: #234046;
   --accent: #5FB2C3; --deep: #9AD3DE; --tint: #18343B; --on-accent: #0C1C21;
-  --hiper: #3A2A23; --hiper-ink: #E8B39A; --hipo: #222D3D; --hipo-ink: #A9BCDD; --good: #7CC9A8; --r-aa: #18343B; --r-aa-ink: #7CC3D2; --r-ab: #183530; --r-ab-ink: #8CCDB6; --r-su: #26263A; --r-su-ink: #B9B6E3; color-scheme: dark }
+  --hiper: #3A2A23; --hiper-ink: #E8B39A; --hipo: #222D3D; --hipo-ink: #A9BCDD; --good: #7CC9A8; --r-aa: #18343B; --r-aa-ink: #7CC3D2; --r-ab: #183530; --r-ab-ink: #8CCDB6; --r-su: #26263A; --r-su-ink: #B9B6E3; --onc: #0C1C21; --ok: #183530; --ok-ink: #8CCDB6; color-scheme: dark }
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
@@ -236,6 +236,41 @@ input#before, input#after { accent-color: var(--accent); }
 .btext b { font-family: var(--display); font-size: 1.8rem; font-weight: 500; }
 @media (prefers-reduced-motion: reduce) { .anim * { animation: none !important; } .bball { transition: none; } }
 @media (prefers-reduced-motion: reduce) { .breath .ball, .ring .prog { transition: none; } .press, .sprout .stem, .sprout .leaf { animation: none; stroke-dashoffset: 0; opacity: .9; } }
+/* Entender: ventana, caminos, ventana que crece, flips */
+.box { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.fig { width: 100%; height: auto; display: block; }
+.pop { animation: popin .45s ease-out; } @keyframes popin { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+.seg { display: flex; gap: 6px; background: var(--tint); padding: 4px; border-radius: 999px; }
+.seg button { flex: 1; border: 0; background: transparent; border-radius: 999px; padding: 8px 6px; font-weight: 700; font-size: .84rem; color: var(--muted); line-height: 1.25; }
+.seg button[aria-pressed="true"] { background: var(--c, var(--accent)); color: var(--onc); }
+.info { border-radius: 16px; padding: 12px 14px; font-size: .92rem; background: color-mix(in srgb, var(--c) 10%, var(--surface)); border-left: 4px solid var(--c); display: flex; flex-direction: column; gap: 6px; }
+.info h3 { color: var(--c); }
+.gtiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.gtiles button { border: 1.5px solid var(--line); background: var(--surface); border-radius: 16px; padding: 10px 4px; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; font-size: .76rem; font-weight: 700; color: var(--deep); line-height: 1.25; }
+.gtiles .ic { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: color-mix(in srgb, var(--c) 16%, var(--surface)); color: var(--c); transition: transform .3s; }
+.gtiles .ic svg { width: 21px; height: 21px; }
+.gtiles button[aria-pressed="true"] { border-color: var(--c); background: color-mix(in srgb, var(--c) 13%, var(--surface)); }
+.gtiles button[aria-pressed="true"] .ic { background: var(--c); color: var(--onc); transform: scale(1.08); }
+.lbl { font-size: .8rem; font-weight: 800; color: var(--muted); letter-spacing: .04em; }
+.flips { display: grid; gap: 10px; }
+.flip { border: 0; padding: 0; background: transparent; perspective: 900px; text-align: left; width: 100%; }
+.flip .in { display: grid; transition: transform .6s cubic-bezier(.3,1.2,.5,1); transform-style: preserve-3d; }
+.flip[aria-pressed="true"] .in { transform: rotateY(180deg); }
+.flip .ff, .flip .fb { grid-area: 1 / 1; border-radius: 16px; padding: 12px 14px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; gap: 3px; min-height: 80px; justify-content: center; }
+.flip .ff { background: var(--tint); color: var(--deep); border: 1.5px solid var(--line); }
+.flip .fb { background: var(--ok); color: var(--ok-ink); transform: rotateY(180deg); }
+.flip small { font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
+.flip b { font-family: var(--display); font-weight: 500; font-size: 1.02rem; }
+.flip i { font-style: normal; font-size: .76rem; color: var(--muted); }
+.flow { stroke-dasharray: 6 8; animation: flow 1.2s linear infinite; } @keyframes flow { to { stroke-dashoffset: -28; } }
+.bal { transition: transform .6s cubic-bezier(.3,1.3,.5,1); transform-origin: 160px 60px; transform-box: view-box; }
+.opt { border: 1.5px solid var(--line); border-radius: 16px; padding: 8px; display: flex; gap: 8px; align-items: center; background: var(--surface); width: 100%; }
+.opt.on { border-color: var(--good); background: var(--ok); }
+.opt textarea { border: 0; background: transparent; padding: 4px; }
+.opt button { border: 0; background: transparent; font-size: 1.3rem; color: var(--muted); padding: 4px 6px; }
+.opt.on button { color: var(--good); }
+@media (max-width: 360px) { .gtiles { grid-template-columns: 1fr 1fr; } }
+@media (prefers-reduced-motion: reduce) { .pop, .flow { animation: none !important; } .flip .in, .bal { transition: none; } }
 </style>
 
 </head>
@@ -249,8 +284,9 @@ input#before, input#after { accent-color: var(--accent); }
 
   <nav class="tabs" role="tablist">
     <button role="tab" id="tab-ahora" aria-selected="true" data-view="ahora">Ahora</button>
+    <button role="tab" id="tab-entender" aria-selected="false" data-view="entender">Entender</button>
     <button role="tab" id="tab-todas" aria-selected="false" data-view="todas">Todas</button>
-    <button role="tab" id="tab-registro" aria-selected="false" data-view="registro">Mi registro</button>
+    <button role="tab" id="tab-registro" aria-selected="false" data-view="registro">Registro</button>
   </nav>
 
   <!-- AHORA -->
@@ -300,6 +336,41 @@ input#before, input#after { accent-color: var(--accent); }
       <p class="muted small" id="sugHint">Elige cómo estás para ver las estrategias que mejor encajan. Mientras tanto, estas suelen ayudar a casi todo el mundo:</p>
       <div class="card-list" id="suggestions"></div>
       <button class="btn ghost small" id="moreBtn" hidden>Ver más opciones</button>
+    </div>
+  </section>
+
+  <!-- ENTENDER -->
+  <section class="view" id="view-entender" hidden>
+    <h1>Entender</h1>
+    <p class="muted">Todas las emociones son válidas, también las intensas. Calmarte no es dejar de sentir, sino volver a un punto en el que la emoción no te maneja y puedes decidir qué hacer con ella.</p>
+    <div class="box">
+      <span class="eyebrow">Mi ventana de tolerancia</span>
+      <p class="small">Es el margen en el que puedes sentir sin desbordarte. Toca cada estado para ver qué pasa en tu cuerpo y qué necesitas.</p>
+      <div class="seg" id="vwSeg"></div>
+      <svg class="fig" id="vwFig" viewBox="0 0 320 210" role="img" aria-label="La ventana de tolerancia con una persona en cada estado"></svg>
+      <div id="vwTxt"></div>
+    </div>
+    <div class="box">
+      <span class="eyebrow">Tres caminos para volver</span>
+      <p class="small">Las estrategias de esta herramienta te llevan de vuelta a tu ventana por tres caminos distintos. Toca cada uno.</p>
+      <div class="seg" id="rtSeg"></div>
+      <svg class="fig" id="rtFig" viewBox="0 0 320 200" role="img" aria-label="Los tres caminos para volver a la ventana"></svg>
+      <div id="rtTxt"></div>
+    </div>
+    <div class="box">
+      <span class="eyebrow">Mi ventana se estrecha o se ensancha</span>
+      <p class="small">El tamaño de la ventana no es fijo: cambia según cómo estás y cómo te cuidas. Marca lo que te pasa estos días.</p>
+      <svg class="fig" id="wdFig" viewBox="0 0 320 150" role="img" aria-label="Mi ventana, más estrecha o más ancha"></svg>
+      <div id="wdTxt"></div>
+      <span class="lbl">La estrechan</span>
+      <div class="gtiles" id="wdMenos"></div>
+      <span class="lbl">La ensanchan</span>
+      <div class="gtiles" id="wdMas"></div>
+    </div>
+    <div class="box">
+      <span class="eyebrow">Cosas que nos decimos</span>
+      <p class="small">Toca cada tarjeta para ver lo que se sabe.</p>
+      <div class="flips" id="myths"></div>
     </div>
   </section>
 
@@ -412,7 +483,7 @@ const S = [
   // De fuera hacia dentro
   { id:'orientar', r:'suave', name:'Orientarme en el espacio', when:'Cuando te sientes lejos o desconectado/a.', states:['hipo','hiper'], guide:'orient',
     steps:['Mira a tu alrededor despacio, girando la cabeza.','Nombra cinco objetos y su color.','Recuerda dónde estás, qué día es y que ahora estás aquí.'] },
-  { id:'sentidos', r:'suave', name:'5-4-3-2-1 hacia fuera', when:'Cuando estás atrapado/a en tu cabeza.', states:['hiper','hipo','ventana'], guide:'senses',
+  { id:'sentidos', r:'suave', name:'Mis cinco sentidos', when:'Cuando estás atrapado/a en tu cabeza.', states:['hiper','hipo','ventana'], guide:'senses',
     steps:['Nombra 5 cosas que ves.','4 que oyes, 3 que puedes tocar.','2 que hueles y 1 que saboreas.'] },
   { id:'ancla', r:'suave', name:'Objeto ancla', when:'Cuando necesitas algo concreto a lo que agarrarte.', states:['hiper','hipo'], guide:'timer', mins:2,
     steps:['Coge un objeto con textura: una piedra, una tela, una pelota.','Descríbelo con detalle: peso, temperatura, bordes, color.','Si tu mente se va, vuelve al objeto.'] },
@@ -721,12 +792,26 @@ function buildGuide(s) {
         g.querySelector('#gOut').innerHTML = `<p class="prompt" style="font-size:1.15rem">"${esc(t)}"</p><p class="prompt" style="font-size:1.1rem">Estoy teniendo el pensamiento de que ${x}.</p><p class="prompt" style="font-size:1.05rem">Me doy cuenta de que estoy teniendo el pensamiento de que ${x}.</p><p class="muted small">El pensamiento sigue ahí, pero ahora lo miras desde fuera.</p>`; };
       break;
     }
-    case 'evidence':
-      g.innerHTML = `<textarea rows="2" placeholder="Lo que estoy pensando…"></textarea><textarea rows="3" placeholder="Datos que lo apoyan"></textarea><textarea rows="3" placeholder="Datos que no lo apoyan"></textarea><textarea rows="2" placeholder="Otra forma de verlo"></textarea><p class="muted small">Esto no se guarda.</p>`; break;
-    case 'compassion':
-      g.innerHTML = `<textarea rows="2" placeholder="Lo que me estoy diciendo…"></textarea><textarea rows="4" placeholder="Lo que le diría a alguien a quien quiero…"></textarea><p class="muted small">Léelo despacio, como si te lo dijera esa persona. Esto no se guarda.</p>`; break;
-    case 'problem':
-      g.innerHTML = `<textarea rows="2" placeholder="El problema en una frase"></textarea><textarea rows="2" placeholder="Opción 1"></textarea><textarea rows="2" placeholder="Opción 2"></textarea><textarea rows="2" placeholder="Opción 3"></textarea><input type="text" placeholder="Mi primer paso pequeño"><p class="muted small">Esto no se guarda.</p>`; break;
+    case 'evidence': {
+      g.innerHTML = `<textarea id="eT" rows="2" placeholder="Lo que estoy pensando…"></textarea><svg class="fig" id="eBal" viewBox="0 0 320 150" aria-label="Balanza de los datos"></svg><textarea id="eA" rows="3" placeholder="Datos que lo apoyan (uno por línea)"></textarea><textarea id="eN" rows="3" placeholder="Datos que no lo apoyan (uno por línea)"></textarea><textarea rows="2" placeholder="Otra forma de verlo"></textarea><p class="muted small">Esto no se guarda.</p>`;
+      const cnt = (id) => g.querySelector(id).value.split('\n').filter(x => x.trim()).length;
+      const draw = () => { const a = cnt('#eA'), n = cnt('#eN'), ang = Math.max(-16, Math.min(16, (n - a) * 5)), t = g.querySelector('#eT').value.trim();
+        const pan = (x, k, c, l) => `<g transform="translate(${x} 60)"><line x1="0" y1="0" x2="0" y2="34" stroke="var(--muted)" stroke-width="1.5"/><path d="M-36 34 h72 q-8 18 -36 18 q-28 0 -36 -18z" fill="${c}" opacity=".85"/>${Array.from({ length: Math.min(k, 6) }, (_, i) => `<circle cx="${-22 + (i % 3) * 22}" cy="${28 - Math.floor(i / 3) * 12}" r="6" fill="${c}"/>`).join('')}<text y="70" text-anchor="middle" font-family="var(--body)" font-size="9.5" font-weight="800" fill="${c}">${l} (${k})</text></g>`;
+        g.querySelector('#eBal').innerHTML = `<path d="M160 60 L160 136 M136 136 h48" stroke="var(--deep)" stroke-width="4" stroke-linecap="round"/><text x="160" y="16" text-anchor="middle" font-family="var(--display)" font-size="11.5" fill="var(--ink)">${esc(t ? '«' + (t.length > 40 ? t.slice(0, 38) + '…' : t) + '»' : 'Lo que pienso')}</text><g class="bal" style="transform:rotate(${ang}deg)"><line x1="70" y1="60" x2="250" y2="60" stroke="var(--deep)" stroke-width="4" stroke-linecap="round"/>${pan(70, a, 'var(--hiper-ink)', 'lo apoyan')}${pan(250, n, 'var(--good)', 'no lo apoyan')}</g><circle cx="160" cy="60" r="6" fill="var(--deep)"/>`; };
+      g.querySelectorAll('textarea').forEach(x => x.oninput = draw); draw(); break; }
+    case 'compassion': {
+      g.innerHTML = `<textarea id="cY" rows="2" placeholder="Lo que me estoy diciendo…"></textarea><svg class="fig" id="cFig" viewBox="0 0 320 180" aria-label="Escena: lo que le dirías a alguien a quien quieres"></svg><textarea id="cK" rows="3" placeholder="Lo que le diría a alguien a quien quiero…"></textarea><button class="btn ghost small" id="cSw">Ahora, dímelo a mí</button><p class="muted small" id="cH">Imagina que esa persona está pasando por lo mismo que tú. Esto no se guarda.</p>`;
+      let me = false;
+      const draw = () => { const y = g.querySelector('#cY').value.trim(), k = g.querySelector('#cK').value.trim();
+        g.querySelector('#cFig').innerHTML = `<rect width="320" height="180" rx="16" fill="var(--hiper)" opacity=".35"/>${face(70, 104, 'var(--accent)', 'ok', me ? 'alguien que me quiere' : 'yo')}${face(250, 104, 'var(--hiper-ink)', k ? 'ok' : 'hurt', me ? 'yo, en este momento' : 'alguien a quien quiero')}
+          ${y ? bubble(186, 8, 128, y, 'var(--hiper-ink)', 250, true) : ''}${bubble(8, 8, 150, k || '…', 'var(--accent)', 70, false)}`; };
+      g.querySelectorAll('textarea').forEach(x => x.oninput = draw);
+      g.querySelector('#cSw').onclick = () => { me = !me; g.querySelector('#cSw').textContent = me ? 'Volver a la otra persona' : 'Ahora, dímelo a mí'; g.querySelector('#cH').textContent = me ? 'Léelo despacio, como si te lo dijera esa persona a ti. Te mereces el mismo trato.' : 'Imagina que esa persona está pasando por lo mismo que tú. Esto no se guarda.'; draw(); };
+      draw(); break; }
+    case 'problem': {
+      g.innerHTML = `<textarea rows="2" placeholder="El problema en una frase"></textarea><span class="lbl" style="align-self:flex-start">Tres opciones, sin juzgarlas. Después, toca la estrella de la que elijas.</span>${[1, 2, 3].map(i => `<div class="opt" data-o="${i}"><button aria-label="Elegir la opción ${i}">☆</button><textarea rows="2" placeholder="Opción ${i}"></textarea></div>`).join('')}<div id="pStep" hidden style="width:100%;display:flex;flex-direction:column;gap:6px;text-align:left"><span class="lbl">Mi primer paso pequeño con esa opción</span><input type="text" placeholder="Por ejemplo: escribir el correo mañana a las diez"></div><p class="muted small">Esto no se guarda.</p>`;
+      g.querySelectorAll('.opt button').forEach(b => b.onclick = () => { g.querySelectorAll('.opt').forEach(o => { const on = o === b.parentNode; o.classList.toggle('on', on); o.querySelector('button').textContent = on ? '★' : '☆'; }); g.querySelector('#pStep').hidden = false; });
+      break; }
   }
 }
 function updateResult() {
@@ -767,7 +852,95 @@ $('#pSave').onclick = () => { state.log.push({ id: cur.id, t: Date.now(), before
 document.querySelectorAll('nav.tabs button').forEach(b => b.onclick = () => {
   document.querySelectorAll('nav.tabs button').forEach(x => x.setAttribute('aria-selected', x === b));
   document.querySelectorAll('section.view').forEach(v => v.hidden = v.id !== 'view-' + b.dataset.view);
-  if (b.dataset.view === 'registro') renderLog(); if (b.dataset.view === 'todas') renderAll(); });
+  if (b.dataset.view === 'registro') renderLog(); if (b.dataset.view === 'todas') renderAll(); if (b.dataset.view === 'entender') renderEnt(); window.scrollTo(0, 0); });
+
+
+// ===== ENTENDER =====
+const wrapT = (t, n) => { const w = t.split(' '), L = []; let l = ''; w.forEach(x => { if ((l + ' ' + x).trim().length > n) { L.push(l.trim()); l = x; } else l += ' ' + x; }); if (l.trim()) L.push(l.trim()); return L; };
+function face(x, y, c, mood, label, extra = '') {
+  const mouth = mood === 'ok' ? `<path d="M${x - 6} ${y + 4} q6 6 12 0" fill="none" stroke="var(--onc)" stroke-width="2" stroke-linecap="round"/>` : mood === 'hurt' ? `<path d="M${x - 6} ${y + 7} q6 -6 12 0" fill="none" stroke="var(--onc)" stroke-width="2" stroke-linecap="round"/>` : `<path d="M${x - 5} ${y + 5} h10" stroke="var(--onc)" stroke-width="2" stroke-linecap="round"/>`;
+  return `<circle cx="${x}" cy="${y}" r="15" fill="${c}"/>${extra}<circle cx="${x - 5}" cy="${y - 3}" r="1.8" fill="var(--onc)"/><circle cx="${x + 5}" cy="${y - 3}" r="1.8" fill="var(--onc)"/>${mouth}<path d="M${x - 22} ${y + 50} q0 -32 22 -32 q22 0 22 32 z" fill="${c}"/>${label ? `<text x="${x}" y="${y + 64}" text-anchor="middle" font-family="var(--body)" font-size="9.5" font-weight="800" fill="${c}">${label}</text>` : ''}`;
+}
+function bubble(x, y, w, txt, c, tailX, think, up) { const L = wrapT(txt, Math.floor(w / 6.4)), h = 14 + L.length * 14;
+  const tail = up ? `<path d="M${tailX - 7} ${y + 1} L${tailX} ${y - 12} L${tailX + 7} ${y + 1}" fill="var(--surface)" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><rect x="${tailX - 8}" y="${y - 1}" width="16" height="4" fill="var(--surface)"/>` : think ? `<circle cx="${tailX}" cy="${y + h + 7}" r="4" fill="var(--surface)" stroke="${c}" stroke-width="2"/>` : `<path d="M${tailX - 7} ${y + h - 1} L${tailX} ${y + h + 12} L${tailX + 7} ${y + h - 1}" fill="var(--surface)" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><rect x="${tailX - 8}" y="${y + h - 3}" width="16" height="4" fill="var(--surface)"/>`;
+  return `<g class="pop"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${think ? 18 : 12}" fill="var(--surface)" stroke="${c}" stroke-width="2"/>${tail}${L.map((l, i) => `<text x="${x + 10}" y="${y + 19 + i * 14}" font-family="var(--display)" font-size="11" fill="var(--ink)">${esc(l)}</text>`).join('')}</g>`; }
+const VW = {
+  hiper: { n: 'Me acelero', c: 'var(--hiper-ink)', mood: 'hurt', say: '¡No puedo más con esto!', t: 'Por encima de mi ventana', body: 'El corazón va rápido, la respiración se corta, los músculos se tensan y los pensamientos van a mil. Pueden aparecer ganas de huir, de gritar o de estallar.', need: 'Lo que necesitas es bajar la activación. En este momento, pensar mucho no suele ayudar: es mejor empezar por el cuerpo o por los sentidos.' },
+  ventana: { n: 'En mi ventana', c: 'var(--accent)', mood: 'ok', say: 'Esto me remueve, pero puedo con ello.', t: 'Dentro de mi ventana', body: 'Puedes sentir emociones intensas, incluso desagradables, sin que te desborden. Sigues pudiendo pensar, decidir y conectar con los demás.', need: 'Es un buen momento para entender lo que te pasa, revisar lo que piensas y cuidar cómo te hablas.' },
+  hipo: { n: 'Me apago', c: 'var(--hipo-ink)', mood: 'neutral', say: 'Me da todo igual…', t: 'Por debajo de mi ventana', body: 'El cuerpo se apaga: cansancio, niebla, vacío, bloqueo o la sensación de estar lejos y no sentir nada. Puede parecer calma, pero no lo es.', need: 'Lo que necesitas es activarte poco a poco y volver al aquí y ahora, empezando por lo que te rodea.' },
+};
+let vw = 'hiper';
+function drawVw() {
+  $('#vwSeg').innerHTML = Object.entries(VW).map(([k, v]) => `<button data-vw="${k}" aria-pressed="${vw === k}" style="--c:${v.c}">${v.n}</button>`).join('');
+  document.querySelectorAll('[data-vw]').forEach(b => b.onclick = () => { vw = b.dataset.vw; drawVw(); });
+  const v = VW[vw];
+  const wave = { hiper: 'M86 110 C96 96 100 60 110 50 S122 30 130 46 S140 20 150 34 S160 14 170 30 S180 18 192 26', ventana: 'M86 110 C100 92 112 92 124 106 S146 122 158 106 S178 92 192 104', hipo: 'M86 110 C100 120 110 150 124 160 S150 172 166 174 S184 176 192 176' }[vw];
+  const fy = { hiper: 40, ventana: 92, hipo: 150 }[vw];
+  let g = `<rect width="320" height="210" rx="16" fill="${v.c}" opacity=".05"/><rect x="10" y="72" width="300" height="72" fill="var(--accent)" opacity=".09"/>
+    <line x1="10" x2="310" y1="72" y2="72" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 5"/><line x1="10" x2="310" y1="144" y2="144" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 5"/>
+    <text x="14" y="40" font-family="var(--body)" font-size="9.5" font-weight="800" fill="var(--hiper-ink)" opacity="${vw === 'hiper' ? 1 : .55}">por encima</text>
+    <text x="14" y="112" font-family="var(--body)" font-size="9.5" font-weight="800" fill="var(--accent)" opacity="${vw === 'ventana' ? 1 : .55}">mi ventana</text>
+    <text x="14" y="180" font-family="var(--body)" font-size="9.5" font-weight="800" fill="var(--hipo-ink)" opacity="${vw === 'hipo' ? 1 : .55}">por debajo</text>
+    <path class="pop" d="${wave}" stroke="${v.c}" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="192" cy="${{ hiper: 26, ventana: 104, hipo: 176 }[vw]}" r="5" fill="${v.c}"/>`;
+  const extra = vw === 'hiper' ? `<path d="M${262 + 19} ${fy - 14} l5 -6 M${262 + 22} ${fy - 4} l7 -2 M${262 - 19} ${fy - 14} l-5 -6" stroke="${v.c}" stroke-width="2.5" stroke-linecap="round"/>` : vw === 'hipo' ? `<text x="${262 + 18}" y="${fy - 12}" font-family="var(--display)" font-size="12" fill="${v.c}">z</text>` : '';
+  g += `<g class="pop" opacity="${vw === 'hipo' ? .75 : 1}">${face(262, fy, v.c, v.mood, '', extra)}</g>`;
+  g += vw === 'hipo' ? bubble(196, fy - 70, 118, v.say, v.c, 248, true) : bubble(196, vw === 'hiper' ? fy + 66 : fy - 70, 118, v.say, v.c, 248, false, vw === 'hiper');
+  $('#vwFig').innerHTML = g;
+  $('#vwTxt').innerHTML = `<div class="info pop" style="--c:${v.c}"><h3>${v.t}</h3><p class="small">${v.body}</p><p class="small"><b>${v.need}</b></p><button class="btn small" id="vwGo" style="align-self:flex-start">Ver estrategias para este momento</button></div>`;
+  $('#vwGo').onclick = () => { document.querySelector('nav.tabs [data-view="ahora"]').click(); document.querySelector(`.zone[data-state="${vw}"]`).click(); document.getElementById('sugTitle').scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+}
+const RT = {
+  aa: { n: 'De arriba abajo', c: 'var(--r-aa-ink)', t: 'Empiezas por lo que piensas y por cómo te hablas, y eso calma también al cuerpo. Funciona mejor cuando estás dentro de tu ventana y puedes pensar con claridad.' },
+  ab: { n: 'Desde el cuerpo', c: 'var(--r-ab-ink)', t: 'Empiezas por la respiración, los músculos o el movimiento, y el cuerpo le avisa a la mente de que puede bajar la guardia. Es muy útil cuando la emoción es intensa y te notas acelerado/a.' },
+  suave: { n: 'De fuera hacia dentro', c: 'var(--r-su-ink)', t: 'Empiezas por lo que te rodea: lo que ves, oyes, hueles o tocas. Es el camino más amable cuando mirar hacia dentro te agobia o cuando te sientes lejos o desconectado/a.' },
+};
+let rt = 'aa';
+function drawRt() {
+  $('#rtSeg').innerHTML = Object.entries(RT).map(([k, v]) => `<button data-rt="${k}" aria-pressed="${rt === k}" style="--c:${v.c}">${v.n}</button>`).join('');
+  document.querySelectorAll('[data-rt]').forEach(b => b.onclick = () => { rt = b.dataset.rt; drawRt(); });
+  const v = RT[rt], c = v.c;
+  let g = `<rect width="320" height="200" rx="16" fill="${c}" opacity=".06"/>`;
+  g += `<circle cx="160" cy="56" r="22" fill="var(--tint)" stroke="${rt === 'aa' ? c : 'var(--line)'}" stroke-width="3"/><path d="M118 186 q0 -88 42 -88 q42 0 42 88 z" fill="var(--tint)" stroke="${rt === 'ab' ? c : 'var(--line)'}" stroke-width="3"/>`;
+  if (rt === 'aa') g += `<g class="pop"><circle cx="153" cy="51" r="2" fill="${c}"/><circle cx="167" cy="51" r="2" fill="${c}"/><path d="M151 60 q9 8 18 0" stroke="${c}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path class="flow" d="M160 80 L160 150" stroke="${c}" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M152 142 l8 10 l8 -10" stroke="${c}" stroke-width="4" fill="none" stroke-linecap="round"/>
+    ${bubble(198, 14, 112, 'Lo que pienso y cómo me hablo', c, 186, true)}<text x="40" y="150" text-anchor="middle" font-family="var(--body)" font-size="9.5" font-weight="800" fill="${c}">la mente</text><text x="40" y="164" text-anchor="middle" font-family="var(--body)" font-size="9.5" font-weight="800" fill="${c}">calma al cuerpo</text></g>`;
+  if (rt === 'ab') g += `<g class="pop"><circle class="press" cx="160" cy="140" r="16" fill="${c}" opacity=".35"/><path d="M146 136 c4 -4 8 4 14 0 s10 4 14 0" stroke="${c}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <path class="flow" d="M160 128 L160 84" stroke="${c}" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M152 92 l8 -10 l8 10" stroke="${c}" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <text x="270" y="130" text-anchor="middle" font-family="var(--body)" font-size="9.5" font-weight="800" fill="${c}">respiración,</text><text x="270" y="144" text-anchor="middle" font-family="var(--body)" font-size="9.5" font-weight="800" fill="${c}">músculos</text><text x="270" y="158" text-anchor="middle" font-family="var(--body)" font-size="9.5" font-weight="800" fill="${c}">y movimiento</text>
+    <text x="50" y="66" text-anchor="middle" font-family="var(--body)" font-size="9.5" font-weight="800" fill="${c}">el cuerpo</text><text x="50" y="80" text-anchor="middle" font-family="var(--body)" font-size="9.5" font-weight="800" fill="${c}">calma a la mente</text></g>`;
+  if (rt === 'suave') { const pts = [[44, 44, ICON.orientar, 'lo que veo'], [276, 44, ICON.musica, 'lo que oigo'], [44, 150, ICON.ancla, 'lo que toco'], [276, 150, ICON.olores, 'lo que huelo']];
+    g += `<g class="pop">` + pts.map(([x, y, ic, l]) => `<circle cx="${x}" cy="${y}" r="20" fill="var(--surface)" stroke="${c}" stroke-width="2.5"/><svg x="${x - 12}" y="${y - 12}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ic}</svg><text x="${x}" y="${y + (y < 100 ? 36 : -28)}" text-anchor="middle" font-family="var(--body)" font-size="9.5" font-weight="800" fill="${c}">${l}</text><path class="flow" d="M${x + (x < 160 ? 24 : -24)} ${y} L${x < 160 ? 128 : 192} ${y < 100 ? 80 : 130}" stroke="${c}" stroke-width="3" fill="none" stroke-linecap="round"/>`).join('') + `</g>`; }
+  $('#rtFig').innerHTML = g;
+  const ex = S.filter(x => x.r === rt).slice(0, 4).map(x => x.name.toLowerCase());
+  $('#rtTxt').innerHTML = `<div class="info pop" style="--c:${c}"><p class="small">${v.t}</p><p class="small muted">Por ejemplo: ${ex.slice(0, -1).join(', ')} o ${ex[ex.length - 1]}.</p><button class="btn small" id="rtGo" style="align-self:flex-start">Ver estas estrategias</button></div>`;
+  $('#rtGo').onclick = () => { document.querySelector('nav.tabs [data-view="todas"]').click(); document.querySelector(`#filterChips [data-filter="${rt}"]`).click(); };
+}
+const WD_MENOS = [['Dormir poco', P('M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z')], ['Estrés acumulado', P('M12 3l9 16H3zM12 9v4M12 16h.01')], ['Hambre o cansancio', P('M7 3v8a2 2 0 0 0 4 0V3M9 11v10M17 3c-2 0-3 2-3 5s1 4 3 4v9')], ['Sentirme solo/a', '<circle cx="12" cy="7" r="3"/>' + P('M6 20c0-3.5 2.7-6 6-6s6 2.5 6 6')], ['Dolor o malestar físico', P('M13 2L4 14h7l-1 8 9-12h-7z')], ['Recuerdos difíciles', P('M3 12a9 9 0 1 0 3-6.7M3 4v5h5M12 7v5l3 2')]];
+const WD_MAS = [['Descansar bien', P('M3 18v-6a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v6M3 14h18M7 8V6')], ['Compañía que calma', ICON.compania], ['Moverme', ICON.sacudir], ['Practicar estas estrategias', ICON.respira], ['Rutinas que me sostienen', P('M4 6h16M4 12h16M4 18h10')], ['Cuidar lo básico', ICON.agua]];
+let WD = store.get('ventana', { menos: [], mas: [] });
+function drawWd() {
+  const tl = (box, list, key, c) => { $(box).innerHTML = list.map(([t, ic]) => `<button style="--c:${c}" data-wd="${key}" data-v="${esc(t)}" aria-pressed="${WD[key].includes(t)}"><span class="ic">${I(ic)}</span>${esc(t)}</button>`).join(''); };
+  tl('#wdMenos', WD_MENOS, 'menos', 'var(--hiper-ink)'); tl('#wdMas', WD_MAS, 'mas', 'var(--good)');
+  document.querySelectorAll('[data-wd]').forEach(b => b.onclick = () => { const k = b.dataset.wd, v = b.dataset.v; WD[k] = WD[k].includes(v) ? WD[k].filter(x => x !== v) : [...WD[k], v]; store.set('ventana', WD); drawWd(); });
+  const m = WD.menos.length, M = WD.mas.length, gap = Math.max(26, Math.min(120, 72 + 11 * M - 11 * m)), top = 75 - gap / 2, bot = 75 + gap / 2, over = gap / 2 < 25;
+  let wave = 'M14 75'; for (let x = 14; x <= 306; x += 4) wave += ` L${x} ${(75 + 20 * Math.sin((x - 14) / 22)).toFixed(1)}`;
+  const lc = over ? 'var(--hiper-ink)' : 'var(--accent)';
+  $('#wdFig').innerHTML = `<rect width="320" height="150" rx="16" fill="var(--tint)" opacity=".5"/><rect x="10" y="${top}" width="300" height="${gap}" fill="var(--accent)" opacity=".12" style="transition:all .5s"/>
+    <line x1="10" x2="310" y1="${top}" y2="${top}" stroke="${lc}" stroke-width="2" stroke-dasharray="5 5" style="transition:all .5s"/><line x1="10" x2="310" y1="${bot}" y2="${bot}" stroke="${lc}" stroke-width="2" stroke-dasharray="5 5" style="transition:all .5s"/>
+    <path d="${wave}" stroke="${over ? 'var(--hiper-ink)' : 'var(--deep)'}" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <text x="160" y="${Math.max(12, top - 6)}" text-anchor="middle" font-family="var(--body)" font-size="9.5" font-weight="800" fill="${lc}">${over ? 'la emoción se sale de la ventana' : gap > 90 ? 'una ventana amplia' : 'mi ventana'}</text>`;
+  $('#wdTxt').innerHTML = over ? `<div class="info pop" style="--c:var(--hiper-ink)"><p class="small">Con la ventana estrecha, te desbordas antes. No es que lo estés haciendo mal: estos días tienes menos margen, y merece la pena que te trates con más cuidado.</p></div>`
+    : M > m ? `<div class="info pop" style="--c:var(--good)"><p class="small">Lo que te cuida va ensanchando tu ventana. Con más margen, puedes sentir emociones intensas sin que te desborden.</p></div>` : '';
+}
+const MYTHS = [['Calmarme es dejar de sentir', 'Calmarse no es apagar la emoción, sino bajarle el volumen hasta que puedas escucharla y decidir qué hacer con ella.'],
+  ['Si respiro y no me funciona, es que esto no es para mí', 'Cada persona tiene su camino. Si mirar hacia dentro te agobia, empieza de fuera hacia dentro. Y practicar en momentos tranquilos hace que funcione mejor en los difíciles.'],
+  ['Tengo que calmarme yo solo/a', 'Las personas también nos regulamos con otras. Una voz tranquila, un abrazo o una compañía que calma son estrategias igual de válidas.'],
+  ['Si estoy apagado/a, es que estoy tranquilo/a', 'Estar desconectado/a no es lo mismo que estar en calma. Es otra forma de salir de la ventana, y también necesita cuidado.'],
+  ['Debería poder controlar lo que siento', 'Lo que sentimos no se elige. Lo que sí se puede entrenar es qué hacemos cuando aparece la emoción.']];
+let entDone = false;
+function renderEnt() { drawVw(); drawRt(); drawWd();
+  if (!entDone) { entDone = true; $('#myths').innerHTML = MYTHS.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-my="${i}"><span class="in"><span class="ff"><small>Me digo</small><b>«${esc(a)}»</b><i>Toca para ver lo que se sabe ↻</i></span><span class="fb"><small>Lo que se sabe</small><span class="small">${esc(b)}</span></span></span></button>`).join('');
+    document.querySelectorAll('[data-my]').forEach(f => f.onclick = () => f.setAttribute('aria-pressed', f.getAttribute('aria-pressed') !== 'true')); } }
 
 function summary() {
   if (!state.log.length) return 'Todavía no he registrado ninguna estrategia.';

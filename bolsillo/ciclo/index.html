@@ -19,7 +19,7 @@
   --bg: #F5F9F9; --surface: #FFFFFF; --ink: #17343B; --muted: #5C747A; --line: #D7E5E8;
   --accent: #166A7E; --deep: #0F4C5C; --tint: #E4EFF1; --on-accent: #FFFFFF;
   --n1: #D9A23A; --n2: #C45F45; --n3: #6E68A8; --n4: #4F9A7C; --n5: #2A7387;
-  --fear: #C45F45; --life: #A9C6CD; --sage: #E2EFEA; --sage-ink: #2C6E5D; --rose: #F4E3DA; --rose-ink: #8E4E33; --warn: #F4E3DA; --warn-ink: #8E4E33;
+  --fear: #C45F45; --life: #A9C6CD; --sage: #E2EFEA; --sage-ink: #2C6E5D; --rose: #F4E3DA; --rose-ink: #8E4E33; --warn: #F4E3DA; --warn-ink: #8E4E33; --onc: #FFFFFF;
   --display: "Lora", Georgia, "Times New Roman", serif;
   --body: "Nunito Sans", "Segoe UI", system-ui, sans-serif;
 }
@@ -27,12 +27,12 @@
   --bg: #0C1C21; --surface: #12282E; --ink: #E2EEF0; --muted: #9AB2B8; --line: #234046;
   --accent: #5FB2C3; --deep: #9AD3DE; --tint: #18343B; --on-accent: #0C1C21;
   --n1: #E7B95A; --n2: #DE8466; --n3: #A9A3E0; --n4: #7CC9A8; --n5: #6FBCCB;
-  --fear: #DE8466; --life: #4A8A99; --sage: #183530; --sage-ink: #8CCDB6; --rose: #3A2A23; --rose-ink: #E8B39A; --warn: #3A2A23; --warn-ink: #E8B39A; color-scheme: dark } }
+  --fear: #DE8466; --life: #4A8A99; --sage: #183530; --sage-ink: #8CCDB6; --rose: #3A2A23; --rose-ink: #E8B39A; --warn: #3A2A23; --warn-ink: #E8B39A; --onc: #0C1C21; color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #0C1C21; --surface: #12282E; --ink: #E2EEF0; --muted: #9AB2B8; --line: #234046;
   --accent: #5FB2C3; --deep: #9AD3DE; --tint: #18343B; --on-accent: #0C1C21;
   --n1: #E7B95A; --n2: #DE8466; --n3: #A9A3E0; --n4: #7CC9A8; --n5: #6FBCCB;
-  --fear: #DE8466; --life: #4A8A99; --sage: #183530; --sage-ink: #8CCDB6; --rose: #3A2A23; --rose-ink: #E8B39A; --warn: #3A2A23; --warn-ink: #E8B39A; color-scheme: dark }
+  --fear: #DE8466; --life: #4A8A99; --sage: #183530; --sage-ink: #8CCDB6; --rose: #3A2A23; --rose-ink: #E8B39A; --warn: #3A2A23; --warn-ink: #E8B39A; --onc: #0C1C21; color-scheme: dark }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.55; }
@@ -137,6 +137,23 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); background: var(--deep); color: var(--bg); padding: 10px 18px; border-radius: 999px; font-weight: 600; z-index: 30; }
 @media (max-width: 380px) { .avoid { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { .cycle .flow, .graph .draw, .info, .cycle .flash.go { animation: none; stroke-dashoffset: 0; } .cycle .fearblob, .cycle .lifering, .cycle .node { transition: none; } }
+.fig { width: 100%; height: auto; display: block; }
+.popin { animation: popin .45s ease-out; } @keyframes popin { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+.seg button[aria-pressed="true"].cc { background: var(--c); color: var(--onc); }
+.flips { display: grid; gap: 10px; }
+.flip { border: 0; padding: 0; background: transparent; perspective: 900px; text-align: left; width: 100%; }
+.flip .in { display: grid; transition: transform .6s cubic-bezier(.3,1.2,.5,1); transform-style: preserve-3d; }
+.flip[aria-pressed="true"] .in { transform: rotateY(180deg); }
+.flip .ff, .flip .fb { grid-area: 1 / 1; border-radius: 16px; padding: 12px 14px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; gap: 3px; min-height: 80px; justify-content: center; }
+.flip .ff { background: var(--tint); color: var(--deep); border: 1.5px solid var(--line); }
+.flip .fb { background: var(--sage); color: var(--sage-ink); transform: rotateY(180deg); }
+.flip small { font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
+.flip b { font-family: var(--display); font-weight: 500; font-size: 1.02rem; }
+.flip i { font-style: normal; font-size: .76rem; color: var(--muted); }
+.ring1 { animation: ring 1s ease-out infinite; transform-box: fill-box; transform-origin: center; } @keyframes ring { from { opacity: .9; transform: scale(.6); } to { opacity: 0; transform: scale(1.5); } }
+.smoke { animation: smoke 2.4s ease-out infinite; } @keyframes smoke { from { transform: translateY(0); opacity: .7; } to { transform: translateY(-30px); opacity: 0; } }
+.climb { transition: transform .7s cubic-bezier(.3,1.3,.5,1); }
+@media (prefers-reduced-motion: reduce) { .popin, .ring1, .smoke { animation: none !important; } .flip .in, .climb { transition: none; } }
 </style>
 
 </head>
@@ -151,6 +168,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
     <button role="tab" id="tab-ent" aria-selected="true" data-view="ent">Entender</button>
     <button role="tab" id="tab-mio" aria-selected="false" data-view="mio">Mi círculo</button>
     <button role="tab" id="tab-sal" aria-selected="false" data-view="sal">Salir</button>
+    <button role="tab" id="tab-pra" aria-selected="false" data-view="pra">Practicar</button>
   </nav>
 
   <section class="view" id="view-ent">
@@ -167,6 +185,18 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
     <p class="muted">Compara qué ocurre cuando evitas y cuando te quedas.</p>
     <div class="seg"><button class="ev" id="gEv" aria-pressed="true">Si evito</button><button class="st" id="gSt" aria-pressed="false">Si me quedo</button></div>
     <div class="card"><div id="graph"></div><p class="small" id="gTxt"></p></div>
+    <div class="card">
+      <span class="eyebrow">Una alarma demasiado sensible</span>
+      <p class="small">La ansiedad funciona como una alarma de incendios. Es muy útil, pero a veces suena igual de fuerte por una tostada quemada que por un incendio. Compara.</p>
+      <div class="seg" id="alSeg"></div>
+      <svg class="fig" id="al" viewBox="0 0 320 200" role="img" aria-label="Una alarma de incendios que suena en una cocina"></svg>
+      <div id="alTxt"></div>
+    </div>
+    <div class="card">
+      <span class="eyebrow">Cosas que nos decimos</span>
+      <p class="small">Toca cada tarjeta para ver lo que se sabe.</p>
+      <div class="flips" id="myths"></div>
+    </div>
   </section>
 
   <section class="view" id="view-mio" hidden>
@@ -181,18 +211,26 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
     <p class="muted">Para romper el círculo hay que cortar por la evitación: acercarte a lo que temes poco a poco, sin escapar, hasta que tu cuerpo aprenda que puede con ello.</p>
     <div class="card">
       <span class="eyebrow">1 · Mi escalera</span>
-      <p class="small muted">Escribe situaciones que te dan miedo y cuánto (0-10). Se ordenan solas de menos a más. Empieza siempre por abajo.</p>
+      <p class="small muted">Escribe situaciones que te dan miedo y cuánto miedo te dan, de 0 a 10. Se ordenan solas de menos a más. Empieza siempre por el peldaño de abajo.</p>
       <div class="addrow"><input type="text" id="rT" placeholder="Por ejemplo: ir al súper a hora punta"><input type="number" id="rF" min="0" max="10" value="5" aria-label="Miedo de 0 a 10"><button class="btn small" id="rAdd">Añadir</button></div>
+      <svg class="fig" id="ladFig" viewBox="0 0 320 230" role="img" aria-label="Mi escalera, con la persona en el siguiente peldaño"></svg>
       <div class="ladder" id="ladder"></div>
     </div>
     <div class="card">
       <span class="eyebrow">2 · Soltar las muletas</span>
-      <p class="small">Las <b>conductas de seguridad</b> (ir acompañada/o, llevar la pastilla «por si acaso», sentarte junto a la puerta…) alivian, pero le dicen a tu cerebro que sin ellas no habrías podido. Ve soltándolas también poco a poco.</p>
+      <p class="small">Las muletas son lo que haces «por si acaso» para sentirte a salvo: ir acompañado/a, llevar la pastilla en el bolso o sentarte junto a la puerta. Alivian, pero le dicen a tu cerebro que sin ellas no habrías podido. Compara.</p>
+      <div class="seg" id="muSeg"></div>
+      <svg class="fig" id="mu" viewBox="0 0 320 180" role="img" aria-label="Una persona con muletas o sin ellas"></svg>
       <div id="crutches"></div>
     </div>
+  </section>
+
+  <section class="view" id="view-pra" hidden>
+    <h1>Practicar y quedarme</h1>
+    <p class="muted">Elige un peldaño de tu escalera y quédate en la situación sin escapar. Marca tu miedo de vez en cuando y mira cómo cambia la curva.</p>
     <div class="card">
-      <span class="eyebrow">3 · Practicar y quedarme</span>
-      <p class="small muted">Durante la práctica, marca tu miedo de vez en cuando. Verás cómo la curva sube… y baja sola si no escapas.</p>
+      <span class="eyebrow">Mi práctica</span>
+      <p class="small muted">Durante la práctica, marca tu miedo de vez en cuando. Verás cómo la curva sube, llega a un pico y baja sola si no escapas.</p>
       <div id="pSel"></div>
       <svg class="live" id="live" viewBox="0 0 320 170" aria-label="Gráfico de tu miedo durante la práctica"></svg>
       <div class="timer" id="pT">0:00</div>
@@ -354,7 +392,7 @@ const MS = [
       return `<h1>Tu círculo</h1><p class="muted">Así funciona el círculo en tu caso. Pulsa el botón para verlo girar.</p>
       <div class="cyclebox"><div id="cycleM">${cycleSVG('cM', { labels })}</div><div class="lapinfo" id="lapM"></div><button class="btn" id="playM">▶ Ver mi círculo</button></div>
       <div class="card myitems">${[[0, 'Situación', M.sitTxt || M.sit], [1, 'Reacción', [...M.body, ...M.thoughts].join(', ')], [2, 'Evitación', av.join(', ') + (M.crutch ? ` (${M.crutch})` : '')], [3, 'Alivio', M.relief.join(', ')], [4, 'Coste', M.cost.join(', ')]].map(([i, t, v]) => `<div class="myitem" style="--c:${NODES[i].c}"><i>${i + 1}</i><div><b>${t}:</b> ${esc(v || '—')}</div></div>`).join('')}</div>
-      <div class="note">Para salir, el punto donde cortar es el <b>3: la evitación</b>. En la pestaña <b>Salir</b> tienes cómo hacerlo poco a poco.</div>`; },
+      <div class="note">Para salir, el punto donde cortar es el <b>3: la evitación</b>. En la pestaña <b>Salir</b> tienes cómo hacerlo poco a poco, y en <b>Practicar</b>, un espacio para hacerlo.</div>`; },
     a: () => { $('#playM').onclick = () => play('cM', $('#lapM'), () => $('#playM').textContent = '↻ Otra vez'); } },
 ];
 function short(s) { s = String(s || ''); return s.length > 15 ? s.slice(0, 14) + '…' : s; }
@@ -368,6 +406,65 @@ $('#mPrev').onclick = () => { if (mScr) { mScr--; renderM(); window.scrollTo({ t
 $('#mNext').onclick = () => { const c = MS[mScr].c ? MS[mScr].c() : ''; if (c) { $('#mErr').textContent = c; $('#mErr').hidden = false; return; }
   if (mScr < MS.length - 1) { mScr++; renderM(); window.scrollTo({ top: 0 }); } else switchTab('sal'); };
 
+
+// ---------- Escenas ----------
+function face(x, y, c, mood, label, extra = '') {
+  const mouth = mood === 'ok' ? `<path d="M${x - 6} ${y + 4} q6 6 12 0" fill="none" stroke="var(--onc)" stroke-width="2" stroke-linecap="round"/>` : mood === 'hurt' ? `<path d="M${x - 6} ${y + 7} q6 -6 12 0" fill="none" stroke="var(--onc)" stroke-width="2" stroke-linecap="round"/>` : `<path d="M${x - 5} ${y + 5} h10" stroke="var(--onc)" stroke-width="2" stroke-linecap="round"/>`;
+  return `<circle cx="${x}" cy="${y}" r="15" fill="${c}"/><circle cx="${x - 5}" cy="${y - 3}" r="1.8" fill="var(--onc)"/><circle cx="${x + 5}" cy="${y - 3}" r="1.8" fill="var(--onc)"/>${mouth}${extra}<path d="M${x - 22} ${y + 50} q0 -32 22 -32 q22 0 22 32 z" fill="${c}"/>${label ? `<text x="${x}" y="${y + 64}" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="${c}">${label}</text>` : ''}`;
+}
+const wrapT = (t, n) => { const w = t.split(' '), Lx = []; let l = ''; w.forEach(x => { if ((l + ' ' + x).trim().length > n) { Lx.push(l.trim()); l = x; } else l += ' ' + x; }); if (l.trim()) Lx.push(l.trim()); return Lx; };
+function bub(x, y, w, txt, c, tailX) { const Lx = wrapT(txt, Math.floor(w / 6.4)), h = 14 + Lx.length * 14;
+  return `<g class="popin"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="12" fill="var(--surface)" stroke="${c}" stroke-width="2"/><path d="M${tailX - 7} ${y + h - 1} L${tailX} ${y + h + 12} L${tailX + 7} ${y + h - 1}" fill="var(--surface)" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><rect x="${tailX - 8}" y="${y + h - 3}" width="16" height="4" fill="var(--surface)"/>${Lx.map((l, i) => `<text x="${x + 10}" y="${y + 19 + i * 14}" font-family="var(--display)" font-size="11" fill="var(--ink)">${esc(l)}</text>`).join('')}</g>`; }
+let alm = 'tost';
+function drawAl() {
+  $('#alSeg').innerHTML = [['tost', 'Una tostada quemada', 'var(--n1)'], ['fuego', 'Un incendio de verdad', 'var(--n2)']].map(([k, l, c]) => `<button class="cc" data-al="${k}" aria-pressed="${alm === k}" style="--c:${c}">${l}</button>`).join('');
+  document.querySelectorAll('[data-al]').forEach(b => b.onclick = () => { alm = b.dataset.al; drawAl(); });
+  const T = alm === 'tost';
+  let g = `<rect width="320" height="200" rx="16" fill="${T ? 'var(--n1)' : 'var(--n2)'}" opacity=".08"/><path d="M10 172 H310" stroke="var(--line)" stroke-width="3"/>`;
+  g += `<rect x="146" y="10" width="28" height="12" rx="6" fill="var(--muted)"/><circle cx="160" cy="26" r="8" fill="var(--n2)"/><circle class="ring1" cx="160" cy="26" r="16" fill="none" stroke="var(--n2)" stroke-width="2.5"/><circle class="ring1" style="animation-delay:.5s" cx="160" cy="26" r="16" fill="none" stroke="var(--n2)" stroke-width="2.5"/>`;
+  g += `<text x="160" y="58" text-anchor="middle" font-family="var(--display)" font-size="14" fill="var(--n2)">¡PIIIII!</text>`;
+  if (T) g += `<g class="popin"><rect x="196" y="132" width="56" height="40" rx="8" fill="var(--muted)"/><rect x="206" y="122" width="14" height="14" rx="2" fill="#6B4A2E"/><rect x="226" y="122" width="14" height="14" rx="2" fill="#6B4A2E"/>${[0, 1, 2].map(i => `<circle class="smoke" style="animation-delay:${i * .7}s" cx="${214 + i * 8}" cy="114" r="6" fill="var(--muted)" opacity=".5"/>`).join('')}</g>`;
+  else g += `<g class="popin">${[0, 1, 2, 3].map(i => `<path class="smoke" style="animation-delay:${i * .4}s" d="M${200 + i * 18} 172 q-12 -24 6 -44 q4 18 12 8 q8 22 -6 36 z" fill="${i % 2 ? 'var(--n1)' : 'var(--n2)'}"/>`).join('')}</g>`;
+  g += `<g class="popin">${face(80, 118, 'var(--n2)', 'hurt', '')}</g>` + bub(14, 64, 120, '¡Peligro! ¡Tengo que huir!', 'var(--n2)', 80);
+  $('#al').innerHTML = g;
+  $('#alTxt').innerHTML = T ? `<div class="info popin" style="--c:var(--n1)"><p class="small">La alarma suena muy fuerte aunque solo sea una tostada. Con la ansiedad pasa igual: el cuerpo reacciona como si hubiera un peligro grave ante situaciones que, en realidad, puedes afrontar. No es que estés exagerando: tu alarma se ha vuelto muy sensible.</p></div>`
+    : `<div class="info popin" style="--c:var(--n2)"><p class="small">Ante un peligro real, la alarma nos protege, y eso está muy bien. El problema no es tener alarma, sino que salte a menudo cuando no hace falta. Acercarse poco a poco a lo que temes le enseña a tu alarma a distinguir una tostada de un incendio.</p></div>`;
+}
+const MYTHS = [['Si evito, me protejo', 'Evitar alivia en el momento, pero hace que el miedo crezca y que tu vida se haga más pequeña. A la larga, lo que protege es acercarse poco a poco.'],
+  ['La ansiedad puede subir sin parar hasta que me pase algo grave', 'La ansiedad sube, llega a un pico y baja sola, aunque no hagas nada. Es muy desagradable, pero no es peligrosa.'],
+  ['Tengo que esperar a no tener miedo para hacerlo', 'El miedo baja después de hacerlo, no antes. Se trata de hacerlo con miedo, poco a poco y empezando por lo más fácil.'],
+  ['Llevar la pastilla «por si acaso» me ayuda', 'Te da tranquilidad, pero tu cerebro piensa que has podido gracias a ella. Soltar las muletas poco a poco te devuelve la confianza en ti.'],
+  ['Si me pongo nervioso/a, es que no estoy preparado/a', 'Sentir nervios cuando haces algo que te da miedo es lo esperable. No es una señal de que vaya a salir mal.']];
+let mythDone = false;
+function renderMyths() { if (mythDone) return; mythDone = true;
+  $('#myths').innerHTML = MYTHS.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-my="${i}"><span class="in"><span class="ff"><small>Me digo</small><b>«${esc(a)}»</b><i>Toca para ver lo que se sabe ↻</i></span><span class="fb"><small>Lo que se sabe</small><span class="small">${esc(b)}</span></span></span></button>`).join('');
+  document.querySelectorAll('[data-my]').forEach(f => f.onclick = () => f.setAttribute('aria-pressed', f.getAttribute('aria-pressed') !== 'true')); }
+drawAl(); renderMyths();
+function drawLadFig() {
+  const sorted = L.slice().sort((a, b) => a.f - b.f).slice(0, 7), n = Math.max(sorted.length, 4), stepH = 180 / n;
+  const nextI = sorted.findIndex(r => !r.done);
+  let g = `<rect width="320" height="230" rx="16" fill="var(--tint)" opacity=".5"/><path d="M70 220 L70 16 M150 220 L150 16" stroke="var(--frame, var(--muted))" stroke-width="6" stroke-linecap="round"/>`;
+  for (let i = 0; i < n; i++) { const y = 210 - (i + .5) * stepH, r = sorted[i];
+    g += `<path d="M70 ${y} H150" stroke="${r ? fearCol(r.f) : 'var(--line)'}" stroke-width="${r ? 7 : 4}" stroke-linecap="round" opacity="${r && r.done ? .45 : 1}"/>`;
+    if (r) g += `<text x="162" y="${y + 4}" font-family="var(--body)" font-size="10" font-weight="${i === nextI ? 800 : 600}" fill="${i === nextI ? 'var(--deep)' : 'var(--muted)'}">${r.done ? '✓ ' : ''}${esc(r.t.length > 24 ? r.t.slice(0, 23) + '…' : r.t)} · ${r.f}</text>`; }
+  const pi = nextI < 0 ? (sorted.length ? sorted.length - 1 : -1) : nextI, py = pi < 0 ? 210 : 210 - (pi + .5) * stepH;
+  g += `<g class="climb" style="transform:translateY(${py - 210}px)"><circle cx="110" cy="${210 - 34}" r="9" fill="var(--deep)"/><path d="M99 ${210 - 4} q0 -20 11 -20 q11 0 11 20z" fill="var(--deep)"/></g>`;
+  if (!sorted.length) g += `<text x="234" y="120" text-anchor="middle" font-family="var(--body)" font-size="10.5" fill="var(--muted)">Añade tu primer peldaño</text>`;
+  else if (nextI < 0) g += `<text x="234" y="24" text-anchor="middle" font-family="var(--display)" font-size="13" fill="var(--n4)">¡Has subido toda la escalera!</text>`;
+  $('#ladFig').innerHTML = g;
+}
+let mu = true;
+function drawMu() {
+  $('#muSeg').innerHTML = [[true, 'Con muletas', 'var(--n3)'], [false, 'Soltándolas poco a poco', 'var(--n4)']].map(([m, l, c]) => `<button class="cc" data-mu="${m}" aria-pressed="${mu === m}" style="--c:${c}">${l}</button>`).join('');
+  document.querySelectorAll('[data-mu]').forEach(b => b.onclick = () => { mu = b.dataset.mu === 'true'; drawMu(); });
+  const c = mu ? 'var(--n3)' : 'var(--n4)';
+  let g = `<rect width="320" height="180" rx="16" fill="${c}" opacity=".08"/><path d="M10 168 H310" stroke="var(--line)" stroke-width="3"/>`;
+  g += `<g class="popin">${face(90, 118, c, mu ? 'neutral' : 'ok', '')}</g>`;
+  if (mu) g += `<path d="M58 168 L66 140 M122 168 L114 140" stroke="var(--frame, var(--muted))" stroke-width="5" stroke-linecap="round"/><path d="M58 140 h14 M108 140 h14" stroke="var(--frame, var(--muted))" stroke-width="5" stroke-linecap="round"/>` + bub(112, 24, 196, 'Menos mal que llevaba la pastilla. Sin ella no habría podido.', c, 124);
+  else g += `<path d="M230 168 L262 156 M244 168 L274 160" stroke="var(--muted)" stroke-width="5" stroke-linecap="round" opacity=".5"/>` + bub(112, 24, 196, '¡He podido yo! Y la próxima vez, un poco más.', c, 124);
+  $('#mu').innerHTML = g;
+}
+
 // ---------- Salir ----------
 let L = store.get('ladder', []), P = store.get('pracs', []);
 const fearCol = (f) => f <= 3 ? 'var(--n4)' : f <= 6 ? 'var(--n1)' : 'var(--n2)';
@@ -375,6 +472,7 @@ function renderLadder() {
   const sorted = L.map((r, i) => ({ ...r, i })).sort((a, b) => a.f - b.f);
   $('#ladder').innerHTML = sorted.length ? sorted.map((r, k) => `<div class="rung ${r.done ? 'done' : ''}" style="--c:${fearCol(r.f)}"><span class="n">${k + 1}</span><span class="t">${esc(r.t)}</span><span style="display:flex;gap:6px;align-items:center"><span class="fearv">${r.f}</span><button data-dn="${r.i}" aria-label="Marcar como superado" title="Superado">${r.done ? '↺' : '✓'}</button><button data-rm="${r.i}" aria-label="Quitar">×</button></span></div>`).join('')
     : '<div class="empty">Tu escalera está vacía. Añade la primera situación.</div>';
+  drawLadFig();
   document.querySelectorAll('[data-dn]').forEach(b => b.onclick = () => { L[+b.dataset.dn].done = !L[+b.dataset.dn].done; store.set('ladder', L); renderLadder(); renderSel(); });
   document.querySelectorAll('[data-rm]').forEach(b => b.onclick = () => { L.splice(+b.dataset.rm, 1); store.set('ladder', L); renderLadder(); renderSel(); });
 }
@@ -429,7 +527,7 @@ $('#copyBtn').onclick = () => { const txt = summary(); const fb = () => { const 
 (() => { const inweb = /gracielasalvador|vercel/.test(location.hostname) || /\/herramientas\//.test(location.pathname);
   if (inweb) { const b = $('#calmaRef'); b.outerHTML = '<a href="../calma/" style="color:inherit;font-weight:700">Calmarme o volver a mí</a>'; } })();
 function switchTab(v) { document.querySelectorAll('nav.tabs button').forEach(x => x.setAttribute('aria-selected', x.dataset.view === v)); document.querySelectorAll('section.view').forEach(s => s.hidden = s.id !== 'view-' + v);
-  if (v === 'mio') renderM(); if (v === 'sal') { renderLadder(); renderCrutch(); renderSel(); renderPracs(); } window.scrollTo({ top: 0 }); }
+  if (v === 'mio') renderM(); if (v === 'sal') { renderLadder(); renderCrutch(); drawMu(); } if (v === 'pra') { renderSel(); renderPracs(); } window.scrollTo({ top: 0 }); }
 document.querySelectorAll('nav.tabs button').forEach(b => b.onclick = () => switchTab(b.dataset.view));
 </script>
 

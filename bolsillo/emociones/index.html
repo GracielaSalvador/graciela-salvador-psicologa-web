@@ -19,7 +19,7 @@
   --bg: #F5F9F9; --surface: #FFFFFF; --ink: #17343B; --muted: #5C747A; --line: #D7E5E8;
   --accent: #166A7E; --deep: #0F4C5C; --tint: #E4EFF1; --on-accent: #FFFFFF;
   --e-alegria: #D9A23A; --e-tristeza: #5F84B8; --e-miedo: #8470B0; --e-rabia: #C45F45; --e-asco: #6F9A5C; --e-sorpresa: #3E9C9E;
-  --warn: #F4E3DA; --warn-ink: #8E4E33;
+  --warn: #F4E3DA; --warn-ink: #8E4E33; --onc: #FFFFFF; --ok: #E2EFEA; --ok-ink: #2C6E5D;
   --display: "Lora", Georgia, "Times New Roman", serif;
   --body: "Nunito Sans", "Segoe UI", system-ui, sans-serif;
 }
@@ -27,12 +27,12 @@
   --bg: #0C1C21; --surface: #12282E; --ink: #E2EEF0; --muted: #9AB2B8; --line: #234046;
   --accent: #5FB2C3; --deep: #9AD3DE; --tint: #18343B; --on-accent: #0C1C21;
   --e-alegria: #E7B95A; --e-tristeza: #86A6D6; --e-miedo: #A794D2; --e-rabia: #DE8466; --e-asco: #93BC80; --e-sorpresa: #67BFC0;
-  --warn: #3A2A23; --warn-ink: #E8B39A; color-scheme: dark } }
+  --warn: #3A2A23; --warn-ink: #E8B39A; --onc: #0C1C21; --ok: #183530; --ok-ink: #8CCDB6; color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #0C1C21; --surface: #12282E; --ink: #E2EEF0; --muted: #9AB2B8; --line: #234046;
   --accent: #5FB2C3; --deep: #9AD3DE; --tint: #18343B; --on-accent: #0C1C21;
   --e-alegria: #E7B95A; --e-tristeza: #86A6D6; --e-miedo: #A794D2; --e-rabia: #DE8466; --e-asco: #93BC80; --e-sorpresa: #67BFC0;
-  --warn: #3A2A23; --warn-ink: #E8B39A; color-scheme: dark }
+  --warn: #3A2A23; --warn-ink: #E8B39A; --onc: #0C1C21; --ok: #183530; --ok-ink: #8CCDB6; color-scheme: dark }
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
@@ -171,6 +171,28 @@ textarea, input[type=text] { width: 100%; border: 1.5px solid var(--line); borde
 footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px; font-size: .84rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
 .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); background: var(--deep); color: var(--bg); padding: 10px 18px; border-radius: 999px; font-weight: 600; z-index: 30; }
 @media (prefers-reduced-motion: reduce) { .wheel path, .breath .ball, .ring .prog, .vent { transition: none; } .ocean animateMotion { display: none; } }
+.fig { width: 100%; height: auto; display: block; }
+.pop { animation: popin .45s ease-out; } @keyframes popin { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+.seg { display: flex; gap: 6px; background: var(--tint); padding: 4px; border-radius: 999px; }
+.seg button { flex: 1; border: 0; background: transparent; border-radius: 999px; padding: 8px 6px; font-weight: 700; font-size: .84rem; color: var(--muted); line-height: 1.25; }
+.seg button[aria-pressed="true"] { background: var(--c, var(--accent)); color: var(--onc); }
+.info { border-radius: 16px; padding: 12px 14px; font-size: .92rem; background: color-mix(in srgb, var(--c) 10%, var(--surface)); border-left: 4px solid var(--c); display: flex; flex-direction: column; gap: 6px; }
+.info h3 { color: var(--c); }
+.flips { display: grid; gap: 10px; }
+.flip { border: 0; padding: 0; background: transparent; perspective: 900px; text-align: left; width: 100%; }
+.flip .in { display: grid; transition: transform .6s cubic-bezier(.3,1.2,.5,1); transform-style: preserve-3d; }
+.flip[aria-pressed="true"] .in { transform: rotateY(180deg); }
+.flip .ff, .flip .fb { grid-area: 1 / 1; border-radius: 16px; padding: 12px 14px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; gap: 3px; min-height: 80px; justify-content: center; }
+.flip .ff { background: var(--tint); color: var(--deep); border: 1.5px solid var(--line); }
+.flip .fb { background: var(--ok); color: var(--ok-ink); transform: rotateY(180deg); }
+.flip small { font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
+.flip b { font-family: var(--display); font-weight: 500; font-size: 1.02rem; }
+.flip i { font-style: normal; font-size: .76rem; color: var(--muted); }
+.hot { cursor: pointer; } .hot:focus { outline: none; } .hot:focus-visible { outline: 3px solid var(--ink); }
+.bob { animation: bob 2.4s ease-in-out infinite; transform-box: fill-box; } @keyframes bob { 50% { transform: translateY(-4px); } }
+.strain { animation: strain .25s ease-in-out infinite alternate; transform-box: fill-box; } @keyframes strain { to { transform: translateY(2px); } }
+.emo-card.hl { box-shadow: 0 0 0 3px var(--c); }
+@media (prefers-reduced-motion: reduce) { .pop, .bob, .strain { animation: none !important; } .flip .in { transition: none; } }
 </style>
 
 </head>
@@ -183,8 +205,9 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
   </header>
   <nav class="tabs" role="tablist">
     <button role="tab" id="tab-explorar" aria-selected="true" data-view="explorar">Explorar</button>
+    <button role="tab" id="tab-entender" aria-selected="false" data-view="entender">Entender</button>
     <button role="tab" id="tab-guia" aria-selected="false" data-view="guia">Emociones</button>
-    <button role="tab" id="tab-diario" aria-selected="false" data-view="diario">Mi diario</button>
+    <button role="tab" id="tab-diario" aria-selected="false" data-view="diario">Diario</button>
   </nav>
 
   <section class="view" id="view-explorar">
@@ -194,9 +217,41 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
     <div class="nav-row"><button class="btn link" id="prev">← Atrás</button><button class="btn" id="next">Siguiente</button></div>
   </section>
 
+  <section class="view" id="view-entender" hidden>
+    <h1>Entender</h1>
+    <p class="muted">Todas las emociones son válidas. No se eliminan: se acompañan. Aquí tienes las ideas que hay detrás de esta herramienta.</p>
+    <div class="card">
+      <span class="eyebrow">Las cuatro paradas</span>
+      <p class="small">Para acompañar una emoción, hacemos un recorrido en cuatro paradas. Toca cada una.</p>
+      <svg class="fig" id="stops" viewBox="0 0 320 150" role="img" aria-label="Recorrido de cuatro paradas: identificar, validar, gestionar y acompañar"></svg>
+      <div id="stopTxt"></div>
+    </div>
+    <div class="card">
+      <span class="eyebrow">La pelota en el agua</span>
+      <p class="small">Luchar contra una emoción es como intentar hundir una pelota en el agua. Compara.</p>
+      <div class="seg" id="ballSeg"></div>
+      <svg class="fig" id="ball" viewBox="0 0 320 190" role="img" aria-label="Una persona en el agua con una pelota"></svg>
+      <div id="ballTxt"></div>
+    </div>
+    <div class="card">
+      <span class="eyebrow">Toda emoción es una ola</span>
+      <p class="small">Mueve el control y acompaña a la persona por la ola.</p>
+      <svg class="fig" id="surf" viewBox="0 0 320 184" role="img" aria-label="Una persona sobre una ola que sube, llega a un pico y baja"></svg>
+      <input type="range" id="surfR" min="0" max="100" value="10" aria-label="Avanzar por la ola">
+      <div id="surfTxt"></div>
+    </div>
+    <div class="card">
+      <span class="eyebrow">Cosas que nos decimos</span>
+      <p class="small">Toca cada tarjeta para ver lo que se sabe.</p>
+      <div class="flips" id="myths"></div>
+    </div>
+  </section>
+
   <section class="view" id="view-guia" hidden>
     <h1>Qué hace cada emoción</h1>
-    <p class="muted">Todas las emociones tienen una función. Ninguna es mala: algunas son agradables y otras incómodas, pero todas te cuentan algo.</p>
+    <p class="muted">Todas las emociones tienen una función. Ninguna es mala: algunas son agradables y otras desagradables, pero todas te cuentan algo. Toca a cada una para escuchar lo que te dice.</p>
+    <div class="card"><svg class="fig" id="emoScene" viewBox="0 0 320 250" role="img" aria-label="Las seis emociones como personajes"></svg><div id="emoSel"></div></div>
+    <span class="eyebrow">Todas las emociones</span>
     <div class="stack" id="guideList"></div>
   </section>
 
@@ -392,10 +447,12 @@ const SCREENS = [
         <span class="lbl">¿Qué puede estar pidiéndote?</span><div class="chips">${EMO[k].need.map(n => chip('need', n, d.needs.includes(n))).join('')}</div></div>`).join('')}
       <div class="stack"><span class="lbl">Elige una frase para decirte</span>
         <div class="say">${VALIDA(joinY(feelNames())).map((t, i) => `<button data-va="${i}" aria-pressed="${d.valida === t}">${esc(t)}</button>`).join('')}</div>
+        <svg class="fig" id="vaFig" viewBox="0 0 320 110" aria-hidden="true"></svg>
         <p class="hint">Léela despacio, si puedes en voz alta. Validar no es estar de acuerdo con todo: es aceptar que la emoción está ahí.</p></div>`,
     after: () => {
       document.querySelectorAll('[data-need]').forEach(el => el.onclick = () => { d.needs = toggle(d.needs, el.dataset.need); el.setAttribute('aria-pressed', d.needs.includes(el.dataset.need)); save(); });
-      document.querySelectorAll('[data-va]').forEach(el => el.onclick = () => { d.valida = VALIDA(joinY(feelNames()))[+el.dataset.va]; document.querySelectorAll('[data-va]').forEach(x => x.setAttribute('aria-pressed', x === el)); save(); });
+      const vf = () => { $('#vaFig').innerHTML = face(40, 46, 'var(--accent)', 'ok', '') + bubble(76, 6, 236, d.valida || 'Elige una frase y escúchala de una voz amable.', 'var(--accent)', 90, false); };
+      document.querySelectorAll('[data-va]').forEach(el => el.onclick = () => { d.valida = VALIDA(joinY(feelNames()))[+el.dataset.va]; document.querySelectorAll('[data-va]').forEach(x => x.setAttribute('aria-pressed', x === el)); save(); vf(); }); vf();
     } },
   { render: () => `
       <h1>¿Cómo puedo transitarla?</h1>
@@ -472,7 +529,7 @@ const QUICK = [
   ['Respirar despacio', 'Toma aire en 4 tiempos y suéltalo en 6.', 'breath', 'breath', null, 'cuerpo'],
   ['Moverme y sacudir', 'Sacude brazos y piernas o camina rápido para descargar la energía.', 'move', 'timer', 2, 'cuerpo'],
   ['Agua fresca', 'Lávate la cara o las muñecas con agua fresca, o sostén algo frío unos segundos.', 'tear', 'timer', 1, 'cuerpo'],
-  ['5-4-3-2-1 hacia fuera', 'Vuelve al presente a través de lo que te rodea.', 'search', 'senses', null, 'fuera'],
+  ['Mis cinco sentidos', 'Vuelve al presente a través de lo que te rodea.', 'search', 'senses', null, 'fuera'],
   ['Pies en el suelo', 'Empuja el suelo con los pies, con los ojos abiertos, y nota el apoyo.', 'step', 'reps', 5, 'fuera'],
   ['Orientarme', 'Mira a tu alrededor y recuerda dónde estás.', 'info', 'orient', null, 'fuera'],
   ['Un objeto ancla', 'Coge algo con textura y descríbelo: peso, temperatura, bordes.', 'star', 'timer', 2, 'fuera'],
@@ -529,6 +586,86 @@ $('#shClose').onclick = closeSheet;
 $('#shDone').onclick = () => { if (curSt && !d.strat.includes(curSt)) d.strat.push(curSt); save(); closeSheet(); render(); };
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('#sheet').hidden) closeSheet(); });
 
+// ----- Entender -----
+const wrapT = (t, n) => { const w = t.split(' '), L = []; let l = ''; w.forEach(x => { if ((l + ' ' + x).trim().length > n) { L.push(l.trim()); l = x; } else l += ' ' + x; }); if (l.trim()) L.push(l.trim()); return L; };
+function face(x, y, c, mood, label, extra = '') {
+  const mouth = mood === 'ok' ? `<path d="M${x - 6} ${y + 4} q6 6 12 0" fill="none" stroke="var(--onc)" stroke-width="2" stroke-linecap="round"/>` : mood === 'hurt' ? `<path d="M${x - 6} ${y + 7} q6 -6 12 0" fill="none" stroke="var(--onc)" stroke-width="2" stroke-linecap="round"/>` : mood === 'o' ? `<circle cx="${x}" cy="${y + 6}" r="3" fill="var(--onc)"/>` : `<path d="M${x - 5} ${y + 5} h10" stroke="var(--onc)" stroke-width="2" stroke-linecap="round"/>`;
+  return `<circle cx="${x}" cy="${y}" r="15" fill="${c}"/><circle cx="${x - 5}" cy="${y - 3}" r="1.8" fill="var(--onc)"/><circle cx="${x + 5}" cy="${y - 3}" r="1.8" fill="var(--onc)"/>${mouth}${extra}<path d="M${x - 22} ${y + 50} q0 -32 22 -32 q22 0 22 32 z" fill="${c}"/>${label ? `<text x="${x}" y="${y + 64}" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="${c}">${label}</text>` : ''}`;
+}
+function bubble(x, y, w, txt, c, tailX, think, up) { const L = wrapT(txt, Math.floor(w / 6.4)), h = 14 + L.length * 14;
+  const tail = up ? `<path d="M${tailX - 7} ${y + 1} L${tailX} ${y - 12} L${tailX + 7} ${y + 1}" fill="var(--surface)" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><rect x="${tailX - 8}" y="${y - 1}" width="16" height="4" fill="var(--surface)"/>` : think ? `<circle cx="${tailX}" cy="${y + h + 7}" r="4" fill="var(--surface)" stroke="${c}" stroke-width="2"/>` : `<path d="M${tailX - 7} ${y + h - 1} L${tailX} ${y + h + 12} L${tailX + 7} ${y + h - 1}" fill="var(--surface)" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><rect x="${tailX - 8}" y="${y + h - 3}" width="16" height="4" fill="var(--surface)"/>`;
+  return `<g class="pop"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${think ? 18 : 12}" fill="var(--surface)" stroke="${c}" stroke-width="2"/>${tail}${L.map((l, i) => `<text x="${x + 10}" y="${y + 19 + i * 14}" font-family="var(--display)" font-size="11" fill="var(--ink)">${esc(l)}</text>`).join('')}</g>`; }
+const STOPS = [['Identificar', 'var(--e-miedo)', IC.search, 'Ponerle nombre a lo que sientes: si es agradable o desagradable, con cuánta intensidad y dónde lo notas en el cuerpo. Nombrar una emoción ya ayuda a regularla.'],
+  ['Validar', 'var(--e-rabia)', IC.heart, 'Decirte que tiene sentido sentir lo que sientes. Validar no es estar de acuerdo con todo ni quedarte ahí: es aceptar que la emoción está y que viene a contarte algo.'],
+  ['Gestionar', 'var(--e-asco)', IC.step, 'Darle una salida que te cuide: moverte, respirar, pedir apoyo o poner un límite. No se trata de quitarla, sino de que no sea ella la que decida por ti.'],
+  ['Acompañar', 'var(--e-tristeza)', '<path d="M2 15c3-5 5-5 7 0s4 5 7 0 4-5 6-1"/>', 'Dejar que la ola siga su curso. Las emociones suben, llegan a un pico y bajan, sobre todo si no las alimentamos ni luchamos contra ellas.']];
+let stop = 0;
+function drawStops() {
+  const xs = [40, 120, 200, 280], ys = [104, 74, 104, 74];
+  let g = `<path d="M10 112 C 40 112, 80 66, 120 82 S 170 120, 200 112 S 250 60, 310 80" fill="none" stroke="var(--line)" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 8"/>`;
+  STOPS.forEach(([n, c, ic], i) => { const on = i === stop, done = i < stop;
+    g += `<g class="hot" data-stop="${i}" tabindex="0" role="button" aria-label="${n}"><circle cx="${xs[i]}" cy="${ys[i]}" r="${on ? 22 : 18}" fill="${on || done ? c : 'var(--surface)'}" stroke="${c}" stroke-width="3"/><svg x="${xs[i] - 11}" y="${ys[i] - 11}" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="${on || done ? 'var(--onc)' : c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ic}</svg><text x="${xs[i]}" y="${ys[i] + 38}" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="${c}">${i + 1}. ${n}</text></g>`; });
+  g += `<g class="pop bob"><circle cx="${xs[stop]}" cy="${ys[stop] - 44}" r="8" fill="var(--deep)"/><path d="M${xs[stop] - 9} ${ys[stop] - 24} q0 -12 9 -12 q9 0 9 12z" fill="var(--deep)"/></g>`;
+  $('#stops').innerHTML = g;
+  document.querySelectorAll('[data-stop]').forEach(el => { const f = () => { stop = +el.dataset.stop; drawStops(); }; el.onclick = f; el.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); f(); } }; });
+  const [n, c, , t] = STOPS[stop];
+  $('#stopTxt').innerHTML = `<div class="info pop" style="--c:${c}"><h3>${stop + 1}. ${n}</h3><p class="small">${t}</p></div>`;
+}
+let fight = true;
+function drawBall() {
+  $('#ballSeg').innerHTML = [[true, 'Luchar contra ella', 'var(--e-rabia)'], [false, 'Dejarla estar', 'var(--e-asco)']].map(([m, l, c]) => `<button data-bl="${m}" aria-pressed="${fight === m}" style="--c:${c}">${l}</button>`).join('');
+  document.querySelectorAll('[data-bl]').forEach(b => b.onclick = () => { fight = b.dataset.bl === 'true'; drawBall(); });
+  const c = fight ? 'var(--e-rabia)' : 'var(--e-asco)';
+  let g = `<rect width="320" height="190" rx="16" fill="var(--e-tristeza)" opacity=".06"/>`;
+  const ballXY = fight ? [178, 140] : [222, 104];
+  const ball = `<g class="${fight ? '' : 'bob'}"><circle cx="${ballXY[0]}" cy="${ballXY[1]}" r="22" fill="var(--e-alegria)"/><path d="M${ballXY[0] - 22} ${ballXY[1]} q22 -14 44 0" stroke="var(--surface)" stroke-width="3" fill="none"/><text x="${ballXY[0]}" y="${ballXY[1] + 4}" text-anchor="middle" font-family="var(--body)" font-size="8.5" font-weight="800" fill="var(--onc)">emoción</text></g>`;
+  g += `<g class="${fight ? 'strain' : ''}">${face(120, 98, c, fight ? 'hurt' : 'ok', '')}</g>`;
+  if (fight) g += `<path d="M138 114 L${ballXY[0] - 10} ${ballXY[1] - 18}" stroke="${c}" stroke-width="6" stroke-linecap="round"/>`;
+  g += ball;
+  g += `<rect x="10" y="116" width="300" height="64" rx="10" fill="var(--e-tristeza)" opacity=".55"/><path d="M10 116 q15 -6 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0" fill="none" stroke="var(--e-tristeza)" stroke-width="3"/>`;
+  if (fight) g += [0, 1, 2].map(i => `<circle class="bob" style="animation-delay:${i * .4}s" cx="${170 + i * 14}" cy="${112 - i * 6}" r="${3 + i}" fill="none" stroke="var(--e-tristeza)" stroke-width="1.5"/>`).join('');
+  else g += `<path d="M146 112 l14 -8 M98 112 l-14 -8" stroke="${c}" stroke-width="5" stroke-linecap="round"/>`;
+  g += bubble(14, 8, 140, fight ? '¡No quiero sentir esto!' : 'Puede estar aquí. Yo sigo nadando.', c, 108, false);
+  $('#ball').innerHTML = g;
+  $('#ballTxt').innerHTML = fight ? `<div class="info pop" style="--c:var(--e-rabia)"><p class="small">Cuanta más fuerza hacemos para hundirla, más nos cansamos y con más fuerza vuelve a salir. Además, con las manos ocupadas en la pelota, no podemos nadar hacia lo que nos importa.</p></div>`
+    : `<div class="info pop" style="--c:var(--e-asco)"><p class="small">Si dejamos que la pelota flote a nuestro lado, sigue ahí, pero ya no nos agota, y tenemos las manos libres para seguir nadando. Aceptar una emoción no es rendirse: es dejar de pelear con ella.</p></div>`;
+}
+function drawSurf() {
+  const v = +$('#surfR').value;
+  $('#surf').innerHTML = `<rect width="320" height="184" rx="16" fill="var(--e-tristeza)" opacity=".06"/><path id="sw" d="M10 150 C 80 150, 110 34, 160 34 S 240 150, 310 150" fill="none" stroke="var(--e-tristeza)" stroke-width="5" stroke-linecap="round"/><path d="M10 160 H310" stroke="var(--line)" stroke-width="2"/><g id="sf"></g>`;
+  const p = $('#sw'), L = p.getTotalLength(), pt = p.getPointAtLength(L * v / 100);
+  const ph = v < 38 ? 0 : v <= 62 ? 1 : 2, c = ['var(--e-miedo)', 'var(--e-rabia)', 'var(--e-asco)'][ph];
+  $('#sf').innerHTML = `<ellipse cx="${pt.x}" cy="${pt.y - 4}" rx="16" ry="4" fill="var(--e-alegria)"/><circle cx="${pt.x}" cy="${pt.y - 30}" r="7" fill="${c}"/><path d="M${pt.x - 9} ${pt.y - 8} q0 -14 9 -14 q9 0 9 14z" fill="${c}"/><path d="M${pt.x - 14} ${pt.y - 18} l-8 -6 M${pt.x + 14} ${pt.y - 18} l8 -6" stroke="${c}" stroke-width="3" stroke-linecap="round"/>
+    ${['sube', 'el pico', 'baja'].map((t, i) => `<text x="${[80, 160, 240][i]}" y="176" text-anchor="middle" font-family="var(--body)" font-size="11" font-weight="800" fill="${i === ph ? c : 'var(--muted)'}" opacity="${i === ph ? 1 : .5}">${t}</text>`).join('')}`;
+  $('#surfTxt').innerHTML = `<div class="info" style="--c:${c}"><p class="small">${['La emoción empieza a subir. Aparecen sensaciones en el cuerpo y ganas de hacer algo.', 'Es el momento más intenso. Parece que va a durar para siempre, pero no es así. Aquí ayuda respirar y esperar antes de tomar decisiones importantes.', 'Si no la alimentamos con más pensamientos ni luchamos contra ella, la ola baja sola. Has podido sentirla y sigues aquí.'][ph]}</p></div>`;
+}
+const MYTHS = [['Hay emociones buenas y malas', 'Todas las emociones son válidas y útiles. Algunas son agradables y otras desagradables, pero ninguna es mala: todas te cuentan algo.'],
+  ['Si no le hago caso, se pasará antes', 'Ignorar o tapar una emoción suele hacer que vuelva con más fuerza. Ponerle nombre y escucharla ayuda a que baje antes.'],
+  ['Sentir rabia me convierte en mala persona', 'Sentir rabia no dice nada malo de ti. Lo importante es qué haces con ella: puede ayudarte a poner un límite sin hacer daño.'],
+  ['Si me permito estar triste, no saldré nunca', 'Las emociones que se acompañan pasan. La tristeza que se permite suele durar menos que la que se esconde.'],
+  ['Tengo que controlar lo que siento', 'Lo que sentimos no se elige. Lo que sí podemos aprender es a que no sean las emociones las que decidan por nosotros.']];
+let entDone = false;
+function renderEnt() { drawStops(); drawBall(); drawSurf();
+  if (!entDone) { entDone = true; $('#surfR').oninput = drawSurf;
+    $('#myths').innerHTML = MYTHS.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-my="${i}"><span class="in"><span class="ff"><small>Me digo</small><b>«${esc(a)}»</b><i>Toca para ver lo que se sabe ↻</i></span><span class="fb"><small>Lo que se sabe</small><span class="small">${esc(b)}</span></span></span></button>`).join('');
+    document.querySelectorAll('[data-my]').forEach(f => f.onclick = () => f.setAttribute('aria-pressed', f.getAttribute('aria-pressed') !== 'true')); } }
+// Las emociones como personajes
+const SAYS = { alegria: ['ok', '¡Esto me hace bien! Acércate y repítelo.'], sorpresa: ['o', '¡Anda! Para un momento y mira qué ha pasado.'], miedo: ['hurt', '¡Cuidado! Puede haber un peligro: protégete.'],
+  tristeza: ['hurt', 'He perdido algo que me importa. Necesito parar y que me consuelen.'], asco: ['neutral', 'Esto no me sienta bien. Pon distancia.'], rabia: ['hurt', '¡Esto no es justo! Defiende lo que te importa.'] };
+let emoSel = null;
+function drawEmoScene() {
+  const pos = (i) => [55 + (i % 3) * 105, i < 3 ? 46 : 158];
+  let g = '';
+  ORDER.forEach((k, i) => { const [x, y] = pos(i), dim = emoSel && emoSel !== k, c = `var(--e-${k})`;
+    const brows = k === 'rabia' ? `<path d="M${x - 9} ${y - 9} l6 3 M${x + 9} ${y - 9} l-6 3" stroke="var(--onc)" stroke-width="2" stroke-linecap="round"/>` : k === 'miedo' ? `<path d="M${x - 9} ${y - 7} l6 -3 M${x + 9} ${y - 7} l-6 -3" stroke="var(--onc)" stroke-width="2" stroke-linecap="round"/>` : k === 'tristeza' ? `<path d="M${x + 6} ${y + 1} q2 4 0 6 q-2 -2 0 -6z" fill="var(--onc)"/>` : '';
+    g += `<g class="hot ${emoSel === k ? 'bob' : ''}" data-es="${k}" tabindex="0" role="button" aria-label="${EMO[k].name}" opacity="${dim ? .25 : 1}">${face(x, y, c, SAYS[k][0], EMO[k].name, brows)}</g>`; });
+  if (emoSel) { const i = ORDER.indexOf(emoSel), [x, y] = pos(i), c = `var(--e-${emoSel})`, bx = Math.max(8, Math.min(312 - 170, x - 85));
+    g += i < 3 ? bubble(bx, y + 80, 170, SAYS[emoSel][1], c, x, false, true) : bubble(bx, y - 84, 170, SAYS[emoSel][1], c, x, false, false); }
+  $('#emoScene').innerHTML = g;
+  document.querySelectorAll('[data-es]').forEach(el => { const f = () => { emoSel = emoSel === el.dataset.es ? null : el.dataset.es; drawEmoScene(); }; el.onclick = f; el.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); f(); } }; });
+  $('#emoSel').innerHTML = emoSel ? (() => { const k = emoSel; return `<div class="info pop" style="--c:var(--e-${k})"><h3>${EMO[k].name}</h3><p class="small">${EMO[k].fn}</p><p class="small"><b>Suele pedirte:</b> ${EMO[k].need.join(', ').toLowerCase()}.</p><p class="small"><b>Te puede ayudar:</b> ${EMO[k].strat.map(s => s[0].toLowerCase()).join(', ')}.</p></div>`; })() : '<p class="small muted" style="text-align:center">Toca una emoción.</p>';
+}
+
 // ----- Guía -----
 $('#guideList').innerHTML = ORDER.map(k => `<div class="card emo-card" style="--c:var(--e-${k})"><span class="tag"><i></i>${EMO[k].name}</span><p>${EMO[k].fn}</p>
   <p class="small"><b>Suele pedirte:</b> ${EMO[k].need.join(', ').toLowerCase()}.</p><p class="small muted"><b>Matices:</b> ${EMO[k].sub.join(', ').toLowerCase()}.</p>
@@ -567,7 +704,7 @@ $('#clearNo').onclick = () => $('#clearConfirm').hidden = true;
 $('#clearYes').onclick = () => { diary = []; store.set('diary', []); $('#clearConfirm').hidden = true; renderDiary(); toast('Diario borrado'); };
 
 function switchTab(v) { document.querySelectorAll('nav.tabs button').forEach(x => x.setAttribute('aria-selected', x.dataset.view === v));
-  document.querySelectorAll('section.view').forEach(s => s.hidden = s.id !== 'view-' + v); if (v === 'diario') renderDiary(); window.scrollTo({ top: 0 }); }
+  document.querySelectorAll('section.view').forEach(s => s.hidden = s.id !== 'view-' + v); if (v === 'diario') renderDiary(); if (v === 'entender') renderEnt(); if (v === 'guia') drawEmoScene(); window.scrollTo({ top: 0 }); }
 document.querySelectorAll('nav.tabs button').forEach(b => b.onclick = () => switchTab(b.dataset.view));
 if (scr >= SCREENS.length) scr = 0;
 render(); renderDiary();
@@ -826,7 +963,7 @@ const PDFKIT = (() => {
     generic: () => `
       <div class="sec"><h2>Cuatro pasos para acompañar una emoción</h2>${K.card(K.steps(['<b>Identificar.</b> ¿Qué estoy sintiendo? ¿Es agradable, desagradable o una mezcla? ¿Con cuánta intensidad? ¿Dónde lo noto en el cuerpo?', '<b>Validar.</b> «Tiene sentido que sienta esto». Validar no es estar de acuerdo con todo: es aceptar que la emoción está ahí.', '<b>Gestionar.</b> No se trata de quitarla, sino de darle una salida que me cuide.', '<b>Acompañar.</b> Las emociones son como olas: suben, llegan a un pico y bajan.']))}</div>
       <div class="sec long"><h2>Qué hace cada emoción</h2><div class="grid2">${ORDER.map(k => { const e = EMO[k]; return K.card(`<span class="k" style="color:var(--e-${k})">${e.name}</span><p>${K.esc(e.fn)}</p><p class="mut" style="margin-top:4px"><b>Suele pedirte:</b> ${K.esc(e.need.join(', ').toLowerCase())}.</p><p class="mut"><b>Te puede ayudar:</b> ${K.esc(e.strat.map(s => s[0].toLowerCase()).join(', '))}.</p>`); }).join('')}</div></div>
-      <div class="sec">${K.card('Todas las emociones son válidas. Ninguna es mala: algunas son agradables y otras incómodas, pero todas te cuentan algo.', 'good')}</div>`,
+      <div class="sec">${K.card('Todas las emociones son válidas. Ninguna es mala: algunas son agradables y otras desagradables, pero todas te cuentan algo.', 'good')}</div>`,
     pocketNote: 'Para cuando una emoción me desborda',
     pocket: (generic) => { const h = generic ? [] : count(e => e.strat).slice(0, 3).map(x => x[0]);
       return { title: 'Cuando una emoción me desborda', html: K.steps(['<b>Le pongo nombre:</b> «Esto es…».', '<b>Me digo:</b> «Tiene sentido que sienta esto. Puedo sentirlo y estar a salvo».', '<b>Bajo la intensidad:</b> tomo aire en 4 y lo suelto en 6, varias veces.', '<b>La acompaño:</b> es una ola. Sube, llega a un pico y baja.']) + (h.length ? `<p><span class="k">Lo que más me ayuda</span>${K.esc(h.join(' · '))}</p>` : '') }; },

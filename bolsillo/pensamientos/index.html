@@ -20,7 +20,7 @@
   --accent: #166A7E; --deep: #0F4C5C; --tint: #E4EFF1; --on-accent: #FFFFFF;
   --cog: #166A7E; --cog-bg: #E1EEF1; --def: #5B5888; --def-bg: #E9E8F3;
   --gold: #D9A23A; --frame: #C98B6B; --rose: #F3E4E4; --rose-ink: #8E4A55; --sage: #E2EFEA; --sage-ink: #2C6E5D; --warn: #F4E3DA; --warn-ink: #8E4E33;
-  --water: #CFE3EA; --water2: #A9C6CD;
+  --water: #CFE3EA; --water2: #A9C6CD; --onc: #FFFFFF;
   --display: "Lora", Georgia, "Times New Roman", serif;
   --body: "Nunito Sans", "Segoe UI", system-ui, sans-serif;
 }
@@ -29,13 +29,13 @@
   --accent: #5FB2C3; --deep: #9AD3DE; --tint: #18343B; --on-accent: #0C1C21;
   --cog: #7CC3D2; --cog-bg: #18343B; --def: #B9B6E3; --def-bg: #26263A;
   --gold: #E7B95A; --frame: #E0A487; --rose: #3A2629; --rose-ink: #E6AEB6; --sage: #183530; --sage-ink: #8CCDB6; --warn: #3A2A23; --warn-ink: #E8B39A;
-  --water: #1D3F48; --water2: #2F5F6B; color-scheme: dark } }
+  --water: #1D3F48; --water2: #2F5F6B; --onc: #0C1C21; color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #0C1C21; --surface: #12282E; --ink: #E2EEF0; --muted: #9AB2B8; --line: #234046;
   --accent: #5FB2C3; --deep: #9AD3DE; --tint: #18343B; --on-accent: #0C1C21;
   --cog: #7CC3D2; --cog-bg: #18343B; --def: #B9B6E3; --def-bg: #26263A;
   --gold: #E7B95A; --frame: #E0A487; --rose: #3A2629; --rose-ink: #E6AEB6; --sage: #183530; --sage-ink: #8CCDB6; --warn: #3A2A23; --warn-ink: #E8B39A;
-  --water: #1D3F48; --water2: #2F5F6B; color-scheme: dark }
+  --water: #1D3F48; --water2: #2F5F6B; --onc: #0C1C21; color-scheme: dark }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.55; }
@@ -212,6 +212,26 @@ input[type=range] { flex: 1; accent-color: var(--accent); min-width: 0; }
 footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px; font-size: .84rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
 .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); background: var(--deep); color: var(--bg); padding: 10px 18px; border-radius: 999px; font-weight: 600; z-index: 30; }
 @media (prefers-reduced-motion: reduce) { .wobble, .river .wv, .leaf { animation-duration: .01s !important; animation-iteration-count: 1 !important; } .dcard { transition: none; } }
+.box { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.fig { width: 100%; height: auto; display: block; }
+.popin { animation: popin .45s ease-out; } @keyframes popin { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+.seg { display: flex; gap: 6px; background: var(--tint); padding: 4px; border-radius: 999px; }
+.seg button { flex: 1; border: 0; background: transparent; border-radius: 999px; padding: 8px 6px; font-weight: 700; font-size: .84rem; color: var(--muted); line-height: 1.25; }
+.seg button[aria-pressed="true"] { background: var(--c, var(--accent)); color: var(--onc); }
+.info { border-radius: 16px; padding: 12px 14px; font-size: .92rem; background: color-mix(in srgb, var(--c) 10%, var(--surface)); border-left: 4px solid var(--c); display: flex; flex-direction: column; gap: 6px; }
+.flips { display: grid; gap: 10px; }
+.flip { border: 0; padding: 0; background: transparent; perspective: 900px; text-align: left; width: 100%; }
+.flip .in { display: grid; transition: transform .6s cubic-bezier(.3,1.2,.5,1); transform-style: preserve-3d; }
+.flip[aria-pressed="true"] .in { transform: rotateY(180deg); }
+.flip .ff, .flip .fb { grid-area: 1 / 1; border-radius: 16px; padding: 12px 14px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; gap: 3px; min-height: 80px; justify-content: center; }
+.flip .ff { background: var(--tint); color: var(--deep); border: 1.5px solid var(--line); }
+.flip .fb { background: var(--sage); color: var(--sage-ink); transform: rotateY(180deg); }
+.flip small { font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
+.flip b { font-family: var(--display); font-weight: 500; font-size: 1.02rem; }
+.flip i { font-style: normal; font-size: .76rem; color: var(--muted); }
+.hot { cursor: pointer; } .hot:focus { outline: none; } .hot:focus-visible { outline: 3px solid var(--ink); }
+.sitch { display: flex; flex-wrap: wrap; gap: 8px; }
+@media (prefers-reduced-motion: reduce) { .popin { animation: none !important; } .flip .in { transition: none; } }
 </style>
 
 </head>
@@ -223,12 +243,42 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
     <div class="brand"><b>Graciela Salvador</b> · Psicóloga</div>
   </header>
   <nav class="tabs" role="tablist">
-    <button role="tab" id="tab-espejo" aria-selected="true" data-view="espejo">Espejos</button>
-    <button role="tab" id="tab-herr" aria-selected="false" data-view="herr">Herramientas</button>
-    <button role="tab" id="tab-reg" aria-selected="false" data-view="reg">Mi registro</button>
+    <button role="tab" id="tab-ent" aria-selected="true" data-view="ent">Entender</button>
+    <button role="tab" id="tab-espejo" aria-selected="false" data-view="espejo">Espejos</button>
+    <button role="tab" id="tab-herr" aria-selected="false" data-view="herr">Practicar</button>
+    <button role="tab" id="tab-reg" aria-selected="false" data-view="reg">Registro</button>
   </nav>
 
-  <section class="view" id="view-espejo">
+  <section class="view" id="view-ent">
+    <h1>Revisar mis pensamientos</h1>
+    <p class="muted">Lo que sientes no depende solo de lo que te pasa, sino también de lo que piensas sobre lo que te pasa. Por eso merece la pena mirar los pensamientos de cerca: no para pensar «en positivo», sino para ver las cosas de una forma más justa.</p>
+    <div class="box">
+      <span class="eyebrow">Lo mismo, visto de tres maneras</span>
+      <p class="small">Elige una situación y fíjate en lo que piensa y siente cada persona.</p>
+      <div class="sitch" id="sitCh"></div>
+      <svg class="fig" id="abc" viewBox="0 0 320 250" role="img" aria-label="Tres personas ante la misma situación, con pensamientos y emociones distintas"></svg>
+      <div class="info" style="--c:var(--accent)"><p class="small">La situación es la misma para las tres personas. Lo que cambia es el pensamiento, y con él la emoción. Por eso, cuando cambia la forma de mirar, también cambia lo que sientes.</p></div>
+    </div>
+    <div class="box">
+      <span class="eyebrow">Un pensamiento no es un hecho</span>
+      <p class="small">A veces vemos el mundo a través de un pensamiento, como si lleváramos unas gafas puestas. Compara.</p>
+      <div class="seg" id="fuSeg"></div>
+      <svg class="fig" id="fu" viewBox="0 0 320 190" role="img" aria-label="Una persona pegada a su pensamiento o con distancia de él"></svg>
+      <div id="fuTxt"></div>
+    </div>
+    <div class="box">
+      <span class="eyebrow">Dos caminos con un pensamiento</span>
+      <p class="small">Con un pensamiento que te hace daño puedes hacer dos cosas, y las dos valen. En «Practicar» tienes herramientas para cada una.</p>
+      <svg class="fig" id="paths" viewBox="0 0 320 170" role="img" aria-label="Dos caminos: revisarlo o tomar distancia"></svg>
+    </div>
+    <div class="box">
+      <span class="eyebrow">Cosas que nos decimos</span>
+      <p class="small">Toca cada tarjeta para ver lo que se sabe.</p>
+      <div class="flips" id="myths"></div>
+    </div>
+  </section>
+
+  <section class="view" id="view-espejo" hidden>
     <div id="espejoBox" class="stack" style="gap:16px"></div>
   </section>
 
@@ -351,8 +401,8 @@ function renderEspejo() {
   box.innerHTML = `<h1>Mis espejos</h1>
     <p class="muted">${S.kept.length ? 'Estos son los espejos en los que te has reconocido. Cuando aparezcan, ponles nombre: «Ah, este es mi espejo de…». Si quieres, apunta la frase que te suele decir cada uno.' : 'No te has reconocido en ninguno. Puedes repasarlos cuando quieras.'}</p>
     <div class="mirrors">${S.kept.map(i => `<div class="mcard">${mirrorSVG(i, 'mm')}<b>${DIST[i][0]}</b><span class="small muted">${DIST[i][1]}</span><input type="text" data-fr="${i}" value="${esc(S.frases[i] || '')}" placeholder="Mi frase típica…"></div>`).join('')}</div>
-    <div class="note">¿Has pillado un pensamiento en uno de estos espejos? En <b>Herramientas</b> puedes revisarlo o tomar distancia de él.</div>
-    <div class="nav-row" style="justify-content:flex-start;gap:8px"><button class="btn" id="goTools">Ir a herramientas</button><button class="btn link small" id="redo">Repasar los espejos de nuevo</button></div>`;
+    <div class="note">¿Has pillado un pensamiento en uno de estos espejos? En <b>Practicar</b> puedes revisarlo o tomar distancia de él.</div>
+    <div class="nav-row" style="justify-content:flex-start;gap:8px"><button class="btn" id="goTools">Ir a practicar</button><button class="btn link small" id="redo">Repasar los espejos de nuevo</button></div>`;
   document.querySelectorAll('[data-fr]').forEach(el => el.oninput = () => { S.frases[el.dataset.fr] = el.value; saveS(); });
   $('#goTools').onclick = () => switchTab('herr');
   $('#redo').onclick = () => { S.seen = []; S.kept = []; saveS(); renderEspejo(); };
@@ -543,7 +593,7 @@ function renderReg() {
   const name = { discusion: 'Discutir el pensamiento', flecha: 'Flecha descendente', rtc: 'Registro de pensamientos' };
   $('#entries').innerHTML = regs.length ? regs.slice().reverse().map(r => `<div class="entry"><span class="small muted">${new Date(r.t).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })} · ${name[r.tipo]}</span>
     ${r.tipo === 'flecha' ? `<span>${(r.levels || []).map((l, k, a) => k === a.length - 1 ? `<b class="old">↓ ${esc(l)}</b>` : esc(l)).join(' → ')}</span>` :
-    `${r.sit ? `<span class="small">${esc(r.sit)}</span>` : ''}<span class="old">«${esc(r.pens)}» · ${r.cred ?? '—'}%</span><span class="new">${esc(r.alt || '')}</span>${r.cred2 !== undefined ? `<span class="small muted">Credibilidad: ${r.cred}% → ${r.cred2}%${r.int2 !== undefined ? ` · Emoción: ${r.int}% → ${r.int2}%` : ''}</span>` : ''}`}</div>`).join('') : '<div class="empty">Aún no hay registros. Prueba «Registro de pensamientos» o «Discutir el pensamiento» en Herramientas.</div>';
+    `${r.sit ? `<span class="small">${esc(r.sit)}</span>` : ''}<span class="old">«${esc(r.pens)}» · ${r.cred ?? '—'}%</span><span class="new">${esc(r.alt || '')}</span>${r.cred2 !== undefined ? `<span class="small muted">Credibilidad: ${r.cred}% → ${r.cred2}%${r.int2 !== undefined ? ` · Emoción: ${r.int}% → ${r.int2}%` : ''}</span>` : ''}`}</div>`).join('') : '<div class="empty">Aún no hay registros. Prueba «Registro de pensamientos» o «Discutir el pensamiento» en «Practicar».</div>';
 }
 function summary() {
   const L = ['Revisar mis pensamientos: resumen'];
@@ -556,10 +606,63 @@ function summary() {
 $('#copyBtn').onclick = () => { const txt = summary(); const fb = () => { const t = $('#copyFallback'); t.value = txt; t.hidden = false; t.focus(); t.select(); toast('Selecciona y copia el texto'); setTimeout(() => t.hidden = true, 15000); };
   try { navigator.clipboard.writeText(txt).then(() => toast('Copiado. Pégalo en un mensaje.'), fb); } catch (e) { fb(); } };
 
+
+// ---------- Entender ----------
+const wrapT = (t, n) => { const w = t.split(' '), L = []; let l = ''; w.forEach(x => { if ((l + ' ' + x).trim().length > n) { L.push(l.trim()); l = x; } else l += ' ' + x; }); if (l.trim()) L.push(l.trim()); return L; };
+function face(x, y, c, mood, label) {
+  const mouth = mood === 'ok' ? `<path d="M${x - 6} ${y + 4} q6 6 12 0" fill="none" stroke="var(--onc)" stroke-width="2" stroke-linecap="round"/>` : mood === 'hurt' ? `<path d="M${x - 6} ${y + 7} q6 -6 12 0" fill="none" stroke="var(--onc)" stroke-width="2" stroke-linecap="round"/>` : `<path d="M${x - 5} ${y + 5} h10" stroke="var(--onc)" stroke-width="2" stroke-linecap="round"/>`;
+  return `<circle cx="${x}" cy="${y}" r="15" fill="${c}"/><circle cx="${x - 5}" cy="${y - 3}" r="1.8" fill="var(--onc)"/><circle cx="${x + 5}" cy="${y - 3}" r="1.8" fill="var(--onc)"/>${mouth}<path d="M${x - 22} ${y + 50} q0 -32 22 -32 q22 0 22 32 z" fill="${c}"/>${label ? `<text x="${x}" y="${y + 64}" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="${c}">${label}</text>` : ''}`;
+}
+function cloud(x, y, w, txt, c) { const L = wrapT(txt, Math.floor(w / 6)), h = 12 + L.length * 13;
+  return `<g class="popin"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="16" fill="var(--surface)" stroke="${c}" stroke-width="2"/><circle cx="${x + w / 2}" cy="${y + h + 6}" r="3.5" fill="var(--surface)" stroke="${c}" stroke-width="1.8"/>${L.map((l, i) => `<text x="${x + w / 2}" y="${y + 17 + i * 13}" text-anchor="middle" font-family="var(--display)" font-size="10" fill="var(--ink)">${esc(l)}</text>`).join('')}</g>`; }
+const SITS = [
+  ['Una amiga no me saluda por la calle', [['No me ha visto, iría con prisa.', 'ok', 'tranquilidad', 'var(--sage-ink)'], ['Estará enfadada conmigo.', 'neutral', 'preocupación', 'var(--gold)'], ['Pasa de mí. Nadie me tiene en cuenta.', 'hurt', 'tristeza', 'var(--rose-ink)']]],
+  ['Mi jefa me pide que vaya a su despacho', [['Querrá comentarme algo del trabajo.', 'ok', 'calma', 'var(--sage-ink)'], ['Seguro que he hecho algo mal.', 'neutral', 'miedo', 'var(--gold)'], ['Me va a despedir. Soy un desastre.', 'hurt', 'angustia', 'var(--rose-ink)']]],
+  ['No me contestan un mensaje', [['Estará ocupado/a.', 'ok', 'calma', 'var(--sage-ink)'], ['Le habré molestado con algo.', 'neutral', 'culpa', 'var(--gold)'], ['No le importo a nadie.', 'hurt', 'tristeza', 'var(--rose-ink)']]],
+];
+let sit = 0;
+function drawAbc() {
+  $('#sitCh').innerHTML = SITS.map(([t], i) => `<button class="chip" data-sit="${i}" aria-pressed="${sit === i}">${esc(t)}</button>`).join('');
+  document.querySelectorAll('[data-sit]').forEach(b => b.onclick = () => { sit = +b.dataset.sit; drawAbc(); });
+  const [t, P] = SITS[sit], xs = [56, 160, 264];
+  let g = `<rect x="40" y="6" width="240" height="34" rx="12" fill="var(--tint)" stroke="var(--accent)" stroke-width="1.5"/><text x="160" y="27" text-anchor="middle" font-family="var(--body)" font-size="11" font-weight="800" fill="var(--deep)">${esc(t)}</text>`;
+  P.forEach(([th, mood, emo, c], i) => { const x = xs[i];
+    g += `<path d="M160 40 L${x} 54" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="3 4"/>` + cloud(x - 50, 56, 100, th, c) + `<g class="popin">${face(x, 160, c, mood, '')}</g><rect x="${x - 44}" y="222" width="88" height="22" rx="11" fill="${c}"/><text x="${x}" y="237" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--onc)">${emo}</text>`; });
+  $('#abc').innerHTML = g;
+}
+let fused = true;
+function drawFu() {
+  $('#fuSeg').innerHTML = [[true, 'Pegado/a al pensamiento', 'var(--rose-ink)'], [false, 'Con distancia', 'var(--sage-ink)']].map(([m, l, c]) => `<button data-fu="${m}" aria-pressed="${fused === m}" style="--c:${c}">${l}</button>`).join('');
+  document.querySelectorAll('[data-fu]').forEach(b => b.onclick = () => { fused = b.dataset.fu === 'true'; drawFu(); });
+  const world = (o) => `<g opacity="${o}"><circle cx="268" cy="40" r="16" fill="var(--gold)"/><path d="M236 150 v-30 M236 124 c-16 0 -18 -26 0 -30 c18 4 16 30 0 30z" stroke="var(--sage-ink)" stroke-width="4" fill="var(--sage)"/><path d="M20 168 H300" stroke="var(--line)" stroke-width="3"/><circle cx="292" cy="140" r="9" fill="var(--frame)"/><path d="M280 168 q0 -18 12 -18 q12 0 12 18z" fill="var(--frame)"/></g>`;
+  let g = `<rect width="320" height="190" rx="16" fill="${fused ? 'var(--rose)' : 'var(--sage)'}" opacity=".45"/>`;
+  if (fused) g += world(.18) + `<g class="popin">${face(110, 110, 'var(--rose-ink)', 'hurt', '')}<rect x="40" y="62" width="140" height="58" rx="22" fill="var(--surface)" stroke="var(--rose-ink)" stroke-width="2.5"/><text x="110" y="88" text-anchor="middle" font-family="var(--display)" font-size="12" fill="var(--ink)">Soy un desastre.</text><text x="110" y="106" text-anchor="middle" font-family="var(--display)" font-size="12" fill="var(--ink)">Todo me sale mal.</text></g>`;
+  else g += world(1) + `<g class="popin">${face(110, 110, 'var(--sage-ink)', 'ok', '')}<path d="M130 124 l22 -20" stroke="var(--sage-ink)" stroke-width="5" stroke-linecap="round"/><rect x="128" y="26" width="104" height="52" rx="20" fill="var(--surface)" stroke="var(--sage-ink)" stroke-width="2" opacity=".9"/><text x="180" y="48" text-anchor="middle" font-family="var(--display)" font-size="10.5" fill="var(--muted)">Soy un desastre.</text><text x="180" y="64" text-anchor="middle" font-family="var(--display)" font-size="10.5" fill="var(--muted)">Todo me sale mal.</text><path d="M168 78 l-12 24" stroke="var(--sage-ink)" stroke-width="2" stroke-dasharray="3 3"/></g>`;
+  $('#fu').innerHTML = g;
+  $('#fuTxt').innerHTML = fused ? `<div class="info popin" style="--c:var(--rose-ink)"><p class="small">Cuando estamos pegados/as a un pensamiento, lo tomamos como la verdad: lo tapa todo y ya no vemos lo que hay alrededor. Y no es que lo hagamos mal: la mente funciona así.</p></div>`
+    : `<div class="info popin" style="--c:var(--sage-ink)"><p class="small">Con un poco de distancia, el pensamiento sigue ahí, pero ya no lo tapa todo: es algo que tu mente te dice, no un hecho. Así puedes elegir qué hacer, en vez de que decida él por ti.</p></div>`;
+}
+function drawPaths() {
+  $('#paths').innerHTML = `<rect width="320" height="170" rx="16" fill="var(--tint)" opacity=".5"/><rect x="104" y="12" width="112" height="38" rx="18" fill="var(--surface)" stroke="var(--deep)" stroke-width="2"/><text x="160" y="36" text-anchor="middle" font-family="var(--display)" font-size="11.5" fill="var(--ink)">Un pensamiento</text>
+    <path d="M140 50 C 120 80, 90 80, 80 100" stroke="var(--cog)" stroke-width="4" fill="none" stroke-dasharray="6 6"/><path d="M180 50 C 200 80, 230 80, 240 100" stroke="var(--def)" stroke-width="4" fill="none" stroke-dasharray="6 6"/>
+    <circle cx="80" cy="120" r="20" fill="var(--cog)"/><circle cx="76" cy="116" r="7" fill="none" stroke="var(--onc)" stroke-width="2.5"/><path d="M81 121 l6 6" stroke="var(--onc)" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="240" cy="120" r="20" fill="var(--def)"/><path d="M229 120 h22 M235 114 l-6 6 6 6 M245 114 l6 6 -6 6" stroke="var(--onc)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="80" y="156" text-anchor="middle" font-family="var(--body)" font-size="10.5" font-weight="800" fill="var(--cog)">Revisarlo</text><text x="80" y="168" text-anchor="middle" font-family="var(--body)" font-size="9" fill="var(--muted)">¿es tan cierto como parece?</text>
+    <text x="240" y="156" text-anchor="middle" font-family="var(--body)" font-size="10.5" font-weight="800" fill="var(--def)">Tomar distancia</text><text x="240" y="168" text-anchor="middle" font-family="var(--body)" font-size="9" fill="var(--muted)">dejarlo estar sin pelear</text>`;
+}
+const MYTHS = [['Si lo pienso, es que es verdad', 'Los pensamientos son interpretaciones, no hechos. La mente produce miles al día, y muchos son exagerados o simplemente falsos.'],
+  ['Tengo que pensar en positivo', 'No se trata de pensar en positivo, sino de una forma más justa y fiel a lo que pasa. A veces eso incluye cosas difíciles.'],
+  ['Si dejo de pensar en ello, se irá', 'Cuanto más intentamos no pensar en algo, más aparece. Funciona mejor dejarlo pasar o revisarlo que pelear con él.'],
+  ['Si pienso algo horrible, es que soy mala persona', 'Tener un pensamiento no te define ni significa que quieras hacerlo. Lo que dice algo de ti es lo que eliges hacer.'],
+  ['Mis pensamientos me dicen cómo soy', 'Muchos pensamientos son costumbres que se aprendieron hace tiempo. Se pueden mirar con curiosidad y cambiar poco a poco.']];
+let entDone = false;
+function renderEnt() { drawAbc(); drawFu(); drawPaths();
+  if (!entDone) { entDone = true; $('#myths').innerHTML = MYTHS.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-my="${i}"><span class="in"><span class="ff"><small>Me digo</small><b>«${esc(a)}»</b><i>Toca para ver lo que se sabe ↻</i></span><span class="fb"><small>Lo que se sabe</small><span class="small">${esc(b)}</span></span></span></button>`).join('');
+    document.querySelectorAll('[data-my]').forEach(f => f.onclick = () => f.setAttribute('aria-pressed', f.getAttribute('aria-pressed') !== 'true')); } }
 function switchTab(v) { document.querySelectorAll('nav.tabs button').forEach(x => x.setAttribute('aria-selected', x.dataset.view === v)); document.querySelectorAll('section.view').forEach(s => s.hidden = s.id !== 'view-' + v);
-  if (v === 'reg') renderReg(); if (v === 'espejo') renderEspejo(); window.scrollTo({ top: 0 }); }
+  if (v === 'reg') renderReg(); if (v === 'espejo') renderEspejo(); if (v === 'ent') renderEnt(); window.scrollTo({ top: 0 }); }
 document.querySelectorAll('nav.tabs button').forEach(b => b.onclick = () => switchTab(b.dataset.view));
-renderEspejo();
+renderEspejo(); renderEnt();
 </script>
 
 <!-- ===== Módulo común «Guardar en PDF» (se inserta en cada herramienta en lugar del marcador PDFKIT) ===== -->

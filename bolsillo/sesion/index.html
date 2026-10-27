@@ -19,7 +19,7 @@
   --bg: #F5F9F9; --surface: #FFFFFF; --ink: #17343B; --muted: #5C747A; --line: #D7E5E8;
   --accent: #166A7E; --deep: #0F4C5C; --tint: #E4EFF1; --on-accent: #FFFFFF;
   --sun: #E2A93B; --cloud: #9DB3BA; --rain: #5F84B8; --storm: #5B5888; --paper: #FBF8F1; --paper-line: #E7E0CF;
-  --warm: #F4E3DA; --warm-ink: #8E4E33; --sage: #E2EFEA; --sage-ink: #2C6E5D;
+  --warm: #F4E3DA; --warm-ink: #8E4E33; --sage: #E2EFEA; --sage-ink: #2C6E5D; --onc: #FFFFFF;
   --display: "Lora", Georgia, "Times New Roman", serif;
   --body: "Nunito Sans", "Segoe UI", system-ui, sans-serif;
 }
@@ -27,12 +27,12 @@
   --bg: #0C1C21; --surface: #12282E; --ink: #E2EEF0; --muted: #9AB2B8; --line: #234046;
   --accent: #5FB2C3; --deep: #9AD3DE; --tint: #18343B; --on-accent: #0C1C21;
   --sun: #E9B95A; --cloud: #7F979E; --rain: #86A6D6; --storm: #A9A6DD; --paper: #172E34; --paper-line: #264349;
-  --warm: #3A2A23; --warm-ink: #E8B39A; --sage: #183530; --sage-ink: #8CCDB6; color-scheme: dark } }
+  --warm: #3A2A23; --warm-ink: #E8B39A; --sage: #183530; --sage-ink: #8CCDB6; --onc: #0C1C21; color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #0C1C21; --surface: #12282E; --ink: #E2EEF0; --muted: #9AB2B8; --line: #234046;
   --accent: #5FB2C3; --deep: #9AD3DE; --tint: #18343B; --on-accent: #0C1C21;
   --sun: #E9B95A; --cloud: #7F979E; --rain: #86A6D6; --storm: #A9A6DD; --paper: #172E34; --paper-line: #264349;
-  --warm: #3A2A23; --warm-ink: #E8B39A; --sage: #183530; --sage-ink: #8CCDB6; color-scheme: dark }
+  --warm: #3A2A23; --warm-ink: #E8B39A; --sage: #183530; --sage-ink: #8CCDB6; --onc: #0C1C21; color-scheme: dark }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.55; }
@@ -50,7 +50,7 @@ header.top { display: flex; align-items: center; gap: 12px; margin-bottom: 18px;
 .brand { font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .brand b { color: var(--deep); font-weight: 700; }
 nav.tabs { display: flex; gap: 6px; background: var(--tint); padding: 5px; border-radius: 999px; margin-bottom: 22px; }
-nav.tabs button { flex: 1; border: 0; background: transparent; padding: 9px 8px; border-radius: 999px; font-weight: 600; color: var(--muted); font-size: .95rem; }
+nav.tabs button { flex: 1; border: 0; background: transparent; padding: 9px 4px; white-space: nowrap; border-radius: 999px; font-weight: 600; color: var(--muted); font-size: .95rem; }
 nav.tabs button[aria-selected="true"] { background: var(--surface); color: var(--deep); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
 section.view { display: flex; flex-direction: column; gap: 18px; }
 .stack { display: flex; flex-direction: column; gap: 10px; }
@@ -127,6 +127,24 @@ textarea, input[type=text] { width: 100%; border: 1.5px solid var(--line); borde
 footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px; font-size: .84rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
 .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); background: var(--deep); color: var(--bg); padding: 10px 18px; border-radius: 999px; font-weight: 600; z-index: 30; }
 @media (prefers-reduced-motion: reduce) { .sun-rays, .drop, .tagx { animation: none; } .pencil .pen { transition: none; } }
+.box { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.fig { width: 100%; height: auto; display: block; }
+.popin { animation: popin .45s ease-out; } @keyframes popin { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+.seg { display: flex; gap: 6px; background: var(--tint); padding: 4px; border-radius: 999px; }
+.seg button { flex: 1; border: 0; background: transparent; border-radius: 999px; padding: 8px 6px; font-weight: 700; font-size: .84rem; color: var(--muted); line-height: 1.25; }
+.seg button[aria-pressed="true"] { background: var(--c, var(--accent)); color: var(--onc); }
+.info { border-radius: 16px; padding: 12px 14px; font-size: .92rem; background: color-mix(in srgb, var(--c) 10%, var(--surface)); border-left: 4px solid var(--c); display: flex; flex-direction: column; gap: 6px; }
+.flips { display: grid; gap: 10px; }
+.flip { border: 0; padding: 0; background: transparent; perspective: 900px; text-align: left; width: 100%; }
+.flip .in { display: grid; transition: transform .6s cubic-bezier(.3,1.2,.5,1); transform-style: preserve-3d; }
+.flip[aria-pressed="true"] .in { transform: rotateY(180deg); }
+.flip .ff, .flip .fb { grid-area: 1 / 1; border-radius: 16px; padding: 12px 14px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; gap: 3px; min-height: 80px; justify-content: center; }
+.flip .ff { background: var(--warm); color: var(--warm-ink); border: 1.5px solid var(--line); }
+.flip .fb { background: var(--sage); color: var(--sage-ink); transform: rotateY(180deg); }
+.flip small { font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
+.flip b { font-family: var(--display); font-weight: 500; font-size: 1.02rem; }
+.flip i { font-style: normal; font-size: .76rem; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { .popin { animation: none !important; } .flip .in { transition: none; } }
 </style>
 
 </head>
@@ -138,10 +156,42 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
     <div class="brand"><b>Graciela Salvador</b> · Psicóloga</div>
   </header>
   <nav class="tabs" role="tablist">
-    <button role="tab" id="tab-prep" aria-selected="true" data-view="prep">Preparar</button>
+    <button role="tab" id="tab-ent" aria-selected="true" data-view="ent">Entender</button>
+    <button role="tab" id="tab-prep" aria-selected="false" data-view="prep">Antes</button>
+    <button role="tab" id="tab-desp" aria-selected="false" data-view="desp">Después</button>
     <button role="tab" id="tab-hist" aria-selected="false" data-view="hist">Mis semanas</button>
   </nav>
-  <section class="view" id="view-prep">
+  <section class="view" id="view-ent">
+    <h1>Sacarle partido a la terapia</h1>
+    <p class="muted">La terapia funciona mejor cuando llegas con algo en la mochila y te vas con algo en las manos. No hace falta llevarlo todo resuelto: basta con traer lo que te ha pasado.</p>
+    <div class="box">
+      <span class="eyebrow">Llegar con la mochila</span>
+      <p class="small">Compara cómo empieza una sesión sin preparar y una con lo que quieres hablar en la mochila.</p>
+      <div class="seg" id="moSeg"></div>
+      <svg class="fig" id="mo" viewBox="0 0 320 200" role="img" aria-label="Una persona llega a la sesión con o sin mochila"></svg>
+      <div id="moTxt"></div>
+    </div>
+    <div class="box">
+      <span class="eyebrow">Mejorar no es una línea recta</span>
+      <p class="small">Esperamos avanzar siempre hacia arriba, pero lo habitual es otra cosa. Compara.</p>
+      <div class="seg" id="lnSeg"></div>
+      <svg class="fig" id="ln" viewBox="0 0 320 170" role="img" aria-label="Cómo suele ser el camino de la mejoría"></svg>
+      <div id="lnTxt"></div>
+    </div>
+    <div class="box">
+      <span class="eyebrow">Cosas que nos decimos</span>
+      <p class="small">Toca cada tarjeta para ver lo que se sabe.</p>
+      <div class="flips" id="myths"></div>
+    </div>
+  </section>
+
+  <section class="view" id="view-desp" hidden>
+    <h1>Después de la sesión</h1>
+    <p class="muted">Lo que se habla en sesión se aprovecha más si lo anotas al salir, aunque sea en dos palabras.</p>
+    <div id="despBox" class="stack" style="gap:16px"></div>
+  </section>
+
+  <section class="view" id="view-prep" hidden>
     <div id="pencil"></div>
     <div id="screen" class="stack" style="gap:16px"></div>
     <p class="err" id="err" hidden></p>
@@ -299,16 +349,76 @@ function renderHist() {
   $('#weeks').innerHTML = `<div class="weeks">${hist.slice(-12).map(h => `<div class="wk">${W[h.w] ? W[h.w][1] : ''}<span>${new Date(h.t).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}</span></div>`).join('')}</div>`;
   $('#histList').innerHTML = hist.slice().reverse().map((h, ri) => { const i = hist.length - 1 - ri;
     return `<div class="hist"><div class="top">${W[h.w] ? W[h.w][1] : ''}<div><b>${new Date(h.t).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}</b><p class="small muted">Principal: ${esc(h.topics[0] || '—')}</p></div></div>
-      ${h.llevo || h.tarea ? `<div class="after">${h.llevo ? `<b>Me llevo:</b> ${esc(h.llevo)}<br>` : ''}${h.tarea ? `<b>Para esta semana:</b> ${esc(h.tarea)}` : ''}</div>` :
+      ${h.llevo || h.tarea ? `<div class="after">${h.wDesp && W[h.wDesp] ? `<b>Salí:</b> ${W[h.wDesp][0].toLowerCase()}<br>` : ''}${(h.llevoCh || []).length ? `<b>Me llevo:</b> ${esc(h.llevoCh.join(', ').toLowerCase())}<br>` : ''}${h.llevo ? `<b>Me llevo:</b> ${esc(h.llevo)}<br>` : ''}${h.tarea ? `<b>Para esta semana:</b> ${esc(h.tarea)}` : ''}</div>` :
       `<details><summary class="small" style="cursor:pointer;color:var(--accent);font-weight:700">Después de la sesión: anotar lo que me llevo</summary><div class="stack" style="margin-top:8px"><input type="text" data-llevo="${i}" placeholder="Lo que me llevo de la sesión"><input type="text" data-tarea="${i}" placeholder="Algo para practicar esta semana"><button class="btn small" data-saveafter="${i}" style="align-self:flex-start">Guardar</button></div></details>`}
       <div class="nav-row" style="justify-content:flex-start;gap:6px"><button class="btn link small" data-copyh="${i}">Copiar hoja</button></div></div>`; }).join('');
   document.querySelectorAll('[data-saveafter]').forEach(b => b.onclick = () => { const i = +b.dataset.saveafter; hist[i].llevo = document.querySelector(`[data-llevo="${i}"]`).value.trim(); hist[i].tarea = document.querySelector(`[data-tarea="${i}"]`).value.trim(); store.set('hist', hist); renderHist(); toast('Anotado'); });
   document.querySelectorAll('[data-copyh]').forEach(b => b.onclick = () => { const h = hist[+b.dataset.copyh]; copyText(summary(h) + (h.llevo ? `\nMe llevo: ${h.llevo}` : '') + (h.tarea ? `\nPara esta semana: ${h.tarea}` : '')); });
 }
-function switchTab(v) { document.querySelectorAll('nav.tabs button').forEach(x => x.setAttribute('aria-selected', x.dataset.view === v)); document.querySelectorAll('section.view').forEach(s => s.hidden = s.id !== 'view-' + v); if (v === 'hist') renderHist(); window.scrollTo({ top: 0 }); }
+
+// ---------- Entender ----------
+const wrapT = (t, n) => { const w = t.split(' '), Lx = []; let l = ''; w.forEach(x => { if ((l + ' ' + x).trim().length > n) { Lx.push(l.trim()); l = x; } else l += ' ' + x; }); if (l.trim()) Lx.push(l.trim()); return Lx; };
+function face(x, y, c, mood, label) {
+  const mouth = mood === 'ok' ? `<path d="M${x - 6} ${y + 4} q6 6 12 0" fill="none" stroke="var(--onc)" stroke-width="2" stroke-linecap="round"/>` : mood === 'hurt' ? `<path d="M${x - 6} ${y + 7} q6 -6 12 0" fill="none" stroke="var(--onc)" stroke-width="2" stroke-linecap="round"/>` : `<path d="M${x - 5} ${y + 5} h10" stroke="var(--onc)" stroke-width="2" stroke-linecap="round"/>`;
+  return `<circle cx="${x}" cy="${y}" r="15" fill="${c}"/><circle cx="${x - 5}" cy="${y - 3}" r="1.8" fill="var(--onc)"/><circle cx="${x + 5}" cy="${y - 3}" r="1.8" fill="var(--onc)"/>${mouth}<path d="M${x - 22} ${y + 50} q0 -32 22 -32 q22 0 22 32 z" fill="${c}"/>${label ? `<text x="${x}" y="${y + 64}" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="${c}">${label}</text>` : ''}`;
+}
+function bub(x, y, w, txt, c, tailX) { const Lx = wrapT(txt, Math.floor(w / 6.4)), h = 14 + Lx.length * 14;
+  return `<g class="popin"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="12" fill="var(--surface)" stroke="${c}" stroke-width="2"/><path d="M${tailX - 7} ${y + h - 1} L${tailX} ${y + h + 12} L${tailX + 7} ${y + h - 1}" fill="var(--surface)" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><rect x="${tailX - 8}" y="${y + h - 3}" width="16" height="4" fill="var(--surface)"/>${Lx.map((l, i) => `<text x="${x + 10}" y="${y + 19 + i * 14}" font-family="var(--display)" font-size="11" fill="var(--ink)">${esc(l)}</text>`).join('')}</g>`; }
+let mo = 'sin';
+function drawMo() {
+  $('#moSeg').innerHTML = [['sin', 'Sin preparar', 'var(--warm-ink)'], ['con', 'Con mi mochila', 'var(--sage-ink)']].map(([k, l, c]) => `<button data-mo="${k}" aria-pressed="${mo === k}" style="--c:${c}">${l}</button>`).join('');
+  document.querySelectorAll('[data-mo]').forEach(b => b.onclick = () => { mo = b.dataset.mo; drawMo(); });
+  const S2 = mo === 'sin', c = S2 ? 'var(--warm-ink)' : 'var(--sage-ink)';
+  let g = `<rect width="320" height="200" rx="16" fill="${c}" opacity=".07"/><path d="M10 188 H310" stroke="var(--line)" stroke-width="3"/>`;
+  g += `<g>${face(250, 132, 'var(--accent)', 'ok', 'mi psicóloga')}</g>` + bub(178, 50, 132, '¿Cómo ha ido la semana?', 'var(--accent)', 250);
+  g += `<g class="popin">${S2 ? '' : `<rect x="44" y="140" width="26" height="36" rx="8" fill="var(--sun)"/><rect x="48" y="156" width="18" height="12" rx="3" fill="var(--warm-ink)" opacity=".35"/>`}${face(80, 132, c, S2 ? 'neutral' : 'ok', 'yo')}${S2 ? '' : `<path d="M66 150 q4 14 2 30 M94 150 q-4 14 -2 30" stroke="var(--sun)" stroke-width="4" fill="none" stroke-linecap="round"/>`}</g>`;
+  g += bub(10, 12, 150, S2 ? 'Pues… bien, supongo. No sé muy bien de qué hablar.' : 'Quería hablar de lo que pasó con mi madre el martes.', c, 80);
+  $('#mo').innerHTML = g;
+  $('#moTxt').innerHTML = S2 ? `<div class="info popin" style="--c:var(--warm-ink)"><p class="small">Es muy normal llegar en blanco: en el día a día pasan muchas cosas y, al sentarte, se olvidan. Así, a veces, la sesión se va en recordar y lo importante se queda fuera.</p></div>`
+    : `<div class="info popin" style="--c:var(--sage-ink)"><p class="small">Con unos minutos de preparación llegas sabiendo qué te importa hablar. La sesión se aprovecha más y te vas con la sensación de haber trabajado lo que necesitabas.</p></div>`;
+}
+let ln = 'esp';
+function drawLn() {
+  $('#lnSeg').innerHTML = [['esp', 'Lo que esperamos', 'var(--rain)'], ['real', 'Lo que suele pasar', 'var(--sage-ink)']].map(([k, l, c]) => `<button data-ln="${k}" aria-pressed="${ln === k}" style="--c:${c}">${l}</button>`).join('');
+  document.querySelectorAll('[data-ln]').forEach(b => b.onclick = () => { ln = b.dataset.ln; drawLn(); });
+  const E = ln === 'esp', c = E ? 'var(--rain)' : 'var(--sage-ink)';
+  const d = E ? 'M20 150 L300 30' : 'M20 150 C 50 120, 60 140, 80 118 S 110 90, 125 120 S 150 100, 170 80 S 195 110, 210 96 S 245 60, 260 66 S 285 40, 300 30';
+  let g = `<rect width="320" height="170" rx="16" fill="${c}" opacity=".07"/><path d="M20 158 H300 M20 158 V14" stroke="var(--line)" stroke-width="2"/><text x="300" y="168" text-anchor="end" font-family="var(--body)" font-size="9" fill="var(--muted)">semanas de terapia →</text><text x="24" y="24" font-family="var(--body)" font-size="9" fill="var(--muted)">cómo estoy</text>`;
+  g += `<path class="popin" d="${d}" stroke="${c}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+  if (!E) g += `<g class="popin"><circle cx="125" cy="120" r="5" fill="var(--warm-ink)"/><text x="125" y="140" text-anchor="middle" font-family="var(--body)" font-size="9" font-weight="800" fill="var(--warm-ink)">una semana mala</text><circle cx="300" cy="30" r="5" fill="var(--sage-ink)"/></g>`;
+  $('#ln').innerHTML = g;
+  $('#lnTxt').innerHTML = E ? `<div class="info popin" style="--c:var(--rain)"><p class="small">Nos gustaría mejorar un poco cada semana, sin vueltas atrás. Por eso, cuando llega una semana mala, es fácil pensar que la terapia no funciona.</p></div>`
+    : `<div class="info popin" style="--c:var(--sage-ink)"><p class="small">Lo habitual es avanzar con subidas y bajadas. Una semana mala no borra lo que has avanzado, y además es muy buen material para la sesión. Lo que cuenta es la dirección general del camino.</p></div>`;
+}
+const MYTHS = [['Tengo que traer algo grave para que merezca la pena', 'Cualquier cosa que te haya removido vale. A menudo, lo pequeño del día a día lleva a lo importante.'],
+  ['Si lloro en sesión, lo estoy haciendo mal', 'Llorar es una forma de soltar y de mostrar lo que sientes. La sesión es un espacio seguro para hacerlo.'],
+  ['Debería salir mejor de cada sesión', 'Algunas sesiones remueven, y está bien. A veces salir algo removido/a es señal de que se ha tocado algo importante.'],
+  ['Si no estoy de acuerdo con mi psicóloga, mejor me lo callo', 'Decirlo ayuda mucho a la terapia. Tu psicóloga quiere saber lo que te sirve y lo que no.'],
+  ['Si no noto cambios cada semana, no avanzo', 'El cambio suele ser lento y con altibajos. Mirar tus semanas guardadas te ayuda a ver el camino completo.']];
+let entDone = false;
+function renderEnt() { drawMo(); drawLn();
+  if (!entDone) { entDone = true; $('#myths').innerHTML = MYTHS.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-my="${i}"><span class="in"><span class="ff"><small>Me digo</small><b>«${esc(a)}»</b><i>Toca para ver lo que se sabe ↻</i></span><span class="fb"><small>Lo que se sabe</small><span class="small">${esc(b)}</span></span></span></button>`).join('');
+    document.querySelectorAll('[data-my]').forEach(f => f.onclick = () => f.setAttribute('aria-pressed', f.getAttribute('aria-pressed') !== 'true')); } }
+// ---------- Después ----------
+const LLEVO = ['Una idea nueva sobre mí', 'Una herramienta para probar', 'Alivio por haberlo contado', 'Preguntas para pensar', 'Entender por qué me pasa', 'Ganas de seguir'];
+function renderDesp() {
+  if (!hist.length) { $('#despBox').innerHTML = '<div class="empty">Cuando prepares y guardes tu primera sesión en «Antes», aquí podrás anotar lo que te llevas.</div>'; return; }
+  const i = hist.length - 1, h = hist[i]; h.llevoCh = h.llevoCh || [];
+  $('#despBox').innerHTML = `<div class="box"><span class="eyebrow">Tu última sesión · ${new Date(h.t).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}</span><p class="small muted">Tema principal: ${esc(h.topics[0] || '—')}</p></div>
+    <div class="box"><span class="lbl">¿Cómo has salido de la sesión?</span><div class="weather">${Object.entries(W).map(([k, [n, svg]]) => `<button class="wbtn" data-wd="${k}" aria-pressed="${h.wDesp === k}">${svg}${n}</button>`).join('')}</div>
+      <p class="hint">Salir removido/a también es normal: a veces significa que se ha tocado algo importante.</p></div>
+    <div class="box"><span class="lbl">¿Qué te llevas?</span><div class="chips">${LLEVO.map(x => `<button class="chip" data-lc="${esc(x)}" aria-pressed="${h.llevoCh.includes(x)}">${esc(x)}</button>`).join('')}</div>
+      <input type="text" id="dLlevo" value="${esc(h.llevo || '')}" placeholder="Con tus palabras: lo que me llevo de la sesión">
+      <span class="lbl">Algo para practicar esta semana</span><input type="text" id="dTarea" value="${esc(h.tarea || '')}" placeholder="Por ejemplo: probar a decir que no una vez">
+      <button class="btn" id="dSave" style="align-self:flex-start">Guardar</button></div>`;
+  document.querySelectorAll('[data-wd]').forEach(b => b.onclick = () => { h.wDesp = b.dataset.wd; store.set('hist', hist); renderDesp(); });
+  document.querySelectorAll('[data-lc]').forEach(b => b.onclick = () => { h.llevoCh = toggle(h.llevoCh, b.dataset.lc); b.setAttribute('aria-pressed', h.llevoCh.includes(b.dataset.lc)); store.set('hist', hist); });
+  $('#dSave').onclick = () => { h.llevo = $('#dLlevo').value.trim(); h.tarea = $('#dTarea').value.trim(); store.set('hist', hist); toast('Anotado en tus semanas'); };
+}
+function switchTab(v) { document.querySelectorAll('nav.tabs button').forEach(x => x.setAttribute('aria-selected', x.dataset.view === v)); document.querySelectorAll('section.view').forEach(s => s.hidden = s.id !== 'view-' + v); if (v === 'hist') renderHist(); if (v === 'ent') renderEnt(); if (v === 'desp') renderDesp(); window.scrollTo({ top: 0 }); }
 document.querySelectorAll('nav.tabs button').forEach(b => b.onclick = () => switchTab(b.dataset.view));
 if (scr >= SCREENS.length) scr = 0;
-render();
+render(); renderEnt();
 </script>
 
 <!-- ===== Módulo común «Guardar en PDF» (se inserta en cada herramienta en lugar del marcador PDFKIT) ===== -->
