@@ -6,7 +6,7 @@
 export const config = { matcher: ['/bolsillo', '/bolsillo/:path*', '/herramientas', '/herramientas/:path*'] };
 
 const COOKIE = 'gs_acceso';
-const DIAS = 90; // días que el dispositivo recuerda el acceso
+const DIAS = 30; // días que el dispositivo recuerda el acceso
 
 async function huella(pass) {
   const data = new TextEncoder().encode('gs-herramientas:' + pass);
