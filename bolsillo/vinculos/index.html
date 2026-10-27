@@ -182,6 +182,31 @@ input[type=range] { width: 100%; }
 footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px; font-size: .84rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
 .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); background: var(--deep); color: var(--bg); padding: 10px 18px; border-radius: 999px; font-weight: 600; z-index: 30; }
 @media (prefers-reduced-motion: reduce) { .cycle .flow, .info, .pop, .fb, .stage.cur .dot, .sign path { animation: none; stroke-dashoffset: 0; } .cycle .voice, .cycle .lifering, .balance .beam { transition: none; } }
+
+/* Tanda 2: escenas y tarjetas */
+:root { --t2bad: #C45F45; --t2good: #3F8F6E; --t2mid: #B8862A; --t2onc: #FFFFFF; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --t2bad: #DE8466; --t2good: #7CC9A8; --t2mid: #E7B95A; --t2onc: #0C1C21; } }
+:root[data-theme="dark"] { --t2bad: #DE8466; --t2good: #7CC9A8; --t2mid: #E7B95A; --t2onc: #0C1C21; }
+.t2box { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.t2fig { width: 100%; height: auto; display: block; }
+.t2pop { animation: t2pop .45s ease-out; } @keyframes t2pop { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+.t2seg { display: flex; gap: 6px; background: var(--tint); padding: 4px; border-radius: 999px; }
+.t2seg button { flex: 1; border: 0; background: transparent; border-radius: 999px; padding: 8px 6px; font-weight: 700; font-size: .82rem; color: var(--muted); line-height: 1.25; }
+.t2seg button[aria-pressed="true"] { background: var(--c); color: var(--t2onc); }
+.t2info { border-radius: 16px; padding: 12px 14px; font-size: .92rem; background: color-mix(in srgb, var(--c) 10%, var(--surface)); border-left: 4px solid var(--c); }
+.t2flips { display: grid; gap: 10px; }
+.t2flip { border: 0; padding: 0; background: transparent; perspective: 900px; text-align: left; width: 100%; font: inherit; color: inherit; cursor: pointer; }
+.t2flip .in { display: grid; transition: transform .6s cubic-bezier(.3,1.2,.5,1); transform-style: preserve-3d; }
+.t2flip[aria-pressed="true"] .in { transform: rotateY(180deg); }
+.t2flip .ff, .t2flip .fb { grid-area: 1 / 1; border-radius: 16px; padding: 12px 14px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; gap: 3px; min-height: 80px; justify-content: center; }
+.t2flip .ff { background: var(--tint); color: var(--deep); border: 1.5px solid var(--line); }
+.t2flip .fb { background: color-mix(in srgb, var(--t2good) 14%, var(--surface)); color: var(--ink); border: 1.5px solid color-mix(in srgb, var(--t2good) 40%, transparent); transform: rotateY(180deg); }
+.t2flip small { font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
+.t2flip b { font-family: var(--display); font-weight: 500; font-size: 1.02rem; }
+.t2flip i { font-style: normal; font-size: .76rem; color: var(--muted); }
+.t2spin { animation: t2spin 4s linear infinite; transform-box: fill-box; transform-origin: center; } @keyframes t2spin { to { transform: rotate(360deg); } }
+.t2drop { animation: t2drop 1.2s linear infinite; } @keyframes t2drop { from { transform: translateY(0); opacity: 1; } to { transform: translateY(22px); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .t2pop, .t2spin, .t2drop { animation: none !important; } .t2flip .in { transition: none; } }
 </style>
 
 </head>
@@ -221,6 +246,18 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
       <button class="g" data-ans="g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21v-9M12 12c0-4 3-7 8-7 0 5-3 7-8 7zM12 15c0-3-2-5-6-5 0 4 2 5 6 5z"/></svg>Verde</button>
     </div>
     <div id="sigfb"></div>
+      <div class="t2box">
+      <span class="eyebrow">Cuando digo que no</span>
+      <p class="small" style="margin:0">Al principio de una relación, fíjate en cómo reacciona la otra persona cuando le dices que no a algo. Compara.</p>
+      <div class="t2seg" id="t2sSeg"></div>
+      <svg class="t2fig" id="t2sFig" viewBox="0 0 320 230" role="img" aria-label="Cuando digo que no"></svg>
+      <div id="t2sTxt"></div>
+    </div>
+    <div class="t2box">
+      <span class="eyebrow">Cosas que nos decimos</span>
+      <p class="small" style="margin:0">Toca cada tarjeta para ver lo que se sabe.</p>
+      <div class="t2flips" id="t2myths"></div>
+    </div>
   </section>
 
   <!-- CITAS -->
@@ -667,6 +704,37 @@ function switchTab(v) {
   window.scrollTo({ top: 0 });
 }
 $$('nav.tabs button').forEach(b => b.onclick = () => switchTab(b.dataset.view));
+
+// ---------- Tanda 2: escenas y tarjetas ----------
+const T2 = (() => {
+  const E = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const wrap = (t, n) => { const w = t.split(' '), L = []; let l = ''; w.forEach(x => { if ((l + ' ' + x).trim().length > n) { L.push(l.trim()); l = x; } else l += ' ' + x; }); if (l.trim()) L.push(l.trim()); return L; };
+  const face = (x, y, c, mood, label, extra = '') => {
+    const m = mood === 'ok' ? `<path d="M${x - 6} ${y + 4} q6 6 12 0" fill="none" stroke="var(--t2onc)" stroke-width="2" stroke-linecap="round"/>` : mood === 'hurt' ? `<path d="M${x - 6} ${y + 7} q6 -6 12 0" fill="none" stroke="var(--t2onc)" stroke-width="2" stroke-linecap="round"/>` : `<path d="M${x - 5} ${y + 5} h10" stroke="var(--t2onc)" stroke-width="2" stroke-linecap="round"/>`;
+    return `<circle cx="${x}" cy="${y}" r="15" fill="${c}"/><circle cx="${x - 5}" cy="${y - 3}" r="1.8" fill="var(--t2onc)"/><circle cx="${x + 5}" cy="${y - 3}" r="1.8" fill="var(--t2onc)"/>${m}${extra}<path d="M${x - 22} ${y + 50} q0 -32 22 -32 q22 0 22 32 z" fill="${c}"/>${label ? `<text x="${x}" y="${y + 64}" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="${c}">${label}</text>` : ''}`; };
+  const bub = (x, y, w, txt, c, tailX, think) => { const L = wrap(txt, Math.floor(w / 6.4)), h = 14 + L.length * 14;
+    const tail = think ? `<circle cx="${tailX}" cy="${y + h + 7}" r="4" fill="var(--surface)" stroke="${c}" stroke-width="2"/><circle cx="${tailX - 3}" cy="${y + h + 15}" r="2.4" fill="var(--surface)" stroke="${c}" stroke-width="1.5"/>` : `<path d="M${tailX - 7} ${y + h - 1} L${tailX} ${y + h + 12} L${tailX + 7} ${y + h - 1}" fill="var(--surface)" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><rect x="${tailX - 8}" y="${y + h - 3}" width="16" height="4" fill="var(--surface)"/>`;
+    return `<g class="t2pop"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${think ? 18 : 12}" fill="var(--surface)" stroke="${c}" stroke-width="2"/>${tail}${L.map((l, i) => `<text x="${x + 10}" y="${y + 19 + i * 14}" font-family="var(--display)" font-size="11" ${think ? 'font-style="italic"' : ''} fill="var(--ink)">${E(l)}</text>`).join('')}</g>`; };
+  const scene = (id, modes) => { let cur = Object.keys(modes)[0];
+    const draw = () => { const seg = document.getElementById(id + 'Seg');
+      seg.innerHTML = Object.entries(modes).map(([k, v]) => `<button data-t2="${k}" aria-pressed="${cur === k}" style="--c:${v.c}">${v.n}</button>`).join('');
+      seg.querySelectorAll('[data-t2]').forEach(b => b.onclick = () => { cur = b.dataset.t2; draw(); });
+      const v = modes[cur]; document.getElementById(id + 'Fig').innerHTML = `<rect width="320" height="${v.h || 230}" rx="16" fill="${v.c}" opacity=".07"/>` + v.svg();
+      document.getElementById(id + 'Txt').innerHTML = `<div class="t2info t2pop" style="--c:${v.c}"><p class="small" style="margin:0">${v.t}</p></div>`; };
+    draw(); };
+  const flips = (id, list) => { const el = document.getElementById(id);
+    el.innerHTML = list.map(([a, b], i) => `<button class="t2flip" aria-pressed="false"><span class="in"><span class="ff"><small>Me digo</small><b>«${E(a)}»</b><i>Toca para ver lo que se sabe ↻</i></span><span class="fb"><small>Lo que se sabe</small><span class="small">${E(b)}</span></span></span></button>`).join('');
+    el.querySelectorAll('.t2flip').forEach(f => f.onclick = () => f.setAttribute('aria-pressed', f.getAttribute('aria-pressed') !== 'true')); };
+  return { face, bub, scene, flips, E };
+})();
+
+T2.scene('t2s', {
+  alerta: { n: 'Señal de alerta', c: 'var(--t2bad)', svg: () => T2.bub(8, 8, 150, 'Este sábado no puedo, he quedado con mi grupo de siempre.', 'var(--accent)', 70) + T2.bub(162, 60, 150, '¿Otra vez? Pensaba que yo era lo primero para ti.', 'var(--t2bad)', 250) + T2.face(70, 150, 'var(--accent)', 'neutral', 'yo') + T2.face(250, 150, 'var(--t2bad)', 'hurt', 'la otra persona'),
+    t: 'Hacerte sentir culpable por tener tu propia vida es una señal de alerta. Al principio puede parecer interés o amor, pero poco a poco tu mundo se va haciendo más pequeño.' },
+  verde: { n: 'Señal verde', c: 'var(--t2good)', svg: () => T2.bub(8, 8, 150, 'Este sábado no puedo, he quedado con mi grupo de siempre.', 'var(--accent)', 70) + T2.bub(162, 60, 150, '¡Qué bien! Pásalo genial. ¿Nos vemos el domingo?', 'var(--t2good)', 250) + T2.face(70, 150, 'var(--accent)', 'ok', 'yo') + T2.face(250, 150, 'var(--t2good)', 'ok', 'la otra persona'),
+    t: 'Que la otra persona respete tu no, aunque le dé pena, es una señal verde. En una relación sana hay espacio para los dos y para la vida de cada uno.' },
+});
+T2.flips('t2myths', [["Los celos son una prueba de amor", "Los celos hablan de inseguridad, no de amor. Cuando sirven para controlar con quién estás o qué haces, son una señal de alerta."], ["Si me quiere, cambiará", "Las personas pueden cambiar, pero solo si quieren y trabajan en ello. Quedarte a esperar que cambie suele alargar el daño."], ["Al principio es normal querer estar juntos a todas horas", "La ilusión del principio es bonita, pero una relación sana no te pide dejar de lado tu vida, tus amistades ni tus planes."], ["Si pongo un límite al principio, se irá", "Si alguien se va porque pones un límite, te está dando una información muy valiosa. Las relaciones sanas se construyen sobre límites claros."], ["El amor lo puede todo", "El amor es importante, pero no basta. También hacen falta respeto, confianza y cuidado mutuo."]]);
 </script>
 
 <!-- ===== Módulo común «Guardar en PDF» (se inserta en cada herramienta en lugar del marcador PDFKIT) ===== -->

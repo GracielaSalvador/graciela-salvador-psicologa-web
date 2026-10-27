@@ -154,6 +154,31 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); background: var(--deep); color: var(--bg); padding: 10px 18px; border-radius: 999px; font-weight: 600; z-index: 30; }
 @media (max-width: 370px) { .flips, .types, .pauses, .four, .bal, .taps { grid-template-columns: 1fr; } .burn { grid-template-columns: 1fr; } .bat { grid-template-columns: 1fr; justify-items: center; } .sumbox { grid-template-columns: 1fr 1fr; } }
 @media (prefers-reduced-motion: reduce) { .pop { animation: none; } .flip .in, .bat .lvl, .meter i, .timer .ring { transition: none; } }
+
+/* Tanda 2: escenas y tarjetas */
+:root { --t2bad: #C45F45; --t2good: #3F8F6E; --t2mid: #B8862A; --t2onc: #FFFFFF; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --t2bad: #DE8466; --t2good: #7CC9A8; --t2mid: #E7B95A; --t2onc: #0C1C21; } }
+:root[data-theme="dark"] { --t2bad: #DE8466; --t2good: #7CC9A8; --t2mid: #E7B95A; --t2onc: #0C1C21; }
+.t2box { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.t2fig { width: 100%; height: auto; display: block; }
+.t2pop { animation: t2pop .45s ease-out; } @keyframes t2pop { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+.t2seg { display: flex; gap: 6px; background: var(--tint); padding: 4px; border-radius: 999px; }
+.t2seg button { flex: 1; border: 0; background: transparent; border-radius: 999px; padding: 8px 6px; font-weight: 700; font-size: .82rem; color: var(--muted); line-height: 1.25; }
+.t2seg button[aria-pressed="true"] { background: var(--c); color: var(--t2onc); }
+.t2info { border-radius: 16px; padding: 12px 14px; font-size: .92rem; background: color-mix(in srgb, var(--c) 10%, var(--surface)); border-left: 4px solid var(--c); }
+.t2flips { display: grid; gap: 10px; }
+.t2flip { border: 0; padding: 0; background: transparent; perspective: 900px; text-align: left; width: 100%; font: inherit; color: inherit; cursor: pointer; }
+.t2flip .in { display: grid; transition: transform .6s cubic-bezier(.3,1.2,.5,1); transform-style: preserve-3d; }
+.t2flip[aria-pressed="true"] .in { transform: rotateY(180deg); }
+.t2flip .ff, .t2flip .fb { grid-area: 1 / 1; border-radius: 16px; padding: 12px 14px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; gap: 3px; min-height: 80px; justify-content: center; }
+.t2flip .ff { background: var(--tint); color: var(--deep); border: 1.5px solid var(--line); }
+.t2flip .fb { background: color-mix(in srgb, var(--t2good) 14%, var(--surface)); color: var(--ink); border: 1.5px solid color-mix(in srgb, var(--t2good) 40%, transparent); transform: rotateY(180deg); }
+.t2flip small { font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
+.t2flip b { font-family: var(--display); font-weight: 500; font-size: 1.02rem; }
+.t2flip i { font-style: normal; font-size: .76rem; color: var(--muted); }
+.t2spin { animation: t2spin 4s linear infinite; transform-box: fill-box; transform-origin: center; } @keyframes t2spin { to { transform: rotate(360deg); } }
+.t2drop { animation: t2drop 1.2s linear infinite; } @keyframes t2drop { from { transform: translateY(0); opacity: 1; } to { transform: translateY(22px); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .t2pop, .t2spin, .t2drop { animation: none !important; } .t2flip .in { transition: none; } }
 </style>
 
 </head>
@@ -206,6 +231,18 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
       <p class="small">Si el estrés dura mucho tiempo sin recuperarnos, puede aparecer el agotamiento profundo (lo que se conoce como «estar quemado/a»). Suele tener tres caras:</p>
       <div class="burn"><div><b>Agotamiento</b>Me levanto ya cansado/a y descansar no me recupera.</div><div><b>Distancia</b>Me desconecto, todo me da igual o estoy más cínico/a.</div><div><b>No llego</b>Siento que no rindo, que nada de lo que hago es suficiente.</div></div>
       <p class="small muted">Si te reconoces aquí, no es debilidad: es una señal de que necesitas parar y pedir apoyo.</p>
+    </div>
+      <div class="t2box">
+      <span class="eyebrow">Decir que sí a todo</span>
+      <p class="small" style="margin:0">Te piden algo más cuando ya vas al límite. Compara dos respuestas y fíjate en la batería.</p>
+      <div class="t2seg" id="t2sSeg"></div>
+      <svg class="t2fig" id="t2sFig" viewBox="0 0 320 230" role="img" aria-label="Decir que sí a todo"></svg>
+      <div id="t2sTxt"></div>
+    </div>
+    <div class="t2box">
+      <span class="eyebrow">Cosas que nos decimos</span>
+      <p class="small" style="margin:0">Toca cada tarjeta para ver lo que se sabe.</p>
+      <div class="t2flips" id="t2myths"></div>
     </div>
   </section>
 
@@ -507,6 +544,37 @@ function switchTab(v) {
   window.scrollTo({ top: 0 });
 }
 $$('nav.tabs button').forEach(b => b.onclick = () => switchTab(b.dataset.view));
+
+// ---------- Tanda 2: escenas y tarjetas ----------
+const T2 = (() => {
+  const E = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const wrap = (t, n) => { const w = t.split(' '), L = []; let l = ''; w.forEach(x => { if ((l + ' ' + x).trim().length > n) { L.push(l.trim()); l = x; } else l += ' ' + x; }); if (l.trim()) L.push(l.trim()); return L; };
+  const face = (x, y, c, mood, label, extra = '') => {
+    const m = mood === 'ok' ? `<path d="M${x - 6} ${y + 4} q6 6 12 0" fill="none" stroke="var(--t2onc)" stroke-width="2" stroke-linecap="round"/>` : mood === 'hurt' ? `<path d="M${x - 6} ${y + 7} q6 -6 12 0" fill="none" stroke="var(--t2onc)" stroke-width="2" stroke-linecap="round"/>` : `<path d="M${x - 5} ${y + 5} h10" stroke="var(--t2onc)" stroke-width="2" stroke-linecap="round"/>`;
+    return `<circle cx="${x}" cy="${y}" r="15" fill="${c}"/><circle cx="${x - 5}" cy="${y - 3}" r="1.8" fill="var(--t2onc)"/><circle cx="${x + 5}" cy="${y - 3}" r="1.8" fill="var(--t2onc)"/>${m}${extra}<path d="M${x - 22} ${y + 50} q0 -32 22 -32 q22 0 22 32 z" fill="${c}"/>${label ? `<text x="${x}" y="${y + 64}" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="${c}">${label}</text>` : ''}`; };
+  const bub = (x, y, w, txt, c, tailX, think) => { const L = wrap(txt, Math.floor(w / 6.4)), h = 14 + L.length * 14;
+    const tail = think ? `<circle cx="${tailX}" cy="${y + h + 7}" r="4" fill="var(--surface)" stroke="${c}" stroke-width="2"/><circle cx="${tailX - 3}" cy="${y + h + 15}" r="2.4" fill="var(--surface)" stroke="${c}" stroke-width="1.5"/>` : `<path d="M${tailX - 7} ${y + h - 1} L${tailX} ${y + h + 12} L${tailX + 7} ${y + h - 1}" fill="var(--surface)" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><rect x="${tailX - 8}" y="${y + h - 3}" width="16" height="4" fill="var(--surface)"/>`;
+    return `<g class="t2pop"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${think ? 18 : 12}" fill="var(--surface)" stroke="${c}" stroke-width="2"/>${tail}${L.map((l, i) => `<text x="${x + 10}" y="${y + 19 + i * 14}" font-family="var(--display)" font-size="11" ${think ? 'font-style="italic"' : ''} fill="var(--ink)">${E(l)}</text>`).join('')}</g>`; };
+  const scene = (id, modes) => { let cur = Object.keys(modes)[0];
+    const draw = () => { const seg = document.getElementById(id + 'Seg');
+      seg.innerHTML = Object.entries(modes).map(([k, v]) => `<button data-t2="${k}" aria-pressed="${cur === k}" style="--c:${v.c}">${v.n}</button>`).join('');
+      seg.querySelectorAll('[data-t2]').forEach(b => b.onclick = () => { cur = b.dataset.t2; draw(); });
+      const v = modes[cur]; document.getElementById(id + 'Fig').innerHTML = `<rect width="320" height="${v.h || 230}" rx="16" fill="${v.c}" opacity=".07"/>` + v.svg();
+      document.getElementById(id + 'Txt').innerHTML = `<div class="t2info t2pop" style="--c:${v.c}"><p class="small" style="margin:0">${v.t}</p></div>`; };
+    draw(); };
+  const flips = (id, list) => { const el = document.getElementById(id);
+    el.innerHTML = list.map(([a, b], i) => `<button class="t2flip" aria-pressed="false"><span class="in"><span class="ff"><small>Me digo</small><b>«${E(a)}»</b><i>Toca para ver lo que se sabe ↻</i></span><span class="fb"><small>Lo que se sabe</small><span class="small">${E(b)}</span></span></span></button>`).join('');
+    el.querySelectorAll('.t2flip').forEach(f => f.onclick = () => f.setAttribute('aria-pressed', f.getAttribute('aria-pressed') !== 'true')); };
+  return { face, bub, scene, flips, E };
+})();
+
+T2.scene('t2s', {
+  si: { n: 'Sí a todo', c: 'var(--t2bad)', svg: () => T2.bub(162, 8, 150, '¿Te encargas tú también de esto?', 'var(--accent)', 250) + T2.bub(8, 8, 150, 'No sé cómo voy a llegar a todo…', 'var(--t2bad)', 60, true) + T2.bub(8, 76, 150, 'Sí, claro, no te preocupes.', 'var(--t2bad)', 70) + T2.face(70, 156, 'var(--t2bad)', 'hurt', 'yo') + `<rect x="104" y="118" width="16" height="30" rx="3" fill="none" stroke="var(--muted)" stroke-width="2"/><rect x="109" y="114" width="6" height="4" rx="1" fill="var(--muted)"/><rect x="107" y="140" width="10" height="5" rx="1.5" fill="var(--t2bad)"/>` + T2.face(250, 156, 'var(--accent)', 'ok', 'quien me lo pide'),
+    t: 'Decir que sí a todo agota poco a poco, aunque sea con buena intención. La energía no es infinita, y cuando se acaba, lo pagan tu cuerpo y tu ánimo.' },
+  elijo: { n: 'Elijo dónde pongo mi energía', c: 'var(--t2good)', svg: () => T2.bub(162, 8, 150, '¿Te encargas tú también de esto?', 'var(--accent)', 250) + T2.bub(8, 62, 150, 'Esta semana no llego. ¿Lo vemos el lunes?', 'var(--t2good)', 70) + T2.face(70, 156, 'var(--t2good)', 'ok', 'yo') + `<rect x="104" y="118" width="16" height="30" rx="3" fill="none" stroke="var(--muted)" stroke-width="2"/><rect x="109" y="114" width="6" height="4" rx="1" fill="var(--muted)"/><rect x="107" y="125" width="10" height="20" rx="1.5" fill="var(--t2good)"/>` + T2.face(250, 156, 'var(--accent)', 'neutral', 'quien me lo pide'),
+    t: 'Elegir dónde pones tu energía no es egoísmo: es cuidarte para poder seguir cuidando lo que te importa.' },
+});
+T2.flips('t2myths', [["Descansar es perder el tiempo", "Descansar es parte de cuidarte. Sin descanso, la energía se agota y todo cuesta el doble."], ["Ya descansaré en vacaciones", "Unas vacaciones no compensan meses sin pausas. La energía se cuida cada día, con pausas pequeñas."], ["Si paro, es que no puedo con todo", "Parar a tiempo es una forma de poder con lo importante. Nadie puede con todo siempre."], ["Dormir más siempre recarga", "Depende del cansancio. Si es mental o emocional, a veces recarga más moverse, desconectar o estar con alguien."], ["Cuidarme es egoísta", "Cuidarte te permite cuidar mejor a los demás. Una batería vacía no puede dar energía a nadie."]]);
 </script>
 
 <!-- ===== Módulo común «Guardar en PDF» (se inserta en cada herramienta en lugar del marcador PDFKIT) ===== -->

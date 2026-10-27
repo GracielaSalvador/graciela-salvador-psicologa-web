@@ -144,6 +144,31 @@ input[type=text] { width: 100%; border: 1.5px solid var(--line); border-radius: 
 footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px; font-size: .84rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
 .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); background: var(--deep); color: var(--bg); padding: 10px 18px; border-radius: 999px; font-weight: 600; z-index: 30; }
 @media (prefers-reduced-motion: reduce) { .pop, .tnode, .tline, .wcard, .balloon, .coin .c.spin { animation: none; } .rings .it, .bar .tr i, .flyer { transition: none; } }
+
+/* Tanda 2: escenas y tarjetas */
+:root { --t2bad: #C45F45; --t2good: #3F8F6E; --t2mid: #B8862A; --t2onc: #FFFFFF; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --t2bad: #DE8466; --t2good: #7CC9A8; --t2mid: #E7B95A; --t2onc: #0C1C21; } }
+:root[data-theme="dark"] { --t2bad: #DE8466; --t2good: #7CC9A8; --t2mid: #E7B95A; --t2onc: #0C1C21; }
+.t2box { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.t2fig { width: 100%; height: auto; display: block; }
+.t2pop { animation: t2pop .45s ease-out; } @keyframes t2pop { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+.t2seg { display: flex; gap: 6px; background: var(--tint); padding: 4px; border-radius: 999px; }
+.t2seg button { flex: 1; border: 0; background: transparent; border-radius: 999px; padding: 8px 6px; font-weight: 700; font-size: .82rem; color: var(--muted); line-height: 1.25; }
+.t2seg button[aria-pressed="true"] { background: var(--c); color: var(--t2onc); }
+.t2info { border-radius: 16px; padding: 12px 14px; font-size: .92rem; background: color-mix(in srgb, var(--c) 10%, var(--surface)); border-left: 4px solid var(--c); }
+.t2flips { display: grid; gap: 10px; }
+.t2flip { border: 0; padding: 0; background: transparent; perspective: 900px; text-align: left; width: 100%; font: inherit; color: inherit; cursor: pointer; }
+.t2flip .in { display: grid; transition: transform .6s cubic-bezier(.3,1.2,.5,1); transform-style: preserve-3d; }
+.t2flip[aria-pressed="true"] .in { transform: rotateY(180deg); }
+.t2flip .ff, .t2flip .fb { grid-area: 1 / 1; border-radius: 16px; padding: 12px 14px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; gap: 3px; min-height: 80px; justify-content: center; }
+.t2flip .ff { background: var(--tint); color: var(--deep); border: 1.5px solid var(--line); }
+.t2flip .fb { background: color-mix(in srgb, var(--t2good) 14%, var(--surface)); color: var(--ink); border: 1.5px solid color-mix(in srgb, var(--t2good) 40%, transparent); transform: rotateY(180deg); }
+.t2flip small { font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
+.t2flip b { font-family: var(--display); font-weight: 500; font-size: 1.02rem; }
+.t2flip i { font-style: normal; font-size: .76rem; color: var(--muted); }
+.t2spin { animation: t2spin 4s linear infinite; transform-box: fill-box; transform-origin: center; } @keyframes t2spin { to { transform: rotate(360deg); } }
+.t2drop { animation: t2drop 1.2s linear infinite; } @keyframes t2drop { from { transform: translateY(0); opacity: 1; } to { transform: translateY(22px); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .t2pop, .t2spin, .t2drop { animation: none !important; } .t2flip .in { transition: none; } }
 </style>
 
 </head>
@@ -177,6 +202,18 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
     <p class="muted">Piensa en lo último que te ha preocupado y toca lo que reconozcas.</p>
     <div class="chips" id="rumi"></div>
     <div id="rumiRes"></div>
+      <div class="t2box">
+      <span class="eyebrow">Preguntas que dan vueltas y preguntas que avanzan</span>
+      <p class="small" style="margin:0">No todas las preguntas que nos hacemos sirven igual. Compara.</p>
+      <div class="t2seg" id="t2sSeg"></div>
+      <svg class="t2fig" id="t2sFig" viewBox="0 0 320 240" role="img" aria-label="Preguntas que dan vueltas y preguntas que avanzan"></svg>
+      <div id="t2sTxt"></div>
+    </div>
+    <div class="t2box">
+      <span class="eyebrow">Cosas que nos decimos</span>
+      <p class="small" style="margin:0">Toca cada tarjeta para ver lo que se sabe.</p>
+      <div class="t2flips" id="t2myths"></div>
+    </div>
   </section>
 
   <!-- ¿DEPENDE? -->
@@ -488,6 +525,39 @@ function switchTab(v) {
   window.scrollTo({ top: 0 });
 }
 $$('nav.tabs button').forEach(b => b.onclick = () => switchTab(b.dataset.view));
+
+// ---------- Tanda 2: escenas y tarjetas ----------
+const T2 = (() => {
+  const E = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const wrap = (t, n) => { const w = t.split(' '), L = []; let l = ''; w.forEach(x => { if ((l + ' ' + x).trim().length > n) { L.push(l.trim()); l = x; } else l += ' ' + x; }); if (l.trim()) L.push(l.trim()); return L; };
+  const face = (x, y, c, mood, label, extra = '') => {
+    const m = mood === 'ok' ? `<path d="M${x - 6} ${y + 4} q6 6 12 0" fill="none" stroke="var(--t2onc)" stroke-width="2" stroke-linecap="round"/>` : mood === 'hurt' ? `<path d="M${x - 6} ${y + 7} q6 -6 12 0" fill="none" stroke="var(--t2onc)" stroke-width="2" stroke-linecap="round"/>` : `<path d="M${x - 5} ${y + 5} h10" stroke="var(--t2onc)" stroke-width="2" stroke-linecap="round"/>`;
+    return `<circle cx="${x}" cy="${y}" r="15" fill="${c}"/><circle cx="${x - 5}" cy="${y - 3}" r="1.8" fill="var(--t2onc)"/><circle cx="${x + 5}" cy="${y - 3}" r="1.8" fill="var(--t2onc)"/>${m}${extra}<path d="M${x - 22} ${y + 50} q0 -32 22 -32 q22 0 22 32 z" fill="${c}"/>${label ? `<text x="${x}" y="${y + 64}" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="${c}">${label}</text>` : ''}`; };
+  const bub = (x, y, w, txt, c, tailX, think) => { const L = wrap(txt, Math.floor(w / 6.4)), h = 14 + L.length * 14;
+    const tail = think ? `<circle cx="${tailX}" cy="${y + h + 7}" r="4" fill="var(--surface)" stroke="${c}" stroke-width="2"/><circle cx="${tailX - 3}" cy="${y + h + 15}" r="2.4" fill="var(--surface)" stroke="${c}" stroke-width="1.5"/>` : `<path d="M${tailX - 7} ${y + h - 1} L${tailX} ${y + h + 12} L${tailX + 7} ${y + h - 1}" fill="var(--surface)" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><rect x="${tailX - 8}" y="${y + h - 3}" width="16" height="4" fill="var(--surface)"/>`;
+    return `<g class="t2pop"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${think ? 18 : 12}" fill="var(--surface)" stroke="${c}" stroke-width="2"/>${tail}${L.map((l, i) => `<text x="${x + 10}" y="${y + 19 + i * 14}" font-family="var(--display)" font-size="11" ${think ? 'font-style="italic"' : ''} fill="var(--ink)">${E(l)}</text>`).join('')}</g>`; };
+  const scene = (id, modes) => { let cur = Object.keys(modes)[0];
+    const draw = () => { const seg = document.getElementById(id + 'Seg');
+      seg.innerHTML = Object.entries(modes).map(([k, v]) => `<button data-t2="${k}" aria-pressed="${cur === k}" style="--c:${v.c}">${v.n}</button>`).join('');
+      seg.querySelectorAll('[data-t2]').forEach(b => b.onclick = () => { cur = b.dataset.t2; draw(); });
+      const v = modes[cur]; document.getElementById(id + 'Fig').innerHTML = `<rect width="320" height="${v.h || 230}" rx="16" fill="${v.c}" opacity=".07"/>` + v.svg();
+      document.getElementById(id + 'Txt').innerHTML = `<div class="t2info t2pop" style="--c:${v.c}"><p class="small" style="margin:0">${v.t}</p></div>`; };
+    draw(); };
+  const flips = (id, list) => { const el = document.getElementById(id);
+    el.innerHTML = list.map(([a, b], i) => `<button class="t2flip" aria-pressed="false"><span class="in"><span class="ff"><small>Me digo</small><b>«${E(a)}»</b><i>Toca para ver lo que se sabe ↻</i></span><span class="fb"><small>Lo que se sabe</small><span class="small">${E(b)}</span></span></span></button>`).join('');
+    el.querySelectorAll('.t2flip').forEach(f => f.onclick = () => f.setAttribute('aria-pressed', f.getAttribute('aria-pressed') !== 'true')); };
+  return { face, bub, scene, flips, E };
+})();
+
+T2.scene('t2s', {
+  rueda: { n: 'Dan vueltas', c: 'var(--t2bad)', svg: () => T2.bub(6, 8, 140, '¿Y si sale mal?', 'var(--t2bad)', 110, true) + T2.bub(174, 8, 140, '¿Por qué me pasa esto a mí?', 'var(--t2bad)', 210, true) + T2.bub(90, 76, 140, '¿Y si no lo soporto?', 'var(--t2bad)', 160, true)
+      + `<g class="t2spin"><circle cx="160" cy="156" r="30" fill="none" stroke="var(--t2bad)" stroke-width="3" stroke-dasharray="14 8"/></g>` + T2.face(160, 156, 'var(--t2bad)', 'hurt', ''),
+    t: 'Las preguntas de «¿y si…?» y «¿por qué…?» no tienen una respuesta que se pueda comprobar. Por eso la mente vuelve a ellas una y otra vez, y el malestar crece.' },
+  avanza: { n: 'Avanzan', c: 'var(--t2good)', svg: () => T2.bub(6, 8, 140, '¿Qué depende de mí?', 'var(--t2good)', 110, true) + T2.bub(174, 8, 140, '¿Qué puedo hacer hoy?', 'var(--t2good)', 210, true) + T2.bub(90, 76, 140, '¿Cuál es el siguiente paso?', 'var(--t2good)', 160, true)
+      + `<path d="M186 214 H296" stroke="var(--t2good)" stroke-width="4" stroke-linecap="round"/><path d="M288 206 l10 8 -10 8" stroke="var(--t2good)" stroke-width="4" fill="none" stroke-linecap="round"/>` + T2.face(160, 156, 'var(--t2good)', 'ok', ''),
+    t: 'Las preguntas de «¿qué puedo hacer?» llevan a una acción concreta. Si ahora no hay nada que hacer, puedes aparcarlo hasta tu hora de preocuparte.' },
+});
+T2.flips('t2myths', [["Si le doy vueltas, encontraré la solución", "Darle vueltas se parece a pensar, pero casi nunca lleva a una solución. Resolver tiene pasos concretos; darle vueltas, no."], ["Preocuparme me prepara para lo peor", "La preocupación no evita lo malo. Lo que sí hace es que lo sufras muchas veces antes de que pase, si es que llega a pasar."], ["Si dejo de preocuparme, es que no me importa", "Puedes cuidar lo que te importa sin pasarte el día pensando en ello. Aparcarlo no es abandonarlo."], ["Tengo que estar seguro/a antes de decidir", "Casi ninguna decisión ofrece una seguridad total. Decidir con la información que tienes también es avanzar."], ["No puedo dejar de pensar en ello", "No puedes evitar que aparezca un pensamiento, pero sí elegir no seguirle el juego: aparcarlo, moverte o volver a lo que estabas haciendo."]]);
 </script>
 
 <!-- ===== Módulo común «Guardar en PDF» (se inserta en cada herramienta en lugar del marcador PDFKIT) ===== -->
