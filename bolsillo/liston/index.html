@@ -161,6 +161,31 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); background: var(--deep); color: var(--bg); padding: 10px 18px; border-radius: 999px; font-weight: 600; z-index: 30; }
 @media (max-width: 370px) { .cols { grid-template-columns: 1fr; } .arow { grid-template-columns: 1fr 96px 22px; } .jarbox { grid-template-columns: 1fr; justify-items: center; } }
 @media (prefers-reduced-motion: reduce) { .pop, .cycle .flow, .bub { animation: none; } .flip .in, .cycle .node, .fig .move, .col, .costm i { transition: none; } }
+
+/* Tanda 2: escenas y tarjetas */
+:root { --t2bad: #C45F45; --t2good: #3F8F6E; --t2mid: #B8862A; --t2onc: #FFFFFF; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --t2bad: #DE8466; --t2good: #7CC9A8; --t2mid: #E7B95A; --t2onc: #0C1C21; } }
+:root[data-theme="dark"] { --t2bad: #DE8466; --t2good: #7CC9A8; --t2mid: #E7B95A; --t2onc: #0C1C21; }
+.t2box { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.t2fig { width: 100%; height: auto; display: block; }
+.t2pop { animation: t2pop .45s ease-out; } @keyframes t2pop { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+.t2seg { display: flex; gap: 6px; background: var(--tint); padding: 4px; border-radius: 999px; }
+.t2seg button { flex: 1; border: 0; background: transparent; border-radius: 999px; padding: 8px 6px; font-weight: 700; font-size: .82rem; color: var(--muted); line-height: 1.25; }
+.t2seg button[aria-pressed="true"] { background: var(--c); color: var(--t2onc); }
+.t2info { border-radius: 16px; padding: 12px 14px; font-size: .92rem; background: color-mix(in srgb, var(--c) 10%, var(--surface)); border-left: 4px solid var(--c); }
+.t2flips { display: grid; gap: 10px; }
+.t2flip { border: 0; padding: 0; background: transparent; perspective: 900px; text-align: left; width: 100%; font: inherit; color: inherit; cursor: pointer; }
+.t2flip .in { display: grid; transition: transform .6s cubic-bezier(.3,1.2,.5,1); transform-style: preserve-3d; }
+.t2flip[aria-pressed="true"] .in { transform: rotateY(180deg); }
+.t2flip .ff, .t2flip .fb { grid-area: 1 / 1; border-radius: 16px; padding: 12px 14px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; gap: 3px; min-height: 80px; justify-content: center; }
+.t2flip .ff { background: var(--tint); color: var(--deep); border: 1.5px solid var(--line); }
+.t2flip .fb { background: color-mix(in srgb, var(--t2good) 14%, var(--surface)); color: var(--ink); border: 1.5px solid color-mix(in srgb, var(--t2good) 40%, transparent); transform: rotateY(180deg); }
+.t2flip small { font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
+.t2flip b { font-family: var(--display); font-weight: 500; font-size: 1.02rem; }
+.t2flip i { font-style: normal; font-size: .76rem; color: var(--muted); }
+.t2spin { animation: t2spin 4s linear infinite; transform-box: fill-box; transform-origin: center; } @keyframes t2spin { to { transform: rotate(360deg); } }
+.t2drop { animation: t2drop 1.2s linear infinite; } @keyframes t2drop { from { transform: translateY(0); opacity: 1; } to { transform: translateY(22px); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .t2pop, .t2spin, .t2drop { animation: none !important; } .t2flip .in { transition: none; } }
 </style>
 
 </head>
@@ -213,6 +238,18 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
       <p class="small">Dejar las cosas para luego no es pereza. Muchas veces es una forma de protegerme del malestar de no hacerlo perfecto. Toca cada paso del bucle.</p>
       <svg class="cycle" id="pcycle" viewBox="0 0 340 300" role="img" aria-label="El bucle de dejarlo para luego en cinco pasos"></svg>
       <div id="pInfo"></div>
+    </div>
+      <div class="t2box">
+      <span class="eyebrow">Un pequeño error</span>
+      <p class="small" style="margin:0">Has entregado un informe y te avisan de que tiene una errata. Compara dos formas de vivirlo.</p>
+      <div class="t2seg" id="t2sSeg"></div>
+      <svg class="t2fig" id="t2sFig" viewBox="0 0 320 230" role="img" aria-label="Un pequeño error"></svg>
+      <div id="t2sTxt"></div>
+    </div>
+    <div class="t2box">
+      <span class="eyebrow">Cosas que nos decimos</span>
+      <p class="small" style="margin:0">Toca cada tarjeta para ver lo que se sabe.</p>
+      <div class="t2flips" id="t2myths"></div>
     </div>
   </section>
 
@@ -626,6 +663,35 @@ function switchTab(v) {
   window.scrollTo({ top: 0 });
 }
 $$('nav.tabs button').forEach(b => b.onclick = () => switchTab(b.dataset.view));
+
+// ---------- Tanda 2: escenas y tarjetas ----------
+const T2 = (() => {
+  const E = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const wrap = (t, n) => { const w = t.split(' '), L = []; let l = ''; w.forEach(x => { if ((l + ' ' + x).trim().length > n) { L.push(l.trim()); l = x; } else l += ' ' + x; }); if (l.trim()) L.push(l.trim()); return L; };
+  const face = (x, y, c, mood, label, extra = '') => {
+    const m = mood === 'ok' ? `<path d="M${x - 6} ${y + 4} q6 6 12 0" fill="none" stroke="var(--t2onc)" stroke-width="2" stroke-linecap="round"/>` : mood === 'hurt' ? `<path d="M${x - 6} ${y + 7} q6 -6 12 0" fill="none" stroke="var(--t2onc)" stroke-width="2" stroke-linecap="round"/>` : `<path d="M${x - 5} ${y + 5} h10" stroke="var(--t2onc)" stroke-width="2" stroke-linecap="round"/>`;
+    return `<circle cx="${x}" cy="${y}" r="15" fill="${c}"/><circle cx="${x - 5}" cy="${y - 3}" r="1.8" fill="var(--t2onc)"/><circle cx="${x + 5}" cy="${y - 3}" r="1.8" fill="var(--t2onc)"/>${m}${extra}<path d="M${x - 22} ${y + 50} q0 -32 22 -32 q22 0 22 32 z" fill="${c}"/>${label ? `<text x="${x}" y="${y + 64}" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="${c}">${label}</text>` : ''}`; };
+  const bub = (x, y, w, txt, c, tailX, think) => { const L = wrap(txt, Math.floor(w / 6.4)), h = 14 + L.length * 14;
+    const tail = think ? `<circle cx="${tailX}" cy="${y + h + 7}" r="4" fill="var(--surface)" stroke="${c}" stroke-width="2"/><circle cx="${tailX - 3}" cy="${y + h + 15}" r="2.4" fill="var(--surface)" stroke="${c}" stroke-width="1.5"/>` : `<path d="M${tailX - 7} ${y + h - 1} L${tailX} ${y + h + 12} L${tailX + 7} ${y + h - 1}" fill="var(--surface)" stroke="${c}" stroke-width="2" stroke-linejoin="round"/><rect x="${tailX - 8}" y="${y + h - 3}" width="16" height="4" fill="var(--surface)"/>`;
+    return `<g class="t2pop"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${think ? 18 : 12}" fill="var(--surface)" stroke="${c}" stroke-width="2"/>${tail}${L.map((l, i) => `<text x="${x + 10}" y="${y + 19 + i * 14}" font-family="var(--display)" font-size="11" ${think ? 'font-style="italic"' : ''} fill="var(--ink)">${E(l)}</text>`).join('')}</g>`; };
+  const scene = (id, modes) => { let cur = Object.keys(modes)[0];
+    const draw = () => { const seg = document.getElementById(id + 'Seg');
+      seg.innerHTML = Object.entries(modes).map(([k, v]) => `<button data-t2="${k}" aria-pressed="${cur === k}" style="--c:${v.c}">${v.n}</button>`).join('');
+      seg.querySelectorAll('[data-t2]').forEach(b => b.onclick = () => { cur = b.dataset.t2; draw(); });
+      const v = modes[cur]; document.getElementById(id + 'Fig').innerHTML = `<rect width="320" height="${v.h || 230}" rx="16" fill="${v.c}" opacity=".07"/>` + v.svg();
+      document.getElementById(id + 'Txt').innerHTML = `<div class="t2info t2pop" style="--c:${v.c}"><p class="small" style="margin:0">${v.t}</p></div>`; };
+    draw(); };
+  const flips = (id, list) => { const el = document.getElementById(id);
+    el.innerHTML = list.map(([a, b], i) => `<button class="t2flip" aria-pressed="false"><span class="in"><span class="ff"><small>Me digo</small><b>«${E(a)}»</b><i>Toca para ver lo que se sabe ↻</i></span><span class="fb"><small>Lo que se sabe</small><span class="small">${E(b)}</span></span></span></button>`).join('');
+    el.querySelectorAll('.t2flip').forEach(f => f.onclick = () => f.setAttribute('aria-pressed', f.getAttribute('aria-pressed') !== 'true')); };
+  return { face, bub, scene, flips, E };
+})();
+
+T2.scene("t2s", {
+  exig: { n: "Con el listón por las nubes", c: "var(--t2bad)", svg: () => T2.bub(162, 8, 150, "Hay una errata en la página 3. Cuando puedas, la cambias.", "var(--accent)", 250) + T2.bub(8, 60, 150, "Soy un desastre. Tendría que haberlo revisado diez veces.", "var(--t2bad)", 70, true) + T2.face(70, 156, "var(--t2bad)", "hurt", 'yo') + T2.face(250, 156, "var(--accent)", "ok", "mi jefa"), t: "Con el listón muy alto, un error pequeño se vive como un fracaso total. El malestar dura horas y la próxima vez cuesta más empezar." },
+  ajus: { n: "Con el listón ajustado", c: "var(--t2good)", svg: () => T2.bub(162, 8, 150, "Hay una errata en la página 3. Cuando puedas, la cambias.", "var(--accent)", 250) + T2.bub(8, 60, 150, "Vaya, se me pasó. La corrijo y sigo.", "var(--t2good)", 70, true) + T2.face(70, 156, "var(--t2good)", "ok", 'yo') + T2.face(250, 156, "var(--accent)", "ok", "mi jefa"), t: "Con un listón ajustado, el error se ve del tamaño que tiene: algo que se corrige. Sigues queriendo hacerlo bien, pero sin castigarte." }
+});
+T2.flips('t2myths', [["Si bajo el listón, haré las cosas mal", "Ajustar el listón no es hacerlo mal: es poner el esfuerzo donde vale la pena y dejar de pagar un precio tan alto."], ["Mi exigencia es lo que me hace bueno/a", "Los logros suelen venir del esfuerzo y de lo que sabes hacer, no del miedo a fallar. La autoexigencia extrema suele agotar y frenar."], ["Si no está perfecto, no vale", "«Suficientemente bien» suele ser más que suficiente. Además, lo perfecto casi nunca llega."], ["Equivocarme dice algo de quién soy", "Un error habla de lo que pasó, no de lo que vales. Todo el mundo se equivoca, también las personas más capaces."], ["Si me trato con cariño, me relajaré demasiado", "Tratarte con cariño te ayuda a recuperarte antes de los errores y a seguir intentándolo."]]);
 </script>
 
 <!-- ===== Módulo común «Guardar en PDF» (se inserta en cada herramienta en lugar del marcador PDFKIT) ===== -->
