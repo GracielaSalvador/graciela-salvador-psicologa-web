@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,500&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap">
 <style>
-/* Layout: una columna con 4 pestañas; las cuatro piezas de la imagen corporal, el espejo con lupa, el paraguas de los mensajes, el mapa de mi cuerpo, las dos trampas, lo que mi cuerpo hace por mí, mirarme sin lupa, limpiar mis redes, castigo o cariño y la bandera de la paz son las piezas interactivas */
+/* Layout: una columna con 4 pestañas; las cuatro piezas de la imagen corporal, el espejo con lupa, el paraguas de los mensajes, el mapa de mi cuerpo, las cuatro trampas, el ciclo del control, lo que mi cuerpo hace por mí, mirarme sin lupa, limpiar mis redes, castigo o cariño y la bandera de la paz son las piezas interactivas */
 :root {
   --bg: #F5F9F9; --surface: #FFFFFF; --ink: #17343B; --muted: #5C747A; --line: #D7E5E8; --accent: #166A7E; --deep: #0F4C5C; --tint: #E4EFF1; --on-accent: #FFFFFF; --warn: #F4E3DA; --warn-ink: #8E4E33; --ok: #E2EFEA; --ok-ink: #2C6E5D; --display: "Lora", Georgia, "Times New Roman", serif; --body: "Nunito Sans", "Segoe UI", system-ui, sans-serif;
   --tc: #C27045; --see: #4F7FA8; --think: #8C5A9E; --feel: #C46A7E; --do: #4F9A7C; --war: #C45F45; --gold: #C8962E; --onc: #FFFFFF;
@@ -142,6 +142,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 .hot { cursor: pointer; } .hot:focus { outline: none; } .hot:focus-visible { outline: 3px solid var(--ink); }
 .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .trap { border-radius: 16px; padding: 10px; display: flex; flex-direction: column; gap: 6px; border: 1.5px solid var(--c); background: color-mix(in srgb, var(--c) 7%, var(--surface)); }
+.trap .chip { border-radius: 14px; padding: 7px 11px; }
 .trap .h { display: flex; align-items: center; gap: 8px; } .trap .h svg { width: 28px; height: 28px; color: var(--c); } .trap b { color: var(--c); }
 .feed { display: flex; flex-direction: column; gap: 8px; }
 .post { display: grid; grid-template-columns: 44px 1fr auto; gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 16px; padding: 8px 10px; background: var(--surface); transition: opacity .3s; }
@@ -220,11 +221,20 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
       <div id="mapTxt"></div>
     </div>
     <div class="card">
-      <span class="eyebrow">Las dos trampas</span>
-      <p class="small">Para manejar el malestar solemos caer en una de dos trampas: comprobar sin parar o evitar. Las dos alivian un momento, pero mantienen el malestar. Marca lo que haces, sin juzgarte.</p>
+      <span class="eyebrow">Las cuatro trampas</span>
+      <p class="small">Para manejar el malestar con el cuerpo solemos caer en alguna de estas trampas: comprobar, evitar, compensar o controlar. Todas alivian un momento, pero mantienen el malestar. Marca lo que haces, sin juzgarte.</p>
       <div class="two" id="traps"></div>
-      <svg class="fig" id="meter" viewBox="0 0 320 70" role="img" aria-label="Cuánto alimentan el malestar las dos trampas"></svg>
+      <svg class="fig" id="meter" viewBox="0 0 320 70" role="img" aria-label="Cuánto alimentan el malestar las cuatro trampas"></svg>
       <div id="trapTxt"></div>
+    </div>
+    <div class="card" id="cicloCard" hidden>
+      <span class="eyebrow">El ciclo del control</span>
+      <p class="small">Compensar y controlar suelen ir juntos y forman un círculo que se alimenta solo. Toca cada paso para entenderlo.</p>
+      <svg class="cycle" id="ciclo" viewBox="0 0 320 270" role="img" aria-label="El ciclo del control"></svg>
+      <div id="cicloTxt"></div>
+      <div class="slot"><span class="lbl">Una norma que me pongo</span><input type="text" id="normaR" placeholder="Ej.: «Si como algo fuera de lo normal, tengo que compensarlo»"></div>
+      <div class="slot"><span class="lbl">Una versión más flexible</span><input type="text" id="normaF" placeholder="Ej.: «Puedo comer algo distinto un día sin tener que compensar nada»"></div>
+      <div class="warn small">Si te reconoces en este ciclo, es importante trabajarlo en terapia: no es algo para resolver solo/a con una app. Mira también «Cuándo pedir ayuda» en la pestaña «Cuidarme».</div>
     </div>
     <div class="card">
       <span class="eyebrow">La voz sobre mi cuerpo</span>
@@ -381,6 +391,9 @@ const MYTHS = [['Cuando cambie mi cuerpo, me sentiré bien', 'La imagen corporal
 const CUANDO = [['Frente al espejo', '<rect x="6" y="3" width="12" height="16" rx="6"/><path d="M9 21h6"/>'], ['En las fotos', '<rect x="3" y="7" width="18" height="13" rx="2"/><circle cx="12" cy="13.5" r="3.5"/><path d="M8 7l1.5-3h5L16 7"/>'], ['Con la ropa', '<path d="M8 3l-5 3 2 5 3-1v11h8V10l3 1 2-5-5-3c-1 2-2 3-4 3S9 5 8 3z"/>'], ['En la playa o la piscina', '<circle cx="17" cy="6" r="3"/><path d="M2 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0M2 21c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/>'], ['Al compararme', '<path d="M12 4v16M7 20h10M5 7h14M5 7l-3 6h6zM19 7l-3 6h6z"/>'], ['Con las redes sociales', '<rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18.5h2"/>'], ['Cuando me comentan algo', '<path d="M4 5h16v10H9l-5 4z"/><path d="M8 9h8M8 12h5"/>'], ['En la intimidad', '<path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/>'], ['Al hacer deporte', '<circle cx="13" cy="4.5" r="2"/><path d="M9 21l3-6 3 2v4M7 12l3-3 4 1 3 3"/>']];
 const PARTS = [['La cara', 160, 64, 13], ['El pelo', 160, 44, 10], ['La piel', 98, 60, 0], ['Los brazos', 127, 112, 9], ['El pecho', 160, 100, 13], ['La tripa', 160, 125, 12], ['Las caderas', 160, 149, 12], ['Las piernas', 151, 188, 12], ['Las manos', 127, 147, 8], ['Los pies', 172, 222, 8], ['La espalda', 222, 112, 0], ['Las cicatrices o marcas', 222, 60, 0]];
 const CHECK = ['Mirarme en cada espejo', 'Pellizcarme o tocarme partes del cuerpo', 'Compararme con otras personas', 'Pedir que me digan que estoy bien', 'Hacerme muchas fotos'];
+const COMP = ['Sentir que tengo que «compensar» lo que como', 'Hacer ejercicio por obligación o para «quemar»', 'Comer menos después de haber comido más', 'Castigarme después de comer algo «prohibido»'];
+const CONTROL = ['Tener normas muy estrictas con la comida', 'Dividir la comida en «buena» y «mala»', 'Agobiarme si no puedo seguir mi plan', 'Necesitar tenerlo todo bajo control'];
+const CICLO = [['Una norma rígida', 'Sobre la comida, el ejercicio o el cuerpo: «nunca puedo…», «si hago X, tengo que…». Da sensación de seguridad, pero es tan estricta que es fácil romperla.'], ['Se rompe (o parece que se va a romper)', 'Un día distinto, una comida fuera de lo previsto, un comentario… Y la norma se tambalea.'], ['Culpa y ansiedad', 'Aparece un malestar muy intenso, como si hubiera pasado algo grave. Es una emoción válida, aunque la norma que la dispara no sea justa contigo.'], ['Compenso o aprieto el control', 'Hago algo para «arreglarlo» o me pongo normas todavía más estrictas.'], ['Alivio… que dura poco', 'El malestar baja un rato, y por eso parece que funciona. Pero ese alivio refuerza la norma, que vuelve más rígida, y el círculo empieza otra vez.']];
 const AVOID = ['No mirarme en el espejo', 'Taparme con ropa ancha', 'No ir a la playa o la piscina', 'Salir de las fotos', 'Evitar la intimidad', 'No comprarme ropa'];
 const VOZ = ['Qué asco me doy', 'No puedo salir así', 'Todo me queda mal', 'Mira a los demás, y mírate tú', 'Así nadie me va a querer', 'Ya me arreglaré cuando cambie'];
 const DONDE = ['Comentarios en mi familia', 'El colegio o el instituto', 'Las redes sociales', 'La publicidad y las series', 'Una pareja o expareja', 'El deporte o el baile'];
@@ -394,7 +407,7 @@ const CUID = [['Moverme por disfrutar', '<circle cx="13" cy="4.5" r="2"/><path d
 const PB = [['a', 'Mi cuerpo no tiene que ser perfecto para…', ['vivir mi vida', 'merecer cariño', 'ir a la playa', 'disfrutar']], ['b', 'Hoy le agradezco que…', ['me sostiene', 'me deja abrazar', 'me lleva a donde quiero', 'se cura y se recupera']], ['c', 'Voy a tratarlo…', ['con respeto', 'con paciencia', 'como trataría el de alguien que quiero', 'con calma']]];
 const HELP = [['<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>', 'Mi cuerpo o mi aspecto ocupan casi todos mis pensamientos.', 'var(--gold)'], ['<path d="M7 3v8a2 2 0 0 0 4 0V3M9 11v10M17 3c-2 0-3 2-3 5s1 4 3 4v9"/>', 'Me salto comidas, como a escondidas o hago algo para compensar lo que he comido.', 'var(--war)'], ['<circle cx="13" cy="4.5" r="2"/><path d="M9 21l3-6 3 2v4M7 12l3-3 4 1 3 3"/>', 'Hago ejercicio aunque esté lesionado/a o me siento obligado/a a hacerlo.', 'var(--war)'], ['<path d="M5 21V4h10v17M15 4l4 2v15M11 12h.01"/>', 'Evito muchas cosas que me importan por mi aspecto.', 'var(--think)'], ['<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>', 'Me hago daño o pienso que no merece la pena seguir. En ese caso, llama al <b>024</b> (24 h) o al <b>112</b>.', 'var(--war)']];
 
-let S = Object.assign({ cuando: [], parts: [], check: [], avoid: [], voz: [], donde: [], func: [], tho: [], own: {}, unf: [], cuid: [], p: { a: '', b: '', c: '' } }, store.get('mio', {}) || {});
+let S = Object.assign({ cuando: [], parts: [], check: [], avoid: [], comp: [], control: [], normaR: '', normaF: '', voz: [], donde: [], func: [], tho: [], own: {}, unf: [], cuid: [], p: { a: '', b: '', c: '' } }, store.get('mio', {}) || {});
 const saveS = () => store.set('mio', S);
 let WK = store.get('semanas', []), MR = store.get('espejo', []), PZ = store.get('frases', []);
 const joinY = (a) => a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' y ' + a[a.length - 1];
@@ -461,14 +474,33 @@ function drawMap() {
 }
 function drawTraps() {
   const box = (key, list, n, c, ic, d) => `<div class="trap" style="--c:${c}"><div class="h">${SI(ic)}<b>${n}</b></div><span class="small muted">${d}</span><div class="chips">${list.map(t => `<button class="chip" style="--c:${c}" data-tr="${key}" data-v="${esc(t)}" aria-pressed="${S[key].includes(t)}">${esc(t)}</button>`).join('')}</div></div>`;
-  $('#traps').innerHTML = box('check', CHECK, 'Comprobar', 'var(--gold)', '<circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/>', 'Vigilar el cuerpo una y otra vez.') + box('avoid', AVOID, 'Evitar', 'var(--think)', '<path d="M4 6h16v12H4z"/><path d="M4 10h16M4 14h16M8 6v12"/>', 'Esconderlo o no exponerlo.');
-  $$('[data-tr]').forEach(b => b.onclick = () => { const k = b.dataset.tr; S[k] = toggle(S[k], b.dataset.v); saveS(); b.setAttribute('aria-pressed', S[k].includes(b.dataset.v)); drawMeter(); });
-  drawMeter();
+  $('#traps').innerHTML = box('check', CHECK, 'Comprobar', 'var(--gold)', '<circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/>', 'Vigilar el cuerpo una y otra vez.') + box('avoid', AVOID, 'Evitar', 'var(--think)', '<path d="M4 6h16v12H4z"/><path d="M4 10h16M4 14h16M8 6v12"/>', 'Esconderlo o no exponerlo.')
+    + box('comp', COMP, 'Compensar', 'var(--war)', '<path d="M12 3v18M5 7h14M5 7l-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0z"/>', 'Intentar «arreglar» lo que he comido o hecho.') + box('control', CONTROL, 'Controlar', 'var(--see)', '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>', 'Vivir con normas muy rígidas.');
+  $$('[data-tr]').forEach(b => b.onclick = () => { const k = b.dataset.tr; S[k] = toggle(S[k], b.dataset.v); saveS(); b.setAttribute('aria-pressed', S[k].includes(b.dataset.v)); drawMeter(); renderCiclo(); });
+  drawMeter(); renderCiclo();
 }
 function drawMeter() {
-  const a = S.check.length, b = S.avoid.length, t = Math.min(10, a + b), w = 220 * t / 10;
-  $('#meter').innerHTML = `<text x="10" y="20" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--war)">malestar que se mantiene</text><rect x="10" y="30" width="300" height="16" rx="8" fill="var(--tint)"/><rect x="10" y="30" width="${Math.max(16, 300 * t / 10)}" height="16" rx="8" fill="var(--war)" opacity="${.3 + t / 15}" style="transition:width .5s"/><text x="10" y="64" font-family="var(--body)" font-size="9.5" fill="var(--muted)">comprobar: ${a} · evitar: ${b}</text>`;
-  $('#trapTxt').innerHTML = a + b ? `<div class="note small pop">Tiene sentido hacerlo: buscas calmar el malestar. Pero cuanto más comprobamos, más defectos encontramos, y cuanto más evitamos, más grande se hace el miedo. Reducirlo poco a poco ayuda mucho.</div>` : '';
+  const a = S.check.length, b = S.avoid.length, c = S.comp.length, d = S.control.length, t = Math.min(10, a + b + c + d);
+  $('#meter').innerHTML = `<text x="10" y="20" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--war)">malestar que se mantiene</text><rect x="10" y="30" width="300" height="16" rx="8" fill="var(--tint)"/><rect x="10" y="30" width="${Math.max(16, 300 * t / 10)}" height="16" rx="8" fill="var(--war)" opacity="${.3 + t / 15}" style="transition:width .5s"/><text x="10" y="64" font-family="var(--body)" font-size="9.5" fill="var(--muted)">comprobar: ${a} · evitar: ${b} · compensar: ${c} · controlar: ${d}</text>`;
+  $('#trapTxt').innerHTML = a + b + c + d ? `<div class="note small pop">Tiene sentido hacerlo: buscas calmar el malestar. Pero cuanto más comprobamos, más defectos encontramos; cuanto más evitamos, más grande se hace el miedo; y cuanto más compensamos o controlamos, más rígidas se vuelven las normas. Reducirlo poco a poco ayuda mucho.</div>` : '';
+}
+let cicloSel = 0;
+function renderCiclo() {
+  const on = S.comp.length || S.control.length, card = $('#cicloCard');
+  if (!on) { card.hidden = true; return; }
+  const was = card.hidden; card.hidden = false; if (was) card.classList.add('pop');
+  const cx = 160, cy = 132, R = 96, n = CICLO.length, P = CICLO.map((_, i) => { const a = -Math.PI / 2 + i * 2 * Math.PI / n; return [cx + R * Math.cos(a), cy + R * Math.sin(a)]; });
+  const cols = ['var(--see)', 'var(--gold)', 'var(--war)', 'var(--think)', 'var(--do)'];
+  let g = `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="var(--line)" stroke-width="3" class="flow"/>`;
+  g += `<text x="${cx}" y="${cy - 4}" text-anchor="middle" font-family="var(--display)" font-size="15" fill="var(--war)">el círculo</text><text x="${cx}" y="${cy + 14}" text-anchor="middle" font-family="var(--body)" font-size="9.5" fill="var(--muted)">se alimenta solo</text>`;
+  P.forEach(([x, y], i) => { const sel = i === cicloSel, lab = ['Norma', 'Se rompe', 'Culpa', 'Compenso', 'Alivio'][i];
+    g += `<g class="node ${sel ? 'on' : ''}" data-ci="${i}" tabindex="0" role="button" aria-label="${CICLO[i][0]}"><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="27" fill="${sel ? cols[i] : 'var(--surface)'}" stroke="${cols[i]}" stroke-width="2.5"/><text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle" font-family="var(--body)" font-size="9.5" font-weight="800" fill="${sel ? 'var(--onc)' : cols[i]}">${lab}</text></g>`; });
+  $('#ciclo').innerHTML = g;
+  $$('#ciclo .node').forEach(nd => { const go = () => { cicloSel = +nd.dataset.ci; renderCiclo(); }; nd.onclick = go; nd.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } }; });
+  const [t, d] = CICLO[cicloSel];
+  $('#cicloTxt').innerHTML = `<div class="info pop" style="--c:${cols[cicloSel]}"><h3>${cicloSel + 1}. ${t}</h3><p class="small">${d}</p></div>`;
+  $('#normaR').value = S.normaR; $('#normaR').oninput = (e) => { S.normaR = e.target.value; saveS(); };
+  $('#normaF').value = S.normaF; $('#normaF').oninput = (e) => { S.normaF = e.target.value; saveS(); };
 }
 function renderMio() {
   tiles('#cuando', CUANDO, 'cuando');
@@ -570,6 +602,9 @@ function summary() {
   if (S.parts.length) L.push('Partes con las que estoy en guerra: ' + S.parts.join(', ').toLowerCase());
   if (S.check.length) L.push('Comprobar: ' + S.check.join(', ').toLowerCase());
   if (S.avoid.length) L.push('Evitar: ' + S.avoid.join(', ').toLowerCase());
+  if (S.comp.length) L.push('Compensar: ' + S.comp.join(', ').toLowerCase());
+  if (S.control.length) L.push('Controlar: ' + S.control.join(', ').toLowerCase());
+  if (S.normaR.trim()) L.push(`Una norma que me pongo: «${S.normaR.trim()}»${S.normaF.trim() ? ` → más flexible: «${S.normaF.trim()}»` : ''}`);
   if (S.voz.length) L.push('Me digo: ' + S.voz.map(v => `«${v}»`).join(', ') + (S.donde.length ? ` (lo aprendí en: ${S.donde.join(', ').toLowerCase()})` : ''));
   if (S.func.length) L.push('Lo que mi cuerpo hace por mí: ' + S.func.join(', ').toLowerCase());
   S.tho.forEach(i => L.push(`En guerra «${THO[i][0]}» → en paz «${(S.own[i] || '').trim() || THO[i][1]}»`));
@@ -824,7 +859,8 @@ const PDFKIT = (() => {
     intro: 'Cuándo aparece el malestar con mi cuerpo, lo que hago con él y cómo estoy haciendo las paces.',
     sections: () => [
       { id: 'malestar', title: 'Mi malestar', intimate: true, html: S.cuando.length || S.parts.length ? K.card((S.cuando.length ? `<span class="k">Cuándo aparece</span>${K.tags(S.cuando)}` : '') + (S.parts.length ? `<span class="k">Partes con las que estoy en guerra</span>${K.tags(S.parts)}` : ''), 'soft') : '' },
-      { id: 'trampas', title: 'Las dos trampas', html: S.check.length || S.avoid.length ? `<div class="grid2">${K.card(`<span class="k">Comprobar</span>${K.list(S.check)}`)}${K.card(`<span class="k">Evitar</span>${K.list(S.avoid)}`)}</div>` : '' },
+      { id: 'trampas', title: 'Las cuatro trampas', html: S.check.length || S.avoid.length || S.comp.length || S.control.length ? `<div class="grid2">${[['Comprobar', S.check], ['Evitar', S.avoid], ['Compensar', S.comp], ['Controlar', S.control]].filter(x => x[1].length).map(([n, l]) => K.card(`<span class="k">${n}</span>${K.list(l)}`)).join('')}</div>` : '' },
+      { id: 'norma', title: 'Una norma que me pongo', intimate: true, html: S.normaR.trim() ? K.card(K.kv('La norma', `«${K.esc(S.normaR.trim())}»`) + K.kv('Más flexible', S.normaF.trim() ? `«${K.esc(S.normaF.trim())}»` : '')) : '' },
       { id: 'voz', title: 'La voz sobre mi cuerpo', intimate: true, html: S.voz.length || S.tho.length ? K.card((S.voz.length ? `<span class="k">Lo que me digo</span>${K.tags(S.voz)}` : '') + (S.donde.length ? `<span class="k">Dónde lo aprendí</span>${K.tags(S.donde)}` : '')) + (S.tho.length ? `<table>${S.tho.map(i => `<tr><td>«${K.esc(THO[i][0])}»</td><td><b>«${K.esc(myAlt(i))}»</b></td></tr>`).join('')}</table>` : '') : '' },
       { id: 'func', title: 'Lo que mi cuerpo hace por mí', html: S.func.length ? K.card(K.list(FUNC.filter(f => S.func.includes(f[0])).map(f => `${f[0]}: ${f[2]}`)), 'good') : '' },
       { id: 'espejo', title: 'Mirarme sin lupa', note: 'Malestar de 0 a 10', html: MR.length ? K.ba(MR.slice(-8).map(m => [K.fcorta(m.t), m.antes, m.despues]), 'Al empezar', 'Al terminar', HX.war, HX.do) : '' },

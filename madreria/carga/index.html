@@ -149,13 +149,20 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 .hid { display: flex; flex-direction: column; gap: 6px; counter-reset: h; }
 .hid span { counter-increment: h; display: grid; grid-template-columns: 26px 1fr; gap: 8px; align-items: center; font-size: .92rem; background: color-mix(in srgb, var(--think) 8%, var(--surface)); border: 1px solid color-mix(in srgb, var(--think) 25%, transparent); border-radius: 12px; padding: 7px 10px; }
 .hid span::before { content: counter(h); width: 24px; height: 24px; border-radius: 50%; background: var(--think); color: var(--onc); font-weight: 800; font-size: .78rem; display: grid; place-items: center; }
-.who { display: flex; flex-direction: column; gap: 8px; }
-.wrow { border: 1px solid var(--line); border-radius: 16px; padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; background: var(--surface); }
-.wrow .wh { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--deep); font-size: .95rem; }
-.wrow .wh .ic { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; background: color-mix(in srgb, var(--tc) 14%, var(--surface)); color: var(--tc); flex: none; }
-.wrow .wh .ic svg { width: 18px; height: 18px; }
-.wrow .wq { display: grid; grid-template-columns: 64px 1fr; gap: 8px; align-items: center; font-size: .8rem; font-weight: 800; color: var(--muted); }
-.wrow .seg button { font-size: .76rem; padding: 6px 2px; }
+.who { display: flex; flex-direction: column; gap: 10px; }
+.acs { display: flex; flex-wrap: wrap; gap: 6px; min-height: 20px; }
+.ac { border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 7px 12px 7px 9px; font-size: .84rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; touch-action: none; user-select: none; -webkit-user-select: none; box-shadow: 0 2px 0 var(--line); }
+.ac svg { width: 16px; height: 16px; color: var(--tc); flex: none; }
+.ac[aria-pressed="true"] { outline: 3px solid var(--tc); transform: scale(1.04); }
+.zones { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.zone { border: 2px dashed color-mix(in srgb, var(--c) 55%, transparent); border-radius: 18px; padding: 10px; min-height: 92px; background: color-mix(in srgb, var(--c) 7%, var(--surface)); display: flex; flex-direction: column; gap: 8px; cursor: pointer; transition: transform .2s, border-style .2s; }
+.zone.over, .zone.armed { border-style: solid; } .zone.over { transform: scale(1.03); }
+.zone:focus-visible { outline: 3px solid var(--c); outline-offset: 2px; }
+.zone .zh { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: .86rem; color: var(--c); }
+.zone .zh i { width: 24px; height: 24px; border-radius: 50%; background: var(--c); color: var(--onc); display: grid; place-items: center; font-style: normal; font-size: .75rem; }
+.zone .zc { display: flex; flex-wrap: wrap; gap: 5px; }
+.zone .ac.in { background: var(--c); border-color: transparent; color: var(--onc); box-shadow: none; padding: 5px 10px 5px 8px; font-size: .78rem; }
+.zone .ac.in svg { color: var(--onc); width: 14px; height: 14px; }
 .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .82rem; color: var(--muted); }
 .legend span { display: inline-flex; align-items: center; gap: 6px; } .legend i { width: 12px; height: 12px; border-radius: 4px; display: block; }
 .notes { display: flex; flex-wrap: wrap; gap: 8px; min-height: 20px; }
@@ -174,7 +181,14 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 .jl .grp button { border: 0; background: transparent; color: var(--muted); font-size: .82rem; padding: 2px 4px; }
 .agr { border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; font-size: .9rem; background: color-mix(in srgb, var(--both) 7%, var(--surface)); }
 .agr .top { display: flex; justify-content: space-between; gap: 8px; } .agr .top button { border: 0; background: transparent; color: var(--muted); }
-@media (max-width: 400px) { .jars { grid-template-columns: repeat(3, 1fr); } .wrow .wq { grid-template-columns: 1fr; gap: 4px; } }
+#revDia button { font-size: .82rem; padding: 8px 2px; }
+.weeks { display: flex; flex-direction: column; gap: 8px; }
+.weeks .row { display: flex; gap: 6px; justify-content: space-between; }
+.weeks .row span { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: .68rem; color: var(--muted); }
+.weeks .row i { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; font-style: normal; font-size: .75rem; font-weight: 800; color: var(--onc); transition: all .3s; }
+.weeks .row i.on { background: var(--both); border-color: var(--both); }
+.weeks .row i.now { border-color: var(--tc); border-style: dashed; }
+@media (max-width: 400px) { .jars { grid-template-columns: repeat(3, 1fr); } }
 @media (prefers-reduced-motion: reduce) { .steps4 i, .nt, .jar svg { transition: none; } }
 </style>
 
@@ -239,7 +253,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
     </div>
     <div class="card">
       <span class="eyebrow">Quién lo piensa y quién lo hace</span>
-      <p class="small">Marca las áreas que forman parte de vuestro día a día. En cada una, indica quién se da cuenta, decide y se acuerda («Pensarlo») y quién lo lleva a cabo («Hacerlo»).</p>
+      <p class="small">Marca las áreas que forman parte de vuestro día a día y después reparte cada una: primero, quién la piensa; luego, quién la hace.</p>
       <div class="gest tiles" id="areas"></div>
       <div class="who" id="who"></div>
       <div id="barsBox"></div>
@@ -271,7 +285,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
     </div>
     <div class="card">
       <span class="eyebrow">Suficientemente bien</span>
-      <p class="small">No todo tiene que hacerse siempre igual de bien. Elige lo que puedes hacer «suficientemente bien» esta temporada.</p>
+      <p class="small">No todo tiene que salir perfecto. Elige lo que, en esta etapa, puede quedar «suficientemente bien».</p>
       <div class="chips" id="sufi"></div>
       <input type="text" id="sufiOwn" placeholder="Otra cosa que puedo hacer más sencilla" aria-label="Otra cosa que puedo hacer más sencilla">
       <div id="sufiTxt"></div>
@@ -302,6 +316,19 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
       <div class="stack" id="talk" style="gap:12px"></div>
       <div class="sentence" id="talkOut"></div>
       <div class="note small" id="talkTip"></div>
+    </div>
+    <div class="card">
+      <span class="eyebrow" id="revEy">Nuestro rato de la semana</span>
+      <p class="small" id="revIntro"></p>
+      <span class="lbl">¿Qué día?</span>
+      <div class="seg" id="revDia"></div>
+      <span class="lbl">¿A qué hora?</span>
+      <div class="chips" id="revHora"></div>
+      <span class="lbl">Las cuatro preguntas</span>
+      <p class="small muted">Tocadlas a medida que las vayáis respondiendo.</p>
+      <div class="gest" id="revQ"></div>
+      <div id="revTxt"></div>
+      <div class="weeks" id="revLog"></div>
     </div>
     <div class="card">
       <span class="eyebrow">¿Cómo está tu cabeza hoy?</span>
@@ -401,7 +428,7 @@ const FASES = [
 const MYTHS = [
   ['Si necesitas ayuda, solo tienes que pedirla', 'Pedir también es carga: quien tiene que pedir sigue siendo quien se da cuenta, decide y comprueba. Repartir de verdad es pasar tareas enteras.'],
   ['Es más rápido si lo hago yo', 'Hoy, quizá. Pero cada vez que lo haces tú, la tarea se queda en tu cabeza. El tiempo que lleva soltarla se recupera después.'],
-  ['Es que yo soy más organizado/a', 'Organizarse se aprende haciéndolo. Muchas veces quien lo lleva todo no nació así: lo ha ido haciendo porque nadie más lo hacía.'],
+  ['Es que yo soy más organizado/a', 'A organizarse se aprende haciéndolo. Muchas veces quien lo lleva todo no nació así: lo ha ido haciendo porque nadie más lo hacía.'],
   ['Si no se hace como yo lo haría, está mal', 'Hay muchas formas de cuidar bien. Acordar qué es lo mínimo importante deja espacio para que cada persona lo haga a su manera.'],
   ['Una buena madre o un buen padre lo tiene todo en la cabeza', 'Las madres y los padres que cuidan bien también se cansan, se olvidan y piden ayuda. Tener la cabeza llena no mide cuánto quieres a tu familia.'],
   ['No es para tanto, son cosas pequeñas', 'Una a una, sí. Pero se suman, y la carga mental cansa precisamente porque no se ve y no se acaba nunca.'],
@@ -446,6 +473,10 @@ const TALK_S = {
   como: ['los martes por la tarde', 'una vez a la semana', 'cuando haya cita médica', 'este mes'],
   prop: ['¿Te vendría bien?', 'Si no puedes, lo entiendo de verdad.', '¿Cómo lo ves?'],
 };
+const DIAS = [['L', 'Lunes'], ['M', 'Martes'], ['X', 'Miércoles'], ['J', 'Jueves'], ['V', 'Viernes'], ['S', 'Sábado'], ['D', 'Domingo']];
+const HORAS = ['Por la mañana', 'A mediodía', 'Por la tarde', 'Por la noche', 'Cuando duerma el peque'];
+const REVQ_P = [['Qué ha funcionado esta semana', 'var(--both)', '<path d="M5 12l5 5L20 7"/>'], ['Qué se ha quedado sin hacer', 'var(--other)', '<circle cx="12" cy="12" r="8" stroke-dasharray="3 3"/>'], ['Qué viene la semana que viene', 'var(--think)', '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>'], ['Quién se encarga de qué', 'var(--pa)', '<circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M3 20c0-3 2-5 5-5s5 2 5 5M11 20c0-3 2-5 5-5s5 2 5 5"/>']];
+const REVQ_S = [['Qué ha ido bien esta semana', 'var(--both)', '<path d="M5 12l5 5L20 7"/>'], ['Qué tengo pendiente', 'var(--other)', '<circle cx="12" cy="12" r="8" stroke-dasharray="3 3"/>'], ['Qué viene la semana que viene', 'var(--think)', '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>'], ['Qué puedo pedir o soltar', 'var(--pa)', '<path d="M9 14L4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/>']];
 const HELP = [
   ['<rect x="3" y="7" width="16" height="10" rx="2"/><path d="M21 10.5v3M6 10v4"/>', 'El agotamiento no mejora aunque descanses.', 'var(--other)'],
   ['<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>', 'No puedes dormir ni cuando el bebé duerme.', 'var(--think)'],
@@ -453,9 +484,9 @@ const HELP = [
   ['<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>', 'Tienes pensamientos que te asustan o ideas de hacerte daño. En ese caso, llama al <b>024</b> (24 h) o al <b>112</b>.', 'var(--me)'],
 ];
 
-let S = Object.assign({ ice: 0, fase: 'dar', lleno: 6, crianza: '', areas: [], who: {}, senal: [], notes: [], sufi: [], sufiOwn: '', pas: { area: '', own: '', who: '', fases: [], min: '' }, talk: {} }, store.get('mio', {}) || {});
+let S = Object.assign({ ice: 0, fase: 'dar', lleno: 6, crianza: '', areas: [], who: {}, senal: [], notes: [], sufi: [], sufiOwn: '', pas: { area: '', own: '', who: '', fases: [], min: '' }, talk: {}, revDia: '', revHora: '' }, store.get('mio', {}) || {});
 const saveS = () => store.set('mio', S);
-let AC = store.get('acuerdos', []), HOY = store.get('cabeza', []), iceN = 0, armed = null;
+let AC = store.get('acuerdos', []), HOY = store.get('cabeza', []), REV = store.get('revisiones', []), REVQ = [], iceN = 0, armed = null;
 const solo = () => S.crianza === 'sola';
 const whoList = () => solo() ? WHO.filter(w => w[0] === 'yo' || w[0] === 'otra') : WHO;
 const tiles = (box, list, key, after) => { const cols = ['var(--tc)', 'var(--think)', 'var(--do)', 'var(--pa)', 'var(--other)', 'var(--me)'];
@@ -516,11 +547,23 @@ function renderMio() {
   tiles('#areas', AREAS, 'areas', renderWho);
   tiles('#senal', SENAL, 'senal', senalTxt);
 }
+let whoMode = 'p', whoArmed = null;
 function renderWho() {
-  const wl = whoList();
-  $('#who').innerHTML = S.areas.map(a => { const w = S.who[a] || {}, ic = (AREAS.find(x => x[0] === a) || [, ''])[1];
-    return `<div class="wrow"><span class="wh"><span class="ic">${SI(ic)}</span>${esc(a)}</span>${[['p', 'Pensarlo'], ['h', 'Hacerlo']].map(([f, l]) => `<div class="wq"><span>${l}</span><div class="seg">${wl.map(([k, n, c]) => `<button data-wa="${esc(a)}" data-wf="${f}" data-v="${k}" aria-pressed="${w[f] === k}" style="--c:${c}">${n}</button>`).join('')}</div></div>`).join('')}</div>`; }).join('');
-  $$('[data-wa]').forEach(b => b.onclick = () => { const a = b.dataset.wa, f = b.dataset.wf; S.who[a] = S.who[a] || {}; S.who[a][f] = S.who[a][f] === b.dataset.v ? '' : b.dataset.v; saveS(); keep(renderWho); });
+  const wl = whoList(), f = whoMode, ic = (a) => (AREAS.find(x => x[0] === a) || [, ''])[1];
+  if (!S.areas.length) { $('#who').innerHTML = ''; drawBars(); return; }
+  const free = S.areas.filter(a => !(S.who[a] || {})[f]), done = S.areas.length - free.length;
+  $('#who').innerHTML = `<div class="seg" id="whoMode">${[['p', 'Pensarlo', 'var(--think)'], ['h', 'Hacerlo', 'var(--do)']].map(([k, n, c]) => `<button data-wm="${k}" aria-pressed="${f === k}" style="--c:${c}">${n}</button>`).join('')}</div>
+    <p class="small muted">${f === 'p' ? '<b style="color:var(--think)">Pensarlo</b> es darse cuenta, decidir y acordarse.' : '<b style="color:var(--do)">Hacerlo</b> es llevarlo a cabo.'} Arrastra cada área a quien ${f === 'p' ? 'la piensa' : 'la hace'}, o tócala y después toca a la persona. Para cambiarla de sitio, arrástrala a otra caja.</p>
+    <div class="acs" data-zone="">${free.length ? free.map(a => `<button class="ac" data-ac="${esc(a)}" aria-pressed="${whoArmed === a}">${SI(ic(a))}${esc(a)}</button>`).join('') : `<div class="ok small" style="flex:1">${f === 'p' ? 'Todo colocado. Ahora toca «Hacerlo» para ver quién lo lleva a cabo.' : 'Todo colocado. Mira abajo cómo está repartido.'}</div>`}</div>
+    <div class="zones">${wl.map(([k, n, c]) => { const its = S.areas.filter(a => (S.who[a] || {})[f] === k); return `<div class="zone ${whoArmed ? 'armed' : ''}" data-zone="${k}" role="button" tabindex="0" style="--c:${c}" aria-label="${n}"><span class="zh"><i>${its.length || ''}</i>${n}</span><div class="zc">${its.map(a => `<button class="ac in" data-ac="${esc(a)}" aria-pressed="${whoArmed === a}">${SI(ic(a))}${esc(a)}</button>`).join('')}</div></div>`; }).join('')}</div>
+    <p class="small muted" style="text-align:right">${done} de ${S.areas.length} colocadas</p>`;
+  $$('[data-wm]').forEach(b => b.onclick = () => { whoMode = b.dataset.wm; whoArmed = null; keep(renderWho); });
+  const place = (a, k) => { S.who[a] = S.who[a] || {}; S.who[a][f] = k; whoArmed = null; saveS(); keep(renderWho); };
+  // Cada área se arrastra a una persona (o de vuelta arriba para quitarla). Al tocarla se selecciona; si ya había otra seleccionada, esa se coloca en la misma caja.
+  $$('[data-ac]').forEach(el => { const a = el.dataset.ac, home = el.closest('[data-zone]').dataset.zone;
+    dragBind(el, '[data-zone]', (t) => place(a, t.dataset.zone), () => { if (whoArmed && whoArmed !== a) place(whoArmed, home); else { whoArmed = whoArmed === a ? null : a; keep(renderWho); } }); });
+  $$('.zone[data-zone]').forEach(z => { const go = () => { if (whoArmed) place(whoArmed, z.dataset.zone); else toast('Toca primero un área'); }; z.onclick = (e) => { if (e.target.closest('[data-ac]')) return; go(); }; z.onkeydown = (e) => { if (e.target !== z) return; if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } }; });
+  const acs = $('.acs[data-zone]'); if (acs) acs.onclick = (e) => { if (whoArmed && !e.target.closest('[data-ac]')) place(whoArmed, ''); };
   drawBars();
 }
 const counts = (f) => { const c = { yo: 0, pa: 0, dos: 0, otra: 0 }; S.areas.forEach(a => { const v = (S.who[a] || {})[f]; if (v && c[v] !== undefined) c[v]++; }); return c; };
@@ -572,21 +615,23 @@ function renderJars() {
   $$('[data-nt]').forEach(bindDrag);
 }
 function drop(i, j) { if (!S.notes[i]) return; S.notes[i].j = j; armed = null; saveS(); keep(renderJars); const n = JARS.find(x => x[0] === j)[1]; toast(`Al tarro «${n}»`); }
-function bindDrag(el) {
-  const i = +el.dataset.nt; let sx, sy, gh = null, moved = false, over = null;
+/* Arrastrar (o tocar y luego tocar el destino). sel = selector de los destinos; onDrop(destino); onTap() */
+function dragBind(el, sel, onDrop, onTap) {
+  let sx, sy, gh = null, moved = false, over = null;
   el.onpointerdown = (e) => { if (e.target.dataset.nx !== undefined) return; sx = e.clientX; sy = e.clientY; moved = false; el.setPointerCapture(e.pointerId); };
   el.onpointermove = (e) => { if (sx === undefined) return; if (!moved && Math.hypot(e.clientX - sx, e.clientY - sy) < 8) return;
     if (!moved) { moved = true; const r = el.getBoundingClientRect(); gh = el.cloneNode(true); gh.classList.add('dragghost'); gh.style.width = r.width + 'px'; document.body.appendChild(gh); el.style.opacity = '.3'; }
     gh.style.left = (e.clientX - 30) + 'px'; gh.style.top = (e.clientY - 20) + 'px';
-    const t = document.elementFromPoint(e.clientX, e.clientY), jar = t && t.closest('[data-jar]');
-    if (over && over !== jar) over.classList.remove('over'); over = jar; if (jar) jar.classList.add('over'); };
-  const end = (e) => { if (sx === undefined) return; sx = undefined;
-    if (moved) { gh && gh.remove(); el.style.opacity = ''; if (over) { over.classList.remove('over'); drop(i, over.dataset.jar); } over = null; }
-    else { armed = armed === i ? null : i; keep(renderJars); } };
+    const t = document.elementFromPoint(e.clientX, e.clientY), tg = t && t.closest(sel);
+    if (over && over !== tg) over.classList.remove('over'); over = tg; if (tg) tg.classList.add('over'); };
+  const end = () => { if (sx === undefined) return; sx = undefined;
+    if (moved) { gh && gh.remove(); el.style.opacity = ''; if (over) { over.classList.remove('over'); onDrop(over); } over = null; }
+    else onTap(); };
   el.onpointerup = end; el.onpointercancel = () => { sx = undefined; gh && gh.remove(); el.style.opacity = ''; over && over.classList.remove('over'); over = null; };
-  el.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); armed = armed === i ? null : i; keep(renderJars); } };
+  el.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onTap(); } };
   el.onclick = (e) => e.preventDefault();
 }
+function bindDrag(el) { const i = +el.dataset.nt; dragBind(el, '[data-jar]', (t) => drop(i, t.dataset.jar), () => { armed = armed === i ? null : i; keep(renderJars); }); }
 function renderSufi() {
   $('#sufi').innerHTML = SUFI.map(t => `<button class="chip" style="--c:var(--both)" data-sf="${esc(t)}" aria-pressed="${S.sufi.includes(t)}">${esc(t)}</button>`).join('');
   $$('[data-sf]').forEach(b => b.onclick = () => { S.sufi = toggle(S.sufi, b.dataset.sf); saveS(); keep(renderSufi); });
@@ -640,7 +685,25 @@ $('#hoy').oninput = (e) => { hoyV = +e.target.value; drawHoy(); };
 $('#hoySave').onclick = () => { HOY.push({ t: Date.now(), v: hoyV }); store.set('cabeza', HOY); keep(renderHoy); toast('Guardado'); };
 function renderHoy() { $('#hoy').value = hoyV; drawHoy();
   $('#hoyList').innerHTML = HOY.length > 1 ? miniLine(HOY, 'var(--tc)', 'Cómo de llena está mi cabeza') + `<p class="small muted">El ${fdate(HOY[0].t)} tu cabeza estaba en un ${HOY[0].v} y la última vez, en un ${HOY[HOY.length - 1].v}.</p>` : HOY.length ? `<p class="small muted">Has guardado un ${HOY[0].v} de 10. Vuelve otro día para ver cómo cambia.</p>` : ''; }
-function renderRep() { renderPas(); renderTalk(); renderHoy();
+const semana = (t) => { const d = new Date(t); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return d.getTime(); };
+function renderRev() {
+  const sl = solo(), Q = sl ? REVQ_S : REVQ_P;
+  $('#revEy').textContent = sl ? 'Mi rato de la semana' : 'Nuestro rato de la semana';
+  $('#revIntro').textContent = sl ? 'Un rato fijo a la semana para vaciar la cabeza y organizarte antes de que todo se acumule. Elige el día y la hora, y usa estas cuatro preguntas.' : 'Repartir una vez no basta: el reparto se mantiene si se revisa. Elegid un rato fijo a la semana, de unos 15 minutos, para mirarlo juntos antes de que las cosas se acumulen.';
+  $('#revDia').innerHTML = DIAS.map(([k, n]) => `<button data-rd="${k}" aria-pressed="${S.revDia === k}" aria-label="${n}" style="--c:var(--tc)">${k}</button>`).join('');
+  $$('[data-rd]').forEach(b => b.onclick = () => { S.revDia = S.revDia === b.dataset.rd ? '' : b.dataset.rd; saveS(); keep(renderRev); });
+  $('#revHora').innerHTML = HORAS.map(h => `<button class="chip" style="--c:var(--tc)" data-rh="${esc(h)}" aria-pressed="${S.revHora === h}">${esc(h)}</button>`).join('');
+  $$('[data-rh]').forEach(b => b.onclick = () => { S.revHora = S.revHora === b.dataset.rh ? '' : b.dataset.rh; saveS(); keep(renderRev); });
+  $('#revQ').innerHTML = Q.map(([t, c, ic], i) => `<button style="--c:${c}" data-rq="${i}" aria-pressed="${REVQ.includes(i)}"><span class="ic">${SI(REVQ.includes(i) ? '<path d="M5 12l5 5L20 7"/>' : ic)}</span>¿${esc(t)}?</button>`).join('');
+  $$('[data-rq]').forEach(b => b.onclick = () => { REVQ = toggle(REVQ, +b.dataset.rq); keep(renderRev);
+    if (REVQ.length === 4) { const w = semana(Date.now()); if (!REV.some(t => semana(t) === w)) { REV.push(Date.now()); store.set('revisiones', REV); } toast(sl ? 'Rato hecho. Cabeza más ligera.' : 'Revisión hecha. ¡Buen equipo!'); keep(renderRev); } });
+  const dia = DIAS.find(d => d[0] === S.revDia);
+  $('#revTxt').innerHTML = dia || S.revHora ? `<div class="ok small pop">${sl ? 'Tu rato' : 'Vuestro rato'}: <b>${dia ? 'los ' + dia[1].toLowerCase() + (dia[0] === 'S' || dia[0] === 'D' ? 's' : '') : 'un día a la semana'}${S.revHora ? ', ' + S.revHora.toLowerCase() : ''}</b>. Que sea corto, sin reproches y, si puede ser, con algo rico. Si sale un tema que quema, apuntadlo y habladlo en otro momento.</div>` : '';
+  const now = semana(Date.now()), W = 7 * 864e5, weeks = Array.from({ length: 8 }, (_, i) => now - (7 - i) * W), done = new Set(REV.map(semana));
+  let streak = 0; for (let w = done.has(now) ? now : now - W; done.has(w); w -= W) streak++;
+  $('#revLog').innerHTML = `<span class="lbl">Las últimas semanas</span><div class="row">${weeks.map(w => `<span><i class="${done.has(w) ? 'on' : ''} ${w === now && !done.has(w) ? 'now' : ''}">${done.has(w) ? '✓' : ''}</i>${`${new Date(w).getDate()}/${new Date(w).getMonth() + 1}`}</span>`).join('')}</div>${streak >= 2 ? `<p class="small muted">${sl ? 'Llevas' : 'Lleváis'} ${streak} semanas seguidas. Así es como el reparto se mantiene.</p>` : ''}`;
+}
+function renderRep() { renderPas(); renderTalk(); renderRev(); renderHoy();
   $('#ayuda').innerHTML = HELP.map(([ic, t, c]) => `<div class="ns" style="--c:${c}">${SI(ic)}<span>${t}</span></div>`).join(''); }
 
 /* ================= RESUMEN ================= */
@@ -655,6 +718,7 @@ function summary() {
   JARS.forEach(([k, n]) => { const it = S.notes.filter(x => x.j === k); if (it.length) L.push(`${n}: ${it.map(x => x.x).join(', ')}`); });
   const sf = [...S.sufi, S.sufiOwn.trim()].filter(Boolean); if (sf.length) L.push('Suficientemente bien: ' + sf.join(', ').toLowerCase());
   AC.slice(-4).forEach(a => L.push(`Acuerdo: ${a.tarea} → la lleva ${a.quien.toLowerCase()} (${a.fases.length === 4 ? 'entera' : a.fases.map(f => FASES.find(x => x[0] === f)[1].toLowerCase()).join(', ')})${a.min ? `; lo mínimo: ${a.min}` : ''}`));
+  if (S.revDia || S.revHora) L.push(`Rato de la semana: ${(DIAS.find(d => d[0] === S.revDia) || [, ''])[1].toLowerCase()} ${S.revHora.toLowerCase()}`.trim() + (REV.length ? ` (hecho ${REV.length} ${REV.length === 1 ? 'vez' : 'veces'})` : ''));
   if (HOY.length) L.push('Mi cabeza (0-10): ' + HOY.slice(-8).map(h => `${fdate(h.t)} ${h.v}`).join(', '));
   return L.join('\n');
 }
@@ -909,6 +973,7 @@ const PDFKIT = (() => {
         { id: 'tarros', title: 'Lo que he sacado de mi cabeza', intimate: true, html: jars.length ? jars.map(([k, n, it]) => K.card(`<span class="k">${K.esc(n)}</span>${K.list(it.map(x => x.x))}`)).join('') : '' },
         { id: 'sufi', title: 'Suficientemente bien', html: sf.length ? K.card(K.tags(sf), 'good') : '' },
         { id: 'acuerdos', title: 'Acuerdos para repartir', html: AC.length ? `<table>${AC.slice(-6).reverse().map(a => `<tr><td><b>${K.esc(a.tarea)}</b>${a.min ? `<br><span class="mut">Lo mínimo: ${K.esc(a.min)}</span>` : ''}</td><td>${K.esc(a.quien)}</td><td>${a.fases.length === 4 ? 'Entera' : K.esc(a.fases.map(f => FASES.find(x => x[0] === f)[1]).join(', '))}</td></tr>`).join('')}</table>` : '' },
+        { id: 'rato', title: solo() ? 'Mi rato de la semana' : 'Nuestro rato de la semana', html: S.revDia || S.revHora || REV.length ? K.card(K.kv('Cuándo', K.esc([(DIAS.find(d => d[0] === S.revDia) || [, ''])[1], S.revHora].filter(Boolean).join(', '))) + K.kv('Hecho', REV.length ? `${REV.length} ${REV.length === 1 ? 'semana' : 'semanas'}` : '') + `<span class="k">Las cuatro preguntas</span>` + K.list((solo() ? REVQ_S : REVQ_P).map(q => '¿' + q[0] + '?'))) : '' },
         { id: 'mensaje', title: solo() ? 'Lo que voy a pedir' : 'Lo que quiero decir', intimate: true, html: Object.values(S.talk).some(v => v && v.trim()) ? (talkOut(), K.card(`<p>${K.esc($('#talkOut').textContent)}</p>`)) : '' },
         { id: 'evol', title: 'Cómo está mi cabeza', note: 'De 0 a 10', html: HOY.length ? K.card(HOY.length > 1 ? K.line([{ n: 'Mi cabeza', c: HX.tc, v: HOY.slice(-12).map(h => h.v) }], HOY.slice(-12).map(h => K.fcorta(h.t)), 0, 10) : `<p class="big">${HOY[0].v}/10</p>`) : '' },
       ];
@@ -917,8 +982,8 @@ const PDFKIT = (() => {
     generic: () => `
       <div class="sec">${K.card('La carga mental es el trabajo invisible de cuidar de una familia: darse cuenta de lo que hace falta, decidir, acordarse y comprobar. No se ve, no se acaba nunca y suele recaer sobre una sola persona. No es falta de organización: es exceso de carga.', 'soft')}</div>
       <div class="sec"><h2>Las cuatro fases de cada tarea</h2>${K.card(K.steps(FASES.map(f => `<b style="color:${[HX.think, HX.otra, HX.do, HX.pa][FASES.indexOf(f)]}">${f[1]}</b>: ${f[4].charAt(0).toLowerCase() + f[4].slice(1)}`)) + '<p class="mut">Quien solo hace la tercera fase «ayuda». Quien lleva las cuatro es quien carga con la tarea.</p>')}</div>
-      <div class="sec"><h2>Vaciar la cabeza</h2>${K.card(K.steps(['Escribo todo lo que tengo en la cabeza, cada cosa en una nota.', 'Pongo cada nota en su tarro: hoy, esta semana, puede esperar, lo pasa otra persona o lo suelto.', 'Para hoy, como mucho tres cosas.', 'Elijo qué puedo hacer «suficientemente bien» esta temporada.']), 'good')}</div>
-      <div class="sec"><h2>Repartir de verdad</h2>${K.card(K.list(['Paso tareas enteras, con sus cuatro fases, no solo el «hacerlo».', 'Acordamos lo mínimo: qué significa que una tarea está hecha.', 'Dejo que cada persona lo haga a su manera, aunque no sea la mía.', 'Hablo de cómo me siento y de lo que necesito, no de lo que la otra persona hace mal.']))}</div>
+      <div class="sec"><h2>Vaciar la cabeza</h2>${K.card(K.steps(['Escribo todo lo que tengo en la cabeza, cada cosa en una nota.', 'Pongo cada nota en su tarro: hoy, esta semana, puede esperar, lo pasa otra persona o lo suelto.', 'Para hoy, como mucho tres cosas.', 'Elijo lo que, en esta etapa, puede quedar «suficientemente bien».']), 'good')}</div>
+      <div class="sec"><h2>Repartir de verdad</h2>${K.card(K.list(['Paso tareas enteras, con sus cuatro fases, no solo el «hacerlo».', 'Acordamos lo mínimo: qué significa que una tarea está hecha.', 'Dejo que cada persona lo haga a su manera, aunque no sea la mía.', 'Lo revisamos un rato cada semana: qué ha funcionado, qué se ha quedado sin hacer, qué viene y quién se encarga de qué.', 'Hablo de cómo me siento y de lo que necesito, no de lo que la otra persona hace mal.']))}</div>
       <div class="sec"><h2>Cosas que nos decimos y lo que se sabe</h2><table>${MYTHS.map(([a, b]) => `<tr><td style="width:36%" class="mut">«${K.esc(a)}»</td><td>${K.esc(b)}</td></tr>`).join('')}</table></div>
       <div class="sec"><h2>Cuándo pedir ayuda</h2>${K.card(K.list(['El agotamiento no mejora aunque descanse.', 'No puedo dormir ni cuando el bebé duerme.', 'Llevo más de dos semanas triste, con ansiedad o muy irritable casi todos los días, o ya no disfruto de nada.', 'Si tengo pensamientos que me asustan o ideas de hacerme daño, llamo al 024 (24 h) o al 112.']))}</div>`,
     pocketNote: 'Para cuando la cabeza no para',
