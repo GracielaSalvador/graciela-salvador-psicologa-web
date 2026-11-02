@@ -757,6 +757,7 @@ setupTabs((v) => { $('#stopBtn').hidden = !(v === 'rel' || v === 'sie'); if (v =
 renderBirths(); renderEnt();
 </script>
 
+<script>window.REGPFX = 'm-recordar.';</script>
 <!-- ===== Módulo común «Guardar en PDF» (se inserta en cada herramienta en lugar del marcador PDFKIT) ===== -->
 <style>
 /* Hoja de opciones (pantalla) */
@@ -984,6 +985,88 @@ const PDFKIT = (() => {
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sheet) close(); });
   }
   return { init, esc, list, tags, steps, card, kv, bars, ba, line, fecha, fcorta, build: () => build(), _open: () => open() };
+})();
+</script>
+<!-- ===== Módulo común «Mis registros»: ver y borrar lo que se ha ido guardando (se inserta junto a «Guardar en PDF») ===== -->
+<style>
+.rg-group { display: flex; flex-direction: column; gap: 4px; }
+.rg-group h3 { font-size: .95rem; color: var(--deep, #0B4757); margin: 4px 0 2px; }
+.rg-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; padding: 8px 10px; border: 1px solid var(--line, #DCE6E8); border-radius: 12px; background: var(--surface, #fff); font-size: .88rem; }
+.rg-row small { display: block; color: var(--muted, #5E6F72); font-weight: 700; font-size: .76rem; }
+.rg-row button { border: 1.5px solid var(--line, #DCE6E8); background: transparent; color: var(--muted, #5E6F72); border-radius: 999px; padding: 4px 10px; font-size: .8rem; font-weight: 800; white-space: nowrap; }
+.rg-row button.arm { border-color: #C25B4A; background: #C25B4A; color: #fff; }
+.rg-empty { color: var(--muted, #5E6F72); font-size: .92rem; }
+</style>
+<script>
+(() => {
+  const P = () => (typeof PFX !== 'undefined' ? PFX : window.REGPFX) || '';
+  // Nombres de cada registro (prefijo + clave). Si falta, se usa uno genérico.
+  const N = {
+    'caja.log': 'Prácticas de calma', 'ahora.practicas': 'Prácticas', 'apego.dots': 'Puntos del mapa', 'apego.logs': 'Momentos con mi niño o niña interior',
+    'cambio.semanas': 'Cómo voy cada semana', 'carino.cartas': 'Cartas', 'carino.dias': 'Días', 'carino.pausas': 'Pausas de cariño', 'celos.dias': 'Días', 'celos.frases': 'Frases', 'celos.momentos': 'Momentos',
+    'ciclo.pracs': 'Prácticas', 'cuerpo.espejo': 'Prácticas del espejo', 'cuerpo.frases': 'Frases de paz', 'cuerpo.semanas': 'Cómo voy cada semana', 'culpa.peso': 'Cuánto me pesa la culpa', 'culpa.reparar': 'Reparaciones',
+    'duelo.hist': 'Cómo estoy', 'duelo.rec.mems': 'Recuerdos', 'duelo.cui.days': 'Días', 'emociones.diary': 'Diario de emociones', 'energia.days': 'Mi batería', 'energia.pausas': 'Pausas', 'energia.soltar': 'Lo que suelto',
+    'enfado.frases': 'Frases', 'enfado.log': 'Registro del enfado', 'enfado.repar': 'Reparaciones', 'frustra.epis': 'Episodios', 'frustra.stops': 'Pausas', 'hablar.despues': 'Después de hablar', 'hablar.peticiones': 'Peticiones',
+    'impulsos.log': 'Registro de impulsos', 'incert.daily': 'Días', 'incert.logs': 'Exposiciones', 'incert.waves': 'Olas', 'liston.exps': 'Experimentos', 'liston.five': 'Cinco minutos', 'liston.friend': 'Como a una amiga', 'liston.logros': 'Tarro de logros', 'liston.suf': 'Suficientemente bien',
+    'pensamientos.regs': 'Registro de pensamientos', 'quererme.jar': 'Tarro', 'rumbo.log': 'Pasos', 'rumbo.revs': 'Revisiones', 'rumbo.snaps': 'Dianas', 'sesion.hist': 'Sesiones preparadas', 'social.bien': 'Lo que fue bien', 'social.experimentos': 'Experimentos',
+    'soledad.days': 'Días', 'soledad.small': 'Pequeños lazos', 'sueno.noches': 'Noches', 'sueno.preoc': 'Preocupaciones', 'verguenza.momentos': 'Momentos', 'vinculos.dates': 'Citas', 'vueltas.decs': 'Decisiones',
+    'm-ansiedad.niv': 'Cómo de preocupada me siento', 'm-carga.acuerdos': 'Acuerdos', 'm-carga.cabeza': 'Cómo de llena está mi cabeza', 'm-carga.revisiones': 'Revisiones de la semana', 'm-cuerpoemb.rel': 'Cómo me llevo con mi cuerpo', 'm-animo.animo': 'Mi ánimo',
+    'm-nacer.cartas': 'Cartas', 'm-nacer.piel': 'Cómo me siento en mi piel', 'm-pareja.hoy': 'Cómo de cerca me siento', 'm-pareja.mio.xh': 'Momentos de autocuidado en pareja', 'm-parto.conf': 'Cómo de preparada me siento',
+    'm-recordar.peso': 'Cuánto me pesa el recuerdo', 'm-salto.log': 'Mi semana', 'm-soledad.hoy': 'Cómo de acompañada me siento', 'm-ventanas.anc': 'Cómo de ancha ha sido mi ventana', 'm-vinculo.cx': 'Cómo de conectada me siento', 'm-vinculo.momentos': 'Momentos juntos', 'm-vinculo.senales': 'Señales de mi bebé',
+  };
+  const isLog = (a) => Array.isArray(a) && a.length && a.every(e => e && typeof e === 'object' && typeof e.t === 'number' && e.t > 1e12);
+  const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const fd = (t) => new Date(t).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' }) + ', ' + new Date(t).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+  // Resumen corto de una anotación, con los campos más habituales
+  function sum(e) {
+    const L = [], txt = (v) => typeof v === 'string' ? v.trim() : '';
+    const code = { salte: 'Salté', pare: 'Paré a tiempo', repa: 'Reparé' };
+    for (const k of ['x', 's', 'task', 'what', 'sit', 'tarea', 'phrase', 'k', 'tipo', 'feel', 'type']) { let v = txt(e[k]); if (!v) continue; if (code[v]) v = code[v]; else if (/^[a-z0-9_-]{1,10}$/.test(v)) continue; L.push(v.charAt(0).toUpperCase() + v.slice(1)); break; }
+    if (typeof e.v === 'number') L.push(`${e.v} de 10`);
+    if (typeof e.antes === 'number' && typeof e.despues === 'number') L.push(`antes ${e.antes} · después ${e.despues}`);
+    else if (typeof e.before === 'number' && typeof e.after === 'number') L.push(`antes ${e.before} · después ${e.after}`);
+    else if (typeof e.pre === 'number' && typeof e.post === 'number') L.push(`antes ${e.pre} · después ${e.post}`);
+    if (!L.length && Array.isArray(e.items)) L.push(e.items.filter(Boolean).join(', '));
+    if (!L.length && Array.isArray(e.emos)) L.push(e.emos.join(', '));
+    const out = L.join(' · ').replace(/\s+/g, ' ');
+    return out.length > 90 ? out.slice(0, 88) + '…' : out;
+  }
+  // Busca listas con fecha en lo guardado por esta herramienta (también un nivel por dentro)
+  function find() {
+    const pfx = P(), G = []; if (!pfx) return G;
+    let keys = []; try { keys = Object.keys(localStorage).filter(k => k.startsWith(pfx)); } catch (e) { return G; }
+    keys.sort().forEach(full => { let v; try { v = JSON.parse(localStorage.getItem(full)); } catch (e) { return; }
+      if (isLog(v)) G.push({ full, path: null, arr: v });
+      else if (v && typeof v === 'object' && !Array.isArray(v)) Object.keys(v).forEach(p => { if (isLog(v[p])) G.push({ full, path: p, obj: v, arr: v[p] }); }); });
+    return G;
+  }
+  let sheet = null, dirty = false, armed = null;
+  function render() {
+    const G = find();
+    sheet.innerHTML = `<div class="pk-panel"><div class="pk-head"><h2>Mis registros</h2><button type="button" class="pk-x" aria-label="Cerrar">×</button></div>
+      <p class="pk-hint">Aquí está todo lo que has ido guardando en esta herramienta. Si algo se guardó por error, puedes borrarlo: toca «Borrar» y después confírmalo.</p>
+      ${G.length ? G.map((g, gi) => `<div class="rg-group"><h3>${esc(N[g.full + (g.path ? '.' + g.path : '')] || N[g.full] || 'Registros')} <span class="pk-hint">(${g.arr.length})</span></h3>${g.arr.map((e, i) => [e, i]).reverse().map(([e, i]) => { const id = gi + '-' + i, s = sum(e); return `<div class="rg-row"><span>${s ? esc(s) : 'Anotación'}<small>${fd(e.t)}</small></span><button type="button" data-rg="${id}" class="${armed === id ? 'arm' : ''}">${armed === id ? '¿Borrar?' : 'Borrar'}</button></div>`; }).join('')}</div>`).join('') : '<p class="rg-empty">Todavía no has guardado ningún registro en esta herramienta.</p>'}</div>`;
+    sheet.querySelector('.pk-x').onclick = close;
+    sheet.querySelectorAll('[data-rg]').forEach(b => b.onclick = () => { const id = b.dataset.rg;
+      if (armed !== id) { armed = id; render(); return; }
+      const [gi, i] = id.split('-').map(Number), g = G[gi]; g.arr.splice(i, 1);
+      try { localStorage.setItem(g.full, JSON.stringify(g.path ? Object.assign(g.obj, { [g.path]: g.arr }) : g.arr)); } catch (e) {}
+      armed = null; dirty = true; render(); });
+  }
+  function open() { armed = null; dirty = false; sheet = document.createElement('div'); sheet.className = 'pk-sheet'; sheet.setAttribute('role', 'dialog'); sheet.setAttribute('aria-modal', 'true'); sheet.setAttribute('aria-label', 'Mis registros');
+    sheet.onclick = (e) => { if (e.target === sheet) close(); }; document.body.appendChild(sheet); document.body.style.overflow = 'hidden'; render(); sheet.querySelector('.pk-x').focus(); }
+  function close() { if (!sheet) return; sheet.remove(); sheet = null; document.body.style.overflow = '';
+    if (dirty) { // recarga para que gráficas y contadores se actualicen, sin perder la pestaña ni el sitio
+      const tab = document.querySelector('nav.tabs button[aria-selected="true"]');
+      try { sessionStorage.setItem('rg-back', JSON.stringify({ v: tab ? tab.dataset.view : '', y: window.scrollY })); } catch (e) {}
+      location.reload(); } }
+  function add() { document.querySelectorAll('.pk-btn').forEach(p => { if (p.nextElementSibling && p.nextElementSibling.classList.contains('rg-btn')) return;
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'btn ghost small rg-btn'; b.textContent = 'Mis registros'; b.onclick = open; p.insertAdjacentElement('afterend', b); }); }
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sheet) close(); });
+  const start = () => { add(); new MutationObserver(add).observe(document.body, { childList: true, subtree: true });
+    let back = null; try { back = JSON.parse(sessionStorage.getItem('rg-back') || 'null'); sessionStorage.removeItem('rg-back'); } catch (e) {}
+    if (back) setTimeout(() => { if (back.v && typeof switchTab === 'function') switchTab(back.v); setTimeout(() => window.scrollTo(0, back.y || 0), 60); if (typeof toast === 'function') toast('Registro borrado'); }, 50); };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();
 </script>
 
