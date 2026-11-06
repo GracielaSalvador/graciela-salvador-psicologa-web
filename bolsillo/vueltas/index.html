@@ -70,6 +70,11 @@ input[type=text] { width: 100%; border: 1.5px solid var(--line); border-radius: 
 .warn { background: var(--warn); color: var(--warn-ink); border-radius: 16px; padding: 12px 14px; font-size: .93rem; }
 .ok { background: var(--ok); color: var(--ok-ink); border-radius: 16px; padding: 12px 14px; font-size: .93rem; }
 .pop { animation: pop .45s ease-out; } @keyframes pop { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+svg .pop[transform] { animation-name: popfade; } @keyframes popfade { from { opacity: 0; } to { opacity: 1; } }
+.spinw { animation: spinw var(--d, 0s) linear infinite; transform-box: fill-box; transform-origin: center; } @keyframes spinw { to { transform: rotate(360deg); } }
+.helpl { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 14px; background: color-mix(in srgb, var(--loop) 7%, var(--surface)); border: 1px solid var(--line); }
+.helpl i { flex: none; width: 8px; height: 8px; margin-top: 7px; border-radius: 50%; background: var(--loop); }
+@media (prefers-reduced-motion: reduce) { .spinw { animation: none; } }
 .empty { text-align: center; padding: 18px; border: 1.5px dashed var(--line); border-radius: 18px; color: var(--muted); font-size: .93rem; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
 .seg { display: flex; gap: 6px; background: var(--tint); padding: 4px; border-radius: 999px; }
@@ -239,8 +244,16 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 
     <h2 style="margin-top:6px">¿Estoy dándole vueltas?</h2>
     <p class="muted">Piensa en lo último que te ha preocupado y toca lo que reconozcas.</p>
+    <svg class="fig" id="wheel" viewBox="0 0 320 170" role="img" aria-label="Una rueda que gira más rápido con cada señal"></svg>
     <div class="chips" id="rumi"></div>
     <div id="rumiRes"></div>
+    <div class="card">
+      <span class="eyebrow">Me he pillado dándole vueltas: ¿y ahora?</span>
+      <p class="small">Cuando te das cuenta de que estás en la rueda, no hace falta pelearte con los pensamientos ni buscar la respuesta. Basta con encontrar una salida. Elige una.</p>
+      <svg class="fig" id="exits" viewBox="0 0 320 170" role="img" aria-label="Tres salidas de la rueda"></svg>
+      <div class="seg" id="exSeg"></div>
+      <div id="exBody"></div>
+    </div>
       <div class="t2box">
       <span class="eyebrow">Preguntas que dan vueltas y preguntas que avanzan</span>
       <p class="small" style="margin:0">No todas las preguntas que nos hacemos sirven igual. Compara.</p>
@@ -252,6 +265,11 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
       <span class="eyebrow">Cosas que nos decimos</span>
       <p class="small">Hay frases que repetimos sin pensarlo mucho. Toca cada una para mirarla de cerca y ver lo que se sabe.</p>
       <div id="t2myths"></div>
+    </div>
+    <div class="card">
+      <span class="eyebrow">Cuándo pedir ayuda</span>
+      <p class="small">Todas las personas le damos vueltas a las cosas a veces. Merece la pena hablarlo con tu psicóloga, o buscar ayuda si aún no la tienes, cuando:</p>
+      <div class="stack" style="gap:8px"><div class="helpl"><i aria-hidden="true"></i><span class="small">Le das vueltas tantas horas al día que te cuesta trabajar, estudiar o descansar.</span></div><div class="helpl"><i aria-hidden="true"></i><span class="small">Las vueltas te quitan el sueño muchas noches.</span></div><div class="helpl"><i aria-hidden="true"></i><span class="small">Vienen con una tristeza, una ansiedad o una desesperanza que no se van.</span></div><div class="helpl"><i aria-hidden="true"></i><span class="small">Son pensamientos que te asustan o que no consigues apartar aunque lo intentes.</span></div><div class="helpl"><i aria-hidden="true"></i><span class="small">Aparecen ideas de no querer vivir. En ese caso, llama al <b>024</b> (24 h) o al <b>112</b>.</span></div></div>
     </div>
   </section>
 
@@ -387,7 +405,38 @@ $('#scPlay').onclick = () => { renderScene(); playScene(); };
 renderScene();
 const RUMI = ['Llevo mucho rato y no he avanzado', 'Me siento peor que al empezar', 'Me hago preguntas sin respuesta', 'Vuelvo una y otra vez a lo mismo', 'Busco certeza total antes de hacer nada', 'Me cuesta dormir o concentrarme por esto'];
 let rumi = [];
-function renderRumi() {
+function drawWheel() {
+  const n = rumi.length, d = n ? (3.2 - n * .45).toFixed(2) + 's' : '0s', cx = 160, cy = 86;
+  let g = `<rect width="320" height="170" rx="16" fill="color-mix(in srgb, var(--loop) 7%, var(--surface))"/><path d="M${cx - 34} 158 L${cx} ${cy} L${cx + 34} 158" stroke="var(--muted)" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+  g += `<g class="spinw" style="--d:${d}"><circle cx="${cx}" cy="${cy}" r="62" fill="none" stroke="var(--loop)" stroke-width="5"/>${Array.from({ length: 16 }, (_, i) => { const a = i * Math.PI / 8; return `<path d="M${(cx + Math.cos(a) * 54).toFixed(1)} ${(cy + Math.sin(a) * 54).toFixed(1)} L${(cx + Math.cos(a) * 62).toFixed(1)} ${(cy + Math.sin(a) * 62).toFixed(1)}" stroke="var(--loop)" stroke-width="2"/>`; }).join('')}<circle cx="${cx}" cy="${cy}" r="5" fill="var(--loop)"/></g>`;
+  const fy = cy + 48;
+  g += `<g transform="translate(${cx} ${fy})"><circle cx="0" cy="-26" r="8" fill="var(--deep)"/><path d="M0 -18 v16 M0 -2 l-9 12 M0 -2 l10 10 M0 -12 l-10 6 M0 -12 l10 -4" stroke="var(--deep)" stroke-width="4" stroke-linecap="round"/></g>`;
+  if (n >= 3) g += `<g fill="var(--muted)" opacity=".7"><circle cx="${cx + 18}" cy="${fy - 40}" r="2"/><circle cx="${cx + 24}" cy="${fy - 34}" r="1.6"/></g>`;
+  g += `<text x="300" y="24" text-anchor="end" font-family="var(--body)" font-size="10.5" font-weight="800" fill="var(--loop)">${!n ? 'Quieta' : n === 1 ? 'Gira despacio' : n < 4 ? 'Gira deprisa' : 'Gira sin parar'}</text>`;
+  $('#wheel').innerHTML = g;
+}
+const EX = [['nom', 'Nombrarlo'], ['cue', 'Mover el cuerpo'], ['ate', 'Ocupar la mente']];
+let exOn = '', exIn = '';
+function drawExits() {
+  const cx = 110, cy = 88, T = { nom: [250, 36], cue: [266, 92], ate: [250, 148] };
+  let g = `<rect width="320" height="170" rx="16" fill="color-mix(in srgb, var(--loop) 6%, var(--surface))"/><circle cx="${cx}" cy="${cy}" r="58" fill="none" stroke="var(--loop)" stroke-width="5" opacity="${exOn ? .35 : 1}"/>`;
+  EX.forEach(([k, n], i) => { const [x, y] = T[k], on = exOn === k, c = on ? 'var(--road)' : 'var(--out)';
+    g += `<path d="M${cx + 58 * Math.cos((i - 1) * .55)} ${cy + 58 * Math.sin((i - 1) * .55)} Q ${(cx + x) / 2 + 10} ${(cy + y) / 2} ${x - 22} ${y}" stroke="${c}" stroke-width="${on ? 4 : 2.5}" fill="none" stroke-dasharray="${on ? '0' : '5 5'}" stroke-linecap="round"/><rect x="${x - 22}" y="${y - 16}" width="44" height="32" rx="8" fill="${on ? 'var(--road)' : 'var(--surface)'}" stroke="${c}" stroke-width="2"/><text x="${x}" y="${y + 5}" text-anchor="middle" font-family="var(--body)" font-size="13" font-weight="800" fill="${on ? '#fff' : c}">${i + 1}</text>`; });
+  const pos = exOn ? [T[exOn][0] - 42, T[exOn][1] + 6] : [cx, cy + 28];
+  g += `<g transform="translate(${pos[0]} ${pos[1]})" style="transition:transform .6s"><circle cx="0" cy="-26" r="8" fill="var(--deep)"/><path d="M0 -18 v16 M0 -2 l-7 12 M0 -2 l7 12 M0 -12 l-9 6 M0 -12 l9 6" stroke="var(--deep)" stroke-width="4" stroke-linecap="round"/></g>`;
+  $('#exits').innerHTML = g;
+  $('#exSeg').innerHTML = EX.map(([k, n], i) => `<button style="--c:var(--road)" data-ex="${k}" aria-pressed="${exOn === k}">${i + 1} · ${n}</button>`).join('');
+  $$('[data-ex]').forEach(b => b.onclick = () => { exOn = b.dataset.ex; drawExits(); });
+  let h = '';
+  if (exOn === 'nom') h = `<p class="small">Ponerle nombre a lo que pasa ya te saca un poco de la rueda: dejas de estar dentro del pensamiento y pasas a mirarlo.</p><input type="text" id="exI" placeholder="Me doy cuenta de que estoy dándole vueltas a…" value="${esc(exIn)}"><div id="exOk"></div>`;
+  if (exOn === 'cue') h = `<p class="small">El cuerpo es una puerta de salida muy rápida. No hace falta mucho: unos minutos bastan.</p><div class="stack" style="gap:8px">${['Levántate y cambia de habitación.', 'Sal a caminar cinco minutos, aunque sea por casa.', 'Estira los brazos y los hombros, y suelta el aire despacio.', 'Lávate la cara o las manos con agua fresca.'].map(t => `<div class="helpl"><i></i><span class="small">${t}</span></div>`).join('')}</div>`;
+  if (exOn === 'ate') h = `<p class="small">La rueda necesita tu atención para girar. Si se la das a algo que ocupe de verdad la mente, frena sola.</p><div class="stack" style="gap:8px">${['Cuenta hacia atrás de siete en siete desde cien.', 'Busca a tu alrededor cinco cosas de un mismo color.', 'Haz algo con las manos: cocinar, ordenar un cajón, dibujar.', 'Llama a alguien y habla de otra cosa.'].map(t => `<div class="helpl"><i></i><span class="small">${t}</span></div>`).join('')}</div>`;
+  if (exOn) h += `<p class="small muted">Si la preocupación vuelve, no pasa nada: puedes aparcarla hasta tu hora de preocuparte, en la pestaña Aparcar.</p>`;
+  $('#exBody').innerHTML = h;
+  const I = $('#exI'); if (I) { const ok = () => { $('#exOk').innerHTML = exIn.trim() ? `<div class="ok small pop">«Me doy cuenta de que estoy dándole vueltas a ${esc(exIn.trim())}». Darte cuenta ya es salir un poco.</div>` : ''; }; I.oninput = () => { exIn = I.value; ok(); }; ok(); }
+}
+drawExits();
+function renderRumi() { drawWheel();
   $('#rumi').innerHTML = RUMI.map(r => `<button class="chip" style="--c:var(--loop)" data-ru="${esc(r)}" aria-pressed="${rumi.includes(r)}">${r}</button>`).join('');
   $$('[data-ru]').forEach(b => b.onclick = () => { const v = b.dataset.ru; rumi = rumi.includes(v) ? rumi.filter(x => x !== v) : [...rumi, v]; renderRumi(); });
   const n = rumi.length;

@@ -72,6 +72,7 @@ input[type=range] { width: 100%; accent-color: var(--c, var(--accent)); }
 .warn { background: var(--warn); color: var(--warn-ink); border-radius: 16px; padding: 12px 14px; font-size: .93rem; }
 .ok { background: var(--ok); color: var(--ok-ink); border-radius: 16px; padding: 12px 14px; font-size: .93rem; }
 .pop { animation: pop .45s ease-out; } @keyframes pop { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+svg .pop[transform] { animation-name: popfade; } @keyframes popfade { from { opacity: 0; } to { opacity: 1; } }
 .empty { text-align: center; padding: 18px; border: 1.5px dashed var(--line); border-radius: 18px; color: var(--muted); font-size: .93rem; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
 .seg { display: flex; gap: 6px; background: var(--tint); padding: 4px; border-radius: 999px; }
@@ -275,6 +276,8 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
     </div>
     <div class="card">
       <span class="eyebrow">Lo que me quita el sueño</span>
+      <p class="small">Toca lo que te quita el sueño y mira cómo se va llenando tu dormitorio.</p>
+      <svg class="fig" id="room" viewBox="0 0 320 190" role="img" aria-label="Mi dormitorio"></svg>
       <div class="chips" id="thief"></div>
       <div id="thTip"></div>
     </div>
@@ -288,6 +291,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
       <p class="small">Entre 30 y 60 minutos antes de acostarte, una secuencia tranquila que siempre sea parecida. Le dice al cuerpo que se acerca la hora de dormir.</p>
       <div class="chips" id="rSug"></div>
       <div class="nav-row" style="flex-wrap:nowrap"><input type="text" id="rIn" placeholder="Otro paso mío"><button class="btn small" id="rAdd">Añadir</button></div>
+      <svg class="fig" id="stairs" viewBox="0 0 320 170" role="img" aria-label="Una escalera que baja hacia la cama"></svg>
       <div class="routine" id="routine"></div>
     </div>
     <div class="card">
@@ -504,16 +508,53 @@ function renderNights() {
     <div class="res"><div><b>${hm(avg('asleep'))}</b>duermo de media</div><div><b>${avg('lat')}'</b>tardo en dormirme</div><div style="--c:${effc(avg('eff'))}"><b>${avg('eff')} %</b>del tiempo en la cama, durmiendo</div></div>
     <p class="small muted">Media de las últimas ${Math.min(7, N.length)} noches. Puedes traerlo a sesión.</p>`;
 }
+
+const ROOM = {
+  'Preocupaciones': `<g transform="translate(150 40)"><ellipse rx="30" ry="14" fill="var(--surface)" stroke="var(--nt)" stroke-width="1.5"/><text y="4" text-anchor="middle" font-family="var(--body)" font-size="11" font-weight="800" fill="var(--nt)">¿y si…?</text><circle cx="-14" cy="22" r="3" fill="var(--surface)" stroke="var(--nt)"/></g>`,
+  'Pantallas antes de dormir': `<g transform="translate(170 116)"><rect x="-8" y="-12" width="16" height="24" rx="3" fill="var(--nt)"/><rect x="-6" y="-9" width="12" height="17" fill="#BFE3FF"/><circle r="22" fill="#BFE3FF" opacity=".25"/></g>`,
+  'Café o té por la tarde': `<g transform="translate(262 118)"><rect x="-8" y="-6" width="16" height="13" rx="3" fill="#8A5A3C"/><path d="M8 -3 c6 0 6 7 0 7" stroke="#8A5A3C" stroke-width="2" fill="none"/><path d="M-3 -10 q-3 -5 0 -9 M3 -10 q-3 -5 0 -9" stroke="var(--muted)" stroke-width="1.4" fill="none"/></g>`,
+  'Horarios irregulares': `<g transform="translate(246 38)"><circle r="14" fill="var(--surface)" stroke="var(--nt)" stroke-width="2"/><path d="M0 0 v-8 M0 0 l6 4" stroke="var(--nt)" stroke-width="2" stroke-linecap="round"/><text x="16" y="-8" font-family="var(--body)" font-size="12" font-weight="800" fill="var(--nt)">?</text></g>`,
+  'Ruido o luz': `<g><path d="M70 32 l-12 -10 M78 28 l-4 -14 M88 32 l6 -12" stroke="#E8B44A" stroke-width="2.5" stroke-linecap="round"/><path d="M100 50 q8 8 0 16 M106 44 q14 14 0 28" stroke="var(--muted)" stroke-width="2" fill="none" stroke-linecap="round"/></g>`,
+  'El bebé o los niños': `<g transform="translate(40 150)"><rect x="-22" y="-14" width="44" height="22" rx="4" fill="var(--surface)" stroke="var(--nt)" stroke-width="1.5"/><path d="M-18 -14 v22 M-9 -14 v22 M0 -14 v22 M9 -14 v22 M18 -14 v22" stroke="var(--nt)" stroke-width="1"/><circle cx="0" cy="-20" r="5" fill="#F2C9A0"/></g>`,
+  'Dolor o molestias': `<path d="M196 92 l6 -6 l4 8 l6 -8 l4 8" stroke="#C2410C" stroke-width="2.4" fill="none" stroke-linejoin="round" stroke-linecap="round"/>`,
+  'Calor o frío': `<g transform="translate(22 70)"><rect x="-4" y="-18" width="8" height="28" rx="4" fill="var(--surface)" stroke="#C2410C" stroke-width="1.5"/><circle cy="14" r="7" fill="#C2410C"/><rect x="-1.5" y="-8" width="3" height="18" fill="#C2410C"/></g>`,
+  'Siestas largas': `<g transform="translate(280 70)"><text font-family="var(--body)" font-size="14" font-weight="800" fill="var(--moon)">z</text><text x="8" y="-8" font-family="var(--body)" font-size="11" font-weight="800" fill="var(--moon)">z</text><circle cx="-14" cy="-6" r="8" fill="#E8B44A"/></g>`,
+  'Trabajar hasta tarde': `<g transform="translate(226 98)"><rect x="-14" y="-10" width="28" height="18" rx="2" fill="var(--nt)"/><rect x="-18" y="8" width="36" height="4" rx="1" fill="var(--nt)"/></g>`,
+  'Alcohol': `<g transform="translate(282 116)"><path d="M-6 -12 h12 q0 12 -6 13 q-6 -1 -6 -13z" fill="#9B2C4A"/><path d="M0 1 v8 M-5 9 h10" stroke="var(--muted)" stroke-width="1.5"/></g>`,
+  'Cenar mucho o muy tarde': `<g transform="translate(120 160)"><ellipse rx="16" ry="5" fill="var(--surface)" stroke="var(--muted)" stroke-width="1.5"/><ellipse cy="-4" rx="9" ry="5" fill="#E8A25A"/></g>`
+};
+function drawRoom() {
+  let g = `<rect width="320" height="190" rx="16" fill="color-mix(in srgb, var(--nt) 10%, var(--surface))"/><rect y="138" width="320" height="52" fill="color-mix(in srgb, var(--nt) 16%, var(--surface))"/>`;
+  g += `<rect x="52" y="34" width="56" height="48" rx="4" fill="color-mix(in srgb, var(--nt) 45%, #0b1430)" stroke="var(--surface)" stroke-width="3"/><circle cx="92" cy="48" r="6" fill="#F4E6A8"/>`;
+  g += `<rect x="96" y="104" width="150" height="30" rx="8" fill="var(--surface)" stroke="var(--nt)" stroke-width="1.6"/><rect x="96" y="82" width="16" height="56" rx="4" fill="var(--nt)"/><rect x="114" y="96" width="36" height="14" rx="6" fill="color-mix(in srgb, var(--moon) 35%, var(--surface))"/><path d="M150 104 q50 -10 96 0" fill="color-mix(in srgb, var(--moon) 45%, var(--surface))"/><rect x="96" y="134" width="6" height="12" fill="var(--nt)"/><rect x="240" y="134" width="6" height="12" fill="var(--nt)"/>`;
+  g += `<rect x="252" y="124" width="40" height="22" rx="3" fill="color-mix(in srgb, var(--nt) 30%, var(--surface))"/>`;
+  S.thief.forEach(t => { if (ROOM[t]) g += `<g class="pop">${ROOM[t]}</g>`; });
+  const n = S.thief.length;
+  g += `<text x="300" y="24" text-anchor="end" font-family="var(--body)" font-size="10.5" font-weight="800" fill="var(--nt)">${n ? `${n} ${n === 1 ? 'ladrón' : 'ladrones'} del sueño` : 'Un dormitorio tranquilo'}</text>`;
+  $('#room').innerHTML = g;
+}
+function drawStairs() {
+  const L = S.routine, n = Math.max(L.length, 1), w = Math.min(46, 220 / (n + 1)), h = Math.min(22, 100 / (n + 1));
+  let g = `<rect width="320" height="170" rx="16" fill="color-mix(in srgb, var(--nt) 8%, var(--surface))"/>`;
+  g += `<circle cx="34" cy="30" r="12" fill="#E8B44A" opacity=".85"/><path d="M286 22 a12 12 0 1 0 12 14 a9 9 0 0 1 -12 -14z" fill="var(--moon)"/>`;
+  let x = 22, y = 52;
+  L.forEach((r, i) => { const c = `color-mix(in srgb, var(--nt) ${30 + Math.round(60 * i / n)}%, var(--surface))`;
+    g += `<g class="pop"><rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${(160 - y).toFixed(1)}" fill="${c}"/><text x="${(x + w / 2).toFixed(1)}" y="${(y + 15).toFixed(1)}" text-anchor="middle" font-family="var(--body)" font-size="11" font-weight="800" fill="#fff">${i + 1}</text></g>`; x += w; y += h; });
+  const bx = Math.max(x + 6, 200);
+  g += `<g transform="translate(${Math.min(bx, 226)} 118)"><rect x="0" y="10" width="78" height="22" rx="6" fill="var(--surface)" stroke="var(--nt)" stroke-width="1.5"/><rect x="0" y="-6" width="10" height="40" rx="3" fill="var(--nt)"/><rect x="12" y="4" width="22" height="9" rx="4" fill="color-mix(in srgb, var(--moon) 40%, var(--surface))"/><text x="40" y="48" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--nt)">A dormir</text></g>`;
+  if (!L.length) g += `<text x="120" y="100" text-anchor="middle" font-family="var(--body)" font-size="10.5" font-weight="700" fill="var(--muted)">Añade pasos y verás tu escalera</text>`;
+  $('#stairs').innerHTML = g;
+}
 function renderMio() {
-  renderDiary();
+  renderDiary(); drawRoom();
   $('#thief').innerHTML = THIEF.map(t => `<button class="chip" style="--c:var(--nt)" data-tf="${esc(t)}" aria-pressed="${S.thief.includes(t)}">${esc(t)}</button>`).join('');
-  $$('[data-tf]').forEach(b => b.onclick = () => { const v = b.dataset.tf; S.thief = S.thief.includes(v) ? S.thief.filter(x => x !== v) : [...S.thief, v]; saveS(); b.setAttribute('aria-pressed', S.thief.includes(v)); thTip(S.thief.includes(v) ? v : null); });
+  $$('[data-tf]').forEach(b => b.onclick = () => { const v = b.dataset.tf; S.thief = S.thief.includes(v) ? S.thief.filter(x => x !== v) : [...S.thief, v]; saveS(); b.setAttribute('aria-pressed', S.thief.includes(v)); thTip(S.thief.includes(v) ? v : null); drawRoom(); });
   thTip(null);
 }
 function thTip(v) { const k = v && THTIP[v] ? v : S.thief.find(x => THTIP[x]); $('#thTip').innerHTML = k ? `<div class="note small pop">${THTIP[k]}</div>` : ''; }
 
 /* ================= POR LA NOCHE ================= */
-function renderRoutine() {
+function renderRoutine() { drawStairs();
   $('#rSug').innerHTML = RSUG.filter(r => !S.routine.includes(r)).map(r => `<button class="chip ex" data-rs="${esc(r)}">+ ${esc(r)}</button>`).join('');
   $$('[data-rs]').forEach(b => b.onclick = () => { S.routine.push(b.dataset.rs); saveS(); keep(renderRoutine); });
   $('#routine').innerHTML = S.routine.length ? S.routine.map((r, i) => `<div class="rstep" style="--i:${Math.min(i, 6)}"><span class="n">${i + 1}</span><span>${esc(r)}</span><button data-up="${i}" aria-label="Subir" ${i ? '' : 'disabled'}>↑</button><button data-rx="${i}" aria-label="Quitar">✕</button></div>`).join('') + '<div class="rstep" style="--i:8"><span class="n">☾</span><span><b>A dormir</b></span><span></span><span></span></div>' : '<div class="empty">Toca las ideas de arriba para construir tu rutina, en orden.</div>';

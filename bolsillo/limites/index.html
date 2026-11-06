@@ -284,7 +284,23 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
       <p class="small">Hay frases que repetimos sin pensarlo mucho. Toca cada una para mirarla de cerca y ver lo que se sabe.</p>
       <div class="flips" id="myths"></div>
     </div>
-  </section>
+    <div class="box">
+      <span class="eyebrow">Cuando la otra persona no lo acepta</span>
+      <p class="small">Es muy habitual que, al principio, la otra persona no reciba bien tu límite, sobre todo si estaba acostumbrada a que dijeras que sí. Que proteste no significa que lo hayas hecho mal: significa que algo está cambiando. ¿Cómo ha reaccionado?</p>
+      <div class="chips" id="reaCh"></div>
+      <div id="reaTxt"></div>
+      <p class="small" style="font-weight:800;color:var(--deep);margin-top:6px">Si sigue sin respetarlo, ¿qué haré yo?</p>
+      <p class="small">Muchas veces la consecuencia de que no se respete un límite no es para la otra persona, sino para ti: es lo que tú decides hacer para cuidarte. No depende de que la otra persona cambie.</p>
+      <svg class="fig" id="conFig" viewBox="0 0 320 150" role="img" aria-label="Tu casa, tu valla y la distancia con la otra persona"></svg>
+      <div class="chips" id="conCh"></div>
+      <div id="conTxt"></div>
+    </div>
+    <div class="box">
+      <span class="eyebrow">Cuándo pedir ayuda</span>
+      <p class="small">Aprender a poner límites lleva tiempo. Merece la pena hablarlo con tu psicóloga, o buscar ayuda si aún no la tienes, cuando:</p>
+      <div style="display:flex;flex-direction:column;gap:8px"><div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:14px;background:color-mix(in srgb, var(--accent) 7%, var(--surface));border:1px solid var(--line)"><i aria-hidden="true" style="flex:none;width:8px;height:8px;margin-top:7px;border-radius:50%;background:var(--accent)"></i><span class="small">Te cuesta tanto decir que no que acabas agotado/a o resentido/a.</span></div><div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:14px;background:color-mix(in srgb, var(--accent) 7%, var(--surface));border:1px solid var(--line)"><i aria-hidden="true" style="flex:none;width:8px;height:8px;margin-top:7px;border-radius:50%;background:var(--accent)"></i><span class="small">Sientes que no tienes derecho a tener necesidades propias.</span></div><div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:14px;background:color-mix(in srgb, var(--accent) 7%, var(--surface));border:1px solid var(--line)"><i aria-hidden="true" style="flex:none;width:8px;height:8px;margin-top:7px;border-radius:50%;background:var(--accent)"></i><span class="small">La culpa después de poner un límite te dura días.</span></div><div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:14px;background:color-mix(in srgb, var(--accent) 7%, var(--surface));border:1px solid var(--line)"><i aria-hidden="true" style="flex:none;width:8px;height:8px;margin-top:7px;border-radius:50%;background:#C2410C"></i><span class="small">Cuando pones un límite, la otra persona te amenaza, te castiga o te da miedo. Si es tu pareja o tu expareja, llama al <b>016</b> (24 h; no deja rastro en la factura).</span></div></div>
+    </div>
+    </section>
 
   <section class="view" id="view-paso" hidden>
     <div class="progress" id="progress"></div>
@@ -398,7 +414,33 @@ const I = (inner) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
 const store = {
   get(k, d) { try { const v = localStorage.getItem('limites.' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
   set(k, v) { try { localStorage.setItem('limites.' + k, JSON.stringify(v)); } catch (e) {} }
+
 };
+const REA = [['ins', 'Insiste', 'Puedes repetir tu límite con las mismas palabras, con calma, las veces que haga falta: «Te entiendo, y aun así mi respuesta es no». No necesitas nuevos argumentos.'], ['enf', 'Se enfada', 'Su enfado es suyo, no una prueba de que hayas hecho algo mal. Puedes reconocerlo sin retirar el límite: «Veo que te molesta, y lo entiendo. Aun así, lo mantengo».'], ['vic', 'Se hace la víctima', 'Puedes cuidar la relación sin hacerte cargo de todo lo que siente: «No quiero hacerte daño, y esto es algo que necesito».'], ['cal', 'Me deja de hablar', 'El silencio también es una forma de presión. Puedes dejar la puerta abierta sin ir detrás: «Cuando quieras hablar, aquí estoy».'], ['sig', 'Sigue haciéndolo igual', 'Si lo que dices no cambia nada, llega el momento de lo que haces tú. Mira abajo qué podrías hacer para cuidarte.']];
+const CONS = ['Salir de la conversación', 'Irme de ese lugar', 'No contestar fuera de hora', 'Dejar de prestar o de hacer ese favor', 'Ver menos a esa persona', 'Tomar distancia un tiempo', 'Contar con alguien que me apoye'];
+let LM = store.get('noacepta', { r: '', c: [] });
+function renderNoAcepta() {
+  $('#reaCh').innerHTML = REA.map(([k, n]) => `<button class="chip" style="--c:var(--red)" data-re="${k}" aria-pressed="${LM.r === k}">${n}</button>`).join('');
+  document.querySelectorAll('[data-re]').forEach(b => b.onclick = () => { LM.r = LM.r === b.dataset.re ? '' : b.dataset.re; store.set('noacepta', LM); renderNoAcepta(); });
+  const r = REA.find(x => x[0] === LM.r);
+  $('#reaTxt').innerHTML = r ? `<div class="feedback popin">${r[2]}</div>` : '';
+  const n = LM.c.length, gap = Math.min(n, 4) * 16, door = n ? Math.min(1, n / 3) : 0;
+  let g = `<rect width="320" height="150" rx="16" fill="color-mix(in srgb, var(--grn) 7%, var(--surface))"/><path d="M0 124 H320" stroke="var(--line)" stroke-width="2"/>`;
+  g += `<path d="M30 124 V78 l34 -26 l34 26 V124z" fill="var(--surface)" stroke="var(--deep)" stroke-width="2"/><rect x="54" y="96" width="20" height="28" fill="var(--grn)" opacity=".7"/><text x="64" y="142" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--deep)">Yo</text>`;
+  g += [112, 124, 136].map(x => `<path d="M${x} 124 V96 l5 -6 l5 6 V124" fill="color-mix(in srgb, var(--yel) 35%, var(--surface))" stroke="var(--yel)" stroke-width="1.5"/>`).join('') + `<path d="M108 106 H148 M108 116 H148" stroke="var(--yel)" stroke-width="2"/>`;
+  g += `<g transform="translate(150 124)"><path d="M0 0 V-30 h${(22 * (1 - door * .85)).toFixed(1)} V0" fill="color-mix(in srgb, var(--yel) 50%, var(--surface))" stroke="var(--yel)" stroke-width="2" style="transition:all .5s"/></g>`;
+  g += [176, 188].map(x => `<path d="M${x} 124 V96 l5 -6 l5 6 V124" fill="color-mix(in srgb, var(--yel) 35%, var(--surface))" stroke="var(--yel)" stroke-width="1.5"/>`).join('') + `<path d="M174 106 H196 M174 116 H196" stroke="var(--yel)" stroke-width="2"/>`;
+  const ox = 228 + gap;
+  g += `<g style="transition:transform .6s" transform="translate(${ox} 0)"><circle cx="0" cy="84" r="10" fill="var(--red)"/><path d="M-13 124 q0 -30 13 -32 q13 2 13 32z" fill="var(--red)" opacity=".8"/></g><text x="${ox}" y="142" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--red)">La otra persona</text>`;
+  if (n) g += `<path d="M196 70 H${ox - 16}" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="3 4"/><text x="${(196 + ox - 16) / 2}" y="64" text-anchor="middle" font-family="var(--body)" font-size="9.5" font-weight="700" fill="var(--muted)">distancia</text>`;
+  g += `<text x="160" y="24" text-anchor="middle" font-family="var(--body)" font-size="10.5" font-weight="800" fill="${n ? 'var(--grn)' : 'var(--muted)'}">${n ? 'Tú decides cuánto abrir la puerta' : 'La puerta sigue abierta del todo'}</text>`;
+  $('#conFig').innerHTML = g;
+  $('#conCh').innerHTML = CONS.map(t => `<button class="chip" style="--c:var(--grn)" data-cs="${esc(t)}" aria-pressed="${LM.c.includes(t)}">${esc(t)}</button>`).join('');
+  document.querySelectorAll('[data-cs]').forEach(b => b.onclick = () => { const t = b.dataset.cs; LM.c = LM.c.includes(t) ? LM.c.filter(x => x !== t) : [...LM.c, t]; store.set('noacepta', LM); renderNoAcepta(); });
+  $('#conTxt').innerHTML = n ? `<div class="feedback popin">La consecuencia no es un castigo ni una amenaza: es lo que haces para cuidarte cuando tu límite no se respeta. Puedes anunciarla con calma («Si vuelves a llamarme a estas horas, no voy a contestar») y, sobre todo, cumplirla. Si la otra persona te da miedo o reacciona con amenazas, no lo hagas a solas: pide ayuda, y si es tu pareja o tu expareja, llama al <b>016</b>.</div>` : '';
+}
+renderNoAcepta();
+
 function toast(m) { const t = $('#toast'); t.textContent = m; t.hidden = false; clearTimeout(toast._t); toast._t = setTimeout(() => t.hidden = true, 2200); }
 
 const AREAS = ['Tiempo', 'Cuerpo y descanso', 'Emociones', 'Dinero y cosas', 'Trabajo', 'Familia', 'Pareja', 'Amistades', 'Móvil y redes'];

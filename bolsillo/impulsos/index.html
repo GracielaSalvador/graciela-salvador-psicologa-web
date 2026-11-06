@@ -70,6 +70,7 @@ textarea { width: 100%; border: 1.5px solid var(--line); border-radius: 14px; pa
 .warn a { color: inherit; font-weight: 700; }
 .ok { background: var(--ok); color: var(--ok-ink); border-radius: 16px; padding: 12px 14px; font-size: .93rem; }
 .pop { animation: pop .45s ease-out; } @keyframes pop { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+svg .pop[transform] { animation-name: popfade; } @keyframes popfade { from { opacity: 0; } to { opacity: 1; } }
 .empty { text-align: center; padding: 18px; border: 1.5px dashed var(--line); border-radius: 18px; color: var(--muted); font-size: .93rem; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
 .wizdots { display: flex; gap: 6px; } .wizdots span { flex: 1; height: 6px; border-radius: 3px; background: var(--tint); transition: background .3s; } .wizdots span.on { background: var(--nino); }
@@ -322,6 +323,12 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
     <div class="stack" id="logs"></div>
     <div class="card"><span class="eyebrow">Mi plan B</span><p class="small muted">Lo que puedo hacer en lugar de dejarme llevar. Aparecerá en el paso «Elige».</p><div class="chips" id="planB"></div>
       <div class="nav-row" style="flex-wrap:nowrap"><input type="text" id="pbIn" placeholder="Añadir uno mío"><button class="btn small" id="pbAdd">Añadir</button></div></div>
+    <div class="card"><span class="eyebrow">Ponérmelo más difícil</span>
+      <p class="small">Frenar es más fácil antes de que llegue la ola. Cada vez que pones distancia entre tú y el impulso, ganas unos segundos para elegir. Toca lo que podrías hacer: cada medida pone un obstáculo en el camino.</p>
+      <svg class="fig" id="obst" viewBox="0 0 320 130" role="img" aria-label="Un camino con obstáculos entre tú y el impulso"></svg>
+      <div class="chips" id="prev"></div>
+      <div id="prevTxt"></div>
+    </div>
     <div class="nav-row" style="justify-content:flex-start"><button class="btn ghost small" id="copyBtn">Copiar resumen para mi psicóloga</button></div>
   </section>
 
@@ -631,7 +638,24 @@ function renderDone(was, ok, g1) {
 /* ================= REGISTRO ================= */
 function marbles(n, c) { let g = ''; for (let i = 0; i < Math.min(n, 24); i++) { const r = Math.floor(i / 4), k = i % 4; g += `<circle cx="${24 + k * 14 + (r % 2) * 7}" cy="${100 - r * 12}" r="6" fill="${c}" opacity=".9"/>`; }
   return `<svg viewBox="0 0 90 116" aria-hidden="true"><rect x="28" y="6" width="34" height="10" rx="3" fill="var(--line)"/><path d="M26 16 h38 v6 c12 4 16 12 16 22 v58 a8 8 0 0 1 -8 8 H18 a8 8 0 0 1 -8 -8 V44 c0 -10 4 -18 16 -22z" fill="var(--surface)" stroke="var(--line)" stroke-width="2.5"/>${g}</svg>`; }
-function renderReg() {
+
+const PREV = ['Dejar el móvil en otra habitación por la noche', 'Quitar las notificaciones o las apps que más me enganchan', 'No guardar la tarjeta en las tiendas online', 'Esperar un día antes de comprar lo que no necesito', 'Escribir los mensajes difíciles en notas, no en el chat', 'Dejar de seguir cuentas o grupos que me encienden', 'Decidir de antemano qué haré cuando lleguen las ganas', 'Cuidar el sueño y no llegar con hambre'];
+let PV = store.get('prev', []);
+function renderPrev() {
+  const n = PV.length;
+  let g = `<rect width="320" height="130" rx="16" fill="color-mix(in srgb, var(--calm) 7%, var(--surface))"/><path d="M40 92 C 110 70 210 112 280 88" stroke="var(--line)" stroke-width="14" fill="none" stroke-linecap="round"/>`;
+  g += `<g transform="translate(36 92)"><circle cy="-30" r="8" fill="var(--deep)"/><path d="M0 -22 v16 M0 -6 l-7 12 M0 -6 l7 12 M0 -16 l-9 6 M0 -16 l9 6" stroke="var(--deep)" stroke-width="4" stroke-linecap="round"/></g><text x="36" y="122" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--deep)">Tú</text>`;
+  g += `<path d="M288 62 l-12 22 h10 l-8 20 l20 -28 h-10 l8 -14z" fill="var(--imp)"/><text x="286" y="122" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--imp)">Impulso</text>`;
+  for (let i = 0; i < Math.min(n, 8); i++) { const t = (i + 1) / 9, x = 40 + t * 240, y = 92 + Math.sin(t * Math.PI * 1.3) * -8;
+    g += i % 2 ? `<g class="pop"><rect x="${(x - 2).toFixed(1)}" y="${(y - 26).toFixed(1)}" width="4" height="26" fill="var(--calm)"/><rect x="${(x - 12).toFixed(1)}" y="${(y - 22).toFixed(1)}" width="24" height="5" rx="2" fill="var(--calm)"/><rect x="${(x - 12).toFixed(1)}" y="${(y - 12).toFixed(1)}" width="24" height="5" rx="2" fill="var(--calm)"/></g>`
+      : `<g class="pop"><ellipse cx="${x.toFixed(1)}" cy="${(y - 6).toFixed(1)}" rx="13" ry="9" fill="color-mix(in srgb, var(--calm) 55%, var(--surface))" stroke="var(--calm)" stroke-width="1.5"/></g>`; }
+  g += `<text x="160" y="28" text-anchor="middle" font-family="var(--body)" font-size="10.5" font-weight="800" fill="var(--calm)">${n ? `${n} ${n === 1 ? 'obstáculo' : 'obstáculos'}: más tiempo para elegir` : 'Un camino sin obstáculos'}</text>`;
+  $('#obst').innerHTML = g;
+  $('#prev').innerHTML = PREV.map(t => `<button class="chip" style="--c:var(--calm)" data-pv="${esc(t)}" aria-pressed="${PV.includes(t)}">${esc(t)}</button>`).join('');
+  $$('[data-pv]').forEach(b => b.onclick = () => { const v = b.dataset.pv; PV = PV.includes(v) ? PV.filter(x => x !== v) : [...PV, v]; store.set('prev', PV); keep(renderPrev); });
+  $('#prevTxt').innerHTML = n ? `<div class="ok small pop">No es falta de fuerza de voluntad: a todo el mundo le cuesta frenar cuando lo tiene a un toque. Ponértelo más difícil es una forma inteligente de cuidarte cuando las ganas aún no han llegado.</div>` : '';
+}
+function renderReg() { renderPrev();
   const ok = LOG.filter(l => l.ok).length, no = LOG.length - ok;
   $('#jars').innerHTML = `<div class="jarc" style="--c:var(--calm)">${marbles(ok, 'var(--calm)')}<b>${ok}</b><span>veces que frené</span></div><div class="jarc" style="--c:var(--amb)">${marbles(no, 'var(--amb)')}<b>${no}</b><span>veces que lo hice (y aprendí)</span></div>`;
   if (LOG.length) { const okL = LOG.filter(l => l.ok), avg = okL.length ? okL.reduce((s, l) => s + (l.g0 - l.g1), 0) / okL.length : 0;
@@ -653,6 +677,7 @@ function summary() {
   const by = (k) => Object.entries(MI.sort).filter(([, v]) => v === k).map(([t]) => t.toLowerCase());
   if (by('mucho').length) L.push('Aparecen mucho con: ' + by('mucho').join(', ')); if (by('aveces').length) L.push('A veces con: ' + by('aveces').join(', '));
   LIGHTS.forEach(([k, t]) => { if (MI.light[k].length) L.push(`Señales ${t.split(' ·')[0].toLowerCase()}: ${MI.light[k].join(', ').toLowerCase()}`); });
+  if (PV.length) L.push('Me lo pongo más difícil: ' + PV.join(', ').toLowerCase());
   const ok = LOG.filter(l => l.ok).length; if (LOG.length) L.push(`Frené ${ok} de ${LOG.length} veces`);
   LOG.slice(-10).forEach(l => L.push(`- ${fdate(l.t)} ${(KINDS.find(k => k[0] === l.kind) || [, 'impulso'])[1].toLowerCase()}: ganas ${l.g0}→${l.g1}, ${l.ok ? 'frené' : 'lo hice'}${l.pick ? ' (' + l.pick.toLowerCase() + ')' : ''}`));
   return L.join('\n');
@@ -1031,6 +1056,7 @@ const PDFKIT = (() => {
         { id: 'mapa', title: 'Mi mapa de impulsos', html: (MI.kinds.length || hasSort) ? `${MI.kinds.length ? K.card(`<span class="k">Lo que más me cuesta frenar</span>${K.tags(MI.kinds.map(k => k === 'otr' ? (MI.other || 'Otro') : kn(k)))}`) : ''}${hasSort ? `<div class="grid2">${BINS.filter(b => b[0] !== 'no').map(([b, t, c]) => sortG(b).length ? K.card(`<span class="k" style="color:${c}">${t} cuando…</span>${K.tags(sortG(b))}`) : '').join('')}</div>` : ''}` : '' },
         { id: 'semaforo', title: 'Mi semáforo', note: 'Las señales que me avisan', html: (MI.light.v.length || MI.light.a.length || MI.light.r.length) ? LIGHTS.map(([k, t, c]) => MI.light[k].length ? K.card(`<span class="k" style="color:${c}">${t}</span>${K.tags(MI.light[k])}`) : '').join('') + '<p class="mut">Cuanto antes noto la señal, más fácil es frenar. En verde o ámbar, todavía puedo elegir.</p>' : '' },
         { id: 'planb', title: 'Mi plan B', html: PB.length ? K.card(K.list(PB), 'good') : '' },
+        { id: 'prev', title: 'Me lo pongo más difícil', html: PV.length ? K.card(K.list(PV), 'good') : '' },
         { id: 'registro', title: 'Las veces que he usado «Frenar»', html: LOG.length ? `${K.card(`<p>He frenado <b>${okL.length}</b> ${okL.length === 1 ? 'vez' : 'veces'}${LOG.length - okL.length ? ` y <b>${LOG.length - okL.length}</b> lo hice (y aprendí)` : ''}.${okL.length ? ` Cuando freno, mis ganas bajan de media <b>${avg.toFixed(1).replace('.', ',')} puntos</b>.` : ''}</p>`, 'soft')}<table><tr><th>Día</th><th>Impulso</th><th>Ganas</th><th>Qué hice</th></tr>${LOG.slice(-12).reverse().map(l => `<tr><td>${K.fcorta(l.t)}</td><td>${K.esc(kn(l.kind))}</td><td>${l.g0} → ${l.g1}</td><td>${l.ok ? 'Frené' : 'Lo hice'}${l.pick ? ' · ' + K.esc(l.pick.toLowerCase()) : ''}</td></tr>`).join('')}</table>` : '' },
       ];
     },

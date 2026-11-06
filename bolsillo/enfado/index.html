@@ -72,6 +72,10 @@ input[type=range] { width: 100%; accent-color: var(--c, var(--accent)); }
 .warn { background: var(--warn); color: var(--warn-ink); border-radius: 16px; padding: 12px 14px; font-size: .93rem; }
 .ok { background: var(--ok); color: var(--ok-ink); border-radius: 16px; padding: 12px 14px; font-size: .93rem; }
 .pop { animation: pop .45s ease-out; } @keyframes pop { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+svg .pop[transform] { animation-name: popfade; } @keyframes popfade { from { opacity: 0; } to { opacity: 1; } }
+.ring { animation: ring .5s ease-in-out 2; transform-box: fill-box; transform-origin: 50% 10%; } @keyframes ring { 25% { transform: rotate(14deg); } 75% { transform: rotate(-14deg); } }
+.helpl { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 14px; background: color-mix(in srgb, var(--an) 7%, var(--surface)); border: 1px solid var(--line); }
+.helpl i { flex: none; width: 8px; height: 8px; margin-top: 7px; border-radius: 50%; background: var(--an); }
 .empty { text-align: center; padding: 18px; border: 1.5px dashed var(--line); border-radius: 18px; color: var(--muted); font-size: .93rem; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
 .seg { display: flex; gap: 6px; background: var(--tint); padding: 4px; border-radius: 999px; }
@@ -221,8 +225,10 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 
     <div class="card">
       <span class="eyebrow">Para qué sirve el enfado</span>
-      <p class="small">El enfado es una alarma. Aparece cuando…</p>
-      <div class="chips" style="pointer-events:none"><span class="chip">alguien cruza un límite</span><span class="chip">algo me parece injusto</span><span class="chip">no me escuchan o no me tienen en cuenta</span><span class="chip">algo se interpone en lo que quiero</span><span class="chip">siento que me atacan</span></div>
+      <p class="small">El enfado es una alarma. Aparece cuando algo importante para ti está en juego. Toca cada motivo para oír la alarma y ver qué protege.</p>
+      <svg class="fig" id="alarm" viewBox="0 0 320 150" role="img" aria-label="Una alarma que suena"></svg>
+      <div class="chips" id="alCh"></div>
+      <div id="alTxt"></div>
       <p class="small">Nos da energía para protegernos y defender lo que nos importa. El problema no es sentirlo, sino lo que a veces hacemos con él.</p>
     </div>
 
@@ -247,10 +253,34 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
       <svg class="fig" id="scene" viewBox="0 0 320 150" role="img" aria-label="Dos personas hablando"></svg>
       <div id="stInfo"></div>
     </div>
+    <div class="card">
+      <span class="eyebrow">Cuando el enfado es conmigo</span>
+      <p class="small">A veces el enfado no va hacia fuera, sino hacia ti: por un error, por no llegar a todo o por cómo reaccionaste. Ese enfado suele sonar como una voz muy dura dentro de la cabeza y, en lugar de ayudarte a cambiar, te hunde. Toca cada frase para oír cómo podría sonar de otra manera.</p>
+      <svg class="fig" id="con" viewBox="0 0 320 150" role="img" aria-label="Una nube sobre una persona que se va despejando"></svg>
+      <div class="stack" id="conL" style="gap:8px"></div>
+      <div id="conTxt"></div>
+    </div>
+
+    <div class="card">
+      <span class="eyebrow">Cuando el enfado no se va</span>
+      <p class="small">Hay enfados que se quedan a vivir con nosotros: volvemos una y otra vez a lo que pasó, ensayamos lo que deberíamos haber dicho y el rencor crece. Es como sujetar una brasa para lanzársela a alguien: mientras la sujetas, la que se quema eres tú. ¿Cuánto tiempo llevas dándole vueltas?</p>
+      <svg class="fig" id="bra" viewBox="0 0 320 150" role="img" aria-label="Una mano que sujeta una brasa"></svg>
+      <div class="seg" id="braT"></div>
+      <span class="lbl">¿Qué podría hacer con él?</span>
+      <div class="chips" id="braCh"></div>
+      <div id="braTxt"></div>
+    </div>
+
       <div class="t2box">
       <span class="eyebrow">Cosas que nos decimos</span>
       <p class="small">¿Te has dicho alguna vez estas frases? Responde con sinceridad y descubre lo que se sabe.</p>
       <div id="t2myths"></div>
+    </div>
+    <div class="card">
+      <span class="eyebrow">Cuándo pedir ayuda</span>
+      <p class="small">Enfadarse es humano. Pero merece la pena hablarlo con tu psicóloga, o buscar ayuda si aún no la tienes, cuando:</p>
+      <div class="stack" style="gap:8px"><div class="helpl"><i aria-hidden="true"></i><span class="small">Te enfadas tan a menudo o tan fuerte que afecta a tu trabajo, a tu pareja o a tu familia.</span></div><div class="helpl"><i aria-hidden="true"></i><span class="small">Cuando te enfadas rompes cosas, empujas o haces daño, o te asusta lo que podrías llegar a hacer.</span></div><div class="helpl"><i aria-hidden="true"></i><span class="small">Las personas con las que vives te tienen miedo o van con pies de plomo a tu lado.</span></div><div class="helpl"><i aria-hidden="true"></i><span class="small">El enfado se ha quedado a vivir contigo: rencor, amargura o ganas de venganza que no se van.</span></div><div class="helpl"><i aria-hidden="true"></i><span class="small">Bebes o tomas otras sustancias para calmarlo, o el enfado empeora cuando bebes.</span></div></div>
+      <p class="small muted">Pedir ayuda con el enfado es una forma de cuidar a las personas que quieres, y también a ti. Si sientes que puedes hacer daño a alguien, llama al <b>112</b>.</p>
     </div>
   </section>
 
@@ -264,13 +294,15 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
     </div>
     <div class="card">
       <span class="eyebrow">Lo que me enciende</span>
+      <svg class="fig" id="mecha" viewBox="0 0 320 120" role="img" aria-label="Una mecha que se acorta"></svg>
       <div class="chips" id="trig"></div>
       <div class="nav-row" style="flex-wrap:nowrap"><input type="text" id="trIn" placeholder="Otro mío"><button class="btn small" id="trAdd">Añadir</button></div>
       <p class="small muted">El cansancio, el hambre o las prisas no causan el enfado, pero hacen que la mecha sea más corta.</p>
     </div>
     <div class="card">
       <span class="eyebrow">Mi iceberg</span>
-      <p class="small">¿Qué suele haber debajo de tu enfado?</p>
+      <p class="small">¿Qué suele haber debajo de tu enfado? Lo que marques aparecerá debajo del agua.</p>
+      <svg class="fig" id="myIce" viewBox="0 0 320 210" role="img" aria-label="Mi iceberg"></svg>
       <div class="chips" id="below"></div>
     </div>
     <div class="card">
@@ -449,18 +481,86 @@ function styles() {
 styles();
 
 /* ================= MI ENFADO ================= */
+
+const AL = [['alguien cruza un límite', 'Protege tu espacio y lo que no quieres aceptar.'], ['algo me parece injusto', 'Defiende lo que te parece justo, para ti o para otras personas.'], ['no me escuchan o no me tienen en cuenta', 'Te empuja a pedir que te tengan en cuenta.'], ['algo se interpone en lo que quiero', 'Te da fuerza para insistir o buscar otro camino.'], ['siento que me atacan', 'Prepara tu cuerpo para protegerte.']];
+let alOn = -1, alSeen = [];
+function drawAlarm() {
+  const n = alSeen.length, ring = alOn >= 0;
+  let g = `<rect width="320" height="150" rx="16" fill="color-mix(in srgb, var(--an) 6%, var(--surface))"/>`;
+  for (let i = 0; i < Math.min(n, 3); i++) { const r = 44 + i * 16; g += `<path d="M${160 - r} ${74 - r * .5} q-12 ${r * .5} 0 ${r}" stroke="var(--an)" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="${.7 - i * .18}"/><path d="M${160 + r} ${74 - r * .5} q12 ${r * .5} 0 ${r}" stroke="var(--an)" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="${.7 - i * .18}"/>`; }
+  g += `<g class="${ring ? 'ring' : ''}"><path d="M160 26 c-22 0 -32 18 -32 40 v22 l-10 12 h84 l-10 -12 v-22 c0 -22 -10 -40 -32 -40z" fill="var(--an)"/><circle cx="160" cy="22" r="5" fill="var(--an)"/><circle cx="160" cy="108" r="8" fill="var(--an)"/></g>`;
+  g += `<text x="160" y="138" text-anchor="middle" font-family="var(--body)" font-size="10.5" font-weight="800" fill="var(--an)">${ring ? '¡Alarma!' : 'Toca un motivo'}</text>`;
+  $('#alarm').innerHTML = g;
+  $('#alCh').innerHTML = AL.map(([t], i) => `<button class="chip" style="--c:var(--an)" data-al="${i}" aria-pressed="${alOn === i}">${esc(t)}</button>`).join('');
+  $$('[data-al]').forEach(b => b.onclick = () => { alOn = +b.dataset.al; if (!alSeen.includes(alOn)) alSeen.push(alOn); drawAlarm(); });
+  $('#alTxt').innerHTML = alOn >= 0 ? `<div class="info pop" style="--c:var(--an)"><h3>Cuando ${esc(AL[alOn][0])}</h3><p class="small">${AL[alOn][1]}</p></div>` : '';
+}
+const CON = [['Eres idiota, siempre la fastidias', 'Me he equivocado y me fastidia, porque me importa hacerlo bien.'], ['No aprendes nunca', 'Esto me cuesta. Puedo mirar qué me ayudaría la próxima vez.'], ['¿Cómo has podido reaccionar así?', 'Reaccioné peor de lo que me gustaría. Puedo reparar y aprender.'], ['No llegas a nada', 'Hoy no he llegado a todo, y nadie llega a todo siempre.']];
+let conOn = [];
+function drawCon() {
+  const n = conOn.length, all = n >= CON.length, cx = 160;
+  let g = `<rect width="320" height="150" rx="16" fill="color-mix(in srgb, var(--sea) 8%, var(--surface))"/>`;
+  if (n) g += `<circle cx="${cx + 64}" cy="34" r="${10 + n * 3}" fill="var(--a2)" opacity="${.25 + n * .15}"/>`;
+  const op = Math.max(.12, 1 - n * .25);
+  g += `<g opacity="${op.toFixed(2)}"><ellipse cx="${cx}" cy="40" rx="46" ry="18" fill="var(--muted)" opacity=".55"/><ellipse cx="${cx - 22}" cy="32" rx="22" ry="15" fill="var(--muted)" opacity=".55"/><ellipse cx="${cx + 20}" cy="28" rx="20" ry="14" fill="var(--muted)" opacity=".55"/>${n < 2 ? '<path d="M150 58 l-8 14 h8 l-6 12" stroke="var(--a2)" stroke-width="2.5" fill="none" stroke-linejoin="round"/>' : ''}${[0, 1, 2, 3].map(k => `<path d="M${cx - 30 + k * 20} 62 l-3 8" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" opacity=".7"/>`).join('')}</g>`;
+  g += `<g transform="translate(${cx} 100)"><circle r="12" fill="var(--sea)"/><path d="M-16 44 q0 -30 16 -32 q16 2 16 32z" fill="var(--sea)" opacity=".85"/>${all ? '<path d="M-5 3 q5 5 10 0" stroke="#fff" stroke-width="1.8" fill="none"/>' : '<path d="M-5 5 q5 -4 10 0" stroke="#fff" stroke-width="1.8" fill="none"/>'}</g>`;
+  $('#con').innerHTML = g;
+  $('#conL').innerHTML = CON.map(([a, b], i) => { const on = conOn.includes(i); return `<button class="chip" style="--c:var(--sea);text-align:left;border-radius:14px;padding:10px 14px" data-cn="${i}" aria-pressed="${on}">${on ? `<s style="opacity:.6">«${esc(a)}»</s><br><b>«${esc(b)}»</b>` : `«${esc(a)}»`}</button>`; }).join('');
+  $$('[data-cn]').forEach(b => b.onclick = () => { const i = +b.dataset.cn; conOn = conOn.includes(i) ? conOn.filter(x => x !== i) : [...conOn, i]; drawCon(); });
+  $('#conTxt').innerHTML = n ? `<div class="ok small pop">El enfado contigo también es una señal: te dice que algo te importa. Puedes escucharlo sin dejar que te trate peor de lo que tratarías a alguien que quieres. Si esta voz aparece mucho, te puede ayudar la herramienta «Tratarme con cariño».</div>` : '';
+}
+const BRT = [['d', 'Unos días'], ['s', 'Semanas'], ['m', 'Meses'], ['a', 'Años']];
+const BRA = ['Hablarlo con quien toca, cuando esté en calma', 'Escribirlo todo y no enviarlo', 'Poner un límite para que no se repita', 'Aceptar que no puedo cambiar lo que pasó', 'Dejar de alimentarlo cuando aparece', 'Llevarlo a sesión'];
+let braT = '', braOn = [];
+function drawBra() {
+  const heat = { '': 0, d: 1, s: 2, m: 3, a: 4 }[braT], cool = braOn.length, h = Math.max(0, heat - cool * .8);
+  let g = `<rect width="320" height="150" rx="16" fill="color-mix(in srgb, var(--a3) 6%, var(--surface))"/>`;
+  if (h > 0) g += `<circle cx="160" cy="78" r="${26 + h * 9}" fill="var(--a3)" opacity="${(.1 + h * .05).toFixed(2)}"/>`;
+  g += `<path d="M84 150 q2 -40 16 -58 q60 52 120 0 q14 18 16 58z" fill="color-mix(in srgb, var(--a2) 30%, var(--surface))" stroke="var(--deep)" stroke-width="1.4"/><path d="M100 92 q-10 -10 -2 -16 q62 52 124 0 q8 6 -2 16" fill="color-mix(in srgb, var(--a2) 42%, var(--surface))" stroke="var(--deep)" stroke-width="1.4"/>`;
+  const c = h > 2.5 ? 'var(--an)' : h > 1 ? 'var(--a3)' : h > 0 ? 'var(--a2)' : 'var(--muted)';
+  g += `<path d="M136 84 q24 -26 48 0 q-6 14 -24 14 q-18 0 -24 -14z" fill="${c}" style="transition:fill .6s"/>`;
+  if (h > 0) for (let i = 0; i < Math.ceil(h * 1.5); i++) g += `<path d="M${146 + i * 6} ${70 - (i % 2) * 6} q-4 -8 0 -14 q4 -6 0 -12" stroke="${c}" stroke-width="2" fill="none" opacity=".6"/>`;
+  g += `<text x="300" y="24" text-anchor="end" font-family="var(--body)" font-size="10.5" font-weight="800" fill="${c}">${!braT ? '' : h > 2.5 ? 'Quema mucho' : h > 1 ? 'Sigue quemando' : h > 0 ? 'Se va enfriando' : 'Ya pesa menos'}</text>`;
+  $('#bra').innerHTML = g;
+  $('#braT').innerHTML = BRT.map(([k, n]) => `<button data-bt="${k}" aria-pressed="${braT === k}">${n}</button>`).join('');
+  $$('[data-bt]').forEach(b => b.onclick = () => { braT = b.dataset.bt; drawBra(); });
+  $('#braCh').innerHTML = BRA.map(t => `<button class="chip" style="--c:var(--calm)" data-bc="${esc(t)}" aria-pressed="${braOn.includes(t)}">${esc(t)}</button>`).join('');
+  $$('[data-bc]').forEach(b => b.onclick = () => { const v = b.dataset.bc; braOn = braOn.includes(v) ? braOn.filter(x => x !== v) : [...braOn, v]; drawBra(); });
+  $('#braTxt').innerHTML = braT ? `<div class="ok small pop">Soltar el enfado no significa darle la razón a nadie ni olvidar lo que pasó. Perdonar tampoco es obligatorio. Se trata de que lo que pasó deje de quemarte a ti.${braT === 'm' || braT === 'a' ? ' Cuando un enfado dura tanto, suele merecer la pena trabajarlo con tu psicóloga.' : ''}</div>` : '';
+}
+drawAlarm(); drawCon(); drawBra();
+function drawMecha() {
+  const short = ['Cansancio', 'Hambre', 'Las prisas'].filter(t => M.trig.includes(t)).length, sparks = M.trig.filter(t => !['Cansancio', 'Hambre', 'Las prisas'].includes(t)).length;
+  const len = 200 - short * 52, x0 = 70, xe = x0 + len;
+  let g = `<rect width="320" height="120" rx="16" fill="color-mix(in srgb, var(--an) 5%, var(--surface))"/>`;
+  g += `<rect x="20" y="52" width="50" height="40" rx="10" fill="var(--an)"/><text x="45" y="77" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="#fff">enfado</text>`;
+  g += `<path d="M${x0} 72 C ${x0 + len * .3} 40 ${x0 + len * .6} 100 ${xe} 66" stroke="var(--deep)" stroke-width="3" fill="none" stroke-dasharray="6 3" style="transition:all .5s"/>`;
+  g += `<g transform="translate(${xe} 66)"><circle r="7" fill="var(--a2)"/><circle r="3.5" fill="#fff"/>${Array.from({ length: Math.min(sparks, 8) }, (_, i) => { const a = i * Math.PI / 4; return `<path d="M${(Math.cos(a) * 10).toFixed(1)} ${(Math.sin(a) * 10).toFixed(1)} L${(Math.cos(a) * 18).toFixed(1)} ${(Math.sin(a) * 18).toFixed(1)}" stroke="var(--a2)" stroke-width="2" stroke-linecap="round"/>`; }).join('')}</g>`;
+  g += `<text x="300" y="22" text-anchor="end" font-family="var(--body)" font-size="10.5" font-weight="800" fill="${short ? 'var(--an)' : 'var(--calm)'}">${short ? (short > 1 ? 'Mecha muy corta' : 'Mecha más corta') : 'Mecha larga'}</text>`;
+  $('#mecha').innerHTML = g;
+}
+function drawMyIce() {
+  const L = M.below;
+  let g = `<rect width="320" height="210" rx="16" fill="var(--ice)"/><rect y="62" width="320" height="148" fill="var(--sea)" opacity=".28"/>`;
+  g += `<path d="M130 62 L160 22 L190 62 Z" fill="#fff" stroke="var(--sea)" stroke-width="1.5"/><text x="160" y="56" text-anchor="middle" font-family="var(--body)" font-size="9.5" font-weight="800" fill="var(--an)">ENFADO</text>`;
+  g += `<path d="M130 62 L70 120 L96 186 L224 192 L256 120 L190 62 Z" fill="#fff" opacity=".55" stroke="var(--sea)" stroke-width="1.5"/>`;
+  L.slice(0, 6).forEach((t, i) => { const x = 160, y = 86 + i * 18; g += `<text class="pop" x="${x}" y="${y}" text-anchor="middle" font-family="var(--body)" font-size="11" font-weight="800" fill="var(--deep)">${esc(t)}</text>`; });
+  if (L.length > 6) g += `<text x="160" y="200" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="700" fill="var(--muted)">y ${L.length - 6} más</text>`;
+  if (!L.length) g += `<text x="160" y="140" text-anchor="middle" font-family="var(--body)" font-size="10.5" font-weight="700" fill="var(--muted)">¿Qué hay debajo?</text>`;
+  $('#myIce').innerHTML = g;
+}
 function renderMio() {
   $('#therm').innerHTML = LV.map(([k, n, c, sug]) => `<div class="lvl" style="--c:${c}"><b>${n}</b><div class="chips">${[...new Set([...sug, ...M.lv[k]])].map(s => `<button class="chip" style="--c:${c}" data-lv="${k}" data-v="${esc(s)}" aria-pressed="${M.lv[k].includes(s)}">${esc(s)}</button>`).join('')}</div>
     <div class="nav-row" style="flex-wrap:nowrap"><input type="text" data-lin="${k}" placeholder="Otra señal mía"><button class="btn small" style="background:${c}" data-ladd="${k}">+</button></div></div>`).join('');
   $$('[data-lv]').forEach(b => b.onclick = () => { const k = b.dataset.lv, v = b.dataset.v; M.lv[k] = M.lv[k].includes(v) ? M.lv[k].filter(x => x !== v) : [...M.lv[k], v]; saveM(); b.setAttribute('aria-pressed', M.lv[k].includes(v)); });
   $$('[data-ladd]').forEach(b => b.onclick = () => { const k = b.dataset.ladd, v = $(`[data-lin="${k}"]`).value.trim(); if (!v) return; if (!M.lv[k].includes(v)) M.lv[k].push(v); saveM(); keep(renderMio); });
   $('#trig').innerHTML = [...new Set([...TRIG, ...M.trig])].map(t => `<button class="chip" style="--c:var(--an)" data-tr="${esc(t)}" aria-pressed="${M.trig.includes(t)}">${esc(t)}</button>`).join('');
-  $$('[data-tr]').forEach(b => b.onclick = () => { const v = b.dataset.tr; M.trig = M.trig.includes(v) ? M.trig.filter(x => x !== v) : [...M.trig, v]; saveM(); b.setAttribute('aria-pressed', M.trig.includes(v)); });
+  $$('[data-tr]').forEach(b => b.onclick = () => { const v = b.dataset.tr; M.trig = M.trig.includes(v) ? M.trig.filter(x => x !== v) : [...M.trig, v]; saveM(); b.setAttribute('aria-pressed', M.trig.includes(v)); drawMecha(); });
   $('#below').innerHTML = BELOW.map(t => `<button class="chip" style="--c:var(--sea)" data-be="${esc(t)}" aria-pressed="${M.below.includes(t)}">${esc(t)}</button>`).join('');
-  $$('[data-be]').forEach(b => b.onclick = () => { const v = b.dataset.be; M.below = M.below.includes(v) ? M.below.filter(x => x !== v) : [...M.below, v]; saveM(); b.setAttribute('aria-pressed', M.below.includes(v)); });
+  $$('[data-be]').forEach(b => b.onclick = () => { const v = b.dataset.be; M.below = M.below.includes(v) ? M.below.filter(x => x !== v) : [...M.below, v]; saveM(); b.setAttribute('aria-pressed', M.below.includes(v)); drawMyIce(); });
   $('#tho').innerHTML = THO.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-th="${i}"><span class="in"><span class="ff"><small>La leña</small><b>«${esc(a)}»</b><i>Toca para darle la vuelta ↻</i></span><span class="fb"><small>Otra forma de verlo</small><b>«${esc(b)}»</b></span></span></button>`).join('');
   $$('[data-th]').forEach(b => b.onclick = () => b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') !== 'true'));
-  renderThoMine();
+  renderThoMine(); drawMecha(); drawMyIce();
 }
 $('#trAdd').onclick = () => { const v = $('#trIn').value.trim(); if (!v) return; if (!M.trig.includes(v)) M.trig.push(v); saveM(); $('#trIn').value = ''; keep(renderMio); };
 function renderThoMine() {

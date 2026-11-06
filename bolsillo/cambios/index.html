@@ -207,7 +207,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 .dragi { border: 1.5px solid var(--line); background: var(--surface); border-radius: 12px; padding: 7px 10px; font-size: .86rem; touch-action: none; user-select: none; -webkit-user-select: none; cursor: grab; text-align: left; line-height: 1.25; }
 .dragi.sel { outline: 3px solid var(--tc); outline-offset: 1px; }
 .dragi.lift { opacity: .3; }
-.ghost { position: fixed; z-index: 50; pointer-events: none; transform: translate(-50%, -70%) rotate(-4deg); box-shadow: 0 8px 18px rgba(0,0,0,.2); margin: 0; }
+.dragghost { position: fixed; z-index: 50; pointer-events: none; transform: translate(-50%, -70%) rotate(-4deg); box-shadow: 0 8px 18px rgba(0,0,0,.2); margin: 0; }
 .jars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; align-items: end; }
 .jar { display: flex; flex-direction: column; align-items: center; gap: 0; cursor: pointer; }
 .jar .lid { width: 66%; height: 12px; border-radius: 6px 6px 2px 2px; background: var(--c); }
@@ -662,7 +662,7 @@ function bindDrag(el) {
   el.onclick = (e) => { e.stopPropagation(); if (e.detail === 0) { jSel = jSel === el.dataset.di ? null : el.dataset.di; keep(renderCtl); } };
   el.onpointerdown = (e) => { if (e.button > 0) return; const t = el.dataset.di, sx = e.clientX, sy = e.clientY; let ghost = null;
     const jarAt = (x, y) => { const h = document.elementFromPoint(x, y); return h && h.closest('.jar'); };
-    const move = (ev) => { if (!ghost && Math.hypot(ev.clientX - sx, ev.clientY - sy) > 6) { ghost = el.cloneNode(true); ghost.classList.add('ghost'); ghost.classList.remove('sel'); document.body.appendChild(ghost); el.classList.add('lift'); }
+    const move = (ev) => { if (!ghost && Math.hypot(ev.clientX - sx, ev.clientY - sy) > 6) { ghost = el.cloneNode(true); ghost.classList.add('dragghost'); ghost.classList.remove('sel'); document.body.appendChild(ghost); el.classList.add('lift'); }
       if (ghost) { ev.preventDefault(); ghost.style.left = ev.clientX + 'px'; ghost.style.top = ev.clientY + 'px'; const j = jarAt(ev.clientX, ev.clientY); $$('.jar').forEach(x => x.classList.toggle('over', x === j)); } };
     const up = (ev) => { document.removeEventListener('pointermove', move); document.removeEventListener('pointerup', up); document.removeEventListener('pointercancel', up);
       if (ghost) { ghost.remove(); const h = document.elementFromPoint(ev.clientX, ev.clientY), j = h && h.closest('.jar');

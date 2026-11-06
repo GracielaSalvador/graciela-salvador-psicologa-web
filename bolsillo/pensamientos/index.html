@@ -315,7 +315,20 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
       <p class="small">¿Te has dicho alguna vez estas frases? Responde con sinceridad y descubre lo que se sabe.</p>
       <div class="flips" id="myths"></div>
     </div>
-  </section>
+    <div class="box">
+      <span class="eyebrow">Pensamientos que asustan</span>
+      <p class="small">Casi todas las personas tienen alguna vez pensamientos que aparecen de golpe y asustan: una imagen desagradable, una duda horrible, un «¿y si…?» que no quieren tener. No dicen nada de quién eres ni de lo que vas a hacer. Precisamente asustan porque van en contra de lo que valoras. Elige uno y compara qué pasa según cómo lo recibes.</p>
+      <div class="chips" id="intCh"></div>
+      <div class="seg" id="intSeg"></div>
+      <svg class="fig" id="intFig" viewBox="0 0 320 170" role="img" aria-label="Un pensamiento intrusivo"></svg>
+      <div id="intTxt"></div>
+    </div>
+    <div class="box">
+      <span class="eyebrow">Cuándo pedir ayuda</span>
+      <p class="small">Todas las personas tenemos pensamientos difíciles. Merece la pena hablarlo con tu psicóloga, o buscar ayuda si aún no la tienes, cuando:</p>
+      <div style="display:flex;flex-direction:column;gap:8px"><div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:14px;background:color-mix(in srgb, var(--accent) 7%, var(--surface));border:1px solid var(--line)"><i aria-hidden="true" style="flex:none;width:8px;height:8px;margin-top:7px;border-radius:50%;background:var(--accent)"></i><span class="small">Hay pensamientos que te angustian y vuelven aunque intentes apartarlos.</span></div><div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:14px;background:color-mix(in srgb, var(--accent) 7%, var(--surface));border:1px solid var(--line)"><i aria-hidden="true" style="flex:none;width:8px;height:8px;margin-top:7px;border-radius:50%;background:var(--accent)"></i><span class="small">Haces comprobaciones o rituales para calmar lo que piensas.</span></div><div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:14px;background:color-mix(in srgb, var(--accent) 7%, var(--surface));border:1px solid var(--line)"><i aria-hidden="true" style="flex:none;width:8px;height:8px;margin-top:7px;border-radius:50%;background:var(--accent)"></i><span class="small">Los pensamientos muy duros sobre ti no se van y te quitan las ganas de todo.</span></div><div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:14px;background:color-mix(in srgb, var(--accent) 7%, var(--surface));border:1px solid var(--line)"><i aria-hidden="true" style="flex:none;width:8px;height:8px;margin-top:7px;border-radius:50%;background:var(--accent)"></i><span class="small">Te cuesta distinguir lo que piensas de lo que pasa de verdad.</span></div><div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:14px;background:color-mix(in srgb, var(--accent) 7%, var(--surface));border:1px solid var(--line)"><i aria-hidden="true" style="flex:none;width:8px;height:8px;margin-top:7px;border-radius:50%;background:#C2410C"></i><span class="small">Aparecen ideas de no querer vivir o de hacerte daño. En ese caso, llama al <b>024</b> (24 h) o al <b>112</b>.</span></div></div>
+    </div>
+    </section>
 
   <section class="view" id="view-espejo" hidden>
     <div id="espejoBox" class="stack" style="gap:16px"></div>
@@ -394,6 +407,29 @@ function pairsUI(sel, list, style, o) {
 
 const store = { get(k, d) { try { const v = localStorage.getItem('pensamientos.' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
                 set(k, v) { try { localStorage.setItem('pensamientos.' + k, JSON.stringify(v)); } catch (e) {} } };
+
+const INT = ['¿Y si hago daño a alguien que quiero?', '¿Y si grito algo horrible en público?', 'Una imagen desagradable que aparece de golpe', '¿Y si en el fondo soy mala persona?', '¿Y si no he cerrado bien la puerta?'];
+let intI = 0, intM = 'pel';
+function renderInt() {
+  $('#intCh').innerHTML = INT.map((t, i) => `<button class="chip" style="--c:var(--def)" data-it="${i}" aria-pressed="${intI === i}">${esc(t)}</button>`).join('');
+  document.querySelectorAll('[data-it]').forEach(b => b.onclick = () => { intI = +b.dataset.it; renderInt(); });
+  $('#intSeg').innerHTML = [['pel', 'Pelearme con él'], ['pas', 'Dejarlo pasar']].map(([k, n]) => `<button style="--c:${k === 'pel' ? 'var(--frame)' : 'var(--cog)'}" data-im="${k}" aria-pressed="${intM === k}">${n}</button>`).join('');
+  document.querySelectorAll('[data-im]').forEach(b => b.onclick = () => { intM = b.dataset.im; renderInt(); });
+  const t = INT[intI], pel = intM === 'pel', words = t.split(' '), half = Math.ceil(words.length / 2), l1 = words.slice(0, half).join(' '), l2 = words.slice(half).join(' ');
+  let g = `<rect width="320" height="170" rx="16" fill="${pel ? 'color-mix(in srgb, var(--frame) 10%, var(--surface))' : 'color-mix(in srgb, var(--cog) 7%, var(--surface))'}"/>`;
+  const fig = (x, tense) => `<g transform="translate(${x} 112)"><circle cy="-8" r="11" fill="var(--deep)"/>${tense ? '<path d="M-5 -6 h4 M1 -6 h4" stroke="#fff" stroke-width="1.6"/><path d="M-4 0 q4 -3 8 0" stroke="#fff" stroke-width="1.6" fill="none"/>' : '<path d="M-4 -1 q4 4 8 0" stroke="#fff" stroke-width="1.6" fill="none"/>'}<path d="M-16 50 q0 -40 16 -44 q16 4 16 44z" fill="var(--deep)" opacity=".85"/></g>`;
+  if (pel) {
+    g += [[230, 52, 1], [262, 96, .55], [190, 120, .4]].map(([x, y, o]) => `<g opacity="${o}"><ellipse cx="${x}" cy="${y}" rx="${70 * o + 18}" ry="${26 * o + 8}" fill="var(--surface)" stroke="var(--frame)" stroke-width="2"/>${o === 1 ? `<text x="${x}" y="${y - 3}" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--frame)">${esc(l1)}</text><text x="${x}" y="${y + 10}" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--frame)">${esc(l2)}</text>` : ''}</g>`).join('');
+    g += fig(92, true) + `<path d="M110 100 l40 -18 M110 112 l38 -4" stroke="var(--deep)" stroke-width="4" stroke-linecap="round"/>`;
+  } else {
+    g += `<g class="popin" opacity=".55"><ellipse cx="236" cy="40" rx="62" ry="22" fill="var(--surface)" stroke="var(--cog)" stroke-width="1.5" stroke-dasharray="4 4"/><text x="236" y="37" text-anchor="middle" font-family="var(--body)" font-size="9" font-weight="700" fill="var(--cog)">${esc(l1)}</text><text x="236" y="49" text-anchor="middle" font-family="var(--body)" font-size="9" font-weight="700" fill="var(--cog)">${esc(l2)}</text></g><path d="M160 74 q30 -10 50 -24" stroke="var(--cog)" stroke-width="1.5" fill="none" stroke-dasharray="3 5"/>`;
+    g += fig(130, false) + `<text x="200" y="128" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--cog)">«Es un pensamiento,</text><text x="200" y="142" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--cog)">no un deseo»</text>`;
+  }
+  $('#intFig').innerHTML = g;
+  $('#intTxt').innerHTML = pel ? `<div class="note popin">Cuando intentas apartarlo a la fuerza, comprobar que no es verdad o buscar que te tranquilicen, el pensamiento se hace más grande y vuelve más a menudo. La mente entiende que es peligroso y lo vigila todavía más.</div>`
+    : `<div class="note popin">Si lo reconoces («esto es un pensamiento intrusivo, no un deseo ni un plan») y lo dejas estar sin pelearte con él, pierde fuerza poco a poco. No hace falta que desaparezca: basta con que deje de mandar. Si te angustian mucho o haces rituales para calmarlos, coméntalo con tu psicóloga: tienen un tratamiento muy eficaz.</div>`;
+}
+renderInt();
 function toast(m) { const t = $('#toast'); t.textContent = m; t.hidden = false; clearTimeout(toast._t); toast._t = setTimeout(() => t.hidden = true, 2400); }
 const SI = (inner) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${inner}</svg>`;
 
