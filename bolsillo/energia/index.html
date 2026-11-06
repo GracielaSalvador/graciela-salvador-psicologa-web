@@ -129,7 +129,8 @@ input[type=range] { width: 100%; accent-color: var(--c, var(--accent)); }
 .rest h3 svg { width: 22px; height: 22px; }
 .rest .now { font-size: .7rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; background: var(--c); color: #fff; border-radius: 999px; padding: 2px 8px; }
 .four { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.four div { border-radius: 14px; padding: 10px; background: var(--tint); display: flex; flex-direction: column; gap: 3px; font-size: .82rem; }
+.four div, .four button { border-radius: 14px; padding: 10px; background: var(--tint); display: flex; flex-direction: column; gap: 3px; font-size: .82rem; border: 1.5px solid transparent; text-align: left; color: var(--ink); font-family: inherit; }
+.four button[aria-pressed="true"] { border-color: var(--c); background: color-mix(in srgb, var(--c) 14%, var(--surface)); }
 .four b { color: var(--deep); font-size: .9rem; }
 .pauses { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .pauses button { border: 1.5px solid var(--line); background: var(--surface); border-radius: 14px; padding: 10px; text-align: left; display: flex; flex-direction: column; gap: 2px; }
@@ -179,6 +180,45 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 .t2spin { animation: t2spin 4s linear infinite; transform-box: fill-box; transform-origin: center; } @keyframes t2spin { to { transform: rotate(360deg); } }
 .t2drop { animation: t2drop 1.2s linear infinite; } @keyframes t2drop { from { transform: translateY(0); opacity: 1; } to { transform: translateY(22px); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .t2pop, .t2spin, .t2drop { animation: none !important; } .t2flip .in { transition: none; } }
+.pairs { --pk: var(--accent, var(--tc)); --pok: var(--ok, var(--tint)); --pokink: var(--ok-ink, var(--deep)); }
+/* Pares «frase / lo que se sabe» y «me digo / otra forma de verlo» en varios formatos */
+.pairs { display: flex; flex-direction: column; gap: 8px; }
+.p-lupa .pl { border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); overflow: hidden; }
+.p-lupa .pl.on { border-color: var(--pk); }
+.p-lupa .pl > button { width: 100%; border: 0; background: transparent; display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: center; text-align: left; padding: 11px 13px; font-family: var(--display); font-size: 1.02rem; color: var(--deep); }
+.p-lupa .pl > button svg { width: 22px; height: 22px; color: var(--pk); transition: transform .3s; }
+.p-lupa .pl.on > button svg { transform: scale(1.25); }
+.p-lupa .pa { padding: 0 14px 12px 49px; } .p-lupa .pa small, .p-chat small, .p-deck small, .p-tedices small, .p-tachar small, .p-voz small { display: block; font-size: .68rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; opacity: .8; margin-bottom: 2px; }
+.p-lupa .pa p { margin: 0; font-size: .95rem; }
+.p-chat { background: color-mix(in srgb, var(--pk) 6%, var(--surface)); border-radius: 18px; padding: 12px 10px; gap: 10px; }
+.p-chat .cb { max-width: 86%; border-radius: 18px; padding: 9px 13px; line-height: 1.35; font-size: .95rem; text-align: left; }
+.p-chat .cb.l { align-self: flex-start; border: 1.5px solid var(--line); background: var(--surface); border-bottom-left-radius: 4px; font-family: var(--display); font-size: 1.02rem; color: var(--deep); }
+.p-chat .cb.l[aria-expanded="true"] { border-color: var(--pk); }
+.p-chat .cb.r { align-self: flex-end; background: var(--pok); color: var(--pokink); border-bottom-right-radius: 4px; }
+.dk { display: flex; flex-direction: column; gap: 10px; }
+.dk .dots { display: flex; gap: 5px; justify-content: center; } .dk .dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--line); transition: all .3s; } .dk .dots span.done { background: color-mix(in srgb, var(--pk) 45%, var(--surface)); } .dk .dots span.on { background: var(--pk); width: 20px; border-radius: 6px; }
+.dk .dc { border-radius: 20px; padding: 18px 16px; min-height: 150px; background: color-mix(in srgb, var(--pk) 10%, var(--surface)); border: 1.5px solid color-mix(in srgb, var(--pk) 30%, transparent); display: flex; flex-direction: column; gap: 10px; justify-content: center; text-align: center; box-shadow: 0 6px 0 -2px color-mix(in srgb, var(--pk) 14%, var(--surface)), 0 12px 0 -5px color-mix(in srgb, var(--pk) 8%, var(--surface)); }
+.dk .dc > b { font-family: var(--display); font-weight: 500; font-size: 1.2rem; color: var(--deep); line-height: 1.3; }
+.dk .dback { background: var(--pok); color: var(--pokink); border-radius: 14px; padding: 10px 12px; text-align: left; } .dk .dback p { margin: 0; font-size: .95rem; }
+.dk .yn { display: flex; gap: 8px; justify-content: center; } .dk .yn button { border: 1.5px solid var(--pk); background: var(--surface); color: var(--pk); border-radius: 999px; padding: 8px 22px; font-weight: 800; }
+.dk .q { margin: 0; font-size: .9rem; color: var(--muted); font-weight: 700; }
+.dk .rev { align-self: center; border: 0; background: var(--pk); color: var(--onc, #fff); border-radius: 999px; padding: 8px 18px; font-weight: 800; }
+.dk .nav-row span { font-size: .82rem; color: var(--muted); font-weight: 700; }
+.p-tachar .tc { border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
+.p-tachar .tc > button { border: 0; background: transparent; padding: 0; text-align: left; font-family: var(--display); font-size: 1.05rem; color: var(--deep); position: relative; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+.p-tachar .tc > button .tx { position: relative; }
+.p-tachar .tc > button .tx::after { content: ''; position: absolute; left: 0; top: 55%; height: 2px; width: 0; background: var(--me, var(--li)); transition: width .45s ease; }
+.p-tachar .tc.on > button .tx { color: var(--muted); } .p-tachar .tc.on > button .tx::after { width: 100%; }
+.p-tachar .tc > button i { font-style: normal; font-family: var(--body); font-size: .74rem; font-weight: 800; color: var(--pk); white-space: nowrap; }
+.p-tachar .nw { font-family: var(--display); font-size: 1.1rem; color: var(--pokink); background: var(--pok); border-radius: 12px; padding: 8px 12px; }
+.p-voz .vz { display: flex; flex-direction: column; gap: 6px; }
+.p-voz .cloud { align-self: flex-start; max-width: 88%; border: 1.5px dashed var(--muted); background: color-mix(in srgb, var(--muted) 8%, var(--surface)); border-radius: 22px 22px 22px 6px; padding: 10px 14px; text-align: left; font-family: var(--display); font-size: 1.02rem; color: var(--deep); display: grid; grid-template-columns: 22px 1fr; gap: 8px; align-items: start; }
+.p-voz .cloud svg, .p-voz .warm svg { width: 20px; height: 20px; margin-top: 2px; }
+.p-voz .warm { align-self: flex-end; max-width: 88%; background: color-mix(in srgb, var(--rose, var(--pk)) 14%, var(--surface)); border: 1.5px solid var(--rose, var(--pk)); border-radius: 22px 22px 6px 22px; padding: 10px 14px; font-family: var(--display); font-size: 1.05rem; color: var(--deep); display: grid; grid-template-columns: 22px 1fr; gap: 8px; }
+.p-voz .warm svg { color: var(--rose, var(--pk)); } .p-voz .cloud svg { color: var(--muted); }
+.dk .dback p, .p-chat .cb.r, .p-lupa .pa p { color: var(--ink); }
+
+
 </style>
 
 </head>
@@ -241,8 +281,8 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
     </div>
     <div class="t2box">
       <span class="eyebrow">Cosas que nos decimos</span>
-      <p class="small" style="margin:0">Toca cada tarjeta para ver lo que se sabe.</p>
-      <div class="t2flips" id="t2myths"></div>
+      <p class="small">¿Te has dicho alguna vez estas frases? Responde con sinceridad y descubre lo que se sabe.</p>
+      <div id="t2myths"></div>
     </div>
   </section>
 
@@ -272,6 +312,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
     <div class="card">
       <span class="eyebrow">Mi semáforo</span>
       <p class="small">Marca tus señales en cada color. Te ayudarán a darte cuenta antes de llegar al límite.</p>
+      <svg class="fig" id="semFig" viewBox="0 0 320 128" role="img" aria-label="Mi semáforo"></svg>
       <div class="sem" id="sem"></div>
     </div>
   </section>
@@ -286,8 +327,10 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
     </div>
     <div class="card">
       <span class="eyebrow">Lo que más recarga</span>
-      <p class="small">Recuperarse no es solo «no hacer nada». Hay cuatro cosas que ayudan a reponer energía:</p>
-      <div class="four"><div><b>Desconectar</b>Dejar de pensar en el trabajo y las obligaciones.</div><div><b>Relajarme</b>Bajar el ritmo del cuerpo: respirar, un baño, música.</div><div><b>Algo que me guste y me absorba</b>Aprender, crear, un reto pequeño.</div><div><b>Decidir yo</b>Un rato en el que elijo qué hago, sin obligaciones.</div></div>
+      <p class="small">Recuperarse no es solo «no hacer nada». Hay cuatro cosas que ayudan a reponer energía, y cada una llena una parte de la batería. Toca las que has tenido esta semana.</p>
+      <svg class="fig" id="r4Fig" viewBox="0 0 320 110" role="img" aria-label="Mi batería de recuperación"></svg>
+      <div class="four" id="r4"></div>
+      <div id="r4Txt"></div>
     </div>
     <div class="card">
       <span class="eyebrow">Micropausas</span>
@@ -300,6 +343,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
       <p class="small">Escribe lo que tienes pendiente y decide qué haces con cada cosa. No todo tiene que hacerlo tú, ni ahora.</p>
       <div class="nav-row" style="flex-wrap:nowrap"><input type="text" id="solIn" placeholder="Algo que tengo pendiente"><button class="btn small" id="solAdd">Añadir</button></div>
       <div class="sol" id="sol"></div>
+      <svg class="fig" id="solFig" viewBox="0 0 320 170" role="img" aria-label="Lo que llevo y lo que suelto" style="display:none"></svg>
       <div id="solSum"></div>
     </div>
   </section>
@@ -341,6 +385,32 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 const $ = (q) => document.querySelector(q);
 const $$ = (q) => document.querySelectorAll(q);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const PQ1 = (s) => document.querySelector(s), PQ = (s) => [...document.querySelectorAll(s)];
+/* Pares en varios formatos, para que no se repita siempre la misma tarjeta: flip, lupa, chat, deck, tedices (para «lo que se sabe») y tachar, voz (para «me digo») */
+const PICO = { lupa: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/>', cloud: '<path d="M7 18a4 4 0 0 1-.6-8A5.5 5.5 0 0 1 17 8.5a4.5 4.5 0 0 1 .5 9z"/>', heart: '<path d="M12 20s-7-4.4-7-10A4 4 0 0 1 12 7a4 4 0 0 1 7 3c0 5.6-7 10-7 10z"/>' };
+function pairsUI(sel, list, style, o) {
+  o = o || {}; const el = PQ1(sel), F = o.front || 'Me digo', B = o.back || 'Lo que se sabe', k = sel.replace(/\W/g, '');
+  if (style === 'flip') { el.className = 'flips'; el.innerHTML = list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-pf${k}="${i}"><span class="in"><span class="ff"><small>${F}</small><b>«${esc(a)}»</b><i>${o.hint || 'Toca para ver lo que se sabe ↻'}</i></span><span class="fb"><small>${B}</small>${o.bold ? `<b>«${esc(b)}»</b>` : `<span class="small">${esc(b)}</span>`}</span></span></button>`).join(''); (typeof flipBind === 'function' ? flipBind(`[data-pf${k}]`) : 0); return; }
+  el.className = 'pairs p-' + style;
+  const q = (b) => o.bold ? `«${esc(b)}»` : esc(b);
+  if (style === 'lupa') { let op = -1; const r = () => { el.innerHTML = list.map(([a, b], i) => `<div class="pl${op === i ? ' on' : ''}"><button data-pl${k}="${i}" aria-expanded="${op === i}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">${PICO.lupa}</svg><span>«${esc(a)}»</span></button>${op === i ? `<div class="pa pop"><small>${B}</small><p>${q(b)}</p></div>` : ''}</div>`).join(''); PQ(`[data-pl${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['pl' + k]; op = op === n ? -1 : n; r(); }); }; r(); return; }
+  if (style === 'chat') { const on = new Set(); const r = () => { el.innerHTML = list.map(([a, b], i) => `<button class="cb l" data-pc${k}="${i}" aria-expanded="${on.has(i)}"><small>${F}</small>${esc(a)}</button>${on.has(i) ? `<div class="cb r pop"><small>${B}</small>${q(b)}</div>` : ''}`).join(''); PQ(`[data-pc${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['pc' + k]; on.has(n) ? on.delete(n) : on.add(n); r(); }); }; r(); return; }
+  if (style === 'deck' || style === 'tedices') {
+    let i = 0, shown = false; const ans = {};
+    const r = () => { const [a, b] = list[i], all = Object.keys(ans).length === list.length, yes = Object.values(ans).filter(Boolean).length;
+      el.innerHTML = `<div class="dk"><div class="dots">${list.map((_, j) => `<span class="${j === i ? 'on' : (ans[j] !== undefined || (style === 'deck' && j < i)) ? 'done' : ''}"></span>`).join('')}</div>
+        <div class="dc pop"><small>${F}</small><b>«${esc(a)}»</b>
+        ${style === 'tedices' && !shown ? `<p class="q">¿Te lo has dicho alguna vez?</p><div class="yn"><button data-yn="1">Sí</button><button data-yn="0">No</button></div>` : ''}
+        ${style === 'deck' && !shown ? `<button class="rev">Ver lo que se sabe</button>` : ''}
+        ${shown ? `<div class="dback pop"><small>${B}</small><p>${style === 'tedices' && ans[i] ? 'Es muy habitual decírselo. ' : ''}${q(b)}</p></div>` : ''}</div>
+        <div class="nav-row">${i ? '<button class="btn ghost small" data-dv="-1">← Anterior</button>' : '<span></span>'}<span>${i + 1} de ${list.length}</span>${i < list.length - 1 ? '<button class="btn small" data-dv="1">Siguiente →</button>' : '<span></span>'}</div>
+        ${style === 'tedices' && all ? `<div class="ok small pop">Te has dicho ${yes} de estas ${list.length} frases. No son toda la verdad: la próxima vez que aparezcan, puedes recordar lo que se sabe.</div>` : ''}</div>`;
+      PQ(`${sel} [data-yn]`).forEach(x => x.onclick = () => { ans[i] = x.dataset.yn === '1'; shown = true; r(); });
+      const rv = PQ1(`${sel} .rev`); if (rv) rv.onclick = () => { shown = true; r(); };
+      PQ(`${sel} [data-dv]`).forEach(x => x.onclick = () => { i += +x.dataset.dv; shown = style === 'tedices' ? ans[i] !== undefined : false; r(); });
+    }; r(); return; }
+}
+
 const store = { get(k, d) { try { const v = localStorage.getItem('energia.' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
                 set(k, v) { try { localStorage.setItem('energia.' + k, JSON.stringify(v)); } catch (e) {} } };
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -379,7 +449,7 @@ const PLAN = [['dor', 'Dormir', '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0
   ['des', 'Descansar', '<path d="M3 18h18M5 18v-6a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v6"/>', ['Una micropausa cada día', 'Un rato para mí sin culpa', 'Un día con menos planes']]];
 const IFS = [['a', 'Si estoy en ámbar…', 'var(--md)', ['Quitar algo de la agenda', 'Una micropausa al día', 'Pedir ayuda con algo', 'Acostarme antes', 'Hacer algo que me recargue']], ['r', 'Si estoy en rojo…', 'var(--lo)', ['Parar y pedir ayuda', 'Hablarlo en terapia', 'Ir al médico si el cuerpo lo pide', 'Cancelar lo que no sea imprescindible', 'Decirle a alguien cercano cómo estoy']]];
 
-let E = Object.assign({ bat: 50, types: [], favR: [], plus: [], minus: [], sem: { v: [], a: [], r: [] }, plan: {}, ifs: { a: [], r: [] } }, store.get('hoy', {}) || {});
+let E = Object.assign({ bat: 50, types: [], favR: [], plus: [], minus: [], sem: { v: [], a: [], r: [] }, rec4: [], plan: {}, ifs: { a: [], r: [] } }, store.get('hoy', {}) || {});
 const saveE = () => store.set('hoy', E);
 let DAYS = store.get('days', []), SOLT = store.get('soltar', []), PS = store.get('pausas', []);
 
@@ -466,10 +536,18 @@ function renderBal() {
 }
 const addCC = (k) => { const v = $('#ccIn').value.trim(); if (!v) { toast('Escribe algo primero'); return; } if (!E[k].includes(v)) E[k].push(v); E[k === 'plus' ? 'minus' : 'plus'] = E[k === 'plus' ? 'minus' : 'plus'].filter(x => x !== v); saveE(); $('#ccIn').value = ''; keep(renderBal); };
 $('#ccPlus').onclick = () => addCC('plus'); $('#ccMinus').onclick = () => addCC('minus');
+function drawSem() {
+  const L = SEM.map(([k, n, c]) => [k, n.split(' · ')[0], c, E.sem[k].length]), mx = Math.max(1, ...L.map(l => l[3]));
+  let g = `<rect width="320" height="128" rx="16" fill="var(--tint)"/><rect x="40" y="14" width="240" height="72" rx="36" fill="var(--deep)"/>`;
+  L.forEach(([k, n, c, v], i) => { const x = 88 + i * 72, a = v ? .35 + .65 * v / mx : .12;
+    g += `${v ? `<circle cx="${x}" cy="50" r="34" fill="${c}" opacity="${(a * .35).toFixed(2)}"/>` : ''}<circle cx="${x}" cy="50" r="24" fill="${c}" opacity="${a.toFixed(2)}" stroke="#0004" stroke-width="2"/><text x="${x}" y="56" text-anchor="middle" font-family="var(--display)" font-size="18" fill="#fff">${v || ''}</text><text x="${x}" y="108" text-anchor="middle" font-family="var(--body)" font-size="11" font-weight="800" fill="var(--ink)">${n}</text>`; });
+  $('#semFig').innerHTML = g;
+}
 function renderSem() {
+  drawSem();
   $('#sem').innerHTML = SEM.map(([k, n, c, sug]) => `<div class="lt" style="--c:${c}"><b>${n}</b><div class="chips">${[...new Set([...sug, ...E.sem[k]])].map(s => `<button class="chip" style="--c:${c}" data-se="${k}" data-v="${esc(s)}" aria-pressed="${E.sem[k].includes(s)}">${esc(s)}</button>`).join('')}</div>
     <div class="nav-row" style="flex-wrap:nowrap"><input type="text" data-sin="${k}" placeholder="Otra señal mía"><button class="btn small" style="background:${c}" data-sadd="${k}">+</button></div></div>`).join('');
-  $$('[data-se]').forEach(b => b.onclick = () => { const k = b.dataset.se, v = b.dataset.v; E.sem[k] = E.sem[k].includes(v) ? E.sem[k].filter(x => x !== v) : [...E.sem[k], v]; saveE(); b.setAttribute('aria-pressed', E.sem[k].includes(v)); });
+  $$('[data-se]').forEach(b => b.onclick = () => { const k = b.dataset.se, v = b.dataset.v; E.sem[k] = E.sem[k].includes(v) ? E.sem[k].filter(x => x !== v) : [...E.sem[k], v]; saveE(); b.setAttribute('aria-pressed', E.sem[k].includes(v)); drawSem(); });
   $$('[data-sadd]').forEach(b => b.onclick = () => { const k = b.dataset.sadd, i = $(`[data-sin="${k}"]`), v = i.value.trim(); if (!v) return; if (!E.sem[k].includes(v)) E.sem[k].push(v); saveE(); keep(renderSem); });
 }
 
@@ -498,12 +576,34 @@ function renderSol() {
   $('#sol').innerHTML = SOLT.map((s, i) => `<div class="row"><div class="top"><span>${esc(s.x)}</span><button data-sx="${i}" aria-label="Quitar">✕</button></div><div class="seg four4">${SOL.map(([k, n, c]) => `<button style="--c:${c}" data-sk="${i}" data-v="${k}" aria-pressed="${s.k === k}">${n}</button>`).join('')}</div></div>`).join('');
   $$('[data-sk]').forEach(b => b.onclick = () => { SOLT[+b.dataset.sk].k = b.dataset.v; store.set('soltar', SOLT); keep(renderSol); });
   $$('[data-sx]').forEach(b => b.onclick = () => { SOLT.splice(+b.dataset.sx, 1); store.set('soltar', SOLT); keep(renderSol); });
+  drawSol();
   const c = (k) => SOLT.filter(s => s.k === k).length, freed = c('del') + c('esp') + c('sue');
   $('#solSum').innerHTML = SOLT.length ? `<div class="sumbox">${SOL.map(([k, n, col]) => `<div style="--c:${col}"><b>${c(k)}</b>${n}</div>`).join('')}</div>${freed ? `<div class="ok small" style="margin-top:8px">Te has quitado <b>${freed}</b> ${freed === 1 ? 'cosa' : 'cosas'} de encima, al menos por ahora.${c('del') ? ' Para pedir ayuda o delegar, «Poner un límite» puede ayudarte con las palabras.' : ''}</div>` : ''}` : '';
 }
 $('#solAdd').onclick = () => { const x = $('#solIn').value.trim(); if (!x) return; SOLT.push({ t: Date.now(), x, k: '' }); store.set('soltar', SOLT); $('#solIn').value = ''; keep(renderSol); };
 $('#solIn').onkeydown = (e) => { if (e.key === 'Enter') $('#solAdd').click(); };
-function renderRec() { renderRests(); renderPauses(); renderSol(); }
+const R4 = [['des', 'Desconectar', 'Dejar de pensar en el trabajo y las obligaciones.', 'var(--accent)'], ['rel', 'Relajarme', 'Bajar el ritmo del cuerpo: respirar, un baño, música.', 'var(--hi)'], ['abs', 'Algo que me guste y me absorba', 'Aprender, crear, un reto pequeño.', 'var(--md)'], ['dec', 'Decidir yo', 'Un rato en el que elijo qué hago, sin obligaciones.', 'var(--en, var(--accent))']];
+function renderR4() {
+  const on = E.rec4 || [];
+  $('#r4').innerHTML = R4.map(([k, n, d, c]) => `<button style="--c:${c}" data-r4="${k}" aria-pressed="${on.includes(k)}"><b>${n}</b>${d}</button>`).join('');
+  $$('[data-r4]').forEach(b => b.onclick = () => { const k = b.dataset.r4; E.rec4 = (E.rec4 || []).includes(k) ? E.rec4.filter(x => x !== k) : [...(E.rec4 || []), k]; saveE(); keep(renderR4); });
+  let g = `<rect width="320" height="110" rx="16" fill="var(--tint)"/><rect x="40" y="22" width="226" height="66" rx="12" fill="var(--surface)" stroke="var(--deep)" stroke-width="3"/><rect x="266" y="42" width="12" height="26" rx="3" fill="var(--deep)"/>`;
+  R4.forEach(([k, n, , c], i) => { const x = 48 + i * 54, f = on.includes(k); g += `<rect x="${x}" y="30" width="48" height="50" rx="7" fill="${f ? c : 'transparent'}" stroke="${f ? c : 'var(--line)'}" stroke-width="2" stroke-dasharray="${f ? '' : '4 4'}"/>${f ? `<path d="M${x + 16} 55l6 6 11-12" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>` : ''}`; });
+  g += `<text x="160" y="104" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--muted)">${on.length} de 4</text>`;
+  $('#r4Fig').innerHTML = g;
+  const miss = R4.filter(r => !on.includes(r[0])).map(r => r[1].toLowerCase());
+  $('#r4Txt').innerHTML = on.length === 4 ? '<div class="ok small">Esta semana has recargado por los cuatro lados. Es justo lo que ayuda a que el descanso funcione de verdad.</div>' : on.length ? `<p class="small muted" style="margin:0">Te falta: ${esc(miss.join(', '))}. Busca un rato pequeño para alguna, aunque sea de diez minutos.</p>` : '';
+}
+function drawSol() {
+  const f = $('#solFig'); if (!SOLT.length) { f.style.display = 'none'; return; } f.style.display = '';
+  const yo = SOLT.filter(s => s.k === 'hago' || !s.k).length, fr = SOLT.length - yo, sc = .55 + Math.min(yo, 8) * .07;
+  let g = `<rect width="320" height="170" rx="16" fill="var(--tint)"/><g transform="translate(96 102) scale(${sc.toFixed(2)})"><path d="M-34-30a34 34 0 0 1 68 0v62a10 10 0 0 1-10 10h-48a10 10 0 0 1-10-10z" fill="color-mix(in srgb, var(--accent) 22%, var(--surface))" stroke="var(--accent)" stroke-width="3"/><path d="M-14-60a14 14 0 0 1 28 0" fill="none" stroke="var(--accent)" stroke-width="3"/><rect x="-22" y="4" width="44" height="22" rx="6" fill="none" stroke="var(--accent)" stroke-width="2.5"/></g>`;
+  g += `<text x="96" y="160" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--ink)">Lo que llevo yo: ${yo}</text>`;
+  SOLT.filter(s => s.k && s.k !== 'hago').slice(0, 8).forEach((s, i) => { const x = 196 + (i % 4) * 30, y = 46 + Math.floor(i / 4) * 44 - (i % 2) * 8, c = SOL.find(o => o[0] === s.k)[2]; g += `<path d="M${x} ${y + 14} q-4 14 4 26" stroke="var(--muted)" stroke-width="1" fill="none"/><ellipse cx="${x}" cy="${y}" rx="11" ry="14" fill="${c}" opacity=".85"/>`; });
+  g += `<text x="240" y="160" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--ink)">Lo que he soltado: ${fr}</text>`;
+  f.innerHTML = g;
+}
+function renderRec() { renderRests(); renderR4(); renderPauses(); renderSol(); }
 
 /* ================= MI PLAN ================= */
 function renderPla() {
@@ -574,7 +674,7 @@ T2.scene('t2s', {
   elijo: { n: 'Elijo dónde pongo mi energía', c: 'var(--t2good)', svg: () => T2.bub(162, 8, 150, '¿Te encargas tú también de esto?', 'var(--accent)', 250) + T2.bub(8, 62, 150, 'Esta semana no llego. ¿Lo vemos el lunes?', 'var(--t2good)', 70) + T2.face(70, 156, 'var(--t2good)', 'ok', 'yo') + `<rect x="104" y="118" width="16" height="30" rx="3" fill="none" stroke="var(--muted)" stroke-width="2"/><rect x="109" y="114" width="6" height="4" rx="1" fill="var(--muted)"/><rect x="107" y="125" width="10" height="20" rx="1.5" fill="var(--t2good)"/>` + T2.face(250, 156, 'var(--accent)', 'neutral', 'quien me lo pide'),
     t: 'Elegir dónde pones tu energía no es egoísmo: es cuidarte para poder seguir cuidando lo que te importa.' },
 });
-T2.flips('t2myths', [["Descansar es perder el tiempo", "Descansar es parte de cuidarte. Sin descanso, la energía se agota y todo cuesta el doble."], ["Ya descansaré en vacaciones", "Unas vacaciones no compensan meses sin pausas. La energía se cuida cada día, con pausas pequeñas."], ["Si paro, es que no puedo con todo", "Parar a tiempo es una forma de poder con lo importante. Nadie puede con todo siempre."], ["Dormir más siempre recarga", "Depende del cansancio. Si es mental o emocional, a veces recarga más moverse, desconectar o estar con alguien."], ["Cuidarme es egoísta", "Cuidarte te permite cuidar mejor a los demás. Una batería vacía no puede dar energía a nadie."]]);
+pairsUI('#t2myths', [["Descansar es perder el tiempo", "Descansar es parte de cuidarte. Sin descanso, la energía se agota y todo cuesta el doble."], ["Ya descansaré en vacaciones", "Unas vacaciones no compensan meses sin pausas. La energía se cuida cada día, con pausas pequeñas."], ["Si paro, es que no puedo con todo", "Parar a tiempo es una forma de poder con lo importante. Nadie puede con todo siempre."], ["Dormir más siempre recarga", "Depende del cansancio. Si es mental o emocional, a veces recarga más moverse, desconectar o estar con alguien."], ["Cuidarme es egoísta", "Cuidarte te permite cuidar mejor a los demás. Una batería vacía no puede dar energía a nadie."]], 'tedices', { front: 'Me digo' });
 </script>
 
 <script>window.REGPFX = 'energia.';</script>
@@ -830,7 +930,8 @@ const PDFKIT = (() => {
     'impulsos.log': 'Registro de impulsos', 'incert.daily': 'Días', 'incert.logs': 'Exposiciones', 'incert.waves': 'Olas', 'liston.exps': 'Experimentos', 'liston.five': 'Cinco minutos', 'liston.friend': 'Como a una amiga', 'liston.logros': 'Tarro de logros', 'liston.suf': 'Suficientemente bien',
     'pensamientos.regs': 'Registro de pensamientos', 'quererme.jar': 'Tarro', 'rumbo.log': 'Pasos', 'rumbo.revs': 'Revisiones', 'rumbo.snaps': 'Dianas', 'sesion.hist': 'Sesiones preparadas', 'social.bien': 'Lo que fue bien', 'social.experimentos': 'Experimentos',
     'soledad.days': 'Días', 'soledad.small': 'Pequeños lazos', 'sueno.noches': 'Noches', 'sueno.preoc': 'Preocupaciones', 'verguenza.momentos': 'Momentos', 'vinculos.dates': 'Citas', 'vueltas.decs': 'Decisiones',
-    'm-ansiedad.niv': 'Cómo de preocupada me siento', 'm-carga.acuerdos': 'Acuerdos', 'm-carga.cabeza': 'Cómo de llena está mi cabeza', 'm-carga.revisiones': 'Revisiones de la semana', 'm-cuerpoemb.rel': 'Cómo me llevo con mi cuerpo', 'm-animo.animo': 'Mi ánimo',
+    'm-ansiedad.niv': 'Cómo de preocupada me siento', 'm-carga.acuerdos': 'Acuerdos', 'm-carga.cabeza': 'Cómo de llena está mi cabeza', 'm-carga.revisiones': 'Revisiones de la semana', 'm-duelo.dia': 'Cómo estoy',
+  'm-limpeq.bien': 'Le pillé haciendo algo bien', 'm-limpeq.log': 'Cómo he sostenido los límites', 'm-familia.rlog': 'Momentos en el bote', 'm-limfam.log': 'Límites que he puesto', 'm-suenopos.cont': 'Siestas y despertares', 'm-suenopos.des': 'Cómo he descansado', 'm-lactancia.lac': 'Cómo me siento con la lactancia', 'm-cuerpopos.rel': 'Cómo me llevo con mi cuerpo', 'm-cuerpoemb.rel': 'Cómo me llevo con mi cuerpo', 'm-animo.animo': 'Mi ánimo',
     'm-nacer.cartas': 'Cartas', 'm-nacer.piel': 'Cómo me siento en mi piel', 'm-pareja.hoy': 'Cómo de cerca me siento', 'm-pareja.mio.xh': 'Momentos de autocuidado en pareja', 'm-parto.conf': 'Cómo de preparada me siento',
     'm-recordar.peso': 'Cuánto me pesa el recuerdo', 'm-salto.log': 'Mi semana', 'm-soledad.hoy': 'Cómo de acompañada me siento', 'm-ventanas.anc': 'Cómo de ancha ha sido mi ventana', 'm-vinculo.cx': 'Cómo de conectada me siento', 'm-vinculo.momentos': 'Momentos juntos', 'm-vinculo.senales': 'Señales de mi bebé',
   };

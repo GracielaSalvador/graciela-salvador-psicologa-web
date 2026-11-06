@@ -64,6 +64,7 @@ input[type=range] { width: 100%; accent-color: var(--c, var(--accent)); }
 .warn { background: var(--warn); color: var(--warn-ink); border-radius: 16px; padding: 12px 14px; font-size: .93rem; }
 .ok { background: var(--ok); color: var(--ok-ink); border-radius: 16px; padding: 12px 14px; font-size: .93rem; }
 .pop { animation: pop .45s ease-out; } @keyframes pop { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+svg .pop[transform] { animation-name: popfade; } @keyframes popfade { from { opacity: 0; } to { opacity: 1; } }
 .empty { text-align: center; padding: 18px; border: 1.5px dashed var(--line); border-radius: 18px; color: var(--muted); font-size: .93rem; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
 .seg { display: flex; gap: 6px; background: var(--tint); padding: 4px; border-radius: 999px; }
@@ -138,6 +139,43 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 .draw { stroke-dasharray: 900; stroke-dashoffset: 900; animation: draw 1.6s ease-out forwards; } @keyframes draw { to { stroke-dashoffset: 0; } }
 @media (max-width: 370px) { .gest.tiles { grid-template-columns: 1fr 1fr; } }
 @media (prefers-reduced-motion: reduce) { .pulse, .draw { animation: none !important; stroke-dashoffset: 0; } }
+/* Pares «frase / lo que se sabe» y «me digo / otra forma de verlo» en varios formatos */
+.pairs { display: flex; flex-direction: column; gap: 8px; }
+.p-lupa .pl { border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); overflow: hidden; }
+.p-lupa .pl.on { border-color: var(--tc); }
+.p-lupa .pl > button { width: 100%; border: 0; background: transparent; display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: center; text-align: left; padding: 11px 13px; font-family: var(--display); font-size: 1.02rem; color: var(--deep); }
+.p-lupa .pl > button svg { width: 22px; height: 22px; color: var(--tc); transition: transform .3s; }
+.p-lupa .pl.on > button svg { transform: scale(1.25); }
+.p-lupa .pa { padding: 0 14px 12px 49px; } .p-lupa .pa small, .p-chat small, .p-deck small, .p-tedices small, .p-tachar small, .p-voz small { display: block; font-size: .68rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; opacity: .8; margin-bottom: 2px; }
+.p-lupa .pa p { margin: 0; font-size: .95rem; }
+.p-chat { background: color-mix(in srgb, var(--tc) 6%, var(--surface)); border-radius: 18px; padding: 12px 10px; gap: 10px; }
+.p-chat .cb { max-width: 86%; border-radius: 18px; padding: 9px 13px; line-height: 1.35; font-size: .95rem; text-align: left; }
+.p-chat .cb.l { align-self: flex-start; border: 1.5px solid var(--line); background: var(--surface); border-bottom-left-radius: 4px; font-family: var(--display); font-size: 1.02rem; color: var(--deep); }
+.p-chat .cb.l[aria-expanded="true"] { border-color: var(--tc); }
+.p-chat .cb.r { align-self: flex-end; background: var(--ok); color: var(--ok-ink); border-bottom-right-radius: 4px; }
+.dk { display: flex; flex-direction: column; gap: 10px; }
+.dk .dots { display: flex; gap: 5px; justify-content: center; } .dk .dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--line); transition: all .3s; } .dk .dots span.done { background: color-mix(in srgb, var(--tc) 45%, var(--surface)); } .dk .dots span.on { background: var(--tc); width: 20px; border-radius: 6px; }
+.dk .dc { border-radius: 20px; padding: 18px 16px; min-height: 150px; background: color-mix(in srgb, var(--tc) 10%, var(--surface)); border: 1.5px solid color-mix(in srgb, var(--tc) 30%, transparent); display: flex; flex-direction: column; gap: 10px; justify-content: center; text-align: center; box-shadow: 0 6px 0 -2px color-mix(in srgb, var(--tc) 14%, var(--surface)), 0 12px 0 -5px color-mix(in srgb, var(--tc) 8%, var(--surface)); }
+.dk .dc > b { font-family: var(--display); font-weight: 500; font-size: 1.2rem; color: var(--deep); line-height: 1.3; }
+.dk .dback { background: var(--ok); color: var(--ok-ink); border-radius: 14px; padding: 10px 12px; text-align: left; } .dk .dback p { margin: 0; font-size: .95rem; }
+.dk .yn { display: flex; gap: 8px; justify-content: center; } .dk .yn button { border: 1.5px solid var(--tc); background: var(--surface); color: var(--tc); border-radius: 999px; padding: 8px 22px; font-weight: 800; }
+.dk .q { margin: 0; font-size: .9rem; color: var(--muted); font-weight: 700; }
+.dk .rev { align-self: center; border: 0; background: var(--tc); color: var(--onc, #fff); border-radius: 999px; padding: 8px 18px; font-weight: 800; }
+.dk .nav-row span { font-size: .82rem; color: var(--muted); font-weight: 700; }
+.p-tachar .tc { border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
+.p-tachar .tc > button { border: 0; background: transparent; padding: 0; text-align: left; font-family: var(--display); font-size: 1.05rem; color: var(--deep); position: relative; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+.p-tachar .tc > button .tx { position: relative; }
+.p-tachar .tc > button .tx::after { content: ''; position: absolute; left: 0; top: 55%; height: 2px; width: 0; background: var(--me, var(--li)); transition: width .45s ease; }
+.p-tachar .tc.on > button .tx { color: var(--muted); } .p-tachar .tc.on > button .tx::after { width: 100%; }
+.p-tachar .tc > button i { font-style: normal; font-family: var(--body); font-size: .74rem; font-weight: 800; color: var(--tc); white-space: nowrap; }
+.p-tachar .nw { font-family: var(--display); font-size: 1.1rem; color: var(--ok-ink); background: var(--ok); border-radius: 12px; padding: 8px 12px; }
+.p-voz .vz { display: flex; flex-direction: column; gap: 6px; }
+.p-voz .cloud { align-self: flex-start; max-width: 88%; border: 1.5px dashed var(--muted); background: color-mix(in srgb, var(--muted) 8%, var(--surface)); border-radius: 22px 22px 22px 6px; padding: 10px 14px; text-align: left; font-family: var(--display); font-size: 1.02rem; color: var(--deep); display: grid; grid-template-columns: 22px 1fr; gap: 8px; align-items: start; }
+.p-voz .cloud svg, .p-voz .warm svg { width: 20px; height: 20px; margin-top: 2px; }
+.p-voz .warm { align-self: flex-end; max-width: 88%; background: color-mix(in srgb, var(--rose, var(--tc)) 14%, var(--surface)); border: 1.5px solid var(--rose, var(--tc)); border-radius: 22px 22px 6px 22px; padding: 10px 14px; font-family: var(--display); font-size: 1.05rem; color: var(--deep); display: grid; grid-template-columns: 22px 1fr; gap: 8px; }
+.p-voz .warm svg { color: var(--rose, var(--tc)); } .p-voz .cloud svg { color: var(--muted); }
+.dk .dback p, .p-chat .cb.r, .p-lupa .pa p { color: var(--ink); }
+
 
 .clock { width: 100%; max-width: 300px; display: block; margin: 0 auto; }
 .clock .sg { cursor: pointer; } .clock .sg:focus { outline: none; } .clock .sg:focus-visible path { stroke: var(--ink); stroke-width: 2; }
@@ -228,7 +266,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
     </div>
     <div class="card">
       <span class="eyebrow">Lo que me digo</span>
-      <p class="small">Toca cada tarjeta para darle la vuelta.</p>
+      <p class="small">Toca cada frase de tu voz crítica para escuchar qué le respondería tu voz más amable.</p>
       <div class="flips" id="tho"></div>
       <span class="lbl">¿Cuáles te dices tú?</span>
       <div class="chips" id="thoCh"></div>
@@ -280,6 +318,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
     <div class="card">
       <span class="eyebrow">¿Cómo de acompañada me siento hoy?</span>
       <p class="small">Vuelve de vez en cuando y mira cómo cambia.</p>
+      <svg class="fig" id="vz_hoy" viewBox="0 0 320 120" aria-hidden="true"></svg>
       <div class="scale-row"><span class="lbl">Hoy me siento…</span><input type="range" min="0" max="10" id="hoy" style="accent-color:var(--r1)" aria-label="Cómo de acompañada me siento hoy"><span class="big-num" id="hoyV" style="--c:var(--r1)"></span><span class="ends"><span>muy sola</span><span>acompañada</span></span></div>
       <button class="btn" id="hoySave" style="align-self:flex-start">Guardar</button>
       <div id="hoyList"></div>
@@ -330,8 +369,9 @@ function listEditor(o) {
 }
 /* Tarjetas «lo que me digo» con respuesta propia. o = { flips, chips, mine, list, sel(), setSel(a), own, save, front, back } */
 function sayings(o) {
+  if (o.style && o.style !== 'flip') sayPairs(o.flips, o.list, o.style, o.k); else {
   $(o.flips).innerHTML = o.list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-fl${o.k}="${i}"><span class="in"><span class="ff"><small>${o.front || 'Me digo'}</small><b>«${esc(a)}»</b><i>Toca para darle la vuelta ↻</i></span><span class="fb"><small>${o.back || 'Otra forma de verlo'}</small><b>«${esc(b)}»</b></span></span></button>`).join('');
-  flipBind(`[data-fl${o.k}]`);
+  flipBind(`[data-fl${o.k}]`); }
   const mine = () => { const s = o.sel();
     $(o.chips).innerHTML = o.list.map(([a], i) => `<button class="chip" style="--c:var(--tc)" data-sc${o.k}="${i}" aria-pressed="${s.includes(i)}">${esc(a)}</button>`).join('');
     $$(`[data-sc${o.k}]`).forEach(b => b.onclick = () => { o.setSel(toggle(o.sel(), +b.dataset['sc' + o.k])); keep(mine); });
@@ -356,14 +396,47 @@ function miniLine(pts, color, label) {
     ${d.map((e, i) => `<circle cx="${x(i)}" cy="${y(e.v)}" r="4.5" fill="${color}"/>`).join('')}
     <text x="30" y="114" font-family="var(--body)" font-size="9" fill="var(--muted)">${fdate(d[0].t)}</text><text x="310" y="114" text-anchor="end" font-family="var(--body)" font-size="9" fill="var(--muted)">${fdate(d[n - 1].t)}</text></svg>`;
 }
+/* Pares en varios formatos, para que no se repita siempre la misma tarjeta: flip, lupa, chat, deck, tedices (para «lo que se sabe») y tachar, voz (para «me digo») */
+const PICO = { lupa: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/>', cloud: '<path d="M7 18a4 4 0 0 1-.6-8A5.5 5.5 0 0 1 17 8.5a4.5 4.5 0 0 1 .5 9z"/>', heart: '<path d="M12 20s-7-4.4-7-10A4 4 0 0 1 12 7a4 4 0 0 1 7 3c0 5.6-7 10-7 10z"/>' };
+function pairsUI(sel, list, style, o) {
+  o = o || {}; const el = $(sel), F = o.front || 'Me digo', B = o.back || 'Lo que se sabe', k = sel.replace(/\W/g, '');
+  if (style === 'flip') { el.className = 'flips'; el.innerHTML = list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-pf${k}="${i}"><span class="in"><span class="ff"><small>${F}</small><b>«${esc(a)}»</b><i>${o.hint || 'Toca para ver lo que se sabe ↻'}</i></span><span class="fb"><small>${B}</small>${o.bold ? `<b>«${esc(b)}»</b>` : `<span class="small">${esc(b)}</span>`}</span></span></button>`).join(''); flipBind(`[data-pf${k}]`); return; }
+  el.className = 'pairs p-' + style;
+  const q = (b) => o.bold ? `«${esc(b)}»` : esc(b);
+  if (style === 'lupa') { let op = -1; const r = () => { el.innerHTML = list.map(([a, b], i) => `<div class="pl${op === i ? ' on' : ''}"><button data-pl${k}="${i}" aria-expanded="${op === i}">${SI(PICO.lupa)}<span>«${esc(a)}»</span></button>${op === i ? `<div class="pa pop"><small>${B}</small><p>${q(b)}</p></div>` : ''}</div>`).join(''); $$(`[data-pl${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['pl' + k]; op = op === n ? -1 : n; r(); }); }; r(); return; }
+  if (style === 'chat') { const on = new Set(); const r = () => { el.innerHTML = list.map(([a, b], i) => `<button class="cb l" data-pc${k}="${i}" aria-expanded="${on.has(i)}"><small>${F}</small>${esc(a)}</button>${on.has(i) ? `<div class="cb r pop"><small>${B}</small>${q(b)}</div>` : ''}`).join(''); $$(`[data-pc${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['pc' + k]; on.has(n) ? on.delete(n) : on.add(n); r(); }); }; r(); return; }
+  if (style === 'deck' || style === 'tedices') {
+    let i = 0, shown = false; const ans = {};
+    const r = () => { const [a, b] = list[i], all = Object.keys(ans).length === list.length, yes = Object.values(ans).filter(Boolean).length;
+      el.innerHTML = `<div class="dk"><div class="dots">${list.map((_, j) => `<span class="${j === i ? 'on' : (ans[j] !== undefined || (style === 'deck' && j < i)) ? 'done' : ''}"></span>`).join('')}</div>
+        <div class="dc pop"><small>${F}</small><b>«${esc(a)}»</b>
+        ${style === 'tedices' && !shown ? `<p class="q">¿Te lo has dicho alguna vez?</p><div class="yn"><button data-yn="1">Sí</button><button data-yn="0">No</button></div>` : ''}
+        ${style === 'deck' && !shown ? `<button class="rev">Ver lo que se sabe</button>` : ''}
+        ${shown ? `<div class="dback pop"><small>${B}</small><p>${style === 'tedices' && ans[i] ? 'Es muy habitual decírselo. ' : ''}${q(b)}</p></div>` : ''}</div>
+        <div class="nav-row">${i ? '<button class="btn ghost small" data-dv="-1">← Anterior</button>' : '<span></span>'}<span>${i + 1} de ${list.length}</span>${i < list.length - 1 ? '<button class="btn small" data-dv="1">Siguiente →</button>' : '<span></span>'}</div>
+        ${style === 'tedices' && all ? `<div class="ok small pop">Te has dicho ${yes} de estas ${list.length} frases. No son toda la verdad: la próxima vez que aparezcan, puedes recordar lo que se sabe.</div>` : ''}</div>`;
+      $$(`${sel} [data-yn]`).forEach(x => x.onclick = () => { ans[i] = x.dataset.yn === '1'; shown = true; r(); });
+      const rv = $(`${sel} .rev`); if (rv) rv.onclick = () => { shown = true; r(); };
+      $$(`${sel} [data-dv]`).forEach(x => x.onclick = () => { i += +x.dataset.dv; shown = style === 'tedices' ? ans[i] !== undefined : false; r(); });
+    }; r(); return; }
+}
+function sayPairs(sel, list, style, k) {
+  if (style === 'flip' || !style) { $(sel).className = 'flips'; $(sel).innerHTML = list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-fl${k}="${i}"><span class="in"><span class="ff"><small>Me digo</small><b>«${esc(a)}»</b><i>Toca para darle la vuelta ↻</i></span><span class="fb"><small>Otra forma de verlo</small><b>«${esc(b)}»</b></span></span></button>`).join(''); flipBind(`[data-fl${k}]`); return; }
+  const el = $(sel), on = new Set(); el.className = 'pairs p-' + style;
+  const r = () => {
+    el.innerHTML = style === 'tachar' ? list.map(([a, b], i) => `<div class="tc${on.has(i) ? ' on' : ''}"><button data-tt${k}="${i}" aria-pressed="${on.has(i)}"><span class="tx">«${esc(a)}»</span><i>${on.has(i) ? 'Deshacer' : 'Tachar y reescribir'}</i></button>${on.has(i) ? `<div class="nw pop">«${esc(b)}»</div>` : ''}</div>`).join('')
+      : list.map(([a, b], i) => `<div class="vz"><button class="cloud" data-tt${k}="${i}" aria-pressed="${on.has(i)}">${SI(PICO.cloud)}<span><small>Mi voz crítica</small>«${esc(a)}»</span></button>${on.has(i) ? `<div class="warm pop">${SI(PICO.heart)}<span><small>Mi voz amable</small>«${esc(b)}»</span></div>` : ''}</div>`).join('');
+    $$(`[data-tt${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['tt' + k]; on.has(n) ? on.delete(n) : on.add(n); r(); });
+  }; r();
+}
 
 
 /* ================= DATOS ================= */
 const MODES = [['sola', 'Sola con mi bebé', 'var(--me)'], ['acomp', 'Con alguien adulto', 'var(--r1)'], ['dorm', 'Durmiendo', 'var(--r3)']];
 const TIPOS = [['Social', 'Echo de menos gente con la que hablar.', 'Has perdido contacto con amistades, compañeras de trabajo o tu vida social de antes. Los días pasan sin conversaciones de adultos.'], ['Emocional', 'Nadie entiende de verdad lo que siento.', 'Puedes estar rodeada de gente, pero sientes que nadie te ve por dentro: te preguntan por el bebé, pero no por ti.'], ['De identidad', 'Ni yo misma me reconozco.', 'Te sientes lejos de la persona que eras, y eso también aísla: es difícil conectar con los demás cuando no sabes muy bien quién eres ahora.']];
-const BRICKS = ['Los horarios del bebé', 'El cansancio', 'Amistades sin hijos', 'Lejos de mi familia', 'Sin compañeros de trabajo', 'Las redes sociales', 'No contar cómo estoy', 'Mi pareja pasa fuera muchas horas', 'Una ciudad nueva'];
+const BRICKS = ['Los horarios del bebé', 'El cansancio', 'Amistades sin hijos', 'Lejos de mi familia', 'Sin compañeros de trabajo', 'Las redes sociales', 'No contar cómo estoy', 'Mi pareja pasa fuera muchas horas', 'Una ciudad nueva', 'Crío sola', 'Sin nadie que me releve', 'No encajo con otras madres'];
 const MYTHS = [['Debería bastarme con mi bebé', 'Tu bebé te llena de muchas formas, pero no puede darte conversación, apoyo ni comprensión adulta. Necesitarlos es humano.'], ['Si lo cuento, pensarán que no soy feliz', 'Puedes querer muchísimo tu maternidad y, a la vez, sentirte sola. Contarlo no le quita nada a tu amor.'], ['Mis amigas sin hijos ya no me entienden', 'Algunas relaciones cambian, pero muchas se adaptan si se les da una oportunidad. Contarles cómo estás les ayuda a acompañarte.'], ['Es una etapa, ya pasará sola', 'La soledad tiende a mantenerse si no hacemos nada: cuanto más sola te sientes, más cuesta acercarse. Por eso ayudan los pasos pequeños.'], ['Pedir compañía es molestar', 'Mucha gente quiere ayudar y no sabe cómo. Pedir algo concreto se lo pone fácil.'], ['Las demás madres tienen una tribu', 'En las redes se ven los planes, no las tardes solas. Muchas madres se sienten como tú.']];
-const CUANDO = ['Por la noche, en las tomas', 'Cuando mi pareja se va a trabajar', 'Las tardes largas', 'Los fines de semana', 'Después de mirar redes', 'En el parque, rodeada de gente', 'Cuando quiero contar algo y no tengo a quién', 'Al volver de una visita'];
+const CUANDO = ['Por la noche, en las tomas', 'Cuando me quedo sola en casa', 'Las tardes largas', 'Los fines de semana', 'Después de mirar redes', 'En el parque, rodeada de gente', 'Cuando quiero contar algo y no tengo a quién', 'Al volver de una visita'];
 const CTIP = { 'Por la noche, en las tomas': 'Las noches pueden hacerse muy largas. Un grupo de madres por mensajes o un audio grabado para el día siguiente pueden hacerte sentir menos sola en esos ratos.', 'Después de mirar redes': 'Las redes enseñan los momentos bonitos de otras familias, no sus tardes difíciles. Prueba a mirarlas menos en tus momentos más sensibles.', 'En el parque, rodeada de gente': 'Sentirse sola rodeada de gente es muy habitual. A veces basta una pregunta pequeña a otra madre («¿cuántos meses tiene?») para empezar una conversación.', 'Las tardes largas': 'Las tardes se hacen eternas cuando no hay nadie con quien compartirlas. Tener un plan fijo, aunque sea pequeño (un paseo, el parque, una llamada), las cambia mucho.' };
 const THO = [['Nadie se acuerda de mí', 'Puede que los demás no sepan cómo acercarse. Puedo dar yo el primer paso.'], ['Soy un rollo, solo hablo del bebé', 'Hablo de lo que estoy viviendo, y es normal. Las personas que me quieren quieren saber de mí.'], ['No tengo energía para ver a nadie', 'No hace falta un gran plan: un audio o un café de veinte minutos también cuentan.'], ['Debería poder sola', 'Criar nunca fue algo para hacer en solitario. Necesitar a otras personas es lo natural.'], ['Si me quejo, soy una desagradecida', 'Puedo agradecer lo que tengo y, a la vez, decir que me siento sola.']];
 const RINGS = [[1, 'Muy cerca', 'var(--r1)'], [2, 'Cerca', 'var(--r2)'], [3, 'Más lejos', 'var(--r3)']];
@@ -400,8 +473,9 @@ function renderClock() {
   $('#clockTxt').innerHTML = so >= 6 ? `<div class="note small pop">Pasas unas <b>${so} horas</b> al día sola con tu bebé${ac ? ` y unas ${ac} con alguien adulto` : ''}. Estás acompañada todo el rato, pero casi nadie te acompaña a ti. Por eso es tan habitual sentirse sola en la maternidad.</div>` : so ? `<div class="ok small pop">Sigue pintando tu día. Fíjate en cuántas horas tienes a alguien adulto con quien hablar.</div>` : '';
 }
 function drawWall() {
-  let g = `<rect width="320" height="200" rx="16" fill="var(--sun)" opacity=".07"/>`;
-  const W = 96, H = 34, pos = BRICKS.map((_, i) => { const row = 2 - Math.floor(i / 3), off = row % 2 ? 0 : 0; return [12 + (i % 3) * (W + 4) + off, 34 + row * (H + 6)]; });
+  const VH = 44 + Math.ceil(BRICKS.length / 3) * 40; $('#wall').setAttribute('viewBox', `0 0 320 ${VH}`);
+  let g = `<rect width="320" height="${VH}" rx="16" fill="var(--sun)" opacity=".07"/>`;
+  const W = 96, H = 34, R = Math.ceil(BRICKS.length / 3), pos = BRICKS.map((_, i) => { const row = R - 1 - Math.floor(i / 3), off = row % 2 ? 0 : 0; return [12 + (i % 3) * (W + 4) + off, 34 + row * (H + 6)]; });
   BRICKS.forEach((b, i) => { const on = S.bricks.includes(b), [x, y] = pos[i], lines = b.length > 17 ? [b.slice(0, b.lastIndexOf(' ', 17)), b.slice(b.lastIndexOf(' ', 17) + 1)] : [b];
     g += `<g class="bk" data-bk="${esc(b)}" tabindex="0" role="button" aria-pressed="${on}" aria-label="${esc(b)}"><rect x="${x}" y="${y}" width="${W}" height="${H}" rx="5" fill="${on ? 'var(--me)' : 'var(--surface)'}" stroke="var(--me)" stroke-width="1.5" stroke-dasharray="${on ? 0 : '4 3'}" opacity="${on ? .9 : 1}" style="transition:all .3s"/>${lines.map((l, j) => `<text x="${x + W / 2}" y="${y + H / 2 + 3.5 + (j - (lines.length - 1) / 2) * 10}" text-anchor="middle" font-family="var(--body)" font-size="8.5" font-weight="800" fill="${on ? 'var(--onc)' : 'var(--me)'}">${esc(l)}</text>`).join('')}</g>`; });
   const n = S.bricks.length;
@@ -413,8 +487,7 @@ function drawWall() {
 renderClock(); drawWall();
 $('#tipos').innerHTML = TIPOS.map(([t, a, b], i) => `<button class="flip" aria-pressed="false" data-tp="${i}"><span class="in"><span class="ff"><small>Soledad ${t.toLowerCase()}</small><b>«${esc(a)}»</b><i>Toca para saber más ↻</i></span><span class="fb"><small>Soledad ${t.toLowerCase()}</small><span class="small">${esc(b)}</span></span></span></button>`).join('');
 flipBind('[data-tp]');
-$('#myths').innerHTML = MYTHS.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-my="${i}"><span class="in"><span class="ff"><small>Me digo</small><b>«${esc(a)}»</b><i>Toca para ver lo que se sabe ↻</i></span><span class="fb"><small>Lo que se sabe</small><span class="small">${esc(b)}</span></span></span></button>`).join('');
-flipBind('[data-my]');
+pairsUI('#myths', MYTHS, 'flip', { front: 'Me digo' });
 
 /* ================= MI SOLEDAD ================= */
 function drawIsla(v) {
@@ -435,7 +508,7 @@ function renderMia() {
     $$('[data-cu]').forEach(b => b.onclick = () => { S.cuando = toggle(S.cuando, b.dataset.cu); saveS(); keep(ct); });
     $('#cuandoTxt').innerHTML = S.cuando.filter(t => CTIP[t]).map(t => `<div class="info pop" style="--c:var(--tc)"><h3>${esc(t)}</h3><p class="small">${CTIP[t]}</p></div>`).join(''); };
   ct();
-  sayings({ k: 'a', flips: '#tho', chips: '#thoCh', mine: '#thoMine', list: THO, sel: () => S.tho, setSel: (a) => { S.tho = a; saveS(); }, own: S.own, save: saveS });
+  sayings({ k: 'a', style: 'voz', flips: '#tho', chips: '#thoCh', mine: '#thoMine', list: THO, sel: () => S.tho, setSel: (a) => { S.tho = a; saveS(); }, own: S.own, save: saveS });
 }
 
 /* ================= MI RED ================= */
@@ -500,6 +573,10 @@ function renderAce() { renderSteps(); renderMsg(); renderHoy();
   $('#ayuda').innerHTML = HELP.map(([ic, t, c]) => `<div class="ns" style="--c:${c}">${SI(ic)}<span>${t}</span></div>`).join(''); }
 
 /* ================= RESUMEN ================= */
+
+/* Dibujo que acompaña al registro de cada día */
+const VZ_hoy = (v) => { let g = `<rect width="320" height="120" rx="16" fill="color-mix(in srgb, var(--tc) 6%, var(--surface))"/>`; const n = Math.round(v * .8); g += `<circle cx="160" cy="58" r="13" fill="color-mix(in srgb, var(--rose) 30%, var(--surface))" stroke="var(--rose)" stroke-width="2.4"/>`; for (let i = 0; i < n; i++) { const a = -Math.PI / 2 + (i - (n - 1) / 2) * .62, x = 160 + Math.cos(a) * 70 * 1.2, y = 62 + Math.sin(a) * 40 + 20; g += `<path d="M160 58 L${x.toFixed(1)} ${y.toFixed(1)}" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="3 3"/><circle class="pop" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="9" fill="var(--surface)" stroke="var(--tc)" stroke-width="2"/>`; } g += `<text x="160" y="112" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--muted)">${!n ? 'Hoy me siento muy sola' : n < 4 ? 'Algo de compañía' : 'Bien acompañada'}</text>`; return g; };
+(() => { const inp = $('#hoy'), f = () => { const el = $('#vz_hoy'); if (el && inp) el.innerHTML = VZ_hoy(+inp.value); }; inp.addEventListener('input', f); document.addEventListener('click', () => setTimeout(f, 40)); setTimeout(f, 60); })();
 function summary() {
   const L = ['Sentirme menos sola: resumen'], n = (k) => Object.values(S.horas).filter(v => v === k).length;
   if (Object.keys(S.horas).length) L.push(`Un día normal: ${n('sola')} h sola con mi bebé, ${n('acomp')} h con alguien adulto`);
@@ -771,7 +848,8 @@ const PDFKIT = (() => {
     'impulsos.log': 'Registro de impulsos', 'incert.daily': 'Días', 'incert.logs': 'Exposiciones', 'incert.waves': 'Olas', 'liston.exps': 'Experimentos', 'liston.five': 'Cinco minutos', 'liston.friend': 'Como a una amiga', 'liston.logros': 'Tarro de logros', 'liston.suf': 'Suficientemente bien',
     'pensamientos.regs': 'Registro de pensamientos', 'quererme.jar': 'Tarro', 'rumbo.log': 'Pasos', 'rumbo.revs': 'Revisiones', 'rumbo.snaps': 'Dianas', 'sesion.hist': 'Sesiones preparadas', 'social.bien': 'Lo que fue bien', 'social.experimentos': 'Experimentos',
     'soledad.days': 'Días', 'soledad.small': 'Pequeños lazos', 'sueno.noches': 'Noches', 'sueno.preoc': 'Preocupaciones', 'verguenza.momentos': 'Momentos', 'vinculos.dates': 'Citas', 'vueltas.decs': 'Decisiones',
-    'm-ansiedad.niv': 'Cómo de preocupada me siento', 'm-carga.acuerdos': 'Acuerdos', 'm-carga.cabeza': 'Cómo de llena está mi cabeza', 'm-carga.revisiones': 'Revisiones de la semana', 'm-cuerpoemb.rel': 'Cómo me llevo con mi cuerpo', 'm-animo.animo': 'Mi ánimo',
+    'm-ansiedad.niv': 'Cómo de preocupada me siento', 'm-carga.acuerdos': 'Acuerdos', 'm-carga.cabeza': 'Cómo de llena está mi cabeza', 'm-carga.revisiones': 'Revisiones de la semana', 'm-duelo.dia': 'Cómo estoy',
+  'm-limpeq.bien': 'Le pillé haciendo algo bien', 'm-limpeq.log': 'Cómo he sostenido los límites', 'm-familia.rlog': 'Momentos en el bote', 'm-limfam.log': 'Límites que he puesto', 'm-suenopos.cont': 'Siestas y despertares', 'm-suenopos.des': 'Cómo he descansado', 'm-lactancia.lac': 'Cómo me siento con la lactancia', 'm-cuerpopos.rel': 'Cómo me llevo con mi cuerpo', 'm-cuerpoemb.rel': 'Cómo me llevo con mi cuerpo', 'm-animo.animo': 'Mi ánimo',
     'm-nacer.cartas': 'Cartas', 'm-nacer.piel': 'Cómo me siento en mi piel', 'm-pareja.hoy': 'Cómo de cerca me siento', 'm-pareja.mio.xh': 'Momentos de autocuidado en pareja', 'm-parto.conf': 'Cómo de preparada me siento',
     'm-recordar.peso': 'Cuánto me pesa el recuerdo', 'm-salto.log': 'Mi semana', 'm-soledad.hoy': 'Cómo de acompañada me siento', 'm-ventanas.anc': 'Cómo de ancha ha sido mi ventana', 'm-vinculo.cx': 'Cómo de conectada me siento', 'm-vinculo.momentos': 'Momentos juntos', 'm-vinculo.senales': 'Señales de mi bebé',
   };

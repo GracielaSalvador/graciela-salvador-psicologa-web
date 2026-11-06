@@ -64,6 +64,7 @@ input[type=range] { width: 100%; accent-color: var(--c, var(--accent)); }
 .warn { background: var(--warn); color: var(--warn-ink); border-radius: 16px; padding: 12px 14px; font-size: .93rem; }
 .ok { background: var(--ok); color: var(--ok-ink); border-radius: 16px; padding: 12px 14px; font-size: .93rem; }
 .pop { animation: pop .45s ease-out; } @keyframes pop { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+svg .pop[transform] { animation-name: popfade; } @keyframes popfade { from { opacity: 0; } to { opacity: 1; } }
 .empty { text-align: center; padding: 18px; border: 1.5px dashed var(--line); border-radius: 18px; color: var(--muted); font-size: .93rem; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
 .seg { display: flex; gap: 6px; background: var(--tint); padding: 4px; border-radius: 999px; }
@@ -138,6 +139,43 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 .draw { stroke-dasharray: 900; stroke-dashoffset: 900; animation: draw 1.6s ease-out forwards; } @keyframes draw { to { stroke-dashoffset: 0; } }
 @media (max-width: 370px) { .gest.tiles { grid-template-columns: 1fr 1fr; } }
 @media (prefers-reduced-motion: reduce) { .pulse, .draw { animation: none !important; stroke-dashoffset: 0; } }
+/* Pares «frase / lo que se sabe» y «me digo / otra forma de verlo» en varios formatos */
+.pairs { display: flex; flex-direction: column; gap: 8px; }
+.p-lupa .pl { border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); overflow: hidden; }
+.p-lupa .pl.on { border-color: var(--tc); }
+.p-lupa .pl > button { width: 100%; border: 0; background: transparent; display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: center; text-align: left; padding: 11px 13px; font-family: var(--display); font-size: 1.02rem; color: var(--deep); }
+.p-lupa .pl > button svg { width: 22px; height: 22px; color: var(--tc); transition: transform .3s; }
+.p-lupa .pl.on > button svg { transform: scale(1.25); }
+.p-lupa .pa { padding: 0 14px 12px 49px; } .p-lupa .pa small, .p-chat small, .p-deck small, .p-tedices small, .p-tachar small, .p-voz small { display: block; font-size: .68rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; opacity: .8; margin-bottom: 2px; }
+.p-lupa .pa p { margin: 0; font-size: .95rem; }
+.p-chat { background: color-mix(in srgb, var(--tc) 6%, var(--surface)); border-radius: 18px; padding: 12px 10px; gap: 10px; }
+.p-chat .cb { max-width: 86%; border-radius: 18px; padding: 9px 13px; line-height: 1.35; font-size: .95rem; text-align: left; }
+.p-chat .cb.l { align-self: flex-start; border: 1.5px solid var(--line); background: var(--surface); border-bottom-left-radius: 4px; font-family: var(--display); font-size: 1.02rem; color: var(--deep); }
+.p-chat .cb.l[aria-expanded="true"] { border-color: var(--tc); }
+.p-chat .cb.r { align-self: flex-end; background: var(--ok); color: var(--ok-ink); border-bottom-right-radius: 4px; }
+.dk { display: flex; flex-direction: column; gap: 10px; }
+.dk .dots { display: flex; gap: 5px; justify-content: center; } .dk .dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--line); transition: all .3s; } .dk .dots span.done { background: color-mix(in srgb, var(--tc) 45%, var(--surface)); } .dk .dots span.on { background: var(--tc); width: 20px; border-radius: 6px; }
+.dk .dc { border-radius: 20px; padding: 18px 16px; min-height: 150px; background: color-mix(in srgb, var(--tc) 10%, var(--surface)); border: 1.5px solid color-mix(in srgb, var(--tc) 30%, transparent); display: flex; flex-direction: column; gap: 10px; justify-content: center; text-align: center; box-shadow: 0 6px 0 -2px color-mix(in srgb, var(--tc) 14%, var(--surface)), 0 12px 0 -5px color-mix(in srgb, var(--tc) 8%, var(--surface)); }
+.dk .dc > b { font-family: var(--display); font-weight: 500; font-size: 1.2rem; color: var(--deep); line-height: 1.3; }
+.dk .dback { background: var(--ok); color: var(--ok-ink); border-radius: 14px; padding: 10px 12px; text-align: left; } .dk .dback p { margin: 0; font-size: .95rem; }
+.dk .yn { display: flex; gap: 8px; justify-content: center; } .dk .yn button { border: 1.5px solid var(--tc); background: var(--surface); color: var(--tc); border-radius: 999px; padding: 8px 22px; font-weight: 800; }
+.dk .q { margin: 0; font-size: .9rem; color: var(--muted); font-weight: 700; }
+.dk .rev { align-self: center; border: 0; background: var(--tc); color: var(--onc, #fff); border-radius: 999px; padding: 8px 18px; font-weight: 800; }
+.dk .nav-row span { font-size: .82rem; color: var(--muted); font-weight: 700; }
+.p-tachar .tc { border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
+.p-tachar .tc > button { border: 0; background: transparent; padding: 0; text-align: left; font-family: var(--display); font-size: 1.05rem; color: var(--deep); position: relative; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+.p-tachar .tc > button .tx { position: relative; }
+.p-tachar .tc > button .tx::after { content: ''; position: absolute; left: 0; top: 55%; height: 2px; width: 0; background: var(--me, var(--li)); transition: width .45s ease; }
+.p-tachar .tc.on > button .tx { color: var(--muted); } .p-tachar .tc.on > button .tx::after { width: 100%; }
+.p-tachar .tc > button i { font-style: normal; font-family: var(--body); font-size: .74rem; font-weight: 800; color: var(--tc); white-space: nowrap; }
+.p-tachar .nw { font-family: var(--display); font-size: 1.1rem; color: var(--ok-ink); background: var(--ok); border-radius: 12px; padding: 8px 12px; }
+.p-voz .vz { display: flex; flex-direction: column; gap: 6px; }
+.p-voz .cloud { align-self: flex-start; max-width: 88%; border: 1.5px dashed var(--muted); background: color-mix(in srgb, var(--muted) 8%, var(--surface)); border-radius: 22px 22px 22px 6px; padding: 10px 14px; text-align: left; font-family: var(--display); font-size: 1.02rem; color: var(--deep); display: grid; grid-template-columns: 22px 1fr; gap: 8px; align-items: start; }
+.p-voz .cloud svg, .p-voz .warm svg { width: 20px; height: 20px; margin-top: 2px; }
+.p-voz .warm { align-self: flex-end; max-width: 88%; background: color-mix(in srgb, var(--rose, var(--tc)) 14%, var(--surface)); border: 1.5px solid var(--rose, var(--tc)); border-radius: 22px 22px 6px 22px; padding: 10px 14px; font-family: var(--display); font-size: 1.05rem; color: var(--deep); display: grid; grid-template-columns: 22px 1fr; gap: 8px; }
+.p-voz .warm svg { color: var(--rose, var(--tc)); } .p-voz .cloud svg { color: var(--muted); }
+.dk .dback p, .p-chat .cb.r, .p-lupa .pa p { color: var(--ink); }
+
 
 .sense { display: flex; flex-direction: column; gap: 6px; }
 .sense div { display: grid; grid-template-columns: 40px 1fr; gap: 10px; align-items: center; border: 1.5px solid var(--line); border-radius: 14px; padding: 8px 10px; background: var(--surface); transition: all .3s; }
@@ -211,8 +249,15 @@ details.reg[open] summary { margin-bottom: 6px; }
     </div>
 
     <div class="card">
+      <span class="eyebrow">Cada embarazo llega por su camino</span>
+      <p class="small">El camino por el que llega un embarazo también influye en cómo se vive el vínculo. Si el tuyo se parece a alguno de estos, tócalo.</p>
+      <div class="gest tiles" id="cam"></div>
+      <div id="camTxt"></div>
+    </div>
+
+    <div class="card">
       <span class="eyebrow">Cosas que nos decimos</span>
-      <p class="small">Toca cada tarjeta para ver lo que se sabe.</p>
+      <p class="small">Pasa las tarjetas una a una. En cada frase, toca para ver lo que se sabe.</p>
       <div class="flips" id="myths"></div>
     </div>
   </section>
@@ -232,8 +277,8 @@ details.reg[open] summary { margin-bottom: 6px; }
     </div>
     <div class="card">
       <span class="eyebrow">Lo que me pregunto sobre ti</span>
-      <p class="small">Pensar en tu bebé y preguntarte cómo estará creciendo también es vincularte: tu mente ya le está haciendo un hueco. ¿Qué te preguntas tú?</p>
-      <div class="chips" id="preg"></div>
+      <p class="small">Pensar en tu bebé y preguntarte cómo estará creciendo también es vincularte: tu mente ya le está haciendo un hueco. Toca las preguntas que te haces tú. Algunas tienen respuesta según tu semana de embarazo, y otras solo las irá respondiendo tu bebé con el tiempo.</p>
+      <svg class="fig" id="preg" viewBox="0 0 320 250" role="img" aria-label="Lo que me pregunto sobre mi bebé"></svg>
       <div id="pregTxt"></div>
     </div>
     <div class="card">
@@ -268,6 +313,7 @@ details.reg[open] summary { margin-bottom: 6px; }
       <span class="lbl">¿Cuándo?</span>
       <div class="seg" id="sqMom"></div>
       <button class="btn" id="sqSave" style="align-self:flex-start">Anotar</button>
+      <svg class="fig" id="sqG" viewBox="0 0 320 150" role="img" aria-label="Cuándo se mueve mi bebé"></svg>
       <div id="sqTxt"></div>
     </div>
     <div class="card">
@@ -285,6 +331,7 @@ details.reg[open] summary { margin-bottom: 6px; }
       <span class="eyebrow">El vínculo también es de tu pareja</span>
       <p class="small">Si tienes pareja, invítale a crear su propio vínculo. Aunque no lleve al bebé dentro, puede hablarle, cantarle, acariciar la tripa o notar sus patadas. A partir del segundo trimestre, tu bebé empieza a oír, y al nacer también reconocerá esa voz.</p>
       <div class="chips" id="par"></div>
+      <p class="small muted" style="margin:0">Si estás viviendo el embarazo sin pareja, también puedes invitar a otra persona cercana, como tu madre, una hermana o una amiga, a hablarle y a notar sus movimientos. Tu bebé conocerá esas voces que le esperan.</p>
     </div>
   </section>
 
@@ -294,6 +341,7 @@ details.reg[open] summary { margin-bottom: 6px; }
     <div class="card">
       <span class="eyebrow">¿Cómo de conectada me siento hoy?</span>
       <p class="small">Vuelve de vez en cuando. El vínculo cambia a lo largo del embarazo, y no tiene por qué crecer en línea recta.</p>
+      <svg class="fig" id="vz_cx" viewBox="0 0 320 120" aria-hidden="true"></svg>
       <div class="scale-row"><span class="lbl">Hoy me siento…</span><input type="range" min="0" max="10" id="cx" style="accent-color:var(--rose)" aria-label="Cómo de conectada me siento hoy"><span class="big-num" id="cxV" style="--c:var(--rose)"></span><span class="ends"><span>lejos de mi bebé</span><span>muy conectada</span></span></div>
       <button class="btn" id="cxSave" style="align-self:flex-start">Guardar</button>
       <div id="cxList"></div>
@@ -344,8 +392,9 @@ function listEditor(o) {
 }
 /* Tarjetas «lo que me digo» con respuesta propia. o = { flips, chips, mine, list, sel(), setSel(a), own, save, front, back } */
 function sayings(o) {
+  if (o.style && o.style !== 'flip') sayPairs(o.flips, o.list, o.style, o.k); else {
   $(o.flips).innerHTML = o.list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-fl${o.k}="${i}"><span class="in"><span class="ff"><small>${o.front || 'Me digo'}</small><b>«${esc(a)}»</b><i>Toca para darle la vuelta ↻</i></span><span class="fb"><small>${o.back || 'Otra forma de verlo'}</small><b>«${esc(b)}»</b></span></span></button>`).join('');
-  flipBind(`[data-fl${o.k}]`);
+  flipBind(`[data-fl${o.k}]`); }
   const mine = () => { const s = o.sel();
     $(o.chips).innerHTML = o.list.map(([a], i) => `<button class="chip" style="--c:var(--tc)" data-sc${o.k}="${i}" aria-pressed="${s.includes(i)}">${esc(a)}</button>`).join('');
     $$(`[data-sc${o.k}]`).forEach(b => b.onclick = () => { o.setSel(toggle(o.sel(), +b.dataset['sc' + o.k])); keep(mine); });
@@ -370,6 +419,39 @@ function miniLine(pts, color, label) {
     ${d.map((e, i) => `<circle cx="${x(i)}" cy="${y(e.v)}" r="4.5" fill="${color}"/>`).join('')}
     <text x="30" y="114" font-family="var(--body)" font-size="9" fill="var(--muted)">${fdate(d[0].t)}</text><text x="310" y="114" text-anchor="end" font-family="var(--body)" font-size="9" fill="var(--muted)">${fdate(d[n - 1].t)}</text></svg>`;
 }
+/* Pares en varios formatos, para que no se repita siempre la misma tarjeta: flip, lupa, chat, deck, tedices (para «lo que se sabe») y tachar, voz (para «me digo») */
+const PICO = { lupa: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/>', cloud: '<path d="M7 18a4 4 0 0 1-.6-8A5.5 5.5 0 0 1 17 8.5a4.5 4.5 0 0 1 .5 9z"/>', heart: '<path d="M12 20s-7-4.4-7-10A4 4 0 0 1 12 7a4 4 0 0 1 7 3c0 5.6-7 10-7 10z"/>' };
+function pairsUI(sel, list, style, o) {
+  o = o || {}; const el = $(sel), F = o.front || 'Me digo', B = o.back || 'Lo que se sabe', k = sel.replace(/\W/g, '');
+  if (style === 'flip') { el.className = 'flips'; el.innerHTML = list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-pf${k}="${i}"><span class="in"><span class="ff"><small>${F}</small><b>«${esc(a)}»</b><i>${o.hint || 'Toca para ver lo que se sabe ↻'}</i></span><span class="fb"><small>${B}</small>${o.bold ? `<b>«${esc(b)}»</b>` : `<span class="small">${esc(b)}</span>`}</span></span></button>`).join(''); flipBind(`[data-pf${k}]`); return; }
+  el.className = 'pairs p-' + style;
+  const q = (b) => o.bold ? `«${esc(b)}»` : esc(b);
+  if (style === 'lupa') { let op = -1; const r = () => { el.innerHTML = list.map(([a, b], i) => `<div class="pl${op === i ? ' on' : ''}"><button data-pl${k}="${i}" aria-expanded="${op === i}">${SI(PICO.lupa)}<span>«${esc(a)}»</span></button>${op === i ? `<div class="pa pop"><small>${B}</small><p>${q(b)}</p></div>` : ''}</div>`).join(''); $$(`[data-pl${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['pl' + k]; op = op === n ? -1 : n; r(); }); }; r(); return; }
+  if (style === 'chat') { const on = new Set(); const r = () => { el.innerHTML = list.map(([a, b], i) => `<button class="cb l" data-pc${k}="${i}" aria-expanded="${on.has(i)}"><small>${F}</small>${esc(a)}</button>${on.has(i) ? `<div class="cb r pop"><small>${B}</small>${q(b)}</div>` : ''}`).join(''); $$(`[data-pc${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['pc' + k]; on.has(n) ? on.delete(n) : on.add(n); r(); }); }; r(); return; }
+  if (style === 'deck' || style === 'tedices') {
+    let i = 0, shown = false; const ans = {};
+    const r = () => { const [a, b] = list[i], all = Object.keys(ans).length === list.length, yes = Object.values(ans).filter(Boolean).length;
+      el.innerHTML = `<div class="dk"><div class="dots">${list.map((_, j) => `<span class="${j === i ? 'on' : (ans[j] !== undefined || (style === 'deck' && j < i)) ? 'done' : ''}"></span>`).join('')}</div>
+        <div class="dc pop"><small>${F}</small><b>«${esc(a)}»</b>
+        ${style === 'tedices' && !shown ? `<p class="q">¿Te lo has dicho alguna vez?</p><div class="yn"><button data-yn="1">Sí</button><button data-yn="0">No</button></div>` : ''}
+        ${style === 'deck' && !shown ? `<button class="rev">Ver lo que se sabe</button>` : ''}
+        ${shown ? `<div class="dback pop"><small>${B}</small><p>${style === 'tedices' && ans[i] ? 'Es muy habitual decírselo. ' : ''}${q(b)}</p></div>` : ''}</div>
+        <div class="nav-row">${i ? '<button class="btn ghost small" data-dv="-1">← Anterior</button>' : '<span></span>'}<span>${i + 1} de ${list.length}</span>${i < list.length - 1 ? '<button class="btn small" data-dv="1">Siguiente →</button>' : '<span></span>'}</div>
+        ${style === 'tedices' && all ? `<div class="ok small pop">Te has dicho ${yes} de estas ${list.length} frases. No son toda la verdad: la próxima vez que aparezcan, puedes recordar lo que se sabe.</div>` : ''}</div>`;
+      $$(`${sel} [data-yn]`).forEach(x => x.onclick = () => { ans[i] = x.dataset.yn === '1'; shown = true; r(); });
+      const rv = $(`${sel} .rev`); if (rv) rv.onclick = () => { shown = true; r(); };
+      $$(`${sel} [data-dv]`).forEach(x => x.onclick = () => { i += +x.dataset.dv; shown = style === 'tedices' ? ans[i] !== undefined : false; r(); });
+    }; r(); return; }
+}
+function sayPairs(sel, list, style, k) {
+  if (style === 'flip' || !style) { $(sel).className = 'flips'; $(sel).innerHTML = list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-fl${k}="${i}"><span class="in"><span class="ff"><small>Me digo</small><b>«${esc(a)}»</b><i>Toca para darle la vuelta ↻</i></span><span class="fb"><small>Otra forma de verlo</small><b>«${esc(b)}»</b></span></span></button>`).join(''); flipBind(`[data-fl${k}]`); return; }
+  const el = $(sel), on = new Set(); el.className = 'pairs p-' + style;
+  const r = () => {
+    el.innerHTML = style === 'tachar' ? list.map(([a, b], i) => `<div class="tc${on.has(i) ? ' on' : ''}"><button data-tt${k}="${i}" aria-pressed="${on.has(i)}"><span class="tx">«${esc(a)}»</span><i>${on.has(i) ? 'Deshacer' : 'Tachar y reescribir'}</i></button>${on.has(i) ? `<div class="nw pop">«${esc(b)}»</div>` : ''}</div>`).join('')
+      : list.map(([a, b], i) => `<div class="vz"><button class="cloud" data-tt${k}="${i}" aria-pressed="${on.has(i)}">${SI(PICO.cloud)}<span><small>Mi voz crítica</small>«${esc(a)}»</span></button>${on.has(i) ? `<div class="warm pop">${SI(PICO.heart)}<span><small>Mi voz amable</small>«${esc(b)}»</span></div>` : ''}</div>`).join('');
+    $$(`[data-tt${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['tt' + k]; on.has(n) ? on.delete(n) : on.add(n); r(); });
+  }; r();
+}
 
 
 /* ================= DATOS ================= */
@@ -391,7 +473,15 @@ const MYTHS = [
   ['Encariñarme me hará sufrir más si algo pasa', 'Protegerte es comprensible, sobre todo si has vivido una pérdida. Pero el miedo no evita el dolor, y sí te quita momentos bonitos ahora.'],
   ['Mi estrés le hace daño y nos separa', 'Los nervios del día a día no dañan el vínculo. Si estás pasando una etapa de mucho estrés, cuidarte es una forma de cuidarle.'],
 ];
-const IMAG = ['Tranquilo o tranquila', 'Muy movido', 'Risueño', 'Con tus ojos', 'Con la sonrisa de su padre o de su madre', 'Curioso', 'Dormilón', 'Cariñoso'];
+const CAMV = [
+  ['bus', 'Después de mucho buscarlo', 'var(--sun)', '<path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.5 6.6 19.5l1.2-6L3.3 9.3l6.1-.7z"/>', 'Después de mucho tiempo de búsqueda o de tratamientos de reproducción asistida, es frecuente que cueste creérselo y que el miedo frene la ilusión. Ir semana a semana está bien: el vínculo puede crecer al ritmo de tu confianza.'],
+  ['don', 'Con donación de óvulos o de semen', 'var(--li)', '<path d="M12 20s-7-4.4-7-10A4 4 0 0 1 12 7a4 4 0 0 1 7 3c0 5.6-7 10-7 10z"/>', 'El vínculo no depende de los genes: se construye con la gestación, con el cuidado y con la relación de cada día. Es normal que aparezcan dudas o un pequeño duelo por lo genético, y hablarlo, con tu pareja o en terapia, ayuda a vivirlo con calma. Muchas familias eligen contarle su historia con naturalidad desde que es pequeño.'],
+  ['per', 'Después de una pérdida', 'var(--tc)', '<circle cx="12" cy="12" r="2"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="10"/>', 'Después de perder un embarazo, es habitual proteger el corazón y no atreverse a ilusionarse del todo. No pasa nada. Puedes querer a este bebé y seguir recordando al que no está: cada uno tiene su lugar. Si lo necesitas, en «El duelo por mi bebé» tienes un espacio para ello.'],
+  ['gem', 'Espero gemelos o más', 'var(--rose)', '<circle cx="8" cy="12" r="4"/><circle cx="16" cy="12" r="4"/>', 'Vincularte con dos bebés a la vez es distinto: a veces se siente primero a uno y después al otro, o se piensa en ellos como una pareja. Ayuda imaginar a cada uno por separado, con su nombre, su lado de la tripa y su forma de moverse.'],
+  ['nob', 'No lo buscaba', 'var(--gr)', '<path d="M12 3v18M3 12h18"/>', 'Un embarazo que no se buscó puede traer sorpresa, dudas o un tiempo de ajuste antes de que llegue la ilusión. Cómo empezó no decide cómo será vuestro vínculo: se construye con lo que vivís a partir de ahora.'],
+  ['rie', 'Es un embarazo de riesgo', 'var(--hi)', '<path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/>', 'Cuando hay riesgo, la atención se va a las pruebas, a los resultados y al miedo, y cuesta disfrutar. Buscar pequeños momentos de conexión, aunque sean de dos minutos, ayuda a que el embarazo no sea solo preocupación. En «Conectar» tienes ideas para hacerlo.'],
+];
+const IMAG = ['Tranquilo o tranquila', 'Muy movido', 'Risueño', 'Con tus ojos', 'Con la sonrisa de alguien de la familia', 'Curioso', 'Dormilón', 'Cariñoso'];
 const VIVIR = [['Abrazarte por primera vez', '<path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/>'], ['Bañarte', '<path d="M4 12h16v3a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M6 12V6a2 2 0 0 1 4 0"/>'], ['Leerte cuentos', '<path d="M4 5h7v14H4zM13 5h7v14h-7z"/>'], ['Pasear contigo', '<circle cx="8" cy="19" r="2"/><circle cx="17" cy="19" r="2"/><path d="M4 5h3l2 9h9l2-6H8"/>'], ['Verte dormir', '<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>'], ['Cantarte', '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>'], ['Tu primera sonrisa', '<circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/>'], ['Enseñarte el mar', '<path d="M3 15c3-3 6 3 9 0s6 3 9 0"/><path d="M3 19c3-3 6 3 9 0s6 3 9 0"/>'], ['Presentarte a la familia', '<circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M3 20c0-3 2-5 5-5s5 2 5 5M11 20c0-3 2-5 5-5s5 2 5 5"/>']];
 const MEC = [
   ['Distinguir sus señales de las mías', '<path d="M8 12c1-3 3-3 4 0s3 3 4 0"/><circle cx="12" cy="12" r="9"/>', 'var(--rose)', 'Aprender a reconocer qué sensaciones vienen de tu bebé y cuáles de tu cuerpo hace que empieces a sentirle como alguien distinto de ti, con su propio ritmo.', 'Lo practicas en «Conectar», con «Sus señales y las mías».'],
@@ -400,6 +490,16 @@ const MEC = [
   ['Empezar a sentirte madre', '<circle cx="9" cy="8" r="3"/><circle cx="16" cy="11" r="2"/><path d="M4 20c0-3 2-6 5-6s5 3 5 6M13 20c0-2 1.3-4 3-4s3 2 3 4"/>', 'var(--gr)', 'Mientras tu bebé crece, tú también cambias. Ir construyendo tu nueva identidad de madre, y tu pareja la suya, es parte de prepararos para recibirle.', 'Lo trabajas en «Imaginar», en «La madre que estoy empezando a ser».'],
 ];
 const PREG = ['¿Estará bien?', '¿Cómo será su carita?', '¿A quién se parecerá?', '¿Será niño o niña?', '¿Estará dormido ahora?', '¿Me oirá cuando le hablo?', '¿Le gustará la música que pongo?', '¿Qué carácter tendrá?'];
+const PREGA = {
+  '¿Estará bien?': () => 'Es la pregunta que más se hacen las madres, y forma parte de cuidarle. Tus revisiones están pensadas para responderla. Si se vuelve constante y no te deja disfrutar del embarazo, en «Calmar mi ansiedad en el embarazo» tienes herramientas para ella.',
+  '¿Cómo será su carita?': (w) => w < 12 ? 'Ahora mismo sus rasgos se están empezando a formar: los ojos, la nariz y la boca van encontrando su sitio poco a poco.' : w < 28 ? 'Su perfil ya está formado. Puede fruncir el ceño, abrir la boca y hacer pequeñas muecas, aunque todavía es una carita muy delgada.' : 'Su carita se va redondeando y ya abre y cierra los ojos. Aun así, no la conocerás de verdad hasta que la veas: ese descubrimiento también es vuestro.',
+  '¿A quién se parecerá?': () => 'Nadie lo sabe todavía. Imaginarlo es una forma bonita de darle un lugar en la familia, y descubrir que se parece a quien menos esperabas, o solo a sí mismo, también forma parte del vínculo.',
+  '¿Será niño o niña?': () => 'Más allá de lo que digan las pruebas, quién será tu bebé lo irá mostrando con los años. Fíjate en lo que esperas según la respuesta: a veces dice más de nuestras expectativas que de él o de ella.',
+  '¿Estará dormido ahora?': () => 'Es muy probable: pasa la mayor parte del tiempo durmiendo, en ciclos cortos de sueño activo y sueño tranquilo que se van organizando en el tercer trimestre. Por eso hay ratos de mucho movimiento y ratos de calma.',
+  '¿Me oirá cuando le hablo?': (w) => w < 18 ? 'Todavía no oye, porque su oído se está formando. Pero ya percibe tu ritmo, tus movimientos y tus cambios de postura. Hacia la semana 18 a 20 empezará a captar sus primeros sonidos.' : w < 25 ? 'Está empezando a oír: primero los sonidos de tu cuerpo, como tu corazón o tu respiración, y poco a poco los de fuera. Hablarle ahora es empezar a presentarte.' : 'Sí: ya oye tu voz, amortiguada, como si estuviera debajo del agua. Es el sonido que más escucha, y al nacer la reconocerá entre todas.',
+  '¿Le gustará la música que pongo?': (w) => w < 25 ? 'Todavía no la oye bien, pero cuando la música te calma o te alegra, tu cuerpo cambia, y eso sí le llega.' : 'Puede reaccionar a la música con movimientos. Lo que más le llega, en cualquier caso, es tu voz y tu calma cuando la disfrutas.',
+  '¿Qué carácter tendrá?': () => 'Cada bebé nace con su propio temperamento, y lo irás descubriendo con el tiempo. Algunas madres notan si se mueve mucho o poco, aunque eso no predice cómo será. Lo que sí sabemos es que el vínculo se adapta a cada carácter.',
+};
 const SER = [['siento', 'Como madre, me siento…', ['ilusionada', 'con dudas', 'con miedo', 'todavía lejos de ese papel', 'cada día más preparada']], ['quiero', 'Me gustaría ser una madre que…', ['escucha', 'abraza mucho', 'disfruta del juego', 'respeta su ritmo', 'también se cuida']]];
 const SQT = ['Una patada', 'Un giro', 'Hipo', 'Un aleteo', 'Presión abajo', 'Se estira'];
 const SQM = [['man', 'Mañana'], ['tar', 'Tarde'], ['noc', 'Noche']];
@@ -409,7 +509,7 @@ const CARTA = [['Querido bebé:', 'Hoy estoy de…'], ['Cuando pienso en ti, sie
 const PAR = ['Hablarle cada noche', 'Cantarle una canción', 'Acariciar la tripa', 'Esperar sus patadas con la mano', 'Leerle un cuento', 'Acompañarme a las ecografías'];
 const HELP = [['<circle cx="12" cy="12" r="9"/><path d="M8 15s1.5-2 4-2 4 2 4 2M9 9h.01M15 9h.01"/>', 'Sientes rechazo hacia el embarazo o hacia tu bebé, y eso te angustia.', 'var(--li)'], ['<path d="M12 21v-8"/><path d="M12 13c0-4 3-6.5 7-6.5 0 4-3 6.5-7 6.5z"/>', 'Llevas más de dos semanas triste, sin ganas de nada o sin ilusión por casi nada.', 'var(--lo)'], ['<path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z"/><path d="M12 8v5M12 16h.01"/>', 'El miedo a que algo pase no te deja disfrutar de nada. En «Calmar mi ansiedad en el embarazo» tienes herramientas para eso.', 'var(--rose)'], ['<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>', 'Tienes pensamientos que te asustan o ideas de hacerte daño. En ese caso, llama al <b>024</b> (24 h) o al <b>112</b>.', 'var(--hi)']];
 
-let S = Object.assign({ wk: 20, apodo: '', imag: [], imagOwn: [], vivir: [], rit: [], carta: {}, par: [], mec: null, preg: [], ser: {}, sqT: '', sqM: '' }, store.get('mio', {}) || {});
+let S = Object.assign({ camv: '', wk: 20, apodo: '', imag: [], imagOwn: [], vivir: [], rit: [], carta: {}, par: [], mec: null, preg: [], pregL: '', ser: {}, sqT: '', sqM: '' }, store.get('mio', {}) || {});
 const saveS = () => store.set('mio', S);
 let MOM = store.get('momentos', []), CX = store.get('cx', []), SQ = store.get('senales', []);
 const lc = (s) => s.charAt(0).toLowerCase() + s.slice(1);
@@ -447,15 +547,20 @@ function renderSense() {
   $('#sense').innerHTML = SENSE.map(([k, t, d, c, ic]) => { const on = w >= k; return `<div class="${on ? 'on pop' : 'off'}" style="--c:${c}"><span class="ic">${SI(ic)}</span><span><b>${t}</b>${on ? `<span>${d}</span>` : `<small>A partir de la semana ${k}, más o menos</small>`}</span></div>`; }).join('');
 }
 $('#wk').oninput = (e) => { S.wk = +e.target.value; saveS(); renderSense(); };
-$('#myths').innerHTML = MYTHS.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-my="${i}"><span class="in"><span class="ff"><small>Me digo</small><b>«${esc(a)}»</b><i>Toca para ver lo que se sabe ↻</i></span><span class="fb"><small>Lo que se sabe</small><span class="small">${esc(b)}</span></span></span></button>`).join('');
-flipBind('[data-my]');
+pairsUI('#myths', MYTHS, 'deck', { front: 'Me digo' });
 function renderMec() {
   $('#mec').innerHTML = MEC.map(([t, ic, c], i) => `<button style="--c:${c}" data-mc="${i}" aria-pressed="${S.mec === i}"><span class="ic">${SI(ic)}</span>${esc(t)}</button>`).join('');
   $$('[data-mc]').forEach(b => b.onclick = () => { S.mec = S.mec === +b.dataset.mc ? null : +b.dataset.mc; saveS(); keep(renderMec); });
   const m = S.mec !== null ? MEC[S.mec] : null;
   $('#mecTxt').innerHTML = m ? `<div class="info pop" style="--c:${m[2]}"><h3>${esc(m[0])}</h3><p class="small">${esc(m[3])}</p><p class="small" style="font-weight:800;color:${m[2]}">${esc(m[4])}</p></div>` : `<p class="small muted">También influyen el apoyo de tu pareja y de tu entorno, cómo estás emocionalmente y tu propia historia. Si quieres mirar esta última, tienes «Saber de dónde vengo».</p>`;
 }
-function renderEnt() { drawHilo(); renderMec(); $('#wk').value = S.wk; renderSense(); }
+function renderCamv() {
+  $('#cam').innerHTML = CAMV.map(([k, n, c, ic]) => `<button style="--c:${c}" data-cv="${k}" aria-pressed="${S.camv === k}"><span class="ic">${SI(ic)}</span>${esc(n)}</button>`).join('');
+  $$('[data-cv]').forEach(b => b.onclick = () => { S.camv = S.camv === b.dataset.cv ? '' : b.dataset.cv; saveS(); keep(renderCamv); });
+  const d = CAMV.find(x => x[0] === S.camv);
+  $('#camTxt').innerHTML = d ? `<div class="info pop" style="--c:${d[2]}"><h3>${esc(d[1])}</h3><p class="small" style="margin:4px 0 0">${esc(d[4])}${d[0] === 'per' ? ' <a href="../duelo/">Ir a «El duelo por mi bebé»</a>' : ''}</p></div>` : '';
+}
+function renderEnt() { drawHilo(); renderMec(); $('#wk').value = S.wk; renderSense(); renderCamv(); }
 
 /* ================= IMAGINAR ================= */
 function drawNube() {
@@ -485,11 +590,21 @@ function renderVivir() {
   $$('[data-vi]').forEach(b => b.onclick = () => { S.vivir = toggle(S.vivir, b.dataset.vi); saveS(); keep(renderVivir); });
   $('#vivirTxt').innerHTML = S.vivir.length ? `<div class="sentence pop">«${esc(nm().charAt(0).toUpperCase() + nm().slice(1))}, tengo muchas ganas de ${esc(joinY(S.vivir.map(lc)))}.»</div>` : '';
 }
+function wrapQ(t, n) { const w = t.split(' '), L = ['']; w.forEach(x => { if ((L[L.length - 1] + ' ' + x).trim().length > n) L.push(x); else L[L.length - 1] = (L[L.length - 1] + ' ' + x).trim(); }); return L; }
 function renderPreg() {
-  $('#preg').innerHTML = PREG.map(t => `<button class="chip" style="--c:var(--lo)" data-pg="${esc(t)}" aria-pressed="${S.preg.includes(t)}">${esc(t)}</button>`).join('');
-  $$('[data-pg]').forEach(b => b.onclick = () => { S.preg = toggle(S.preg, b.dataset.pg); saveS(); keep(renderPreg); });
-  $('#pregTxt').innerHTML = S.preg.includes('¿Estará bien?') ? `<div class="note small pop">Preguntarte si estará bien es natural y forma parte de cuidarle. Si esa pregunta se vuelve constante y no te deja disfrutar, en «Calmar mi ansiedad en el embarazo» tienes herramientas.</div>` : S.preg.length ? `<div class="ok small pop">Cada una de estas preguntas es una forma de pensar en tu bebé como alguien concreto, con su propia forma de ser. Así se va tejiendo el vínculo.</div>` : '';
+  const P = [[8, 14], [8, 72], [8, 130], [8, 188], [212, 14], [212, 72], [212, 130], [212, 188]], C = ['var(--lo)', 'var(--rose)', 'var(--li)', 'var(--gr)'];
+  let g = `<rect width="320" height="250" rx="18" fill="var(--womb)"/>`;
+  g += `<circle cx="160" cy="125" r="42" fill="color-mix(in srgb, var(--rose) 12%, var(--surface))" stroke="var(--rose)" stroke-width="2"/><g fill="none" stroke="var(--rose)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="153" cy="109" r="11"/><path d="M163 115c12 4 15 20 6 28-6 5-17 4-21-3"/><path d="M148 140c-6-1-8-8-3-11"/><path d="M155 124c4 3 6 7 4 11"/></g>`;
+  g += `<text x="160" y="184" text-anchor="middle" font-family="var(--body)" font-size="9.5" font-weight="800" fill="var(--muted)">Semana ${S.wk}</text>`;
+  PREG.forEach((q, i) => { const [x, y] = P[i], on = S.preg.includes(q), sel = S.pregL === q, c = C[i % 4], L = wrapQ(q, 17), cx = x + 50, ax = x < 100 ? x + 100 : x;
+    g += `<path d="M${ax} ${y + 22} L${x < 100 ? 120 : 200} ${125 + (y + 22 - 125) * .45}" stroke="${on ? c : 'var(--line)'}" stroke-width="1.5" stroke-dasharray="${on ? '' : '3 4'}"/>`;
+    g += `<g class="qb" data-pg="${esc(q)}" tabindex="0" role="button" aria-pressed="${on}" style="cursor:pointer"><rect x="${x}" y="${y}" width="100" height="44" rx="14" fill="${on ? c : 'var(--surface)'}" stroke="${c}" stroke-width="${sel ? 3 : 1.6}"/>${L.map((l, j) => `<text x="${cx}" y="${y + 26 - (L.length - 1) * 6 + j * 12}" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="${on ? '#fff' : 'var(--deep)'}">${esc(l)}</text>`).join('')}</g>`; });
+  $('#preg').innerHTML = g;
+  kbdQ();
+  const a = S.pregL && PREGA[S.pregL];
+  $('#pregTxt').innerHTML = (a ? `<div class="info pop" style="--c:var(--rose)"><h3>${esc(S.pregL)}</h3><p class="small" style="margin:4px 0 0">${esc(a(S.wk))}</p></div>` : '') + (S.preg.length >= 3 ? `<div class="ok small pop">Cada una de estas preguntas es una forma de pensar en tu bebé como alguien concreto, con su propia forma de ser. Así, pregunta a pregunta, se va tejiendo el vínculo.</div>` : '');
 }
+function kbdQ() { $$('#preg .qb').forEach(n => { const go = () => { const q = n.dataset.pg; if (S.pregL === q) { S.preg = toggle(S.preg, q); S.pregL = S.preg.includes(q) ? q : ''; } else { if (!S.preg.includes(q)) S.preg.push(q); S.pregL = q; } saveS(); keep(renderPreg); }; n.onclick = go; n.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } }; }); }
 function renderSer() {
   $('#ser').innerHTML = SER.map(([k, l, list]) => { const sel = S.ser[k] || []; return `<div class="slot"><span class="lbl">${l}</span><div class="chips">${list.map(t => `<button class="chip" style="--c:var(--gr)" data-sk="${k}" data-v="${esc(t)}" aria-pressed="${sel.includes(t)}">${esc(t)}</button>`).join('')}</div></div>`; }).join('');
   $$('[data-sk]').forEach(b => b.onclick = () => { const k = b.dataset.sk; S.ser[k] = toggle(S.ser[k] || [], b.dataset.v); saveS(); keep(renderSer); });
@@ -536,11 +651,23 @@ function renderPar() {
   $('#par').innerHTML = PAR.map(t => `<button class="chip" style="--c:var(--lo)" data-pa="${esc(t)}" aria-pressed="${S.par.includes(t)}">${esc(t)}</button>`).join('');
   $$('[data-pa]').forEach(b => b.onclick = () => { S.par = toggle(S.par, b.dataset.pa); saveS(); keep(renderPar); });
 }
+const SQC = ['var(--rose)', 'var(--li)', 'var(--gr)', 'var(--lo)', 'var(--hi)', 'var(--tc)'];
+function drawSq() {
+  const TC = SQC, ZI = { man: '<circle cx="0" cy="0" r="6"/><path d="M0-11v-3M0 11v3M-11 0h-3M11 0h3M-8-8l-2-2M8 8l2 2M-8 8l-2 2M8-8l2-2"/>', tar: '<path d="M-12 4h24"/><path d="M-7 4a7 7 0 0 1 14 0"/><path d="M0-8v-3M-9-4l-2-2M9-4l2-2"/>', noc: '<path d="M7 5A9 9 0 0 1-5-8 9 9 0 1 0 7 5z"/>' };
+  let g = `<rect width="320" height="150" rx="16" fill="color-mix(in srgb, var(--li) 6%, var(--surface))"/>`;
+  SQM.forEach(([k, n], i) => { const x0 = 14 + i * 100, list = SQ.filter(e => e.m === k).slice(-18);
+    g += `<rect x="${x0}" y="10" width="92" height="130" rx="14" fill="var(--surface)" stroke="var(--line)"/><g transform="translate(${x0 + 46} 30)" fill="none" stroke="var(--li)" stroke-width="1.8" stroke-linecap="round">${ZI[k]}</g><text x="${x0 + 46}" y="56" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--deep)">${n}</text>`;
+    list.forEach((e, j) => { const cx = x0 + 18 + (j % 6) * 11.5, cy = 128 - Math.floor(j / 6) * 14, c = TC[Math.max(0, SQT.indexOf(e.k)) % TC.length]; g += `<circle cx="${cx}" cy="${cy}" r="4.6" fill="${c}"/>`; });
+    if (!list.length) g += `<text x="${x0 + 46}" y="104" text-anchor="middle" font-family="var(--body)" font-size="9" fill="var(--muted)">Sin señales</text>`; });
+  $('#sqG').innerHTML = SQ.length ? g : '';
+  $('#sqG').style.display = SQ.length ? '' : 'none';
+}
 function renderSq() {
-  $('#sqTipo').innerHTML = SQT.map(t => `<button class="chip" style="--c:var(--rose)" data-sq="${esc(t)}" aria-pressed="${S.sqT === t}">${esc(t)}</button>`).join('');
+  $('#sqTipo').innerHTML = SQT.map((t, i) => `<button class="chip" style="--c:${SQC[i % SQC.length]}" data-sq="${esc(t)}" aria-pressed="${S.sqT === t}">${esc(t)}</button>`).join('');
   $$('[data-sq]').forEach(b => b.onclick = () => { S.sqT = S.sqT === b.dataset.sq ? '' : b.dataset.sq; saveS(); keep(renderSq); });
   $('#sqMom').innerHTML = SQM.map(([k, n]) => `<button data-sm="${k}" aria-pressed="${S.sqM === k}" style="--c:var(--li)">${n}</button>`).join('');
   $$('[data-sm]').forEach(b => b.onclick = () => { S.sqM = S.sqM === b.dataset.sm ? '' : b.dataset.sm; saveS(); keep(renderSq); });
+  drawSq();
   const cnt = (k) => SQ.filter(e => e.m === k).length, top = SQM.map(([k, n]) => [n, cnt(k)]).sort((a, b) => b[1] - a[1])[0];
   $('#sqTxt').innerHTML = (SQ.length >= 4 && top[1] >= 2 ? `<div class="ok small pop">Por lo que has ido anotando, tu bebé parece más activo por la ${esc(top[0].toLowerCase())}. Ya empiezas a conocer su ritmo.</div>` : SQ.length ? `<p class="small muted">Llevas ${SQ.length} ${SQ.length === 1 ? 'señal anotada' : 'señales anotadas'}. Con unas cuantas más empezarás a ver su ritmo.</p>` : '') + regList(SQ, 'senales', (e) => `${fdate(e.t)} · ${esc(e.k)}${e.m ? ' · ' + SQM.find(x => x[0] === e.m)[1].toLowerCase() : ''}`, () => keep(renderSq));
 }
@@ -556,6 +683,10 @@ function renderCx() { $('#cx').value = cxV; $('#cxV').textContent = cxV;
 function renderCui() { renderCx(); $('#ayuda').innerHTML = HELP.map(([ic, t, c]) => `<div class="ns" style="--c:${c}">${SI(ic)}<span>${t}</span></div>`).join(''); }
 
 /* ================= RESUMEN ================= */
+
+/* Dibujo que acompaña al registro de cada día */
+const VZ_cx = (v) => { let g = `<rect width="320" height="120" rx="16" fill="color-mix(in srgb, var(--tc) 6%, var(--surface))"/>`; const o = v / 10; g += `<circle cx="160" cy="56" r="${20 + o * 30}" fill="var(--rose)" opacity="${(.06 + o * .14).toFixed(2)}"/><path class="pop" d="M160 ${80} s-${18 + o * 8}-12-${18 + o * 8}-26a10 10 0 0 1 ${18 + o * 8}-6a10 10 0 0 1 ${18 + o * 8} 6c0 14-${18 + o * 8} 26-${18 + o * 8} 26z" fill="var(--rose)" opacity="${(.3 + o * .7).toFixed(2)}"/>`; g += `<text x="160" y="112" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--muted)">${v < 3 ? 'Una llama pequeña, que también cuenta' : v < 7 ? 'Una luz que va creciendo' : 'Una luz que brilla'}</text>`; return g; };
+(() => { const inp = $('#cx'), f = () => { const el = $('#vz_cx'); if (el && inp) el.innerHTML = VZ_cx(+inp.value); }; inp.addEventListener('input', f); document.addEventListener('click', () => setTimeout(f, 40)); setTimeout(f, 60); })();
 function summary() {
   const L = ['Conectar con mi bebé: resumen', `Semana de embarazo: ${S.wk}`];
   if (S.apodo.trim()) L.push('Le llamo: ' + S.apodo.trim());
@@ -568,6 +699,7 @@ function summary() {
   if (SQ.length) L.push(`Señales de mi bebé anotadas: ${SQ.length}`);
   if (MOM.length) L.push(`Momentos juntos: ${MOM.length}`);
   if (CX.length) L.push('Cómo de conectada (0-10): ' + CX.slice(-8).map(h => `${fdate(h.t)} ${h.v}`).join(', '));
+  if (S.camv) L.push('Cómo llegó mi embarazo: ' + CAMV.find(x => x[0] === S.camv)[1].toLowerCase());
   return L.join('\n');
 }
 setupCopy(summary);
@@ -828,7 +960,8 @@ const PDFKIT = (() => {
     'impulsos.log': 'Registro de impulsos', 'incert.daily': 'Días', 'incert.logs': 'Exposiciones', 'incert.waves': 'Olas', 'liston.exps': 'Experimentos', 'liston.five': 'Cinco minutos', 'liston.friend': 'Como a una amiga', 'liston.logros': 'Tarro de logros', 'liston.suf': 'Suficientemente bien',
     'pensamientos.regs': 'Registro de pensamientos', 'quererme.jar': 'Tarro', 'rumbo.log': 'Pasos', 'rumbo.revs': 'Revisiones', 'rumbo.snaps': 'Dianas', 'sesion.hist': 'Sesiones preparadas', 'social.bien': 'Lo que fue bien', 'social.experimentos': 'Experimentos',
     'soledad.days': 'Días', 'soledad.small': 'Pequeños lazos', 'sueno.noches': 'Noches', 'sueno.preoc': 'Preocupaciones', 'verguenza.momentos': 'Momentos', 'vinculos.dates': 'Citas', 'vueltas.decs': 'Decisiones',
-    'm-ansiedad.niv': 'Cómo de preocupada me siento', 'm-carga.acuerdos': 'Acuerdos', 'm-carga.cabeza': 'Cómo de llena está mi cabeza', 'm-carga.revisiones': 'Revisiones de la semana', 'm-cuerpoemb.rel': 'Cómo me llevo con mi cuerpo', 'm-animo.animo': 'Mi ánimo',
+    'm-ansiedad.niv': 'Cómo de preocupada me siento', 'm-carga.acuerdos': 'Acuerdos', 'm-carga.cabeza': 'Cómo de llena está mi cabeza', 'm-carga.revisiones': 'Revisiones de la semana', 'm-duelo.dia': 'Cómo estoy',
+  'm-limpeq.bien': 'Le pillé haciendo algo bien', 'm-limpeq.log': 'Cómo he sostenido los límites', 'm-familia.rlog': 'Momentos en el bote', 'm-limfam.log': 'Límites que he puesto', 'm-suenopos.cont': 'Siestas y despertares', 'm-suenopos.des': 'Cómo he descansado', 'm-lactancia.lac': 'Cómo me siento con la lactancia', 'm-cuerpopos.rel': 'Cómo me llevo con mi cuerpo', 'm-cuerpoemb.rel': 'Cómo me llevo con mi cuerpo', 'm-animo.animo': 'Mi ánimo',
     'm-nacer.cartas': 'Cartas', 'm-nacer.piel': 'Cómo me siento en mi piel', 'm-pareja.hoy': 'Cómo de cerca me siento', 'm-pareja.mio.xh': 'Momentos de autocuidado en pareja', 'm-parto.conf': 'Cómo de preparada me siento',
     'm-recordar.peso': 'Cuánto me pesa el recuerdo', 'm-salto.log': 'Mi semana', 'm-soledad.hoy': 'Cómo de acompañada me siento', 'm-ventanas.anc': 'Cómo de ancha ha sido mi ventana', 'm-vinculo.cx': 'Cómo de conectada me siento', 'm-vinculo.momentos': 'Momentos juntos', 'm-vinculo.senales': 'Señales de mi bebé',
   };

@@ -64,6 +64,7 @@ input[type=range] { width: 100%; accent-color: var(--c, var(--accent)); }
 .warn { background: var(--warn); color: var(--warn-ink); border-radius: 16px; padding: 12px 14px; font-size: .93rem; }
 .ok { background: var(--ok); color: var(--ok-ink); border-radius: 16px; padding: 12px 14px; font-size: .93rem; }
 .pop { animation: pop .45s ease-out; } @keyframes pop { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+svg .pop[transform] { animation-name: popfade; } @keyframes popfade { from { opacity: 0; } to { opacity: 1; } }
 .empty { text-align: center; padding: 18px; border: 1.5px dashed var(--line); border-radius: 18px; color: var(--muted); font-size: .93rem; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
 .seg { display: flex; gap: 6px; background: var(--tint); padding: 4px; border-radius: 999px; }
@@ -138,6 +139,43 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 .draw { stroke-dasharray: 900; stroke-dashoffset: 900; animation: draw 1.6s ease-out forwards; } @keyframes draw { to { stroke-dashoffset: 0; } }
 @media (max-width: 370px) { .gest.tiles { grid-template-columns: 1fr 1fr; } }
 @media (prefers-reduced-motion: reduce) { .pulse, .draw { animation: none !important; stroke-dashoffset: 0; } }
+/* Pares «frase / lo que se sabe» y «me digo / otra forma de verlo» en varios formatos */
+.pairs { display: flex; flex-direction: column; gap: 8px; }
+.p-lupa .pl { border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); overflow: hidden; }
+.p-lupa .pl.on { border-color: var(--tc); }
+.p-lupa .pl > button { width: 100%; border: 0; background: transparent; display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: center; text-align: left; padding: 11px 13px; font-family: var(--display); font-size: 1.02rem; color: var(--deep); }
+.p-lupa .pl > button svg { width: 22px; height: 22px; color: var(--tc); transition: transform .3s; }
+.p-lupa .pl.on > button svg { transform: scale(1.25); }
+.p-lupa .pa { padding: 0 14px 12px 49px; } .p-lupa .pa small, .p-chat small, .p-deck small, .p-tedices small, .p-tachar small, .p-voz small { display: block; font-size: .68rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; opacity: .8; margin-bottom: 2px; }
+.p-lupa .pa p { margin: 0; font-size: .95rem; }
+.p-chat { background: color-mix(in srgb, var(--tc) 6%, var(--surface)); border-radius: 18px; padding: 12px 10px; gap: 10px; }
+.p-chat .cb { max-width: 86%; border-radius: 18px; padding: 9px 13px; line-height: 1.35; font-size: .95rem; text-align: left; }
+.p-chat .cb.l { align-self: flex-start; border: 1.5px solid var(--line); background: var(--surface); border-bottom-left-radius: 4px; font-family: var(--display); font-size: 1.02rem; color: var(--deep); }
+.p-chat .cb.l[aria-expanded="true"] { border-color: var(--tc); }
+.p-chat .cb.r { align-self: flex-end; background: var(--ok); color: var(--ok-ink); border-bottom-right-radius: 4px; }
+.dk { display: flex; flex-direction: column; gap: 10px; }
+.dk .dots { display: flex; gap: 5px; justify-content: center; } .dk .dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--line); transition: all .3s; } .dk .dots span.done { background: color-mix(in srgb, var(--tc) 45%, var(--surface)); } .dk .dots span.on { background: var(--tc); width: 20px; border-radius: 6px; }
+.dk .dc { border-radius: 20px; padding: 18px 16px; min-height: 150px; background: color-mix(in srgb, var(--tc) 10%, var(--surface)); border: 1.5px solid color-mix(in srgb, var(--tc) 30%, transparent); display: flex; flex-direction: column; gap: 10px; justify-content: center; text-align: center; box-shadow: 0 6px 0 -2px color-mix(in srgb, var(--tc) 14%, var(--surface)), 0 12px 0 -5px color-mix(in srgb, var(--tc) 8%, var(--surface)); }
+.dk .dc > b { font-family: var(--display); font-weight: 500; font-size: 1.2rem; color: var(--deep); line-height: 1.3; }
+.dk .dback { background: var(--ok); color: var(--ok-ink); border-radius: 14px; padding: 10px 12px; text-align: left; } .dk .dback p { margin: 0; font-size: .95rem; }
+.dk .yn { display: flex; gap: 8px; justify-content: center; } .dk .yn button { border: 1.5px solid var(--tc); background: var(--surface); color: var(--tc); border-radius: 999px; padding: 8px 22px; font-weight: 800; }
+.dk .q { margin: 0; font-size: .9rem; color: var(--muted); font-weight: 700; }
+.dk .rev { align-self: center; border: 0; background: var(--tc); color: var(--onc, #fff); border-radius: 999px; padding: 8px 18px; font-weight: 800; }
+.dk .nav-row span { font-size: .82rem; color: var(--muted); font-weight: 700; }
+.p-tachar .tc { border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
+.p-tachar .tc > button { border: 0; background: transparent; padding: 0; text-align: left; font-family: var(--display); font-size: 1.05rem; color: var(--deep); position: relative; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+.p-tachar .tc > button .tx { position: relative; }
+.p-tachar .tc > button .tx::after { content: ''; position: absolute; left: 0; top: 55%; height: 2px; width: 0; background: var(--me, var(--li)); transition: width .45s ease; }
+.p-tachar .tc.on > button .tx { color: var(--muted); } .p-tachar .tc.on > button .tx::after { width: 100%; }
+.p-tachar .tc > button i { font-style: normal; font-family: var(--body); font-size: .74rem; font-weight: 800; color: var(--tc); white-space: nowrap; }
+.p-tachar .nw { font-family: var(--display); font-size: 1.1rem; color: var(--ok-ink); background: var(--ok); border-radius: 12px; padding: 8px 12px; }
+.p-voz .vz { display: flex; flex-direction: column; gap: 6px; }
+.p-voz .cloud { align-self: flex-start; max-width: 88%; border: 1.5px dashed var(--muted); background: color-mix(in srgb, var(--muted) 8%, var(--surface)); border-radius: 22px 22px 22px 6px; padding: 10px 14px; text-align: left; font-family: var(--display); font-size: 1.02rem; color: var(--deep); display: grid; grid-template-columns: 22px 1fr; gap: 8px; align-items: start; }
+.p-voz .cloud svg, .p-voz .warm svg { width: 20px; height: 20px; margin-top: 2px; }
+.p-voz .warm { align-self: flex-end; max-width: 88%; background: color-mix(in srgb, var(--rose, var(--tc)) 14%, var(--surface)); border: 1.5px solid var(--rose, var(--tc)); border-radius: 22px 22px 6px 22px; padding: 10px 14px; font-family: var(--display); font-size: 1.05rem; color: var(--deep); display: grid; grid-template-columns: 22px 1fr; gap: 8px; }
+.p-voz .warm svg { color: var(--rose, var(--tc)); } .p-voz .cloud svg { color: var(--muted); }
+.dk .dback p, .p-chat .cb.r, .p-lupa .pa p { color: var(--ink); }
+
 
 .mom { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
 .mom button { border: 1.5px solid var(--line); background: var(--surface); border-radius: 14px; padding: 10px 4px; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: .74rem; font-weight: 800; color: var(--muted); line-height: 1.2; text-align: center; }
@@ -234,7 +272,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 
     <div class="card">
       <span class="eyebrow">Cosas que nos decimos</span>
-      <p class="small">Toca cada tarjeta para ver lo que se sabe.</p>
+      <p class="small">Toca cada frase para ver qué se sabe de verdad sobre ella.</p>
       <div class="flips" id="myths"></div>
     </div>
   </section>
@@ -286,16 +324,16 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
       <div id="anclas"></div>
     </div>
     <div class="card">
-      <span class="eyebrow">Una carta a quien era</span>
-      <p class="small">Despedirte de tu vida de antes no es dejar de quererla. Escríbele unas líneas a la mujer que eras. Si no sabes cómo empezar, toca una frase.</p>
-      <div class="prompts" id="prompts"></div>
-      <textarea id="carta" rows="6" class="letter" placeholder="Querida yo de antes:" aria-label="Carta a quien era"></textarea>
-      <button class="btn" id="cartaSave" style="align-self:flex-start">Guardar la carta</button>
+      <span class="eyebrow">Gracias a quien era</span>
+      <p class="small">Despedirte de tu vida de antes no es dejar de quererla. La mujer que eras te ha traído hasta aquí, y mucho de lo que hoy te sostiene viene de ella. Elige lo que le agradeces, como si se lo dijeras a ella, y verás su retrato con tu dedicatoria.</p>
+      <svg class="fig" id="grFig" viewBox="0 0 320 230" role="img" aria-label="Un retrato de quien era, con mi dedicatoria"></svg>
+      <div class="chips" id="grac"></div>
+      <input type="text" id="gracT" maxlength="70" placeholder="Y algo más con tus palabras (opcional)" aria-label="Algo más que le agradezco">
       <div class="stack" id="cartas"></div>
     </div>
     <div class="card">
       <span class="eyebrow">Lo que me digo</span>
-      <p class="small">Toca cada tarjeta para darle la vuelta.</p>
+      <p class="small">Toca cada frase para tacharla y reescribirla con más cariño.</p>
       <div class="flips" id="tho"></div>
       <span class="lbl">¿Cuáles te dices tú?</span>
       <div class="chips" id="thoCh"></div>
@@ -321,6 +359,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
     <div class="card">
       <span class="eyebrow">¿Cómo me siento en mi nueva piel?</span>
       <p class="small">Vuelve de vez en cuando y mira cómo cambia.</p>
+      <svg class="fig" id="vz_piel" viewBox="0 0 320 120" aria-hidden="true"></svg>
       <div class="scale-row"><span class="lbl">Hoy me siento en mi nueva piel…</span><input type="range" min="0" max="10" id="piel" style="accent-color:var(--tc)" aria-label="Cómo me siento en mi nueva piel"><span class="big-num" id="pielV" style="--c:var(--tc)"></span><span class="ends"><span>como una extraña</span><span>como en casa</span></span></div>
       <button class="btn" id="pielSave" style="align-self:flex-start">Guardar</button>
       <div id="pielList"></div>
@@ -371,8 +410,9 @@ function listEditor(o) {
 }
 /* Tarjetas «lo que me digo» con respuesta propia. o = { flips, chips, mine, list, sel(), setSel(a), own, save, front, back } */
 function sayings(o) {
+  if (o.style && o.style !== 'flip') sayPairs(o.flips, o.list, o.style, o.k); else {
   $(o.flips).innerHTML = o.list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-fl${o.k}="${i}"><span class="in"><span class="ff"><small>${o.front || 'Me digo'}</small><b>«${esc(a)}»</b><i>Toca para darle la vuelta ↻</i></span><span class="fb"><small>${o.back || 'Otra forma de verlo'}</small><b>«${esc(b)}»</b></span></span></button>`).join('');
-  flipBind(`[data-fl${o.k}]`);
+  flipBind(`[data-fl${o.k}]`); }
   const mine = () => { const s = o.sel();
     $(o.chips).innerHTML = o.list.map(([a], i) => `<button class="chip" style="--c:var(--tc)" data-sc${o.k}="${i}" aria-pressed="${s.includes(i)}">${esc(a)}</button>`).join('');
     $$(`[data-sc${o.k}]`).forEach(b => b.onclick = () => { o.setSel(toggle(o.sel(), +b.dataset['sc' + o.k])); keep(mine); });
@@ -397,6 +437,39 @@ function miniLine(pts, color, label) {
     ${d.map((e, i) => `<circle cx="${x(i)}" cy="${y(e.v)}" r="4.5" fill="${color}"/>`).join('')}
     <text x="30" y="114" font-family="var(--body)" font-size="9" fill="var(--muted)">${fdate(d[0].t)}</text><text x="310" y="114" text-anchor="end" font-family="var(--body)" font-size="9" fill="var(--muted)">${fdate(d[n - 1].t)}</text></svg>`;
 }
+/* Pares en varios formatos, para que no se repita siempre la misma tarjeta: flip, lupa, chat, deck, tedices (para «lo que se sabe») y tachar, voz (para «me digo») */
+const PICO = { lupa: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/>', cloud: '<path d="M7 18a4 4 0 0 1-.6-8A5.5 5.5 0 0 1 17 8.5a4.5 4.5 0 0 1 .5 9z"/>', heart: '<path d="M12 20s-7-4.4-7-10A4 4 0 0 1 12 7a4 4 0 0 1 7 3c0 5.6-7 10-7 10z"/>' };
+function pairsUI(sel, list, style, o) {
+  o = o || {}; const el = $(sel), F = o.front || 'Me digo', B = o.back || 'Lo que se sabe', k = sel.replace(/\W/g, '');
+  if (style === 'flip') { el.className = 'flips'; el.innerHTML = list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-pf${k}="${i}"><span class="in"><span class="ff"><small>${F}</small><b>«${esc(a)}»</b><i>${o.hint || 'Toca para ver lo que se sabe ↻'}</i></span><span class="fb"><small>${B}</small>${o.bold ? `<b>«${esc(b)}»</b>` : `<span class="small">${esc(b)}</span>`}</span></span></button>`).join(''); flipBind(`[data-pf${k}]`); return; }
+  el.className = 'pairs p-' + style;
+  const q = (b) => o.bold ? `«${esc(b)}»` : esc(b);
+  if (style === 'lupa') { let op = -1; const r = () => { el.innerHTML = list.map(([a, b], i) => `<div class="pl${op === i ? ' on' : ''}"><button data-pl${k}="${i}" aria-expanded="${op === i}">${SI(PICO.lupa)}<span>«${esc(a)}»</span></button>${op === i ? `<div class="pa pop"><small>${B}</small><p>${q(b)}</p></div>` : ''}</div>`).join(''); $$(`[data-pl${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['pl' + k]; op = op === n ? -1 : n; r(); }); }; r(); return; }
+  if (style === 'chat') { const on = new Set(); const r = () => { el.innerHTML = list.map(([a, b], i) => `<button class="cb l" data-pc${k}="${i}" aria-expanded="${on.has(i)}"><small>${F}</small>${esc(a)}</button>${on.has(i) ? `<div class="cb r pop"><small>${B}</small>${q(b)}</div>` : ''}`).join(''); $$(`[data-pc${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['pc' + k]; on.has(n) ? on.delete(n) : on.add(n); r(); }); }; r(); return; }
+  if (style === 'deck' || style === 'tedices') {
+    let i = 0, shown = false; const ans = {};
+    const r = () => { const [a, b] = list[i], all = Object.keys(ans).length === list.length, yes = Object.values(ans).filter(Boolean).length;
+      el.innerHTML = `<div class="dk"><div class="dots">${list.map((_, j) => `<span class="${j === i ? 'on' : (ans[j] !== undefined || (style === 'deck' && j < i)) ? 'done' : ''}"></span>`).join('')}</div>
+        <div class="dc pop"><small>${F}</small><b>«${esc(a)}»</b>
+        ${style === 'tedices' && !shown ? `<p class="q">¿Te lo has dicho alguna vez?</p><div class="yn"><button data-yn="1">Sí</button><button data-yn="0">No</button></div>` : ''}
+        ${style === 'deck' && !shown ? `<button class="rev">Ver lo que se sabe</button>` : ''}
+        ${shown ? `<div class="dback pop"><small>${B}</small><p>${style === 'tedices' && ans[i] ? 'Es muy habitual decírselo. ' : ''}${q(b)}</p></div>` : ''}</div>
+        <div class="nav-row">${i ? '<button class="btn ghost small" data-dv="-1">← Anterior</button>' : '<span></span>'}<span>${i + 1} de ${list.length}</span>${i < list.length - 1 ? '<button class="btn small" data-dv="1">Siguiente →</button>' : '<span></span>'}</div>
+        ${style === 'tedices' && all ? `<div class="ok small pop">Te has dicho ${yes} de estas ${list.length} frases. No son toda la verdad: la próxima vez que aparezcan, puedes recordar lo que se sabe.</div>` : ''}</div>`;
+      $$(`${sel} [data-yn]`).forEach(x => x.onclick = () => { ans[i] = x.dataset.yn === '1'; shown = true; r(); });
+      const rv = $(`${sel} .rev`); if (rv) rv.onclick = () => { shown = true; r(); };
+      $$(`${sel} [data-dv]`).forEach(x => x.onclick = () => { i += +x.dataset.dv; shown = style === 'tedices' ? ans[i] !== undefined : false; r(); });
+    }; r(); return; }
+}
+function sayPairs(sel, list, style, k) {
+  if (style === 'flip' || !style) { $(sel).className = 'flips'; $(sel).innerHTML = list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-fl${k}="${i}"><span class="in"><span class="ff"><small>Me digo</small><b>«${esc(a)}»</b><i>Toca para darle la vuelta ↻</i></span><span class="fb"><small>Otra forma de verlo</small><b>«${esc(b)}»</b></span></span></button>`).join(''); flipBind(`[data-fl${k}]`); return; }
+  const el = $(sel), on = new Set(); el.className = 'pairs p-' + style;
+  const r = () => {
+    el.innerHTML = style === 'tachar' ? list.map(([a, b], i) => `<div class="tc${on.has(i) ? ' on' : ''}"><button data-tt${k}="${i}" aria-pressed="${on.has(i)}"><span class="tx">«${esc(a)}»</span><i>${on.has(i) ? 'Deshacer' : 'Tachar y reescribir'}</i></button>${on.has(i) ? `<div class="nw pop">«${esc(b)}»</div>` : ''}</div>`).join('')
+      : list.map(([a, b], i) => `<div class="vz"><button class="cloud" data-tt${k}="${i}" aria-pressed="${on.has(i)}">${SI(PICO.cloud)}<span><small>Mi voz crítica</small>«${esc(a)}»</span></button>${on.has(i) ? `<div class="warm pop">${SI(PICO.heart)}<span><small>Mi voz amable</small>«${esc(b)}»</span></div>` : ''}</div>`).join('');
+    $$(`[data-tt${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['tt' + k]; on.has(n) ? on.delete(n) : on.add(n); r(); });
+  }; r();
+}
 
 
 /* ================= DATOS ================= */
@@ -404,7 +477,7 @@ const MOM = [['emb', 'Estoy embarazada', '<path d="M12 3a2.5 2.5 0 1 1 0 5 2.5 2
 const POST = () => S.mom && S.mom !== 'emb';
 const STG = [['Quien era', 'var(--old)', 'Tu vida tenía una forma conocida: tus rutinas, tu cuerpo, tu tiempo y tu manera de verte.'], ['En transformación', 'var(--mid)', 'Las piezas se separan y se mueven. Ya no eres quien eras, y todavía no sabes del todo quién vas a ser. Puede dar vértigo, pero es justo aquí donde ocurre el cambio.'], ['Quien soy ahora', 'var(--new)', 'Las piezas no vuelven a su sitio: se colocan de otra manera y aparece algo nuevo. Sigues siendo tú, pero en otra forma.']];
 const ADOL = [['El cuerpo', 'Cambia sin pedir permiso y cuesta reconocerse en el espejo.', 'El cuerpo del embarazo y del posparto es otro. Necesita tiempo, y tu mirada necesita tiempo para acostumbrarse.'], ['Quién soy', 'Aparece la pregunta: ¿quién soy yo ahora?', 'Lo que te definía se mueve: el trabajo, el tiempo libre, tus prioridades. Y vuelves a preguntarte quién eres.'], ['Las emociones', 'Todo se siente más intenso y cambia de un momento a otro.', 'Las hormonas, el cansancio y la responsabilidad hacen que las emociones suban y bajen. No es debilidad: es el proceso.'], ['Las relaciones', 'Cambian las amistades y la relación con la familia.', 'Cambia la pareja, cambian las amistades y miras de otra forma a tu propia madre y a tu familia.'], ['Mi lugar en el mundo', 'Buscas tu sitio entre los demás.', 'Te preguntas cómo encajan el trabajo, tu tiempo y tus sueños con esta nueva vida.']];
-const TIPOS = [['Mi primer bebé', '<circle cx="12" cy="8" r="3"/><path d="M7 21v-4a5 5 0 0 1 10 0v4"/>'], ['Un segundo bebé (o más)', '<circle cx="8" cy="8" r="2.5"/><circle cx="16" cy="9" r="2"/><path d="M4 21v-4a4 4 0 0 1 8 0v4M13 21v-3a3 3 0 0 1 6 0v3"/>'], ['Tras una pérdida', '<path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/><path d="M12 7v13" stroke-dasharray="2 2"/>'], ['Con reproducción asistida', '<circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8" stroke-dasharray="2 3"/>'], ['Gemelos o múltiple', '<circle cx="8.5" cy="8" r="2.5"/><circle cx="15.5" cy="8" r="2.5"/><path d="M5 20v-3a3.5 3.5 0 0 1 7 0v3M12 20v-3a3.5 3.5 0 0 1 7 0v3"/>'], ['Bebé prematuro o con ingreso', '<rect x="4" y="9" width="16" height="10" rx="3"/><path d="M8 9V6h8v3M12 12v4M10 14h4"/>'], ['Por adopción o acogida', '<path d="M4 11l8-7 8 7v9H4z"/><path d="M12 17s-3-1.8-3-3.6a1.6 1.6 0 0 1 3-.8 1.6 1.6 0 0 1 3 .8c0 1.8-3 3.6-3 3.6z"/>'], ['Maternidad en solitario', '<circle cx="12" cy="6" r="2.5"/><path d="M8 21v-6a4 4 0 0 1 8 0v6"/><circle cx="17.5" cy="13.5" r="1.8"/>'], ['Lejos de mi familia', '<path d="M12 21s-6-5.3-6-10a6 6 0 0 1 12 0c0 4.7-6 10-6 10z"/><circle cx="12" cy="11" r="2"/>']];
+const TIPOS = [['Mi primer bebé', '<circle cx="12" cy="8" r="3"/><path d="M7 21v-4a5 5 0 0 1 10 0v4"/>'], ['Un segundo bebé (o más)', '<circle cx="8" cy="8" r="2.5"/><circle cx="16" cy="9" r="2"/><path d="M4 21v-4a4 4 0 0 1 8 0v4M13 21v-3a3 3 0 0 1 6 0v3"/>'], ['Tras una pérdida', '<path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/><path d="M12 7v13" stroke-dasharray="2 2"/>'], ['Con reproducción asistida', '<circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8" stroke-dasharray="2 3"/>'], ['Gemelos o múltiple', '<circle cx="8.5" cy="8" r="2.5"/><circle cx="15.5" cy="8" r="2.5"/><path d="M5 20v-3a3.5 3.5 0 0 1 7 0v3M12 20v-3a3.5 3.5 0 0 1 7 0v3"/>'], ['Bebé prematuro o con ingreso', '<rect x="4" y="9" width="16" height="10" rx="3"/><path d="M8 9V6h8v3M12 12v4M10 14h4"/>'], ['Por adopción o acogida', '<path d="M4 11l8-7 8 7v9H4z"/><path d="M12 17s-3-1.8-3-3.6a1.6 1.6 0 0 1 3-.8 1.6 1.6 0 0 1 3 .8c0 1.8-3 3.6-3 3.6z"/>'], ['Maternidad en solitario', '<circle cx="12" cy="6" r="2.5"/><path d="M8 21v-6a4 4 0 0 1 8 0v6"/><circle cx="17.5" cy="13.5" r="1.8"/>'], ['Lejos de mi familia', '<path d="M12 21s-6-5.3-6-10a6 6 0 0 1 12 0c0 4.7-6 10-6 10z"/><circle cx="12" cy="11" r="2"/>'], ['Somos dos madres', '<path d="M12 20s-7-4.4-7-10A4 4 0 0 1 12 7a4 4 0 0 1 7 3c0 5.6-7 10-7 10z"/><path d="M12 20s4-2.5 6-6"/>']];
 const TIPTXT = {
   'Tras una pérdida': 'Cuando llega un bebé después de una pérdida, la ilusión y el miedo suelen ir juntos. Puedes querer a este bebé y seguir echando de menos al que no está: no se anulan.',
   'Un segundo bebé (o más)': 'Con cada bebé vuelve a cambiar la forma de la familia, y también tú. Es normal sentir que ahora tienes que repartirte, o echar de menos cómo era todo con tu primer hijo o hija.',
@@ -413,6 +486,7 @@ const TIPTXT = {
   'Por adopción o acogida': 'Tu metamorfosis es igual de real, aunque tu cuerpo no haya pasado por un embarazo. El vínculo se construye, y tu historia también merece su espacio.',
   'Maternidad en solitario': 'Criar sin pareja es un cambio enorme que no siempre se ve. Pensar en tu red de apoyo y en lo que puedes delegar te ayudará mucho.',
   'Lejos de mi familia': 'Estar lejos de tu familia en esta etapa hace que el cambio se sienta más solitario. Construir tu propia red, poco a poco, es parte de atravesarlo.',
+  'Somos dos madres': 'Cuando sois dos madres, a menudo una ha gestado y la otra no, y el entorno puede mirar solo a una como «la madre de verdad». Las dos estáis naciendo como madres, y las dos necesitáis vuestro lugar: en las visitas, en los cuidados y en las decisiones.',
   'Gemelos o múltiple': 'Con más de un bebé, todo se multiplica: el cuidado, el cansancio y también los sentimientos. Pedir ayuda no es un lujo: es una necesidad.',
 };
 const BUSQ = [['si', 'Lo busqué'], ['medias', 'A medias'], ['no', 'Llegó sin buscarlo']];
@@ -427,6 +501,7 @@ const LLEGA = { emb: ['Ilusión', 'Una conexión nueva', 'Ganas de cuidar', 'Una
 const CTL = { emb: ['Cómo será el parto', 'Cómo me preparo', 'Buscar información fiable', 'Cómo me cuido', 'Lo que opinen los demás', 'Que todo salga bien', 'Pedir lo que necesito', 'Mis expectativas'], post: ['Cuándo duerme el bebé', 'Pedir ayuda', 'Poner límites a las visitas', 'Descansar cuando se pueda', 'Cómo se recupera mi cuerpo', 'Los consejos que me dan', 'Cuánto llora el bebé', 'Mis expectativas'] };
 const BOX = [['yo', 'Depende de mí', 'aquí pongo mi energía', 'var(--new)'], ['parte', 'En parte', 'puedo influir', 'var(--sun)'], ['no', 'No depende de mí', 'lo voy soltando', 'var(--old)']];
 const ANCLAS = { emb: ['Un paseo diario', 'Mi música', 'Hablar con el bebé', 'Escribir cómo me siento', 'Un rato para mí', 'Una ducha tranquila', 'Quedar con una amiga', 'Leer antes de dormir'], post: ['Una ducha tranquila', 'Un café caliente (aunque sea a ratos)', 'Salir a la calle cada día', 'Un audio a una amiga', 'Mi música', 'Diez minutos para mí', 'Un paseo con el carro', 'Escribir cómo me siento'] };
+const GRAC = ['Tu valentía', 'Tu sentido del humor', 'Lo que aprendiste', 'Las amistades que cuidaste', 'Tu independencia', 'Tus sueños', 'Todo lo que te esforzaste', 'Tu forma de disfrutar', 'Todo lo que superaste', 'Haberme traído hasta aquí'];
 const PROMPTS = ['Te echo de menos cuando…', 'Gracias por…', 'Me llevo de ti…', 'Ahora estoy aprendiendo…', 'Lo que quiero que no se pierda es…'];
 const THO = [['Debería estar disfrutando cada momento', 'Hay momentos preciosos y momentos muy duros. Los dos son parte de la maternidad.'], ['Ya no sé quién soy', 'Me estoy transformando. Aún no conozco del todo a la mujer en la que me estoy convirtiendo, y está bien.'], ['No lo estoy haciendo bien', 'Estoy aprendiendo algo nuevo y difícil. Hacerlo «suficientemente bien» es suficiente.'], ['He perdido mi vida', 'Mi vida ha cambiado de forma. Algunas partes volverán y otras se transformarán.'], ['Las demás madres pueden con todo', 'Veo solo lo que las demás enseñan. Muchas sienten lo mismo que yo.'], ['No tengo derecho a quejarme', 'Puedo agradecer lo que tengo y, a la vez, sentir que me cuesta.']];
 const SIGO = ['La amiga que soy', 'La profesional que soy', 'La hija que soy', 'La pareja que soy', 'Mi sentido del humor', 'Lo que me apasiona', 'Mis valores', 'La niña que fui'];
@@ -503,8 +578,7 @@ function renderAmbi() {
 drawMeta(); renderMom(); renderTipos(); renderAmbi();
 $('#adol').innerHTML = ADOL.map(([t, a, m], i) => `<button class="flip" aria-pressed="false" data-ad="${i}"><span class="in"><span class="ff"><small>En la adolescencia · ${esc(t)}</small><b>${esc(a)}</b><i>Toca para ver la matrescencia ↻</i></span><span class="fb"><small>En la matrescencia · ${esc(t)}</small><span class="small">${esc(m)}</span></span></span></button>`).join('');
 flipBind('[data-ad]');
-$('#myths').innerHTML = MYTHS.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-my="${i}"><span class="in"><span class="ff"><small>Me digo</small><b>«${esc(a)}»</b><i>Toca para ver lo que se sabe ↻</i></span><span class="fb"><small>Lo que se sabe</small><span class="small">${esc(b)}</span></span></span></button>`).join('');
-flipBind('[data-my]');
+pairsUI('#myths', MYTHS, 'chat', { front: 'Me digo' });
 
 /* ================= MI CAMBIO ================= */
 function drawRad() {
@@ -576,20 +650,33 @@ function renderCtl() {
   const yo = list.filter(t => S.ctl[t] === 'yo'), no = list.filter(t => S.ctl[t] === 'no');
   $('#ctlTxt').innerHTML = yo.length || no.length ? `<div class="ok small pop">${yo.length ? `Tu energía va a <b>${yo.map(x => x.toLowerCase()).join(', ')}</b>. ` : ''}${no.length ? `Lo que no depende de ti (${no.map(x => x.toLowerCase()).join(', ')}) no tienes que resolverlo: puedes ir soltándolo.` : ''}</div>` : '';
 }
+const lc = (t) => t.charAt(0).toLowerCase() + t.slice(1), joinY = (a) => a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' y ' + a[a.length - 1];
+function drawGrac() {
+  const L = S.grac || [], t = (S.gracT || '').trim();
+  let g = `<rect width="320" height="230" rx="18" fill="color-mix(in srgb, var(--old) 6%, var(--surface))"/>`;
+  g += `<g transform="rotate(-3 160 112)"><rect x="96" y="16" width="128" height="160" rx="3" fill="var(--surface)" stroke="color-mix(in srgb, var(--old) 30%, var(--line))" stroke-width="1.5"/><rect x="106" y="26" width="108" height="108" fill="color-mix(in srgb, var(--old) 16%, var(--surface))"/>`;
+  g += `<g fill="none" stroke="var(--old)" stroke-width="2.4" stroke-linecap="round"><circle cx="160" cy="66" r="15"/><path d="M134 128c2-22 12-34 26-34s24 12 26 34"/><path d="M146 58c4-8 24-10 30 2"/></g>`;
+  g += `<text x="160" y="152" text-anchor="middle" font-family="var(--display)" font-size="12" fill="var(--deep)">Yo, antes</text><text x="160" y="167" text-anchor="middle" font-family="var(--body)" font-size="8.5" fill="var(--muted)">${L.length || t ? 'con todo mi cariño' : 'elige tu dedicatoria'}</text></g>`;
+  const items = [...L, ...(t ? [t] : [])].slice(0, 6);
+  if (items.length) g += `<text x="160" y="198" text-anchor="middle" font-family="var(--display)" font-size="12.5" fill="var(--old)">Gracias por…</text>` + `<text x="160" y="216" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="700" fill="var(--deep)">${esc((items.length > 3 ? items.slice(0, 3).map(lc).join(', ') + '…' : joinY(items.map(lc))))}</text>`;
+  $('#grFig').innerHTML = g;
+}
 function renderCartas() {
-  $('#prompts').innerHTML = PROMPTS.map(p => `<button class="chip ex" data-pr="${esc(p)}">+ ${esc(p)}</button>`).join('');
-  $$('[data-pr]').forEach(b => b.onclick = () => { const ta = $('#carta'); ta.value = (ta.value.trim() ? ta.value.replace(/\s*$/, '\n') : 'Querida yo de antes:\n') + b.dataset.pr.replace('…', ' '); ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); store.set('borrador', ta.value); });
-  $('#carta').value = store.get('borrador', ''); $('#carta').oninput = (e) => store.set('borrador', e.target.value);
-  $('#cartas').innerHTML = CARTAS.slice().reverse().map((c, ri) => `<div class="carta"><span class="small muted">${fdate(c.t)} <button class="btn link small" data-cx="${CARTAS.length - 1 - ri}">Borrar</button></span><p>${esc(c.x)}</p></div>`).join('');
+  S.grac = S.grac || [];
+  drawGrac();
+  $('#grac').innerHTML = GRAC.map(t => `<button class="chip" style="--c:var(--old)" data-gr="${esc(t)}" aria-pressed="${S.grac.includes(t)}">${esc(t)}</button>`).join('');
+  $$('[data-gr]').forEach(b => b.onclick = () => { S.grac = toggle(S.grac, b.dataset.gr); saveS(); keep(renderCartas); });
+  $('#gracT').value = S.gracT || ''; $('#gracT').oninput = (e) => { S.gracT = e.target.value; saveS(); drawGrac(); };
+  const all = [...S.grac.map(lc), ...((S.gracT || '').trim() ? [S.gracT.trim()] : [])];
+  $('#cartas').innerHTML = (all.length ? `<div class="sentence small pop">Gracias, yo de antes, por ${esc(joinY(all))}. Sigues aquí, en la madre que estoy siendo.</div>` : '') + (CARTAS.length ? `<details><summary class="small muted">Tus cartas guardadas (${CARTAS.length})</summary>${CARTAS.slice().reverse().map((c, ri) => `<div class="carta"><span class="small muted">${fdate(c.t)} <button class="btn link small" data-cx="${CARTAS.length - 1 - ri}">Borrar</button></span><p>${esc(c.x)}</p></div>`).join('')}</details>` : '');
   $$('[data-cx]').forEach(b => b.onclick = () => { CARTAS.splice(+b.dataset.cx, 1); store.set('cartas', CARTAS); keep(renderCartas); });
 }
-$('#cartaSave').onclick = () => { const v = $('#carta').value.trim(); if (!v) { toast('Escribe primero unas líneas'); return; } CARTAS.push({ t: Date.now(), x: v }); store.set('cartas', CARTAS); store.set('borrador', ''); $('#carta').value = ''; keep(renderCartas); toast('Carta guardada'); };
 function renderAtr() {
   renderCtl();
   const k = POST() ? 'post' : 'emb';
   listEditor({ box: '#anclas', ideas: ANCLAS[k], get: () => S.anclas, set: (a) => { S.anclas = a; saveS(); }, color: 'var(--tc)', ph: 'Otra ancla', empty: 'Elige una o dos anclas para tu día.' });
   renderCartas();
-  sayings({ k: 'a', flips: '#tho', chips: '#thoCh', mine: '#thoMine', list: THO, sel: () => S.tho, setSel: (a) => { S.tho = a; saveS(); }, own: S.own, save: saveS });
+  sayings({ k: 'a', style: 'tachar', flips: '#tho', chips: '#thoCh', mine: '#thoMine', list: THO, sel: () => S.tho, setSel: (a) => { S.tho = a; saveS(); }, own: S.own, save: saveS });
 }
 
 /* ================= MI CAMINO ================= */
@@ -620,6 +707,10 @@ function renderPiel() { $('#piel').value = pielV; $('#pielV').textContent = piel
   $('#pielList').innerHTML = PIEL.length > 1 ? miniLine(PIEL, 'var(--tc)', 'Cómo me siento en mi nueva piel') + `<p class="small muted">El ${fdate(PIEL[0].t)} marcaste un ${PIEL[0].v} y la última vez, un ${PIEL[PIEL.length - 1].v}.</p>` : PIEL.length ? `<p class="small muted">Has guardado un ${PIEL[0].v} de 10. Vuelve otro día para ver cómo cambia.</p>` : ''; }
 
 /* ================= RESUMEN ================= */
+
+/* Dibujo que acompaña al registro de cada día */
+const VZ_piel = (v) => { let g = `<rect width="320" height="120" rx="16" fill="color-mix(in srgb, var(--tc) 6%, var(--surface))"/>`; const o = v / 10; g += `<path d="M160 40 v44" stroke="var(--deep)" stroke-width="3" stroke-linecap="round"/>`; if (v < 3) g += `<ellipse cx="160" cy="62" rx="14" ry="28" fill="color-mix(in srgb, var(--old, var(--li)) 40%, var(--surface))" stroke="var(--old, var(--li))" stroke-width="2"/>`; else { const w = 16 + o * 46; g += ['-1', '1'].map(sd => `<path class="pop" d="M160 54 C ${160 + sd * w} ${20 - o * 6}, ${160 + sd * (w + 8)} ${70}, 160 62 Z" fill="var(--new, var(--gr))" opacity="${.45 + o * .5}"/><path d="M160 64 C ${160 + sd * w * .7} ${74}, ${160 + sd * w * .8} ${96}, 160 72 Z" fill="var(--rose)" opacity="${.4 + o * .5}"/>`).join(''); } g += `<text x="160" y="112" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--muted)">${v < 3 ? 'Todavía en el capullo' : v < 7 ? 'Abriendo las alas' : 'Con las alas abiertas'}</text>`; return g; };
+(() => { const inp = $('#piel'), f = () => { const el = $('#vz_piel'); if (el && inp) el.innerHTML = VZ_piel(+inp.value); }; inp.addEventListener('input', f); document.addEventListener('click', () => setTimeout(f, 40)); setTimeout(f, 60); })();
 function summary() {
   const L = ['Nacer como madre: resumen'];
   if (S.mom) L.push('Momento: ' + MOM.find(m => m[0] === S.mom)[1].toLowerCase());
@@ -636,6 +727,7 @@ function summary() {
   if (S.sigo.length) L.push('Lo que sigo siendo: ' + S.sigo.join(', ').toLowerCase());
   if (S.pasos.length) L.push('Pasos pequeños: ' + S.pasos.join('; ').toLowerCase());
   if (PIEL.length) L.push('En mi nueva piel (0-10): ' + PIEL.slice(-8).map(h => `${fdate(h.t)} ${h.v}`).join(', '));
+  if ((S.grac || []).length || (S.gracT || '').trim()) L.push('Gracias a quien era: ' + [...(S.grac || []), ...((S.gracT || '').trim() ? [S.gracT.trim()] : [])].map(lc).join(', '));
   return L.join('\n');
 }
 setupCopy(summary);
@@ -895,7 +987,8 @@ const PDFKIT = (() => {
     'impulsos.log': 'Registro de impulsos', 'incert.daily': 'Días', 'incert.logs': 'Exposiciones', 'incert.waves': 'Olas', 'liston.exps': 'Experimentos', 'liston.five': 'Cinco minutos', 'liston.friend': 'Como a una amiga', 'liston.logros': 'Tarro de logros', 'liston.suf': 'Suficientemente bien',
     'pensamientos.regs': 'Registro de pensamientos', 'quererme.jar': 'Tarro', 'rumbo.log': 'Pasos', 'rumbo.revs': 'Revisiones', 'rumbo.snaps': 'Dianas', 'sesion.hist': 'Sesiones preparadas', 'social.bien': 'Lo que fue bien', 'social.experimentos': 'Experimentos',
     'soledad.days': 'Días', 'soledad.small': 'Pequeños lazos', 'sueno.noches': 'Noches', 'sueno.preoc': 'Preocupaciones', 'verguenza.momentos': 'Momentos', 'vinculos.dates': 'Citas', 'vueltas.decs': 'Decisiones',
-    'm-ansiedad.niv': 'Cómo de preocupada me siento', 'm-carga.acuerdos': 'Acuerdos', 'm-carga.cabeza': 'Cómo de llena está mi cabeza', 'm-carga.revisiones': 'Revisiones de la semana', 'm-cuerpoemb.rel': 'Cómo me llevo con mi cuerpo', 'm-animo.animo': 'Mi ánimo',
+    'm-ansiedad.niv': 'Cómo de preocupada me siento', 'm-carga.acuerdos': 'Acuerdos', 'm-carga.cabeza': 'Cómo de llena está mi cabeza', 'm-carga.revisiones': 'Revisiones de la semana', 'm-duelo.dia': 'Cómo estoy',
+  'm-limpeq.bien': 'Le pillé haciendo algo bien', 'm-limpeq.log': 'Cómo he sostenido los límites', 'm-familia.rlog': 'Momentos en el bote', 'm-limfam.log': 'Límites que he puesto', 'm-suenopos.cont': 'Siestas y despertares', 'm-suenopos.des': 'Cómo he descansado', 'm-lactancia.lac': 'Cómo me siento con la lactancia', 'm-cuerpopos.rel': 'Cómo me llevo con mi cuerpo', 'm-cuerpoemb.rel': 'Cómo me llevo con mi cuerpo', 'm-animo.animo': 'Mi ánimo',
     'm-nacer.cartas': 'Cartas', 'm-nacer.piel': 'Cómo me siento en mi piel', 'm-pareja.hoy': 'Cómo de cerca me siento', 'm-pareja.mio.xh': 'Momentos de autocuidado en pareja', 'm-parto.conf': 'Cómo de preparada me siento',
     'm-recordar.peso': 'Cuánto me pesa el recuerdo', 'm-salto.log': 'Mi semana', 'm-soledad.hoy': 'Cómo de acompañada me siento', 'm-ventanas.anc': 'Cómo de ancha ha sido mi ventana', 'm-vinculo.cx': 'Cómo de conectada me siento', 'm-vinculo.momentos': 'Momentos juntos', 'm-vinculo.senales': 'Señales de mi bebé',
   };
@@ -973,6 +1066,7 @@ const PDFKIT = (() => {
         { id: 'depende', title: 'Qué depende de mí', html: ctl.length ? K.card(ctl.map(([n, it]) => `<span class="k">${n}</span>${K.list(it)}`).join('')) : '' },
         { id: 'anclas', title: 'Mis anclas y mis pasos', html: S.anclas.length || S.pasos.length ? K.card((S.anclas.length ? `<span class="k">Mis anclas</span>${K.tags(S.anclas)}` : '') + (S.pasos.length ? `<span class="k">Pasos pequeños</span>${K.list(S.pasos)}` : ''), 'good') : '' },
         { id: 'digo', title: 'Lo que me digo y cómo me respondo', intimate: true, html: S.tho.length ? `<table>${S.tho.map(i => `<tr><td>«${K.esc(THO[i][0])}»</td><td><b>«${K.esc(myAlt(i))}»</b></td></tr>`).join('')}</table>` : '' },
+        { id: 'grac', title: 'Gracias a quien era', html: (S.grac || []).length || (S.gracT || '').trim() ? K.card(K.tags([...(S.grac || []), ...((S.gracT || '').trim() ? [S.gracT.trim()] : [])]), 'good') : '' },
         { id: 'carta', title: 'Una carta a quien era', intimate: true, long: true, html: CARTAS.length ? CARTAS.slice(-2).reverse().map(c => K.card(`<span class="k">${K.fcorta(c.t)}</span><p style="white-space:pre-wrap">${K.esc(c.x)}</p>`)).join('') : '' },
         { id: 'sigo', title: 'Lo que sigo siendo', html: S.sigo.length ? K.card(K.tags(S.sigo) + '<p class="mut">Soy mamá, y muchas cosas más.</p>', 'good') : '' },
         { id: 'piel', title: 'En mi nueva piel', note: 'De 0 a 10', html: PIEL.length ? K.card(PIEL.length > 1 ? K.line([{ n: 'En mi nueva piel', c: HX.tc, v: PIEL.slice(-12).map(h => h.v) }], PIEL.slice(-12).map(h => K.fcorta(h.t)), 0, 10) : `<p class="big">${PIEL[0].v}/10</p>`) : '' },

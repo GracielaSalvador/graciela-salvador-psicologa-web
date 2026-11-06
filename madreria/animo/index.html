@@ -64,6 +64,7 @@ input[type=range] { width: 100%; accent-color: var(--c, var(--accent)); }
 .warn { background: var(--warn); color: var(--warn-ink); border-radius: 16px; padding: 12px 14px; font-size: .93rem; }
 .ok { background: var(--ok); color: var(--ok-ink); border-radius: 16px; padding: 12px 14px; font-size: .93rem; }
 .pop { animation: pop .45s ease-out; } @keyframes pop { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+svg .pop[transform] { animation-name: popfade; } @keyframes popfade { from { opacity: 0; } to { opacity: 1; } }
 .empty { text-align: center; padding: 18px; border: 1.5px dashed var(--line); border-radius: 18px; color: var(--muted); font-size: .93rem; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
 .seg { display: flex; gap: 6px; background: var(--tint); padding: 4px; border-radius: 999px; }
@@ -138,6 +139,43 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 .draw { stroke-dasharray: 900; stroke-dashoffset: 900; animation: draw 1.6s ease-out forwards; } @keyframes draw { to { stroke-dashoffset: 0; } }
 @media (max-width: 370px) { .gest.tiles { grid-template-columns: 1fr 1fr; } }
 @media (prefers-reduced-motion: reduce) { .pulse, .draw { animation: none !important; stroke-dashoffset: 0; } }
+/* Pares «frase / lo que se sabe» y «me digo / otra forma de verlo» en varios formatos */
+.pairs { display: flex; flex-direction: column; gap: 8px; }
+.p-lupa .pl { border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); overflow: hidden; }
+.p-lupa .pl.on { border-color: var(--tc); }
+.p-lupa .pl > button { width: 100%; border: 0; background: transparent; display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: center; text-align: left; padding: 11px 13px; font-family: var(--display); font-size: 1.02rem; color: var(--deep); }
+.p-lupa .pl > button svg { width: 22px; height: 22px; color: var(--tc); transition: transform .3s; }
+.p-lupa .pl.on > button svg { transform: scale(1.25); }
+.p-lupa .pa { padding: 0 14px 12px 49px; } .p-lupa .pa small, .p-chat small, .p-deck small, .p-tedices small, .p-tachar small, .p-voz small { display: block; font-size: .68rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; opacity: .8; margin-bottom: 2px; }
+.p-lupa .pa p { margin: 0; font-size: .95rem; }
+.p-chat { background: color-mix(in srgb, var(--tc) 6%, var(--surface)); border-radius: 18px; padding: 12px 10px; gap: 10px; }
+.p-chat .cb { max-width: 86%; border-radius: 18px; padding: 9px 13px; line-height: 1.35; font-size: .95rem; text-align: left; }
+.p-chat .cb.l { align-self: flex-start; border: 1.5px solid var(--line); background: var(--surface); border-bottom-left-radius: 4px; font-family: var(--display); font-size: 1.02rem; color: var(--deep); }
+.p-chat .cb.l[aria-expanded="true"] { border-color: var(--tc); }
+.p-chat .cb.r { align-self: flex-end; background: var(--ok); color: var(--ok-ink); border-bottom-right-radius: 4px; }
+.dk { display: flex; flex-direction: column; gap: 10px; }
+.dk .dots { display: flex; gap: 5px; justify-content: center; } .dk .dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--line); transition: all .3s; } .dk .dots span.done { background: color-mix(in srgb, var(--tc) 45%, var(--surface)); } .dk .dots span.on { background: var(--tc); width: 20px; border-radius: 6px; }
+.dk .dc { border-radius: 20px; padding: 18px 16px; min-height: 150px; background: color-mix(in srgb, var(--tc) 10%, var(--surface)); border: 1.5px solid color-mix(in srgb, var(--tc) 30%, transparent); display: flex; flex-direction: column; gap: 10px; justify-content: center; text-align: center; box-shadow: 0 6px 0 -2px color-mix(in srgb, var(--tc) 14%, var(--surface)), 0 12px 0 -5px color-mix(in srgb, var(--tc) 8%, var(--surface)); }
+.dk .dc > b { font-family: var(--display); font-weight: 500; font-size: 1.2rem; color: var(--deep); line-height: 1.3; }
+.dk .dback { background: var(--ok); color: var(--ok-ink); border-radius: 14px; padding: 10px 12px; text-align: left; } .dk .dback p { margin: 0; font-size: .95rem; }
+.dk .yn { display: flex; gap: 8px; justify-content: center; } .dk .yn button { border: 1.5px solid var(--tc); background: var(--surface); color: var(--tc); border-radius: 999px; padding: 8px 22px; font-weight: 800; }
+.dk .q { margin: 0; font-size: .9rem; color: var(--muted); font-weight: 700; }
+.dk .rev { align-self: center; border: 0; background: var(--tc); color: var(--onc, #fff); border-radius: 999px; padding: 8px 18px; font-weight: 800; }
+.dk .nav-row span { font-size: .82rem; color: var(--muted); font-weight: 700; }
+.p-tachar .tc { border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
+.p-tachar .tc > button { border: 0; background: transparent; padding: 0; text-align: left; font-family: var(--display); font-size: 1.05rem; color: var(--deep); position: relative; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+.p-tachar .tc > button .tx { position: relative; }
+.p-tachar .tc > button .tx::after { content: ''; position: absolute; left: 0; top: 55%; height: 2px; width: 0; background: var(--me, var(--li)); transition: width .45s ease; }
+.p-tachar .tc.on > button .tx { color: var(--muted); } .p-tachar .tc.on > button .tx::after { width: 100%; }
+.p-tachar .tc > button i { font-style: normal; font-family: var(--body); font-size: .74rem; font-weight: 800; color: var(--tc); white-space: nowrap; }
+.p-tachar .nw { font-family: var(--display); font-size: 1.1rem; color: var(--ok-ink); background: var(--ok); border-radius: 12px; padding: 8px 12px; }
+.p-voz .vz { display: flex; flex-direction: column; gap: 6px; }
+.p-voz .cloud { align-self: flex-start; max-width: 88%; border: 1.5px dashed var(--muted); background: color-mix(in srgb, var(--muted) 8%, var(--surface)); border-radius: 22px 22px 22px 6px; padding: 10px 14px; text-align: left; font-family: var(--display); font-size: 1.02rem; color: var(--deep); display: grid; grid-template-columns: 22px 1fr; gap: 8px; align-items: start; }
+.p-voz .cloud svg, .p-voz .warm svg { width: 20px; height: 20px; margin-top: 2px; }
+.p-voz .warm { align-self: flex-end; max-width: 88%; background: color-mix(in srgb, var(--rose, var(--tc)) 14%, var(--surface)); border: 1.5px solid var(--rose, var(--tc)); border-radius: 22px 22px 6px 22px; padding: 10px 14px; font-family: var(--display); font-size: 1.05rem; color: var(--deep); display: grid; grid-template-columns: 22px 1fr; gap: 8px; }
+.p-voz .warm svg { color: var(--rose, var(--tc)); } .p-voz .cloud svg { color: var(--muted); }
+.dk .dback p, .p-chat .cb.r, .p-lupa .pa p { color: var(--ink); }
+
 
 .land { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .land button { border: 2px solid var(--line); background: var(--surface); border-radius: 18px; padding: 6px 6px 10px; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: .84rem; font-weight: 800; color: var(--deep); text-align: center; line-height: 1.2; }
@@ -217,6 +255,14 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
       <p class="small">Lo que puede pasar con el ánimo después del parto se parece a distintos paisajes. Toca el que más se parezca a lo que vives.</p>
       <div class="land" id="land"></div>
       <div id="landTxt"></div>
+    </div>
+
+    <div class="card">
+      <span class="eyebrow">¿Por qué me pasa a mí?</span>
+      <p class="small">No hay una sola causa. El ánimo en el posparto depende de muchas cosas a la vez: el cuerpo y las hormonas, el descanso, la historia de cada una y el apoyo que tiene alrededor. Algunas circunstancias hacen más probable que el ánimo se resienta, igual que los sacos de arena hacen bajar un globo. Toca las que reconozcas en tu vida.</p>
+      <svg class="fig" id="globo" viewBox="0 0 320 200" role="img" aria-label="Un globo que baja con cada saco que carga"></svg>
+      <div class="chips" id="fac"></div>
+      <div id="facTxt"></div>
     </div>
 
     <div class="card">
@@ -314,6 +360,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
       <p class="small">A veces es la persona de al lado quien antes nota que algo no va bien. Elige lo que puedes hacer esta semana.</p>
       <div class="gest tiles" id="par"></div>
       <div id="parTxt"></div>
+      <div class="info" style="--c:var(--lo)"><h3>¿Y tú, cómo estás?</h3><p class="small">La pareja también puede tener depresión o ansiedad en el posparto, sea padre o madre. A menudo se nota de otra manera y por eso pasa desapercibida. Marca lo que te reconozcas.</p><div class="chk" id="par2"></div><div id="par2Txt"></div></div>
     </div>
     <div class="nav-row" style="justify-content:flex-start"><button class="btn ghost small" id="copyBtn">Copiar resumen para mi psicóloga</button></div>
   </section>
@@ -356,8 +403,9 @@ function listEditor(o) {
 }
 /* Tarjetas «lo que me digo» con respuesta propia. o = { flips, chips, mine, list, sel(), setSel(a), own, save, front, back } */
 function sayings(o) {
+  if (o.style && o.style !== 'flip') sayPairs(o.flips, o.list, o.style, o.k); else {
   $(o.flips).innerHTML = o.list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-fl${o.k}="${i}"><span class="in"><span class="ff"><small>${o.front || 'Me digo'}</small><b>«${esc(a)}»</b><i>Toca para darle la vuelta ↻</i></span><span class="fb"><small>${o.back || 'Otra forma de verlo'}</small><b>«${esc(b)}»</b></span></span></button>`).join('');
-  flipBind(`[data-fl${o.k}]`);
+  flipBind(`[data-fl${o.k}]`); }
   const mine = () => { const s = o.sel();
     $(o.chips).innerHTML = o.list.map(([a], i) => `<button class="chip" style="--c:var(--tc)" data-sc${o.k}="${i}" aria-pressed="${s.includes(i)}">${esc(a)}</button>`).join('');
     $$(`[data-sc${o.k}]`).forEach(b => b.onclick = () => { o.setSel(toggle(o.sel(), +b.dataset['sc' + o.k])); keep(mine); });
@@ -381,6 +429,39 @@ function miniLine(pts, color, label) {
     ${n > 1 ? `<path d="${d.map((e, i) => `${i ? 'L' : 'M'}${x(i)} ${y(e.v)}`).join(' ')}" fill="none" stroke="${color}" stroke-width="3" stroke-linejoin="round"/>` : ''}
     ${d.map((e, i) => `<circle cx="${x(i)}" cy="${y(e.v)}" r="4.5" fill="${color}"/>`).join('')}
     <text x="30" y="114" font-family="var(--body)" font-size="9" fill="var(--muted)">${fdate(d[0].t)}</text><text x="310" y="114" text-anchor="end" font-family="var(--body)" font-size="9" fill="var(--muted)">${fdate(d[n - 1].t)}</text></svg>`;
+}
+/* Pares en varios formatos, para que no se repita siempre la misma tarjeta: flip, lupa, chat, deck, tedices (para «lo que se sabe») y tachar, voz (para «me digo») */
+const PICO = { lupa: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/>', cloud: '<path d="M7 18a4 4 0 0 1-.6-8A5.5 5.5 0 0 1 17 8.5a4.5 4.5 0 0 1 .5 9z"/>', heart: '<path d="M12 20s-7-4.4-7-10A4 4 0 0 1 12 7a4 4 0 0 1 7 3c0 5.6-7 10-7 10z"/>' };
+function pairsUI(sel, list, style, o) {
+  o = o || {}; const el = $(sel), F = o.front || 'Me digo', B = o.back || 'Lo que se sabe', k = sel.replace(/\W/g, '');
+  if (style === 'flip') { el.className = 'flips'; el.innerHTML = list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-pf${k}="${i}"><span class="in"><span class="ff"><small>${F}</small><b>«${esc(a)}»</b><i>${o.hint || 'Toca para ver lo que se sabe ↻'}</i></span><span class="fb"><small>${B}</small>${o.bold ? `<b>«${esc(b)}»</b>` : `<span class="small">${esc(b)}</span>`}</span></span></button>`).join(''); flipBind(`[data-pf${k}]`); return; }
+  el.className = 'pairs p-' + style;
+  const q = (b) => o.bold ? `«${esc(b)}»` : esc(b);
+  if (style === 'lupa') { let op = -1; const r = () => { el.innerHTML = list.map(([a, b], i) => `<div class="pl${op === i ? ' on' : ''}"><button data-pl${k}="${i}" aria-expanded="${op === i}">${SI(PICO.lupa)}<span>«${esc(a)}»</span></button>${op === i ? `<div class="pa pop"><small>${B}</small><p>${q(b)}</p></div>` : ''}</div>`).join(''); $$(`[data-pl${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['pl' + k]; op = op === n ? -1 : n; r(); }); }; r(); return; }
+  if (style === 'chat') { const on = new Set(); const r = () => { el.innerHTML = list.map(([a, b], i) => `<button class="cb l" data-pc${k}="${i}" aria-expanded="${on.has(i)}"><small>${F}</small>${esc(a)}</button>${on.has(i) ? `<div class="cb r pop"><small>${B}</small>${q(b)}</div>` : ''}`).join(''); $$(`[data-pc${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['pc' + k]; on.has(n) ? on.delete(n) : on.add(n); r(); }); }; r(); return; }
+  if (style === 'deck' || style === 'tedices') {
+    let i = 0, shown = false; const ans = {};
+    const r = () => { const [a, b] = list[i], all = Object.keys(ans).length === list.length, yes = Object.values(ans).filter(Boolean).length;
+      el.innerHTML = `<div class="dk"><div class="dots">${list.map((_, j) => `<span class="${j === i ? 'on' : (ans[j] !== undefined || (style === 'deck' && j < i)) ? 'done' : ''}"></span>`).join('')}</div>
+        <div class="dc pop"><small>${F}</small><b>«${esc(a)}»</b>
+        ${style === 'tedices' && !shown ? `<p class="q">¿Te lo has dicho alguna vez?</p><div class="yn"><button data-yn="1">Sí</button><button data-yn="0">No</button></div>` : ''}
+        ${style === 'deck' && !shown ? `<button class="rev">Ver lo que se sabe</button>` : ''}
+        ${shown ? `<div class="dback pop"><small>${B}</small><p>${style === 'tedices' && ans[i] ? 'Es muy habitual decírselo. ' : ''}${q(b)}</p></div>` : ''}</div>
+        <div class="nav-row">${i ? '<button class="btn ghost small" data-dv="-1">← Anterior</button>' : '<span></span>'}<span>${i + 1} de ${list.length}</span>${i < list.length - 1 ? '<button class="btn small" data-dv="1">Siguiente →</button>' : '<span></span>'}</div>
+        ${style === 'tedices' && all ? `<div class="ok small pop">Te has dicho ${yes} de estas ${list.length} frases. No son toda la verdad: la próxima vez que aparezcan, puedes recordar lo que se sabe.</div>` : ''}</div>`;
+      $$(`${sel} [data-yn]`).forEach(x => x.onclick = () => { ans[i] = x.dataset.yn === '1'; shown = true; r(); });
+      const rv = $(`${sel} .rev`); if (rv) rv.onclick = () => { shown = true; r(); };
+      $$(`${sel} [data-dv]`).forEach(x => x.onclick = () => { i += +x.dataset.dv; shown = style === 'tedices' ? ans[i] !== undefined : false; r(); });
+    }; r(); return; }
+}
+function sayPairs(sel, list, style, k) {
+  if (style === 'flip' || !style) { $(sel).className = 'flips'; $(sel).innerHTML = list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-fl${k}="${i}"><span class="in"><span class="ff"><small>Me digo</small><b>«${esc(a)}»</b><i>Toca para darle la vuelta ↻</i></span><span class="fb"><small>Otra forma de verlo</small><b>«${esc(b)}»</b></span></span></button>`).join(''); flipBind(`[data-fl${k}]`); return; }
+  const el = $(sel), on = new Set(); el.className = 'pairs p-' + style;
+  const r = () => {
+    el.innerHTML = style === 'tachar' ? list.map(([a, b], i) => `<div class="tc${on.has(i) ? ' on' : ''}"><button data-tt${k}="${i}" aria-pressed="${on.has(i)}"><span class="tx">«${esc(a)}»</span><i>${on.has(i) ? 'Deshacer' : 'Tachar y reescribir'}</i></button>${on.has(i) ? `<div class="nw pop">«${esc(b)}»</div>` : ''}</div>`).join('')
+      : list.map(([a, b], i) => `<div class="vz"><button class="cloud" data-tt${k}="${i}" aria-pressed="${on.has(i)}">${SI(PICO.cloud)}<span><small>Mi voz crítica</small>«${esc(a)}»</span></button>${on.has(i) ? `<div class="warm pop">${SI(PICO.heart)}<span><small>Mi voz amable</small>«${esc(b)}»</span></div>` : ''}</div>`).join('');
+    $$(`[data-tt${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['tt' + k]; on.has(n) ? on.delete(n) : on.add(n); r(); });
+  }; r();
 }
 
 
@@ -415,13 +496,16 @@ const CHK = [['animo', 'Ánimo', 'var(--lo)', ['Me siento triste o vacía la may
   ['cuerpo', 'Cuerpo', 'var(--gr)', ['No duermo aunque mi bebé duerma', 'He perdido el apetito o como mucho más', 'Estoy agotada de una forma que no se pasa al descansar']],
   ['bebe', 'Mi bebé y yo', 'var(--rose)', ['Me cuesta sentirme cerca de mi bebé', 'No dejo que nadie se acerque a mi bebé y no consigo separarme para descansar', 'Me preocupo todo el rato y no consigo relajarme', 'Tengo pensamientos que me asustan']]];
 const SOS = 'Tengo pensamientos de hacerme daño';
+const FAC = ['Dormir muy poco', 'Tener poco apoyo', 'Un embarazo difícil', 'Un parto difícil o muy distinto de lo que esperaba', 'Haber tenido ansiedad o depresión antes', 'Pérdidas o duelos anteriores', 'Que mi bebé haya estado ingresado o tenga problemas de salud', 'Una lactancia que está costando', 'Tensiones en la pareja o en la familia', 'Preocupaciones de dinero, trabajo o vivienda', 'Muchos cambios a la vez', 'Exigirme muchísimo a mí misma'];
+const FAC0 = 'No encuentro ningún motivo';
+const PAR2 = ['Estoy más irritable o salto por todo', 'Trabajo o me ocupo sin parar para no pensar', 'Me aíslo o me desconecto de casa', 'Duermo mal aunque podría descansar', 'Bebo más o busco formas de evadirme', 'Me siento triste, vacío o vacía'];
 const THO = [['Soy una mala madre', 'Estoy pasando por algo difícil. Pedir ayuda es justo lo que hace una buena madre.'], ['Debería estar feliz', 'No elijo cómo me siento. Puedo estar mal y querer muchísimo a mi bebé.'], ['Mi bebé estaría mejor con otra persona', 'Mi bebé me necesita a mí, y yo necesito que me cuiden ahora. Esto lo dice la depresión, no la realidad.'], ['Nunca voy a volver a ser yo', 'Lo que siento tiene tratamiento, y la mayoría de las madres se recuperan.'], ['No puedo molestar a nadie', 'Las personas que me quieren prefieren saber que estoy mal y poder ayudarme.']];
 const PEQ = ['Me he duchado', 'He salido a la calle', 'He comido algo que me gusta', 'He hablado con alguien adulto', 'He escuchado música', 'He descansado un rato', 'He mirado a mi bebé con calma', 'He hecho algo solo para mí'];
 const URG = [['Confusión o ideas muy extrañas', '<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5V14M12 17h.01"/>'], ['Ver u oír cosas que no están', '<circle cx="12" cy="12" r="3"/><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/>'], ['No poder dormir nada durante días', '<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/><path d="M4 4l16 16"/>'], ['Mucha euforia o cambios de humor bruscos', '<path d="M13 3L5 14h6l-1 7 8-11h-6z"/>']];
 const WHO = [['Alguien de confianza', 'Tu pareja, una amiga o tu familia. Contarlo es el primer paso, y te ayuda a no cargar con ello sola.', 'var(--rose)', '<path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/>'], ['Tu matrona o tu médica de familia', 'Puedes contárselo en la revisión del posparto o pedir una cita. También la pediatra de tu bebé puede orientarte.', 'var(--tc)', '<path d="M12 21s-7-4.4-7-10.5A4.5 4.5 0 0 1 12 7a4.5 4.5 0 0 1 7 3.5C19 16.6 12 21 12 21z"/><path d="M12 10v5M9.5 12.5h5"/>'], ['Tu psicóloga', 'La terapia psicológica es eficaz para la depresión y la ansiedad posparto, y es compatible con la lactancia.', 'var(--li)', '<path d="M4 5h16v10H9l-5 4z"/><path d="M8 9h8M8 12h5"/>'], ['Urgencias', 'Si hay pensamientos de hacerte daño o señales de psicosis posparto, llama al 024 o al 112.', 'var(--hi)', '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>']];
 const PAR = [['Preguntarle cómo está ella, no solo el bebé', '<path d="M4 5h16v10H9l-5 4z"/>'], ['Escucharla sin intentar arreglarlo', '<path d="M6 9a6 6 0 1 1 9.5 4.9c-1 .7-1.5 1.6-1.5 2.6V18a3 3 0 0 1-5 2.2"/><path d="M9 9a3 3 0 0 1 6 0"/>'], ['Proteger su sueño con alguna toma', '<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>'], ['Encargarme de la casa y las visitas', '<path d="M4 11l8-7 8 7v9H4z"/><path d="M9 20v-5h6v5"/>'], ['Fijarme en si está triste casi todo el día', '<circle cx="12" cy="12" r="9"/><path d="M8 16c1-1.5 2.5-2 4-2s3 .5 4 2M9 9h.01M15 9h.01"/>'], ['Acompañarla a pedir ayuda', '<circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M3 20c0-3 2-5 5-5s5 2 5 5M11 20c0-3 2-5 5-5s5 2 5 5"/>']];
 
-let S = Object.assign({ tpo: 5, dur: '', pat: '', imp: '', land: null, bub: false, vf: {}, area: 'animo', chk: [], chkDur: '', voz: 0, own: {}, pil: {}, psel: 'sue', peq: {}, msg: {}, par: [], ws: null }, store.get('mio', {}) || {});
+let S = Object.assign({ fac: [], par2: [], tpo: 5, dur: '', pat: '', imp: '', land: null, bub: false, vf: {}, area: 'animo', chk: [], chkDur: '', voz: 0, own: {}, pil: {}, psel: 'sue', peq: {}, msg: {}, par: [], ws: null }, store.get('mio', {}) || {});
 const saveS = () => store.set('mio', S);
 let AN = store.get('animo', []);
 const lc = (s) => s.charAt(0).toLowerCase() + s.slice(1);
@@ -484,14 +568,35 @@ function drawBubs() {
     g += `<g style="transition:opacity .5s" opacity="${on ? .7 : 1}"><circle cx="${112 + i * 12}" cy="${100 + (i - 1) * 8}" r="${3 + i}" fill="var(--li)" opacity=".5"/><g transform="translate(${x} ${y})"><rect x="-92" y="-23" width="184" height="46" rx="23" fill="var(--surface)" stroke="var(--li)" stroke-width="1.6" ${on ? 'stroke-dasharray="4 4"' : ''}/>${on ? `<text y="-6" text-anchor="middle" font-family="var(--body)" font-size="9" font-weight="800" fill="var(--muted)">Estoy teniendo el pensamiento:</text>` : ''}<text y="${on ? 11 : 4}" text-anchor="middle" font-family="var(--body)" font-size="10.5" font-weight="800" fill="var(--li)">«${esc(t)}»</text></g></g>`; });
   $('#bubs').innerHTML = g;
   $('#bubBtn').textContent = on ? 'Volver a verlos' : 'Ponerles nombre';
-  $('#bubTxt').innerHTML = on ? `<div class="ok small pop">Al ponerles nombre, los pensamientos siguen ahí, pero pierden fuerza: son pensamientos, no deseos ni planes. Tener un pensamiento así no significa que vayas a hacerlo. Si te vienen muy a menudo, te angustian mucho o te llevan a evitar estar con tu bebé, cuéntaselo a tu psicóloga: tienen tratamiento.</div>` : '';
+  $('#bubTxt').innerHTML = on ? `<div class="ok small pop">Al ponerles nombre, los pensamientos siguen ahí, pero pierden fuerza: son pensamientos, no deseos ni planes. Tener un pensamiento así no significa que vayas a hacerlo. Si te vienen muy a menudo, te angustian mucho o te llevan a evitar estar con tu bebé, cuéntaselo a tu matrona, a tu médica o a tu psicóloga: tienen tratamiento.</div>` : '';
 }
 $('#bubBtn').onclick = () => { S.bub = !S.bub; saveS(); keep(drawBubs); };
 function renderVf() {
   $('#vf').innerHTML = VF.map(([q, a, e], i) => { const r = S.vf[i]; return `<div class="q ${r !== undefined ? 'done' : ''}" style="--c:${r === undefined ? 'var(--line)' : r === a ? 'var(--gr)' : 'var(--hi)'}"><b>${esc(q)}</b><div class="bt">${[[true, 'Verdadero'], [false, 'Falso']].map(([v, n]) => `<button data-vq="${i}" data-v="${v}" class="${r === v ? (v === a ? 'ok2' : 'ko2') : ''}">${n}</button>`).join('')}</div>${r !== undefined ? `<p class="small pop" style="margin:0"><b style="font-family:var(--body);font-size:.9rem;color:${r === a ? 'var(--gr)' : 'var(--hi)'}">${r === a ? '¡Exacto!' : 'No del todo.'}</b> ${esc(e)}</p>` : ''}</div>`; }).join('');
   $$('[data-vq]').forEach(b => b.onclick = () => { S.vf[b.dataset.vq] = b.dataset.v === 'true'; saveS(); keep(renderVf); });
 }
-function renderEnt() { $('#tpo').value = S.tpo; drawCurve(); renderLand(); drawBubs(); renderVf(); }
+
+function drawGlobo() {
+  const sel = S.fac.filter(f => FAC.includes(f)), n = sel.length, cx = 160, cy = 52 + Math.min(n, 6) * 9;
+  let g = `<rect width="320" height="200" rx="16" fill="var(--sky)"/><circle cx="276" cy="34" r="14" fill="var(--sun)" opacity=".75"/>`;
+  g += `<g fill="var(--surface)" opacity=".9"><ellipse cx="56" cy="40" rx="26" ry="9"/><ellipse cx="72" cy="34" rx="16" ry="9"/><ellipse cx="236" cy="78" rx="22" ry="8"/></g>`;
+  g += `<path d="M0 186 Q 60 168 130 180 T 320 176 V200 H0Z" fill="color-mix(in srgb, var(--gr) 40%, var(--surface))"/>`;
+  g += `<g style="transition:transform .6s" transform="translate(0 ${cy - 52})">`;
+  g += `<path d="M${cx - 34} 52 a34 34 0 1 1 68 0 q0 18 -22 34 h-24 q-22 -16 -22 -34z" fill="var(--rose)"/><path d="M${cx - 12} 52 a12 34 0 1 1 24 0 q0 18 -6 34 h-12 q-6 -16 -6 -34z" fill="var(--sun)" opacity=".85"/>`;
+  g += `<path d="M${cx - 12} 86 L${cx - 11} 98 M${cx + 12} 86 L${cx + 11} 98" stroke="var(--deep)" stroke-width="1.2"/><rect x="${cx - 12}" y="98" width="24" height="14" rx="3" fill="color-mix(in srgb, var(--sun) 45%, var(--deep))"/>`;
+  sel.forEach((f, i) => { const sg = i % 2 ? 1 : -1, k = Math.floor(i / 2), x = cx + sg * (22 + k * 13), y = 120 + (k % 2) * 6;
+    g += `<g class="pop"><path d="M${cx + sg * 12} 110 L${x} ${y - 6}" stroke="var(--deep)" stroke-width="1"/><path d="M${x - 7} ${y - 5} q-4 14 7 16 q11 -2 7 -16z" fill="color-mix(in srgb, var(--sun) 30%, var(--fog))" stroke="var(--deep)" stroke-width="1"/></g>`; });
+  g += `</g>`;
+  if (n) g += `<text x="16" y="24" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--muted)">${n} ${n === 1 ? 'saco' : 'sacos'} de arena</text>`;
+  $('#globo').innerHTML = g;
+  $('#fac').innerHTML = [...FAC, FAC0].map(f => `<button class="chip" style="--c:${f === FAC0 ? 'var(--lo)' : 'var(--rose)'}" data-fc="${esc(f)}" aria-pressed="${S.fac.includes(f)}">${esc(f)}</button>`).join('');
+  $$('[data-fc]').forEach(b => b.onclick = () => { const f = b.dataset.fc; if (f === FAC0) S.fac = S.fac.includes(FAC0) ? [] : [FAC0]; else S.fac = toggle(S.fac.filter(x => x !== FAC0), f); saveS(); keep(drawGlobo); });
+  let t = '';
+  if (S.fac.includes(FAC0)) t = '<div class="info pop" style="--c:var(--lo)"><p class="small">A veces el ánimo baja sin ningún motivo que se vea. También entonces lo que sientes es real, merece atención y tiene tratamiento. No necesitas una razón para pedir ayuda.</p></div>';
+  else if (n) t = `<div class="ok small pop">Ninguno de estos sacos es culpa tuya: son circunstancias, no fallos. ${n > 2 ? 'Cargas con muchas cosas a la vez, y es lógico que el globo pese. ' : ''}Saber cuáles llevas te ayuda a pedir ayuda concreta, a soltar los que se puedan soltar y a contárselo a tu matrona, a tu médica o a tu psicóloga. Y si llevas más de dos semanas mal casi todos los días, no esperes a que se pase solo.</div>`;
+  $('#facTxt').innerHTML = t;
+}
+function renderEnt() { $('#tpo').value = S.tpo; drawCurve(); renderLand(); drawGlobo(); drawBubs(); renderVf(); }
 
 /* ================= CÓMO ESTOY ================= */
 let anV = 5;
@@ -622,6 +727,9 @@ function renderAyu() {
   const cols = ['var(--rose)', 'var(--lo)', 'var(--li)', 'var(--gr)', 'var(--tc)', 'var(--sun)'];
   $('#par').innerHTML = PAR.map(([t, ic], i) => `<button style="--c:${cols[i % cols.length]}" data-pa="${esc(t)}" aria-pressed="${S.par.includes(t)}"><span class="ic">${SI(ic)}</span>${esc(t)}</button>`).join('');
   $$('[data-pa]').forEach(b => b.onclick = () => { S.par = toggle(S.par, b.dataset.pa); saveS(); keep(renderAyu); });
+  $('#par2').innerHTML = PAR2.map(t => `<button style="--c:var(--lo)" data-p2="${esc(t)}" aria-pressed="${S.par2.includes(t)}"><i>${S.par2.includes(t) ? '✓' : ''}</i>${esc(t)}</button>`).join('');
+  $$('[data-p2]').forEach(b => b.onclick = () => { S.par2 = toggle(S.par2, b.dataset.p2); saveS(); keep(renderAyu); });
+  $('#par2Txt').innerHTML = S.par2.length ? `<div class="ok small pop">${S.par2.length > 1 ? 'Lo que marcas puede ser cansancio, pero también puede ser depresión o ansiedad posparto en la pareja.' : 'Fíjate en si esto se mantiene en el tiempo.'} Si dura más de dos semanas o te cuesta sostener tu día a día, cuéntaselo a tu médica o a una psicóloga. Cuidarte también es cuidar a tu familia.</div>` : '';
   $('#parTxt').innerHTML = S.par.length ? `<div class="ok small pop">Acompañar también es cansado. Si quien acompaña lo está pasando mal, también merece pedir ayuda para sí.</div>` : '';
 }
 
@@ -630,6 +738,7 @@ function summary() {
   const L = ['Cuidar mi ánimo en el posparto: resumen', `Tiempo desde el parto: ${TPO[S.tpo]}`];
   if (S.dur) L.push('Me siento así desde hace: ' + DUR.find(d => d[0] === S.dur)[1].toLowerCase());
   if (S.pat) L.push('Cómo es: ' + PAT.find(d => d[0] === S.pat)[1].toLowerCase());
+  const fc = S.fac.filter(f => FAC.includes(f)); if (fc.length) L.push('Lo que me pesa: ' + fc.join('; ').toLowerCase()); else if (S.fac.includes(FAC0)) L.push('No encuentro ningún motivo claro para cómo me siento');
   if (S.chk.length) L.push('Lo que noto casi todos los días: ' + S.chk.join('; ').toLowerCase());
   if (S.chkDur) L.push('Desde hace: ' + DUR.find(d => d[0] === S.chkDur)[1].toLowerCase());
   if (S.imp) L.push('¿Me impide hacer mi vida o cuidarme?: ' + IMP.find(d => d[0] === S.imp)[1].toLowerCase());
@@ -896,7 +1005,8 @@ const PDFKIT = (() => {
     'impulsos.log': 'Registro de impulsos', 'incert.daily': 'Días', 'incert.logs': 'Exposiciones', 'incert.waves': 'Olas', 'liston.exps': 'Experimentos', 'liston.five': 'Cinco minutos', 'liston.friend': 'Como a una amiga', 'liston.logros': 'Tarro de logros', 'liston.suf': 'Suficientemente bien',
     'pensamientos.regs': 'Registro de pensamientos', 'quererme.jar': 'Tarro', 'rumbo.log': 'Pasos', 'rumbo.revs': 'Revisiones', 'rumbo.snaps': 'Dianas', 'sesion.hist': 'Sesiones preparadas', 'social.bien': 'Lo que fue bien', 'social.experimentos': 'Experimentos',
     'soledad.days': 'Días', 'soledad.small': 'Pequeños lazos', 'sueno.noches': 'Noches', 'sueno.preoc': 'Preocupaciones', 'verguenza.momentos': 'Momentos', 'vinculos.dates': 'Citas', 'vueltas.decs': 'Decisiones',
-    'm-ansiedad.niv': 'Cómo de preocupada me siento', 'm-carga.acuerdos': 'Acuerdos', 'm-carga.cabeza': 'Cómo de llena está mi cabeza', 'm-carga.revisiones': 'Revisiones de la semana', 'm-cuerpoemb.rel': 'Cómo me llevo con mi cuerpo', 'm-animo.animo': 'Mi ánimo',
+    'm-ansiedad.niv': 'Cómo de preocupada me siento', 'm-carga.acuerdos': 'Acuerdos', 'm-carga.cabeza': 'Cómo de llena está mi cabeza', 'm-carga.revisiones': 'Revisiones de la semana', 'm-duelo.dia': 'Cómo estoy',
+  'm-limpeq.bien': 'Le pillé haciendo algo bien', 'm-limpeq.log': 'Cómo he sostenido los límites', 'm-familia.rlog': 'Momentos en el bote', 'm-limfam.log': 'Límites que he puesto', 'm-suenopos.cont': 'Siestas y despertares', 'm-suenopos.des': 'Cómo he descansado', 'm-lactancia.lac': 'Cómo me siento con la lactancia', 'm-cuerpopos.rel': 'Cómo me llevo con mi cuerpo', 'm-cuerpoemb.rel': 'Cómo me llevo con mi cuerpo', 'm-animo.animo': 'Mi ánimo',
     'm-nacer.cartas': 'Cartas', 'm-nacer.piel': 'Cómo me siento en mi piel', 'm-pareja.hoy': 'Cómo de cerca me siento', 'm-pareja.mio.xh': 'Momentos de autocuidado en pareja', 'm-parto.conf': 'Cómo de preparada me siento',
     'm-recordar.peso': 'Cuánto me pesa el recuerdo', 'm-salto.log': 'Mi semana', 'm-soledad.hoy': 'Cómo de acompañada me siento', 'm-ventanas.anc': 'Cómo de ancha ha sido mi ventana', 'm-vinculo.cx': 'Cómo de conectada me siento', 'm-vinculo.momentos': 'Momentos juntos', 'm-vinculo.senales': 'Señales de mi bebé',
   };
@@ -967,6 +1077,7 @@ const PDFKIT = (() => {
       const pl = PIL.filter(([k]) => S.pil[k]), own = Object.keys(S.own).filter(i => (S.own[i] || '').trim());
       return [
         { id: 'noto', title: 'Lo que noto', intimate: true, note: S.chkDur ? 'Desde hace: ' + DUR.find(d => d[0] === S.chkDur)[1].toLowerCase() : '', html: S.chk.length ? K.card(K.list(S.chk) + (S.imp ? K.kv('¿Me impide hacer mi vida o cuidarme?', IMP.find(d => d[0] === S.imp)[1]) : ''), 'soft') : '' },
+        { id: 'fac', title: 'Lo que me pesa', intimate: true, html: S.fac.filter(f => FAC.includes(f)).length ? K.card(K.list(S.fac.filter(f => FAC.includes(f))), 'soft') : '' },
         { id: 'voces', title: 'Las dos voces', intimate: true, html: own.length ? `<table>${own.map(i => `<tr><td>«${K.esc(THO[i][0])}»</td><td><b>«${K.esc(S.own[i].trim())}»</b></td></tr>`).join('')}</table>` : '' },
         { id: 'pil', title: 'La casa que me sostiene', html: pl.length ? K.card(pl.map(([k, n]) => K.kv(n, K.esc(S.pil[k]))).join(''), 'good') : '' },
         { id: 'animo', title: 'Mi ánimo', note: 'De 0 a 10', html: AN.length ? K.card(AN.length > 1 ? K.line([{ n: 'Ánimo', c: '#B05D8C', v: AN.slice(-12).map(h => h.v) }], AN.slice(-12).map(h => K.fcorta(h.t)), 0, 10) : `<p class="big">${AN[0].v}/10</p>`) : '' },

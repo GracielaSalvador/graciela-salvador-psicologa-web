@@ -64,6 +64,7 @@ input[type=range] { width: 100%; accent-color: var(--c, var(--accent)); }
 .warn { background: var(--warn); color: var(--warn-ink); border-radius: 16px; padding: 12px 14px; font-size: .93rem; }
 .ok { background: var(--ok); color: var(--ok-ink); border-radius: 16px; padding: 12px 14px; font-size: .93rem; }
 .pop { animation: pop .45s ease-out; } @keyframes pop { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+svg .pop[transform] { animation-name: popfade; } @keyframes popfade { from { opacity: 0; } to { opacity: 1; } }
 .empty { text-align: center; padding: 18px; border: 1.5px dashed var(--line); border-radius: 18px; color: var(--muted); font-size: .93rem; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
 .seg { display: flex; gap: 6px; background: var(--tint); padding: 4px; border-radius: 999px; }
@@ -138,6 +139,43 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 .draw { stroke-dasharray: 900; stroke-dashoffset: 900; animation: draw 1.6s ease-out forwards; } @keyframes draw { to { stroke-dashoffset: 0; } }
 @media (max-width: 370px) { .gest.tiles { grid-template-columns: 1fr 1fr; } }
 @media (prefers-reduced-motion: reduce) { .pulse, .draw { animation: none !important; stroke-dashoffset: 0; } }
+/* Pares «frase / lo que se sabe» y «me digo / otra forma de verlo» en varios formatos */
+.pairs { display: flex; flex-direction: column; gap: 8px; }
+.p-lupa .pl { border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); overflow: hidden; }
+.p-lupa .pl.on { border-color: var(--tc); }
+.p-lupa .pl > button { width: 100%; border: 0; background: transparent; display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: center; text-align: left; padding: 11px 13px; font-family: var(--display); font-size: 1.02rem; color: var(--deep); }
+.p-lupa .pl > button svg { width: 22px; height: 22px; color: var(--tc); transition: transform .3s; }
+.p-lupa .pl.on > button svg { transform: scale(1.25); }
+.p-lupa .pa { padding: 0 14px 12px 49px; } .p-lupa .pa small, .p-chat small, .p-deck small, .p-tedices small, .p-tachar small, .p-voz small { display: block; font-size: .68rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; opacity: .8; margin-bottom: 2px; }
+.p-lupa .pa p { margin: 0; font-size: .95rem; }
+.p-chat { background: color-mix(in srgb, var(--tc) 6%, var(--surface)); border-radius: 18px; padding: 12px 10px; gap: 10px; }
+.p-chat .cb { max-width: 86%; border-radius: 18px; padding: 9px 13px; line-height: 1.35; font-size: .95rem; text-align: left; }
+.p-chat .cb.l { align-self: flex-start; border: 1.5px solid var(--line); background: var(--surface); border-bottom-left-radius: 4px; font-family: var(--display); font-size: 1.02rem; color: var(--deep); }
+.p-chat .cb.l[aria-expanded="true"] { border-color: var(--tc); }
+.p-chat .cb.r { align-self: flex-end; background: var(--ok); color: var(--ok-ink); border-bottom-right-radius: 4px; }
+.dk { display: flex; flex-direction: column; gap: 10px; }
+.dk .dots { display: flex; gap: 5px; justify-content: center; } .dk .dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--line); transition: all .3s; } .dk .dots span.done { background: color-mix(in srgb, var(--tc) 45%, var(--surface)); } .dk .dots span.on { background: var(--tc); width: 20px; border-radius: 6px; }
+.dk .dc { border-radius: 20px; padding: 18px 16px; min-height: 150px; background: color-mix(in srgb, var(--tc) 10%, var(--surface)); border: 1.5px solid color-mix(in srgb, var(--tc) 30%, transparent); display: flex; flex-direction: column; gap: 10px; justify-content: center; text-align: center; box-shadow: 0 6px 0 -2px color-mix(in srgb, var(--tc) 14%, var(--surface)), 0 12px 0 -5px color-mix(in srgb, var(--tc) 8%, var(--surface)); }
+.dk .dc > b { font-family: var(--display); font-weight: 500; font-size: 1.2rem; color: var(--deep); line-height: 1.3; }
+.dk .dback { background: var(--ok); color: var(--ok-ink); border-radius: 14px; padding: 10px 12px; text-align: left; } .dk .dback p { margin: 0; font-size: .95rem; }
+.dk .yn { display: flex; gap: 8px; justify-content: center; } .dk .yn button { border: 1.5px solid var(--tc); background: var(--surface); color: var(--tc); border-radius: 999px; padding: 8px 22px; font-weight: 800; }
+.dk .q { margin: 0; font-size: .9rem; color: var(--muted); font-weight: 700; }
+.dk .rev { align-self: center; border: 0; background: var(--tc); color: var(--onc, #fff); border-radius: 999px; padding: 8px 18px; font-weight: 800; }
+.dk .nav-row span { font-size: .82rem; color: var(--muted); font-weight: 700; }
+.p-tachar .tc { border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
+.p-tachar .tc > button { border: 0; background: transparent; padding: 0; text-align: left; font-family: var(--display); font-size: 1.05rem; color: var(--deep); position: relative; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+.p-tachar .tc > button .tx { position: relative; }
+.p-tachar .tc > button .tx::after { content: ''; position: absolute; left: 0; top: 55%; height: 2px; width: 0; background: var(--me, var(--li)); transition: width .45s ease; }
+.p-tachar .tc.on > button .tx { color: var(--muted); } .p-tachar .tc.on > button .tx::after { width: 100%; }
+.p-tachar .tc > button i { font-style: normal; font-family: var(--body); font-size: .74rem; font-weight: 800; color: var(--tc); white-space: nowrap; }
+.p-tachar .nw { font-family: var(--display); font-size: 1.1rem; color: var(--ok-ink); background: var(--ok); border-radius: 12px; padding: 8px 12px; }
+.p-voz .vz { display: flex; flex-direction: column; gap: 6px; }
+.p-voz .cloud { align-self: flex-start; max-width: 88%; border: 1.5px dashed var(--muted); background: color-mix(in srgb, var(--muted) 8%, var(--surface)); border-radius: 22px 22px 22px 6px; padding: 10px 14px; text-align: left; font-family: var(--display); font-size: 1.02rem; color: var(--deep); display: grid; grid-template-columns: 22px 1fr; gap: 8px; align-items: start; }
+.p-voz .cloud svg, .p-voz .warm svg { width: 20px; height: 20px; margin-top: 2px; }
+.p-voz .warm { align-self: flex-end; max-width: 88%; background: color-mix(in srgb, var(--rose, var(--tc)) 14%, var(--surface)); border: 1.5px solid var(--rose, var(--tc)); border-radius: 22px 22px 6px 22px; padding: 10px 14px; font-family: var(--display); font-size: 1.05rem; color: var(--deep); display: grid; grid-template-columns: 22px 1fr; gap: 8px; }
+.p-voz .warm svg { color: var(--rose, var(--tc)); } .p-voz .cloud svg { color: var(--muted); }
+.dk .dback p, .p-chat .cb.r, .p-lupa .pa p { color: var(--ink); }
+
 
 .flip.hz .ff { background: color-mix(in srgb, var(--c) 11%, var(--surface)); border-color: color-mix(in srgb, var(--c) 40%, transparent); }
 .flip.hz .ff small { color: var(--c); }
@@ -210,7 +248,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 
     <div class="card">
       <span class="eyebrow">Cosas que nos decimos</span>
-      <p class="small">Toca cada tarjeta para ver lo que se sabe.</p>
+      <p class="small">Hay frases que repetimos sin pensarlo mucho. Toca cada una para mirarla de cerca y ver lo que se sabe.</p>
       <div class="flips" id="myths"></div>
     </div>
   </section>
@@ -241,7 +279,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
     </div>
     <div class="card">
       <span class="eyebrow">Lo que aprendí en casa</span>
-      <p class="small">Solemos discutir como vimos discutir de pequeños/as. ¿Cómo era en tu casa?</p>
+      <p class="small">Solemos discutir como vimos discutir de pequeñas. ¿Cómo era en tu casa?</p>
       <div class="chips" id="casa"></div>
       <div id="casaTxt"></div>
     </div>
@@ -298,6 +336,13 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
       <button class="btn" id="aSave" style="align-self:flex-start">Guardar</button>
       <div id="aLog" class="stack"></div>
     </div>
+    <!--M+--><div class="card">
+      <span class="eyebrow">Cuando discutimos delante de los peques</span>
+      <p class="small">Los peques se dan cuenta de mucho más de lo que creemos, también cuando discutís en voz baja o en otra habitación. Lo que más les afecta no es que los adultos no estén de acuerdo, sino los gritos, el desprecio, los silencios largos y, sobre todo, las discusiones que nunca se arreglan. Ver que dos personas que se quieren piensan distinto y después se reconcilian también les enseña algo valioso. Toca cada situación para ver qué le llega a tu peque.</p>
+      <svg class="fig" id="dpSvg" viewBox="0 0 320 170" role="img" aria-label="Lo que le llega a tu peque"></svg>
+      <div class="stack" id="dp" style="gap:8px"></div>
+      <div id="dpTxt"></div>
+    </div><!--M-->
     <div class="card">
       <span class="eyebrow">Cuándo pedir ayuda</span>
       <div class="stack" id="ayuda" style="gap:8px"></div>
@@ -344,8 +389,9 @@ function listEditor(o) {
 }
 /* Tarjetas «lo que me digo» con respuesta propia. o = { flips, chips, mine, list, sel(), setSel(a), own, save, front, back } */
 function sayings(o) {
+  if (o.style && o.style !== 'flip') sayPairs(o.flips, o.list, o.style, o.k); else {
   $(o.flips).innerHTML = o.list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-fl${o.k}="${i}"><span class="in"><span class="ff"><small>${o.front || 'Me digo'}</small><b>«${esc(a)}»</b><i>Toca para darle la vuelta ↻</i></span><span class="fb"><small>${o.back || 'Otra forma de verlo'}</small><b>«${esc(b)}»</b></span></span></button>`).join('');
-  flipBind(`[data-fl${o.k}]`);
+  flipBind(`[data-fl${o.k}]`); }
   const mine = () => { const s = o.sel();
     $(o.chips).innerHTML = o.list.map(([a], i) => `<button class="chip" style="--c:var(--tc)" data-sc${o.k}="${i}" aria-pressed="${s.includes(i)}">${esc(a)}</button>`).join('');
     $$(`[data-sc${o.k}]`).forEach(b => b.onclick = () => { o.setSel(toggle(o.sel(), +b.dataset['sc' + o.k])); keep(mine); });
@@ -370,6 +416,39 @@ function miniLine(pts, color, label) {
     ${d.map((e, i) => `<circle cx="${x(i)}" cy="${y(e.v)}" r="4.5" fill="${color}"/>`).join('')}
     <text x="30" y="114" font-family="var(--body)" font-size="9" fill="var(--muted)">${fdate(d[0].t)}</text><text x="310" y="114" text-anchor="end" font-family="var(--body)" font-size="9" fill="var(--muted)">${fdate(d[n - 1].t)}</text></svg>`;
 }
+/* Pares en varios formatos, para que no se repita siempre la misma tarjeta: flip, lupa, chat, deck, tedices (para «lo que se sabe») y tachar, voz (para «me digo») */
+const PICO = { lupa: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/>', cloud: '<path d="M7 18a4 4 0 0 1-.6-8A5.5 5.5 0 0 1 17 8.5a4.5 4.5 0 0 1 .5 9z"/>', heart: '<path d="M12 20s-7-4.4-7-10A4 4 0 0 1 12 7a4 4 0 0 1 7 3c0 5.6-7 10-7 10z"/>' };
+function pairsUI(sel, list, style, o) {
+  o = o || {}; const el = $(sel), F = o.front || 'Me digo', B = o.back || 'Lo que se sabe', k = sel.replace(/\W/g, '');
+  if (style === 'flip') { el.className = 'flips'; el.innerHTML = list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-pf${k}="${i}"><span class="in"><span class="ff"><small>${F}</small><b>«${esc(a)}»</b><i>${o.hint || 'Toca para ver lo que se sabe ↻'}</i></span><span class="fb"><small>${B}</small>${o.bold ? `<b>«${esc(b)}»</b>` : `<span class="small">${esc(b)}</span>`}</span></span></button>`).join(''); flipBind(`[data-pf${k}]`); return; }
+  el.className = 'pairs p-' + style;
+  const q = (b) => o.bold ? `«${esc(b)}»` : esc(b);
+  if (style === 'lupa') { let op = -1; const r = () => { el.innerHTML = list.map(([a, b], i) => `<div class="pl${op === i ? ' on' : ''}"><button data-pl${k}="${i}" aria-expanded="${op === i}">${SI(PICO.lupa)}<span>«${esc(a)}»</span></button>${op === i ? `<div class="pa pop"><small>${B}</small><p>${q(b)}</p></div>` : ''}</div>`).join(''); $$(`[data-pl${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['pl' + k]; op = op === n ? -1 : n; r(); }); }; r(); return; }
+  if (style === 'chat') { const on = new Set(); const r = () => { el.innerHTML = list.map(([a, b], i) => `<button class="cb l" data-pc${k}="${i}" aria-expanded="${on.has(i)}"><small>${F}</small>${esc(a)}</button>${on.has(i) ? `<div class="cb r pop"><small>${B}</small>${q(b)}</div>` : ''}`).join(''); $$(`[data-pc${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['pc' + k]; on.has(n) ? on.delete(n) : on.add(n); r(); }); }; r(); return; }
+  if (style === 'deck' || style === 'tedices') {
+    let i = 0, shown = false; const ans = {};
+    const r = () => { const [a, b] = list[i], all = Object.keys(ans).length === list.length, yes = Object.values(ans).filter(Boolean).length;
+      el.innerHTML = `<div class="dk"><div class="dots">${list.map((_, j) => `<span class="${j === i ? 'on' : (ans[j] !== undefined || (style === 'deck' && j < i)) ? 'done' : ''}"></span>`).join('')}</div>
+        <div class="dc pop"><small>${F}</small><b>«${esc(a)}»</b>
+        ${style === 'tedices' && !shown ? `<p class="q">¿Te lo has dicho alguna vez?</p><div class="yn"><button data-yn="1">Sí</button><button data-yn="0">No</button></div>` : ''}
+        ${style === 'deck' && !shown ? `<button class="rev">Ver lo que se sabe</button>` : ''}
+        ${shown ? `<div class="dback pop"><small>${B}</small><p>${style === 'tedices' && ans[i] ? 'Es muy habitual decírselo. ' : ''}${q(b)}</p></div>` : ''}</div>
+        <div class="nav-row">${i ? '<button class="btn ghost small" data-dv="-1">← Anterior</button>' : '<span></span>'}<span>${i + 1} de ${list.length}</span>${i < list.length - 1 ? '<button class="btn small" data-dv="1">Siguiente →</button>' : '<span></span>'}</div>
+        ${style === 'tedices' && all ? `<div class="ok small pop">Te has dicho ${yes} de estas ${list.length} frases. No son toda la verdad: la próxima vez que aparezcan, puedes recordar lo que se sabe.</div>` : ''}</div>`;
+      $$(`${sel} [data-yn]`).forEach(x => x.onclick = () => { ans[i] = x.dataset.yn === '1'; shown = true; r(); });
+      const rv = $(`${sel} .rev`); if (rv) rv.onclick = () => { shown = true; r(); };
+      $$(`${sel} [data-dv]`).forEach(x => x.onclick = () => { i += +x.dataset.dv; shown = style === 'tedices' ? ans[i] !== undefined : false; r(); });
+    }; r(); return; }
+}
+function sayPairs(sel, list, style, k) {
+  if (style === 'flip' || !style) { $(sel).className = 'flips'; $(sel).innerHTML = list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-fl${k}="${i}"><span class="in"><span class="ff"><small>Me digo</small><b>«${esc(a)}»</b><i>Toca para darle la vuelta ↻</i></span><span class="fb"><small>Otra forma de verlo</small><b>«${esc(b)}»</b></span></span></button>`).join(''); flipBind(`[data-fl${k}]`); return; }
+  const el = $(sel), on = new Set(); el.className = 'pairs p-' + style;
+  const r = () => {
+    el.innerHTML = style === 'tachar' ? list.map(([a, b], i) => `<div class="tc${on.has(i) ? ' on' : ''}"><button data-tt${k}="${i}" aria-pressed="${on.has(i)}"><span class="tx">«${esc(a)}»</span><i>${on.has(i) ? 'Deshacer' : 'Tachar y reescribir'}</i></button>${on.has(i) ? `<div class="nw pop">«${esc(b)}»</div>` : ''}</div>`).join('')
+      : list.map(([a, b], i) => `<div class="vz"><button class="cloud" data-tt${k}="${i}" aria-pressed="${on.has(i)}">${SI(PICO.cloud)}<span><small>Mi voz crítica</small>«${esc(a)}»</span></button>${on.has(i) ? `<div class="warm pop">${SI(PICO.heart)}<span><small>Mi voz amable</small>«${esc(b)}»</span></div>` : ''}</div>`).join('');
+    $$(`[data-tt${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['tt' + k]; on.has(n) ? on.delete(n) : on.add(n); r(); });
+  }; r();
+}
 
 
 /* ================= DATOS ================= */
@@ -385,15 +464,15 @@ const QUIEN = ['Mi pareja', 'Mis hijos', 'Mi madre o mi padre', 'Mis hermanos', 
 const TEMAS = [['Las tareas de casa', '<path d="M4 11l8-7 8 7v9H4z"/><path d="M10 20v-5h4v5"/>'], ['El dinero', '<circle cx="12" cy="12" r="9"/><path d="M15 8.5c-.8-1-2-1.5-3.2-1.5-2 0-3.3 1-3.3 2.4 0 3.3 6.8 1.8 6.8 5.2 0 1.4-1.4 2.4-3.4 2.4-1.3 0-2.6-.6-3.4-1.6"/>'], ['La crianza', '<circle cx="9" cy="6" r="2.5"/><circle cx="16" cy="10" r="1.8"/><path d="M5 21v-6a4 4 0 0 1 8 0v6M14 21v-4a2 2 0 0 1 4 0v4"/>'], ['El tiempo juntos', '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/>'], ['Las familias', '<circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M3 20c0-3 2-5 5-5s5 2 5 5M11 20c0-3 2-5 5-5s5 2 5 5"/>'], ['El móvil', '<rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18.5h2"/>'], ['La intimidad', '<path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/>'], ['El trabajo', '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/>'], ['Los planes y el ocio', '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/>']];
 const SENAL = [['El corazón se acelera', '<path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/><path d="M7 12h3l1-2 2 4 1-2h3"/>'], ['Me sube el calor', '<path d="M12 3c2 3 5 5 5 9a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3-1-3 0-5.5 1-7.5z"/>'], ['Subo la voz', '<path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a4 4 0 0 1 0 6M19 6a8 8 0 0 1 0 12"/>'], ['Ganas de gritar o de irme', '<path d="M4 12h12M12 6l6 6-6 6"/><path d="M20 4v16"/>'], ['Ya no oigo lo que me dice', '<path d="M6 18a6 6 0 1 1 10-4.5c0 2-2 3-2 5a3 3 0 0 1-5 2"/><path d="M3 3l18 18"/>'], ['Me quedo en blanco', '<path d="M7 17a4 4 0 0 1-.6-8A5.5 5.5 0 0 1 17 7.5 4 4 0 0 1 17 17z"/>']];
 const CASA = ['Se gritaba mucho', 'No se hablaba de los problemas', 'Se castigaba con silencio', 'Siempre cedía la misma persona', 'Se hablaba con calma', 'Se pedía perdón después', 'Había miedo'];
-const SWAP = [['Nunca me ayudas con nada', 'Esta semana me he sentido sola/o con la casa. ¿Podemos repartir las tareas del fin de semana?'], ['Siempre estás con el móvil', 'Echo de menos hablar contigo por las noches. ¿Dejamos el móvil fuera de la cena?'], ['Solo piensas en ti', 'Cuando decides los planes sin preguntarme, me siento apartado/a. ¿Lo hablamos antes la próxima vez?'], ['Pasas de mí', 'Últimamente te noto lejos y lo echo de menos. ¿Buscamos un rato para nosotros/as?']];
-const FEEL = ['agobiado/a', 'triste', 'solo/a', 'enfadado/a', 'preocupado/a', 'cansado/a', 'apartado/a'];
-const NEED = ['ayuda', 'tiempo juntos/as', 'que me escuches', 'descansar', 'que me tengas en cuenta', 'tranquilidad'];
-const ASK = ['repartir las tareas', 'hablarlo esta noche con calma', 'que me avises antes', 'un rato para nosotros/as'];
-const LST = [['Escuchar sin interrumpir', 'Lo primero es dejar que termine. ¿Qué haces?', [['«Yo también llego cansado/a, ¿eh?»', 0, 'Así la atención vuelve a ti, y la otra persona se siente sola.'], ['La dejo terminar, mirándola, sin preparar mi respuesta.', 1, 'Eso es: escuchar para entender, no para contestar.'], ['«Bueno, tampoco es para tanto.»', 0, 'Le quitas importancia a lo que siente, y eso aleja.']]],
+const SWAP = [['Nunca me ayudas con nada', 'Esta semana me he sentido sola con la casa. ¿Podemos repartir las tareas del fin de semana?'], ['Siempre estás con el móvil', 'Echo de menos hablar contigo por las noches. ¿Dejamos el móvil fuera de la cena?'], ['Solo piensas en ti', 'Cuando decides los planes sin preguntarme, me siento apartada. ¿Lo hablamos antes la próxima vez?'], ['Pasas de mí', 'Últimamente te noto lejos y lo echo de menos. ¿Buscamos un rato para nosotras?']];
+const FEEL = ['agobiada', 'triste', 'sola', 'enfadada', 'preocupada', 'cansada', 'apartada'];
+const NEED = ['ayuda', 'tiempo juntos', 'que me escuches', 'descansar', 'que me tengas en cuenta', 'tranquilidad'];
+const ASK = ['repartir las tareas', 'hablarlo esta noche con calma', 'que me avises antes', 'un rato para nosotras'];
+const LST = [['Escuchar sin interrumpir', 'Lo primero es dejar que termine. ¿Qué haces?', [['«Yo también llego cansada, ¿eh?»', 0, 'Así la atención vuelve a ti, y la otra persona se siente sola.'], ['La dejo terminar, mirándola, sin preparar mi respuesta.', 1, 'Eso es: escuchar para entender, no para contestar.'], ['«Bueno, tampoco es para tanto.»', 0, 'Le quitas importancia a lo que siente, y eso aleja.']]],
   ['Resumir lo que he entendido', 'Ahora dile con tus palabras lo que has entendido.', [['«O sea, que llegas sin fuerzas y sientes que la casa recae sobre ti.»', 1, 'Eso es: resumir le demuestra que la has escuchado de verdad.'], ['«Siempre te estás quejando.»', 0, 'Esto es una crítica, uno de los cuatro jinetes.'], ['«Vale, mañana friego yo.»', 0, 'Ofrecer una solución antes de entender suele sonar a «deja de hablar».']]],
-  ['Validar lo que siente', 'Validar no es darle la razón en todo: es reconocer que lo que siente tiene sentido.', [['«No deberías sentirte así.»', 0, 'Corregir una emoción hace que la otra persona se sienta juzgada.'], ['«Pues anda que yo…»', 0, 'Esto es ponerse a la defensiva, otro de los jinetes.'], ['«Tiene sentido que estés harto/a si sientes que todo te toca a ti.»', 1, 'Eso es: validar calma y abre la puerta a buscar soluciones juntos/as.']]],
+  ['Validar lo que siente', 'Validar no es darle la razón en todo: es reconocer que lo que siente tiene sentido.', [['«No deberías sentirte así.»', 0, 'Corregir una emoción hace que la otra persona se sienta juzgada.'], ['«Pues anda que yo…»', 0, 'Esto es ponerse a la defensiva, otro de los jinetes.'], ['«Tiene sentido que estés harta si sientes que todo te toca a ti.»', 1, 'Eso es: validar calma y abre la puerta a buscar soluciones juntos.']]],
   ['Preguntar', 'Por último, pregunta qué necesita.', [['«¿Por qué siempre exageras?»', 0, 'Esta pregunta es un reproche disfrazado.'], ['«¿Qué te ayudaría ahora?»', 1, 'Eso es: una pregunta abierta y sincera, que cuida.'], ['«¿Y qué quieres que haga yo?»', 0, 'Con este tono suena a defensa más que a interés.']]]];
-const PFR = ['Necesito una pausa. No me voy: vuelvo en veinte minutos.', 'Me estoy desbordando. Paramos y lo retomamos después.', 'Esto me importa, por eso quiero hablarlo cuando esté más tranquilo/a.'];
+const PFR = ['Necesito una pausa. No me voy: vuelvo en veinte minutos.', 'Me estoy desbordando. Paramos y lo retomamos después.', 'Esto me importa, por eso quiero hablarlo cuando esté más tranquila.'];
 const REPF = [['calmar', 'Para calmar', 'var(--cool)', ['Vamos a parar un momento.', '¿Podemos bajar el tono?', 'Lo estoy pasando mal, ¿me hablas más despacio?']], ['asumir', 'Para asumir mi parte', 'var(--amber)', ['Tienes razón en esto.', 'Me he pasado, lo siento.', 'Déjame que lo diga de otra forma.']], ['acercar', 'Para acercarnos', 'var(--tc)', ['Te quiero aunque estemos discutiendo.', 'Estamos en el mismo equipo.', '¿Nos damos un abrazo y lo volvemos a intentar?']], ['entender', 'Para entender', 'var(--plum)', ['Ayúdame a entenderlo.', '¿Qué es lo que más te importa de esto?', 'Creo que te he entendido mal.']]];
 const AFEEL = ['Enfado', 'Tristeza', 'Miedo', 'Soledad', 'Frustración', 'Cansancio', 'Impotencia'];
 const ANEED = ['Que me escuchara', 'Sentirme importante', 'Ayuda', 'Respeto', 'Tranquilidad', 'Cariño'];
@@ -447,11 +526,11 @@ function drawEsc() {
   g += `<g transform="translate(36 30)"><path class="${v >= 7 ? 'pulse' : ''}" d="M0 10 s-12-7-12-16a7 7 0 0 1 12-4 7 7 0 0 1 12 4c0 9-12 16-12 16z" fill="${c}"/><text x="22" y="2" font-family="var(--display)" font-size="20" fill="${c}">${bpm}</text><text x="22" y="16" font-family="var(--body)" font-size="9.5" fill="var(--muted)">latidos por minuto</text></g>`;
   g += `<text x="300" y="24" text-anchor="end" font-family="var(--body)" font-size="11" font-weight="800" fill="${c}">${['Calma', 'Tensión', 'Desborde'][zone]}</text>`;
   $('#esc').innerHTML = g;
-  $('#escTxt').innerHTML = [`<div class="ok small">En calma podemos escuchar, entender y buscar soluciones juntos/as.</div>`, `<div class="note small">La tensión sube. Aún puedes escuchar, pero es buen momento para bajar el tono o usar una frase para reparar.</div>`, `<div class="warn small">Desborde: el cuerpo está en alarma y ya no podemos escuchar. Seguir solo empeora las cosas. Es momento de una pausa de unos veinte minutos.</div>`][zone];
+  $('#escTxt').innerHTML = [`<div class="ok small">En calma podemos escuchar, entender y buscar soluciones juntos.</div>`, `<div class="note small">La tensión sube. Aún puedes escuchar, pero es buen momento para bajar el tono o usar una frase para reparar.</div>`, `<div class="warn small">Desborde: el cuerpo está en alarma y ya no podemos escuchar. Seguir solo empeora las cosas. Es momento de una pausa de unos veinte minutos.</div>`][zone];
 }
 $('#escR').oninput = drawEsc; drawEsc();
 let RG = 0, RB = 0;
-const GOOD = ['un abrazo', 'una broma', 'dar las gracias', 'escuchar', 'un mensaje cariñoso', 'un rato juntos/as'];
+const GOOD = ['un abrazo', 'una broma', 'dar las gracias', 'escuchar', 'un mensaje cariñoso', 'un rato juntos'];
 function drawRatio() {
   const ang = Math.max(-14, Math.min(14, (RB * 5 - RG) * 1.6));
   const stack = (n, x, c) => Array.from({ length: Math.min(n, 15) }, (_, i) => `<circle cx="${x - 16 + (i % 5) * 8}" cy="${58 - Math.floor(i / 5) * 8}" r="3.6" fill="${c}"/>`).join('');
@@ -464,8 +543,7 @@ function drawRatio() {
 }
 $('#addG').onclick = () => { RG++; drawRatio(); }; $('#addB').onclick = () => { RB++; drawRatio(); }; $('#ratioR').onclick = () => { RG = RB = 0; drawRatio(); };
 drawRatio();
-$('#myths').innerHTML = MYTHS.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-my="${i}"><span class="in"><span class="ff"><small>Se dice</small><b>«${esc(a)}»</b><i>Toca para ver lo que se sabe ↻</i></span><span class="fb"><small>Lo que se sabe</small><span class="small">${esc(b)}</span></span></span></button>`).join('');
-flipBind('[data-my]');
+pairsUI('#myths', MYTHS, 'lupa', { front: 'Nos decimos' });
 
 /* ================= MIS PELEAS ================= */
 function drawJin() {
@@ -510,7 +588,7 @@ function renderListen() {
   const pk = LS.pick !== null ? opts[LS.pick] : null, mood = !pk ? 'hurt' : pk[1] ? 'ok' : 'hurt', yc = !pk ? 'var(--tc)' : pk[1] ? 'var(--tc)' : 'var(--hot)';
   const LI = ['<path d="M6 18a6 6 0 1 1 10-4.5c0 2-2 3-2 5a3 3 0 0 1-5 2"/>', '<path d="M4 7h12l-3-3M20 17H8l3 3"/>', '<path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/>', '<circle cx="12" cy="12" r="9"/><path d="M10 9.5a2 2 0 1 1 2.5 2c-.5.2-.5.6-.5 1M12 16h.01"/>'];
   let g = `<rect width="320" height="230" rx="16" fill="var(--cool)" opacity=".06"/>`;
-  g += bubble(106, 10, 200, 'Llego agotado/a y la casa está hecha un desastre. Siento que todo me toca a mí.', 'var(--cool)', 256, 1);
+  g += bubble(106, 10, 200, 'Llego agotada y la casa está hecha un desastre. Siento que todo me toca a mí.', 'var(--cool)', 256, 1);
   if (pk) g += bubble(14, 84, 200, pk[0].replace(/^«|»$/g, ''), yc, 64, -1);
   else g += `<g transform="translate(130 112)" stroke="var(--tc)" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="pop"><circle cx="12" cy="12" r="18" fill="var(--surface)"/>${LI[LS.step]}</g><text x="142" y="154" text-anchor="middle" font-family="var(--body)" font-size="9.5" font-weight="800" fill="var(--tc)">${n.toLowerCase()}</text>`;
   g += face(64, 160, yc, pk && !pk[1] ? 'neutral' : 'ok', 'yo') + face(256, 160, 'var(--cool)', mood, 'la otra persona');
@@ -518,7 +596,7 @@ function renderListen() {
   $('#lScene').innerHTML = g;
   $('#listen').innerHTML = `<span class="lbl">Paso ${LS.step + 1}: ${n}</span><p class="small">${q}</p><div class="opts">${opts.map(([t, ok], i) => `<button data-op="${i}" class="${LS.pick === null ? '' : i === LS.pick ? (ok ? 'right' : 'wrong') : ok && LS.pick !== null && !opts[LS.pick][1] ? '' : ''}">${esc(t)}</button>`).join('')}</div>
     ${LS.pick !== null ? `<div class="${opts[LS.pick][1] ? 'ok' : 'warn'} small pop">${opts[LS.pick][2]}</div>` : ''}
-    ${LS.pick !== null && opts[LS.pick][1] ? (LS.step < 3 ? `<button class="btn small" id="lNext" style="align-self:flex-start">Siguiente paso</button>` : `<div class="ok small pop"><b>¡Lo has conseguido!</b> Escuchar, resumir, validar y preguntar. Con esto, la otra persona se siente entendida, y es mucho más fácil buscar soluciones juntos/as.</div><button class="btn link small" id="lAgain" style="align-self:flex-start">Practicar otra vez</button>`) : ''}`;
+    ${LS.pick !== null && opts[LS.pick][1] ? (LS.step < 3 ? `<button class="btn small" id="lNext" style="align-self:flex-start">Siguiente paso</button>` : `<div class="ok small pop"><b>¡Lo has conseguido!</b> Escuchar, resumir, validar y preguntar. Con esto, la otra persona se siente entendida, y es mucho más fácil buscar soluciones juntos.</div><button class="btn link small" id="lAgain" style="align-self:flex-start">Practicar otra vez</button>`) : ''}`;
   $$('[data-op]').forEach(b => b.onclick = () => { LS.pick = +b.dataset.op; keep(renderListen); });
   const nx = $('#lNext'); if (nx) nx.onclick = () => { LS = { step: LS.step + 1, pick: null }; keep(renderListen); };
   const ag = $('#lAgain'); if (ag) ag.onclick = () => { LS = { step: 0, pick: null }; keep(renderListen); };
@@ -579,8 +657,29 @@ function renderALog() {
 }
 $('#aSave').onclick = () => { const mine = $('#aMine').value.trim(), next = $('#aNext').value.trim(); if (!A.feel.length && !mine && !next) { toast('Marca al menos lo que sentiste'); return; }
   AL.push({ t: Date.now(), t2: A.t, feel: A.feel, need: A.need, mine, next, rep: A.rep }); store.set('despues', AL); A = { t: 5, feel: [], need: [], rep: '' }; $('#aMine').value = ''; $('#aNext').value = ''; keep(renderAfter); toast('Guardado. Revisarlo ya es cuidar la relación.'); };
-function renderRep() {
-  renderRepF(); renderAfter();
+/*M+*/const DP = [['Gritar o insultar delante de ellos', 0, 'Los gritos y los insultos les asustan, aunque no vayan con ellos: su cuerpo se pone en alerta.'],
+  ['No estar de acuerdo, pero hablando con respeto', 1, 'Discrepar con respeto les enseña que se puede querer a alguien y pensar distinto.'],
+  ['Pedirles que elijan bando o que hagan de mensajeros', 0, 'Ponerles en medio les carga con algo que no les toca. Necesitan poder querer a los dos.'],
+  ['Hacer como que no pasa nada cuando hay tensión', 0, 'Notan la tensión igualmente, y si nadie les explica nada, pueden imaginar algo peor.'],
+  ['Silencios largos y portazos', 0, 'El silencio hostil también es conflicto, y les genera mucha inseguridad.'],
+  ['Parar y decir «lo hablamos luego»', 1, 'Hacer una pausa cuando la discusión sube les enseña a cuidar el enfado.'],
+  ['Que vean cómo os reconciliáis', 1, 'Ver el abrazo o la disculpa les tranquiliza más que nada, porque aprenden que los conflictos se arreglan.'],
+  ['Explicarles que no es culpa suya', 1, 'Muchos peques creen que las discusiones de los adultos son por su culpa. Decírselo les quita ese peso.']];
+function renderDp() {
+  const sel = S.dp || [], bad = sel.filter(i => !DP[i][1]).length, good = sel.filter(i => DP[i][1]).length, cx = 160;
+  let g = `<rect width="320" height="170" rx="16" fill="var(--sky, #E8F1F3)"/>`;
+  for (let i = 0; i < good; i++) { const a = -Math.PI + (i + 1) * Math.PI / 5; g += `<path class="pop" d="M${cx + Math.cos(a) * 44} ${78 + Math.sin(a) * 44} L${cx + Math.cos(a) * 64} ${78 + Math.sin(a) * 64}" stroke="var(--sun, #E8B44A)" stroke-width="4" stroke-linecap="round"/>`; }
+  if (good) g += `<circle class="pop" cx="${cx}" cy="78" r="${18 + good * 3}" fill="var(--sun, #E8B44A)" opacity=".28"/>`;
+  const CL = [[70, 40], [250, 40], [96, 18], [224, 18]];
+  for (let i = 0; i < Math.min(bad, 4); i++) { const [x, y] = CL[i]; g += `<g class="pop"><ellipse cx="${x}" cy="${y + 14}" rx="28" ry="12" fill="var(--muted)" opacity=".45"/><ellipse cx="${x + 12}" cy="${y + 6}" rx="15" ry="10" fill="var(--muted)" opacity=".45"/>${[0, 1, 2].map(k => `<path d="M${x - 12 + k * 12} ${y + 30} l-3 8" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" opacity=".6"/>`).join('')}</g>`; }
+  g += `<g transform="translate(${cx} 98)"><circle cx="0" cy="0" r="12" fill="color-mix(in srgb, var(--accent) 35%, var(--surface))"/><path d="M-14 50 q0 -32 14 -36 q14 4 14 36z" fill="var(--accent)" opacity=".8"/>${bad > good ? '<path d="M-5 5 q5 -4 10 0" stroke="var(--deep)" stroke-width="1.6" fill="none"/>' : '<path d="M-5 3 q5 5 10 0" stroke="var(--deep)" stroke-width="1.6" fill="none"/>'}<circle cx="-4" cy="-3" r="1.3" fill="var(--deep)"/><circle cx="4" cy="-3" r="1.3" fill="var(--deep)"/></g>`;
+  $('#dpSvg').innerHTML = g;
+  $('#dp').innerHTML = DP.map(([t, k, e], i) => { const on = sel.includes(i); return `<button class="chip" style="--c:${k ? 'var(--good, #2C6E5D)' : 'var(--hot, #B5543A)'};text-align:left;border-radius:14px;padding:10px 14px" data-dp="${i}" aria-pressed="${on}">${esc(t)}${on ? `<br><small style="font-weight:600">${k ? 'Les enseña' : 'Les pesa'}: ${esc(e)}</small>` : ''}</button>`; }).join('');
+  document.querySelectorAll('[data-dp]').forEach(b => b.onclick = () => { S.dp = toggle(S.dp || [], +b.dataset.dp); saveS(); keep(renderDp); });
+  $('#dpTxt').innerHTML = sel.length ? `<div class="ok small pop">Si ya ha pasado, no está todo perdido. Cuando estéis en calma, podéis decirle algo así: «Antes nos hemos enfadado y hemos gritado. No estuvo bien. Ya lo hemos hablado y estamos bien. No ha sido culpa tuya». Adáptalo a su edad: con los más pequeños basta con un abrazo y una frase corta.</div><p class="small muted">Si en casa hay miedo, control o violencia, no es una discusión: los peques también lo sufren. Llama al <b>016</b> (24 h).</p>` : '';
+}
+/*M-*/function renderRep() {
+  renderRepF(); renderAfter(); /*M+*/renderDp();/*M-*/
   $('#ayuda').innerHTML = HELP.map(([ic, t, c]) => `<div class="ns" style="--c:${c}">${SI(ic)}<span>${t}</span></div>`).join('');
 }
 
@@ -856,7 +955,8 @@ const PDFKIT = (() => {
     'impulsos.log': 'Registro de impulsos', 'incert.daily': 'Días', 'incert.logs': 'Exposiciones', 'incert.waves': 'Olas', 'liston.exps': 'Experimentos', 'liston.five': 'Cinco minutos', 'liston.friend': 'Como a una amiga', 'liston.logros': 'Tarro de logros', 'liston.suf': 'Suficientemente bien',
     'pensamientos.regs': 'Registro de pensamientos', 'quererme.jar': 'Tarro', 'rumbo.log': 'Pasos', 'rumbo.revs': 'Revisiones', 'rumbo.snaps': 'Dianas', 'sesion.hist': 'Sesiones preparadas', 'social.bien': 'Lo que fue bien', 'social.experimentos': 'Experimentos',
     'soledad.days': 'Días', 'soledad.small': 'Pequeños lazos', 'sueno.noches': 'Noches', 'sueno.preoc': 'Preocupaciones', 'verguenza.momentos': 'Momentos', 'vinculos.dates': 'Citas', 'vueltas.decs': 'Decisiones',
-    'm-ansiedad.niv': 'Cómo de preocupada me siento', 'm-carga.acuerdos': 'Acuerdos', 'm-carga.cabeza': 'Cómo de llena está mi cabeza', 'm-carga.revisiones': 'Revisiones de la semana', 'm-cuerpoemb.rel': 'Cómo me llevo con mi cuerpo', 'm-animo.animo': 'Mi ánimo',
+    'm-ansiedad.niv': 'Cómo de preocupada me siento', 'm-carga.acuerdos': 'Acuerdos', 'm-carga.cabeza': 'Cómo de llena está mi cabeza', 'm-carga.revisiones': 'Revisiones de la semana', 'm-duelo.dia': 'Cómo estoy',
+  'm-limpeq.bien': 'Le pillé haciendo algo bien', 'm-limpeq.log': 'Cómo he sostenido los límites', 'm-familia.rlog': 'Momentos en el bote', 'm-limfam.log': 'Límites que he puesto', 'm-suenopos.cont': 'Siestas y despertares', 'm-suenopos.des': 'Cómo he descansado', 'm-lactancia.lac': 'Cómo me siento con la lactancia', 'm-cuerpopos.rel': 'Cómo me llevo con mi cuerpo', 'm-cuerpoemb.rel': 'Cómo me llevo con mi cuerpo', 'm-animo.animo': 'Mi ánimo',
     'm-nacer.cartas': 'Cartas', 'm-nacer.piel': 'Cómo me siento en mi piel', 'm-pareja.hoy': 'Cómo de cerca me siento', 'm-pareja.mio.xh': 'Momentos de autocuidado en pareja', 'm-parto.conf': 'Cómo de preparada me siento',
     'm-recordar.peso': 'Cuánto me pesa el recuerdo', 'm-salto.log': 'Mi semana', 'm-soledad.hoy': 'Cómo de acompañada me siento', 'm-ventanas.anc': 'Cómo de ancha ha sido mi ventana', 'm-vinculo.cx': 'Cómo de conectada me siento', 'm-vinculo.momentos': 'Momentos juntos', 'm-vinculo.senales': 'Señales de mi bebé',
   };

@@ -145,6 +145,45 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 .flip b { font-family: var(--display); font-weight: 500; font-size: 1.02rem; }
 .flip i { font-style: normal; font-size: .76rem; color: var(--muted); }
 @media (prefers-reduced-motion: reduce) { .popin { animation: none !important; } .flip .in { transition: none; } }
+.pairs { --pk: var(--accent, var(--tc)); --pok: var(--ok, var(--tint)); --pokink: var(--ok-ink, var(--deep)); }
+/* Pares «frase / lo que se sabe» y «me digo / otra forma de verlo» en varios formatos */
+.pairs { display: flex; flex-direction: column; gap: 8px; }
+.p-lupa .pl { border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); overflow: hidden; }
+.p-lupa .pl.on { border-color: var(--pk); }
+.p-lupa .pl > button { width: 100%; border: 0; background: transparent; display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: center; text-align: left; padding: 11px 13px; font-family: var(--display); font-size: 1.02rem; color: var(--deep); }
+.p-lupa .pl > button svg { width: 22px; height: 22px; color: var(--pk); transition: transform .3s; }
+.p-lupa .pl.on > button svg { transform: scale(1.25); }
+.p-lupa .pa { padding: 0 14px 12px 49px; } .p-lupa .pa small, .p-chat small, .p-deck small, .p-tedices small, .p-tachar small, .p-voz small { display: block; font-size: .68rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; opacity: .8; margin-bottom: 2px; }
+.p-lupa .pa p { margin: 0; font-size: .95rem; }
+.p-chat { background: color-mix(in srgb, var(--pk) 6%, var(--surface)); border-radius: 18px; padding: 12px 10px; gap: 10px; }
+.p-chat .cb { max-width: 86%; border-radius: 18px; padding: 9px 13px; line-height: 1.35; font-size: .95rem; text-align: left; }
+.p-chat .cb.l { align-self: flex-start; border: 1.5px solid var(--line); background: var(--surface); border-bottom-left-radius: 4px; font-family: var(--display); font-size: 1.02rem; color: var(--deep); }
+.p-chat .cb.l[aria-expanded="true"] { border-color: var(--pk); }
+.p-chat .cb.r { align-self: flex-end; background: var(--pok); color: var(--pokink); border-bottom-right-radius: 4px; }
+.dk { display: flex; flex-direction: column; gap: 10px; }
+.dk .dots { display: flex; gap: 5px; justify-content: center; } .dk .dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--line); transition: all .3s; } .dk .dots span.done { background: color-mix(in srgb, var(--pk) 45%, var(--surface)); } .dk .dots span.on { background: var(--pk); width: 20px; border-radius: 6px; }
+.dk .dc { border-radius: 20px; padding: 18px 16px; min-height: 150px; background: color-mix(in srgb, var(--pk) 10%, var(--surface)); border: 1.5px solid color-mix(in srgb, var(--pk) 30%, transparent); display: flex; flex-direction: column; gap: 10px; justify-content: center; text-align: center; box-shadow: 0 6px 0 -2px color-mix(in srgb, var(--pk) 14%, var(--surface)), 0 12px 0 -5px color-mix(in srgb, var(--pk) 8%, var(--surface)); }
+.dk .dc > b { font-family: var(--display); font-weight: 500; font-size: 1.2rem; color: var(--deep); line-height: 1.3; }
+.dk .dback { background: var(--pok); color: var(--pokink); border-radius: 14px; padding: 10px 12px; text-align: left; } .dk .dback p { margin: 0; font-size: .95rem; }
+.dk .yn { display: flex; gap: 8px; justify-content: center; } .dk .yn button { border: 1.5px solid var(--pk); background: var(--surface); color: var(--pk); border-radius: 999px; padding: 8px 22px; font-weight: 800; }
+.dk .q { margin: 0; font-size: .9rem; color: var(--muted); font-weight: 700; }
+.dk .rev { align-self: center; border: 0; background: var(--pk); color: var(--onc, #fff); border-radius: 999px; padding: 8px 18px; font-weight: 800; }
+.dk .nav-row span { font-size: .82rem; color: var(--muted); font-weight: 700; }
+.p-tachar .tc { border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
+.p-tachar .tc > button { border: 0; background: transparent; padding: 0; text-align: left; font-family: var(--display); font-size: 1.05rem; color: var(--deep); position: relative; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+.p-tachar .tc > button .tx { position: relative; }
+.p-tachar .tc > button .tx::after { content: ''; position: absolute; left: 0; top: 55%; height: 2px; width: 0; background: var(--me, var(--li)); transition: width .45s ease; }
+.p-tachar .tc.on > button .tx { color: var(--muted); } .p-tachar .tc.on > button .tx::after { width: 100%; }
+.p-tachar .tc > button i { font-style: normal; font-family: var(--body); font-size: .74rem; font-weight: 800; color: var(--pk); white-space: nowrap; }
+.p-tachar .nw { font-family: var(--display); font-size: 1.1rem; color: var(--pokink); background: var(--pok); border-radius: 12px; padding: 8px 12px; }
+.p-voz .vz { display: flex; flex-direction: column; gap: 6px; }
+.p-voz .cloud { align-self: flex-start; max-width: 88%; border: 1.5px dashed var(--muted); background: color-mix(in srgb, var(--muted) 8%, var(--surface)); border-radius: 22px 22px 22px 6px; padding: 10px 14px; text-align: left; font-family: var(--display); font-size: 1.02rem; color: var(--deep); display: grid; grid-template-columns: 22px 1fr; gap: 8px; align-items: start; }
+.p-voz .cloud svg, .p-voz .warm svg { width: 20px; height: 20px; margin-top: 2px; }
+.p-voz .warm { align-self: flex-end; max-width: 88%; background: color-mix(in srgb, var(--rose, var(--pk)) 14%, var(--surface)); border: 1.5px solid var(--rose, var(--pk)); border-radius: 22px 22px 6px 22px; padding: 10px 14px; font-family: var(--display); font-size: 1.05rem; color: var(--deep); display: grid; grid-template-columns: 22px 1fr; gap: 8px; }
+.p-voz .warm svg { color: var(--rose, var(--pk)); } .p-voz .cloud svg { color: var(--muted); }
+.dk .dback p, .p-chat .cb.r, .p-lupa .pa p { color: var(--ink); }
+
+
 </style>
 
 </head>
@@ -180,8 +219,20 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
     </div>
     <div class="box">
       <span class="eyebrow">Cosas que nos decimos</span>
-      <p class="small">Toca cada tarjeta para ver lo que se sabe.</p>
+      <p class="small">Toca cada frase para ver qué se sabe de verdad sobre ella.</p>
       <div class="flips" id="myths"></div>
+    </div>
+    <div class="box">
+      <span class="eyebrow">Entre sesiones</span>
+      <p class="small">La terapia no termina al salir de la consulta: muchas cosas se mueven durante la semana. ¿Qué te está pasando entre esta sesión y la siguiente? Toca lo que te suene.</p>
+      <svg class="fig" id="es" viewBox="0 0 320 150" role="img" aria-label="La semana entre dos sesiones"></svg>
+      <div class="chips" id="esCh"></div>
+      <div id="esTxt" class="stack" style="gap:8px"></div>
+    </div>
+    <div class="box">
+      <span class="eyebrow">Hablar de la terapia en la terapia</span>
+      <p class="small">La relación con tu psicóloga es una de las cosas que más influyen en que la terapia funcione. Por eso también se puede hablar de ella: de lo que te ayuda, de lo que no te encaja o de las ganas de dejarlo. No es una crítica ni una falta de respeto, sino información muy valiosa para las dos partes. Toca cada tarjeta para ver una forma de decirlo.</p>
+      <div class="flips" id="meta"></div>
     </div>
   </section>
 
@@ -215,6 +266,32 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 <script>
 const $ = (q) => document.querySelector(q);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const PQ1 = (s) => document.querySelector(s), PQ = (s) => [...document.querySelectorAll(s)];
+/* Pares en varios formatos, para que no se repita siempre la misma tarjeta: flip, lupa, chat, deck, tedices (para «lo que se sabe») y tachar, voz (para «me digo») */
+const PICO = { lupa: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/>', cloud: '<path d="M7 18a4 4 0 0 1-.6-8A5.5 5.5 0 0 1 17 8.5a4.5 4.5 0 0 1 .5 9z"/>', heart: '<path d="M12 20s-7-4.4-7-10A4 4 0 0 1 12 7a4 4 0 0 1 7 3c0 5.6-7 10-7 10z"/>' };
+function pairsUI(sel, list, style, o) {
+  o = o || {}; const el = PQ1(sel), F = o.front || 'Me digo', B = o.back || 'Lo que se sabe', k = sel.replace(/\W/g, '');
+  if (style === 'flip') { el.className = 'flips'; el.innerHTML = list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-pf${k}="${i}"><span class="in"><span class="ff"><small>${F}</small><b>«${esc(a)}»</b><i>${o.hint || 'Toca para ver lo que se sabe ↻'}</i></span><span class="fb"><small>${B}</small>${o.bold ? `<b>«${esc(b)}»</b>` : `<span class="small">${esc(b)}</span>`}</span></span></button>`).join(''); (typeof flipBind === 'function' ? flipBind(`[data-pf${k}]`) : 0); return; }
+  el.className = 'pairs p-' + style;
+  const q = (b) => o.bold ? `«${esc(b)}»` : esc(b);
+  if (style === 'lupa') { let op = -1; const r = () => { el.innerHTML = list.map(([a, b], i) => `<div class="pl${op === i ? ' on' : ''}"><button data-pl${k}="${i}" aria-expanded="${op === i}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">${PICO.lupa}</svg><span>«${esc(a)}»</span></button>${op === i ? `<div class="pa pop"><small>${B}</small><p>${q(b)}</p></div>` : ''}</div>`).join(''); PQ(`[data-pl${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['pl' + k]; op = op === n ? -1 : n; r(); }); }; r(); return; }
+  if (style === 'chat') { const on = new Set(); const r = () => { el.innerHTML = list.map(([a, b], i) => `<button class="cb l" data-pc${k}="${i}" aria-expanded="${on.has(i)}"><small>${F}</small>${esc(a)}</button>${on.has(i) ? `<div class="cb r pop"><small>${B}</small>${q(b)}</div>` : ''}`).join(''); PQ(`[data-pc${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['pc' + k]; on.has(n) ? on.delete(n) : on.add(n); r(); }); }; r(); return; }
+  if (style === 'deck' || style === 'tedices') {
+    let i = 0, shown = false; const ans = {};
+    const r = () => { const [a, b] = list[i], all = Object.keys(ans).length === list.length, yes = Object.values(ans).filter(Boolean).length;
+      el.innerHTML = `<div class="dk"><div class="dots">${list.map((_, j) => `<span class="${j === i ? 'on' : (ans[j] !== undefined || (style === 'deck' && j < i)) ? 'done' : ''}"></span>`).join('')}</div>
+        <div class="dc pop"><small>${F}</small><b>«${esc(a)}»</b>
+        ${style === 'tedices' && !shown ? `<p class="q">¿Te lo has dicho alguna vez?</p><div class="yn"><button data-yn="1">Sí</button><button data-yn="0">No</button></div>` : ''}
+        ${style === 'deck' && !shown ? `<button class="rev">Ver lo que se sabe</button>` : ''}
+        ${shown ? `<div class="dback pop"><small>${B}</small><p>${style === 'tedices' && ans[i] ? 'Es muy habitual decírselo. ' : ''}${q(b)}</p></div>` : ''}</div>
+        <div class="nav-row">${i ? '<button class="btn ghost small" data-dv="-1">← Anterior</button>' : '<span></span>'}<span>${i + 1} de ${list.length}</span>${i < list.length - 1 ? '<button class="btn small" data-dv="1">Siguiente →</button>' : '<span></span>'}</div>
+        ${style === 'tedices' && all ? `<div class="ok small pop">Te has dicho ${yes} de estas ${list.length} frases. No son toda la verdad: la próxima vez que aparezcan, puedes recordar lo que se sabe.</div>` : ''}</div>`;
+      PQ(`${sel} [data-yn]`).forEach(x => x.onclick = () => { ans[i] = x.dataset.yn === '1'; shown = true; r(); });
+      const rv = PQ1(`${sel} .rev`); if (rv) rv.onclick = () => { shown = true; r(); };
+      PQ(`${sel} [data-dv]`).forEach(x => x.onclick = () => { i += +x.dataset.dv; shown = style === 'tedices' ? ans[i] !== undefined : false; r(); });
+    }; r(); return; }
+}
+
 const store = { get(k, d) { try { const v = localStorage.getItem('sesion.' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
                 set(k, v) { try { localStorage.setItem('sesion.' + k, JSON.stringify(v)); } catch (e) {} } };
 function toast(m) { const t = $('#toast'); t.textContent = m; t.hidden = false; clearTimeout(toast._t); toast._t = setTimeout(() => t.hidden = true, 2400); }
@@ -392,12 +469,33 @@ function drawLn() {
 }
 const MYTHS = [['Tengo que traer algo grave para que merezca la pena', 'Cualquier cosa que te haya removido vale. A menudo, lo pequeño del día a día lleva a lo importante.'],
   ['Si lloro en sesión, lo estoy haciendo mal', 'Llorar es una forma de soltar y de mostrar lo que sientes. La sesión es un espacio seguro para hacerlo.'],
-  ['Debería salir mejor de cada sesión', 'Algunas sesiones remueven, y está bien. A veces salir algo removido/a es señal de que se ha tocado algo importante.'],
+  ['Debería salir mejor de cada sesión', 'Algunas sesiones remueven, y está bien. A veces salir algo removida es señal de que se ha tocado algo importante.'],
   ['Si no estoy de acuerdo con mi psicóloga, mejor me lo callo', 'Decirlo ayuda mucho a la terapia. Tu psicóloga quiere saber lo que te sirve y lo que no.'],
   ['Si no noto cambios cada semana, no avanzo', 'El cambio suele ser lento y con altibajos. Mirar tus semanas guardadas te ayuda a ver el camino completo.']];
 let entDone = false;
-function renderEnt() { drawMo(); drawLn();
-  if (!entDone) { entDone = true; $('#myths').innerHTML = MYTHS.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-my="${i}"><span class="in"><span class="ff"><small>Me digo</small><b>«${esc(a)}»</b><i>Toca para ver lo que se sabe ↻</i></span><span class="fb"><small>Lo que se sabe</small><span class="small">${esc(b)}</span></span></span></button>`).join('');
+const ES = [['rem', 'Algo de la sesión me ha removido', 'Es frecuente que una sesión remueva. Date un rato tranquilo al salir, anota lo que se te ha quedado dando vueltas y llévalo a la siguiente. Que algo remueva no significa que la terapia vaya mal: a veces es justo señal de que estáis tocando algo importante.'],
+  ['dur', 'Estoy teniendo una semana muy dura', 'Apóyate en lo que ya sabes que te ayuda y apunta lo que va pasando para poder contarlo. Si sientes que no puedes esperar a la sesión, pregunta a tu psicóloga si hay alguna forma de contactar entre sesiones.'],
+  ['olv', 'Se me ha olvidado lo que hablamos', 'Mira lo que anotaste en «Después de la sesión». Y si no anotaste nada, no pasa nada: lo importante suele volver.'],
+  ['tar', 'No he hecho lo que acordamos', 'No hace falta llegar con todo hecho. Contar qué te lo ha impedido también es material para la sesión, y a veces el más útil.'],
+  ['urg', 'No me siento a salvo', 'Si no te sientes a salvo, no esperes a la sesión: llama al <b>112</b> o al <b>024</b> (24 h).']];
+const META = [['No sé si esto me está sirviendo', 'Me gustaría que revisáramos cómo voy y si vamos por buen camino.'], ['Algo de la última sesión me sentó mal', 'Me quedé dándole vueltas a algo de la última sesión. ¿Podemos hablarlo?'], ['No me apetece venir', 'Últimamente me cuesta venir y no sé muy bien por qué.'], ['Hay algo que no me atrevo a contar', 'Hay algo de lo que me cuesta mucho hablar. ¿Me ayudas a empezar?'], ['Esto es demasiado para mí ahora', 'Esto me está removiendo mucho. ¿Podemos ir más despacio?'], ['Creo que ya estoy mejor', 'Me noto mejor. ¿Podemos hablar de cómo y cuándo terminar?']];
+let esSel = store.get('entre', []);
+function drawEs() {
+  let g = `<rect width="320" height="150" rx="16" fill="var(--tint)" opacity=".7"/>`;
+  g += `<path d="M44 92 C 80 ${92 - 0} 92 ${esSel.includes('dur') ? 132 : 108} 124 ${esSel.includes('dur') ? 120 : 100} S 168 ${esSel.includes('rem') ? 52 : 82} 196 ${esSel.includes('rem') ? 64 : 88} S 250 96 276 92" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" opacity=".7"/>`;
+  ['L', 'M', 'X', 'J', 'V', 'S', 'D'].forEach((d, i) => { const x = 66 + i * 32; g += `<text x="${x}" y="138" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="700" fill="var(--muted)">${d}</text>`; });
+  [44, 276].forEach(x => { g += `<g transform="translate(${x} 92)"><circle r="16" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/><path d="M-6 -3 h12 v8 h-12z M-3 -3 v-3 h6 v3" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round"/></g>`; });
+  g += `<text x="44" y="64" text-anchor="middle" font-family="var(--body)" font-size="9.5" font-weight="800" fill="var(--accent)">Sesión</text><text x="276" y="64" text-anchor="middle" font-family="var(--body)" font-size="9.5" font-weight="800" fill="var(--accent)">Sesión</text>`;
+  if (esSel.includes('olv')) g += `<g class="pop" transform="translate(110 40)"><rect x="-14" y="-12" width="28" height="22" rx="4" fill="var(--surface)" stroke="var(--muted)" stroke-width="1.5"/><text x="0" y="4" text-anchor="middle" font-family="var(--body)" font-size="12" font-weight="800" fill="var(--muted)">?</text></g>`;
+  if (esSel.includes('tar')) g += `<g class="pop" transform="translate(238 40)"><rect x="-12" y="-12" width="24" height="24" rx="5" fill="var(--surface)" stroke="var(--muted)" stroke-width="1.5"/><path d="M-5 0 h10" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"/></g>`;
+  if (esSel.includes('urg')) g += `<g class="pop" transform="translate(160 30)"><circle r="12" fill="#C2410C" opacity=".9"/><path d="M0 -6 v7 M0 5 v.5" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></g>`;
+  $('#es').innerHTML = g;
+  $('#esCh').innerHTML = ES.map(([k, t]) => `<button class="chip" data-es="${k}" aria-pressed="${esSel.includes(k)}">${t}</button>`).join('');
+  document.querySelectorAll('[data-es]').forEach(b => b.onclick = () => { esSel = toggle(esSel, b.dataset.es); store.set('entre', esSel); drawEs(); });
+  $('#esTxt').innerHTML = ES.filter(([k]) => esSel.includes(k)).map(([k, t, a]) => `<div class="${k === 'urg' ? 'note' : 'info'}" style="--c:var(--accent)"><b>${t}</b><br>${a}</div>`).join('');
+}
+function renderEnt() { drawMo(); drawLn(); drawEs();
+  if (!entDone) { entDone = true; pairsUI('#myths', MYTHS, 'chat', { front: 'Me digo' }); pairsUI('#meta', META, 'flip', { front: 'Me cuesta decir', back: 'Puedes probar con', bold: true, hint: 'Toca para ver cómo decirlo ↻' }); document.querySelectorAll('#meta .flip').forEach(f => f.onclick = () => f.setAttribute('aria-pressed', f.getAttribute('aria-pressed') !== 'true'));
     document.querySelectorAll('[data-my]').forEach(f => f.onclick = () => f.setAttribute('aria-pressed', f.getAttribute('aria-pressed') !== 'true')); } }
 // ---------- Después ----------
 const LLEVO = ['Una idea nueva sobre mí', 'Una herramienta para probar', 'Alivio por haberlo contado', 'Preguntas para pensar', 'Entender por qué me pasa', 'Ganas de seguir'];
@@ -406,7 +504,7 @@ function renderDesp() {
   const i = hist.length - 1, h = hist[i]; h.llevoCh = h.llevoCh || [];
   $('#despBox').innerHTML = `<div class="box"><span class="eyebrow">Tu última sesión · ${new Date(h.t).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}</span><p class="small muted">Tema principal: ${esc(h.topics[0] || '—')}</p></div>
     <div class="box"><span class="lbl">¿Cómo has salido de la sesión?</span><div class="weather">${Object.entries(W).map(([k, [n, svg]]) => `<button class="wbtn" data-wd="${k}" aria-pressed="${h.wDesp === k}">${svg}${n}</button>`).join('')}</div>
-      <p class="hint">Salir removido/a también es normal: a veces significa que se ha tocado algo importante.</p></div>
+      <p class="hint">Salir removida también es normal: a veces significa que se ha tocado algo importante.</p></div>
     <div class="box"><span class="lbl">¿Qué te llevas?</span><div class="chips">${LLEVO.map(x => `<button class="chip" data-lc="${esc(x)}" aria-pressed="${h.llevoCh.includes(x)}">${esc(x)}</button>`).join('')}</div>
       <input type="text" id="dLlevo" value="${esc(h.llevo || '')}" placeholder="Con tus palabras: lo que me llevo de la sesión">
       <span class="lbl">Algo para practicar esta semana</span><input type="text" id="dTarea" value="${esc(h.tarea || '')}" placeholder="Por ejemplo: probar a decir que no una vez">
@@ -674,7 +772,8 @@ const PDFKIT = (() => {
     'impulsos.log': 'Registro de impulsos', 'incert.daily': 'Días', 'incert.logs': 'Exposiciones', 'incert.waves': 'Olas', 'liston.exps': 'Experimentos', 'liston.five': 'Cinco minutos', 'liston.friend': 'Como a una amiga', 'liston.logros': 'Tarro de logros', 'liston.suf': 'Suficientemente bien',
     'pensamientos.regs': 'Registro de pensamientos', 'quererme.jar': 'Tarro', 'rumbo.log': 'Pasos', 'rumbo.revs': 'Revisiones', 'rumbo.snaps': 'Dianas', 'sesion.hist': 'Sesiones preparadas', 'social.bien': 'Lo que fue bien', 'social.experimentos': 'Experimentos',
     'soledad.days': 'Días', 'soledad.small': 'Pequeños lazos', 'sueno.noches': 'Noches', 'sueno.preoc': 'Preocupaciones', 'verguenza.momentos': 'Momentos', 'vinculos.dates': 'Citas', 'vueltas.decs': 'Decisiones',
-    'm-ansiedad.niv': 'Cómo de preocupada me siento', 'm-carga.acuerdos': 'Acuerdos', 'm-carga.cabeza': 'Cómo de llena está mi cabeza', 'm-carga.revisiones': 'Revisiones de la semana', 'm-cuerpoemb.rel': 'Cómo me llevo con mi cuerpo', 'm-animo.animo': 'Mi ánimo',
+    'm-ansiedad.niv': 'Cómo de preocupada me siento', 'm-carga.acuerdos': 'Acuerdos', 'm-carga.cabeza': 'Cómo de llena está mi cabeza', 'm-carga.revisiones': 'Revisiones de la semana', 'm-duelo.dia': 'Cómo estoy',
+  'm-limpeq.bien': 'Le pillé haciendo algo bien', 'm-limpeq.log': 'Cómo he sostenido los límites', 'm-familia.rlog': 'Momentos en el bote', 'm-limfam.log': 'Límites que he puesto', 'm-suenopos.cont': 'Siestas y despertares', 'm-suenopos.des': 'Cómo he descansado', 'm-lactancia.lac': 'Cómo me siento con la lactancia', 'm-cuerpopos.rel': 'Cómo me llevo con mi cuerpo', 'm-cuerpoemb.rel': 'Cómo me llevo con mi cuerpo', 'm-animo.animo': 'Mi ánimo',
     'm-nacer.cartas': 'Cartas', 'm-nacer.piel': 'Cómo me siento en mi piel', 'm-pareja.hoy': 'Cómo de cerca me siento', 'm-pareja.mio.xh': 'Momentos de autocuidado en pareja', 'm-parto.conf': 'Cómo de preparada me siento',
     'm-recordar.peso': 'Cuánto me pesa el recuerdo', 'm-salto.log': 'Mi semana', 'm-soledad.hoy': 'Cómo de acompañada me siento', 'm-ventanas.anc': 'Cómo de ancha ha sido mi ventana', 'm-vinculo.cx': 'Cómo de conectada me siento', 'm-vinculo.momentos': 'Momentos juntos', 'm-vinculo.senales': 'Señales de mi bebé',
   };

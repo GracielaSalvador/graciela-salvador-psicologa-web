@@ -130,6 +130,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 .r-aa { background: var(--r-aa); color: var(--r-aa-ink); }
 .r-ab { background: var(--r-ab); color: var(--r-ab-ink); }
 .r-suave { background: var(--r-su); color: var(--r-su-ink); }
+/*M+*/.r-peq { background: color-mix(in srgb, var(--accent) 14%, var(--surface)); color: var(--accent); } .route.t-peq { color: var(--accent); }/*M-*/
 .route { display: inline-flex; align-items: center; gap: 5px; }
 .route svg { width: 14px; height: 14px; }
 .route.t-aa { color: var(--r-aa-ink); } .route.t-ab { color: var(--r-ab-ink); } .route.t-suave { color: var(--r-su-ink); }
@@ -240,6 +241,7 @@ input#before, input#after { accent-color: var(--accent); }
 .box { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
 .fig { width: 100%; height: auto; display: block; }
 .pop { animation: popin .45s ease-out; } @keyframes popin { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+svg .pop[transform] { animation-name: popfade; } @keyframes popfade { from { opacity: 0; } to { opacity: 1; } }
 .seg { display: flex; gap: 6px; background: var(--tint); padding: 4px; border-radius: 999px; }
 .seg button { flex: 1; border: 0; background: transparent; border-radius: 999px; padding: 8px 6px; font-weight: 700; font-size: .84rem; color: var(--muted); line-height: 1.25; }
 .seg button[aria-pressed="true"] { background: var(--c, var(--accent)); color: var(--onc); }
@@ -271,6 +273,45 @@ input#before, input#after { accent-color: var(--accent); }
 .opt.on button { color: var(--good); }
 @media (max-width: 360px) { .gtiles { grid-template-columns: 1fr 1fr; } }
 @media (prefers-reduced-motion: reduce) { .pop, .flow { animation: none !important; } .flip .in, .bal { transition: none; } }
+.pairs { --pk: var(--accent, var(--tc)); --pok: var(--ok, var(--tint)); --pokink: var(--ok-ink, var(--deep)); }
+/* Pares «frase / lo que se sabe» y «me digo / otra forma de verlo» en varios formatos */
+.pairs { display: flex; flex-direction: column; gap: 8px; }
+.p-lupa .pl { border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); overflow: hidden; }
+.p-lupa .pl.on { border-color: var(--pk); }
+.p-lupa .pl > button { width: 100%; border: 0; background: transparent; display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: center; text-align: left; padding: 11px 13px; font-family: var(--display); font-size: 1.02rem; color: var(--deep); }
+.p-lupa .pl > button svg { width: 22px; height: 22px; color: var(--pk); transition: transform .3s; }
+.p-lupa .pl.on > button svg { transform: scale(1.25); }
+.p-lupa .pa { padding: 0 14px 12px 49px; } .p-lupa .pa small, .p-chat small, .p-deck small, .p-tedices small, .p-tachar small, .p-voz small { display: block; font-size: .68rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; opacity: .8; margin-bottom: 2px; }
+.p-lupa .pa p { margin: 0; font-size: .95rem; }
+.p-chat { background: color-mix(in srgb, var(--pk) 6%, var(--surface)); border-radius: 18px; padding: 12px 10px; gap: 10px; }
+.p-chat .cb { max-width: 86%; border-radius: 18px; padding: 9px 13px; line-height: 1.35; font-size: .95rem; text-align: left; }
+.p-chat .cb.l { align-self: flex-start; border: 1.5px solid var(--line); background: var(--surface); border-bottom-left-radius: 4px; font-family: var(--display); font-size: 1.02rem; color: var(--deep); }
+.p-chat .cb.l[aria-expanded="true"] { border-color: var(--pk); }
+.p-chat .cb.r { align-self: flex-end; background: var(--pok); color: var(--pokink); border-bottom-right-radius: 4px; }
+.dk { display: flex; flex-direction: column; gap: 10px; }
+.dk .dots { display: flex; gap: 5px; justify-content: center; } .dk .dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--line); transition: all .3s; } .dk .dots span.done { background: color-mix(in srgb, var(--pk) 45%, var(--surface)); } .dk .dots span.on { background: var(--pk); width: 20px; border-radius: 6px; }
+.dk .dc { border-radius: 20px; padding: 18px 16px; min-height: 150px; background: color-mix(in srgb, var(--pk) 10%, var(--surface)); border: 1.5px solid color-mix(in srgb, var(--pk) 30%, transparent); display: flex; flex-direction: column; gap: 10px; justify-content: center; text-align: center; box-shadow: 0 6px 0 -2px color-mix(in srgb, var(--pk) 14%, var(--surface)), 0 12px 0 -5px color-mix(in srgb, var(--pk) 8%, var(--surface)); }
+.dk .dc > b { font-family: var(--display); font-weight: 500; font-size: 1.2rem; color: var(--deep); line-height: 1.3; }
+.dk .dback { background: var(--pok); color: var(--pokink); border-radius: 14px; padding: 10px 12px; text-align: left; } .dk .dback p { margin: 0; font-size: .95rem; }
+.dk .yn { display: flex; gap: 8px; justify-content: center; } .dk .yn button { border: 1.5px solid var(--pk); background: var(--surface); color: var(--pk); border-radius: 999px; padding: 8px 22px; font-weight: 800; }
+.dk .q { margin: 0; font-size: .9rem; color: var(--muted); font-weight: 700; }
+.dk .rev { align-self: center; border: 0; background: var(--pk); color: var(--onc, #fff); border-radius: 999px; padding: 8px 18px; font-weight: 800; }
+.dk .nav-row span { font-size: .82rem; color: var(--muted); font-weight: 700; }
+.p-tachar .tc { border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
+.p-tachar .tc > button { border: 0; background: transparent; padding: 0; text-align: left; font-family: var(--display); font-size: 1.05rem; color: var(--deep); position: relative; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+.p-tachar .tc > button .tx { position: relative; }
+.p-tachar .tc > button .tx::after { content: ''; position: absolute; left: 0; top: 55%; height: 2px; width: 0; background: var(--me, var(--li)); transition: width .45s ease; }
+.p-tachar .tc.on > button .tx { color: var(--muted); } .p-tachar .tc.on > button .tx::after { width: 100%; }
+.p-tachar .tc > button i { font-style: normal; font-family: var(--body); font-size: .74rem; font-weight: 800; color: var(--pk); white-space: nowrap; }
+.p-tachar .nw { font-family: var(--display); font-size: 1.1rem; color: var(--pokink); background: var(--pok); border-radius: 12px; padding: 8px 12px; }
+.p-voz .vz { display: flex; flex-direction: column; gap: 6px; }
+.p-voz .cloud { align-self: flex-start; max-width: 88%; border: 1.5px dashed var(--muted); background: color-mix(in srgb, var(--muted) 8%, var(--surface)); border-radius: 22px 22px 22px 6px; padding: 10px 14px; text-align: left; font-family: var(--display); font-size: 1.02rem; color: var(--deep); display: grid; grid-template-columns: 22px 1fr; gap: 8px; align-items: start; }
+.p-voz .cloud svg, .p-voz .warm svg { width: 20px; height: 20px; margin-top: 2px; }
+.p-voz .warm { align-self: flex-end; max-width: 88%; background: color-mix(in srgb, var(--rose, var(--pk)) 14%, var(--surface)); border: 1.5px solid var(--rose, var(--pk)); border-radius: 22px 22px 6px 22px; padding: 10px 14px; font-family: var(--display); font-size: 1.05rem; color: var(--deep); display: grid; grid-template-columns: 22px 1fr; gap: 8px; }
+.p-voz .warm svg { color: var(--rose, var(--pk)); } .p-voz .cloud svg { color: var(--muted); }
+.dk .dback p, .p-chat .cb.r, .p-lupa .pa p { color: var(--ink); }
+
+
 </style>
 
 </head>
@@ -306,9 +347,9 @@ input#before, input#after { accent-color: var(--accent); }
       <span class="eyebrow">1 · ¿Cómo estás?</span>
       <p class="muted small">Las tres franjas son tu <b>ventana de tolerancia</b>: el margen en el que puedes sentir sin desbordarte. Las líneas punteadas marcan sus bordes.</p>
       <div class="zones" id="zones">
-        <button class="zone hiper" data-state="hiper" aria-pressed="false"><strong>Acelerado/a</strong><span>Ansiedad, tensión, pensamientos a mil, ganas de huir o estallar</span><em class="tag">Por encima de tu ventana</em><svg class="pic" viewBox="0 0 64 36" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="0" y1="8" x2="64" y2="8" stroke-width="1" stroke-dasharray="2 4" opacity=".5"/><line x1="0" y1="28" x2="64" y2="28" stroke-width="1" stroke-dasharray="2 4" opacity=".5"/><path d="M2 22 L10 18 L17 3 L24 24 L31 1 L38 20 L46 6 L54 16 L62 10"/></svg></button>
-        <button class="zone ventana" data-state="ventana" aria-pressed="false"><strong>Inquieto/a, pero puedo pensar</strong><span>Algo me remueve, aunque sigo teniendo claridad</span><em class="tag">Dentro de tu ventana</em><svg class="pic" viewBox="0 0 64 36" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="0" y1="8" x2="64" y2="8" stroke-width="1" stroke-dasharray="2 4" opacity=".5"/><line x1="0" y1="28" x2="64" y2="28" stroke-width="1" stroke-dasharray="2 4" opacity=".5"/><path d="M2 18 C10 10 18 10 24 18 S38 26 46 18 S58 12 62 16"/></svg></button>
-        <button class="zone hipo" data-state="hipo" aria-pressed="false"><strong>Apagado/a o desconectado/a</strong><span>Vacío, niebla, bloqueo, sensación de estar lejos</span><em class="tag">Por debajo de tu ventana</em><svg class="pic" viewBox="0 0 64 36" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="0" y1="8" x2="64" y2="8" stroke-width="1" stroke-dasharray="2 4" opacity=".5"/><line x1="0" y1="28" x2="64" y2="28" stroke-width="1" stroke-dasharray="2 4" opacity=".5"/><path d="M2 16 C12 16 16 34 28 34 S50 33 62 32"/></svg></button>
+        <button class="zone hiper" data-state="hiper" aria-pressed="false"><strong>Acelerada</strong><span>Ansiedad, tensión, pensamientos a mil, ganas de huir o estallar</span><em class="tag">Por encima de tu ventana</em><svg class="pic" viewBox="0 0 64 36" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="0" y1="8" x2="64" y2="8" stroke-width="1" stroke-dasharray="2 4" opacity=".5"/><line x1="0" y1="28" x2="64" y2="28" stroke-width="1" stroke-dasharray="2 4" opacity=".5"/><path d="M2 22 L10 18 L17 3 L24 24 L31 1 L38 20 L46 6 L54 16 L62 10"/></svg></button>
+        <button class="zone ventana" data-state="ventana" aria-pressed="false"><strong>Inquieta, pero puedo pensar</strong><span>Algo me remueve, aunque sigo teniendo claridad</span><em class="tag">Dentro de tu ventana</em><svg class="pic" viewBox="0 0 64 36" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="0" y1="8" x2="64" y2="8" stroke-width="1" stroke-dasharray="2 4" opacity=".5"/><line x1="0" y1="28" x2="64" y2="28" stroke-width="1" stroke-dasharray="2 4" opacity=".5"/><path d="M2 18 C10 10 18 10 24 18 S38 26 46 18 S58 12 62 16"/></svg></button>
+        <button class="zone hipo" data-state="hipo" aria-pressed="false"><strong>Apagada o desconectada</strong><span>Vacío, niebla, bloqueo, sensación de estar lejos</span><em class="tag">Por debajo de tu ventana</em><svg class="pic" viewBox="0 0 64 36" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="0" y1="8" x2="64" y2="8" stroke-width="1" stroke-dasharray="2 4" opacity=".5"/><line x1="0" y1="28" x2="64" y2="28" stroke-width="1" stroke-dasharray="2 4" opacity=".5"/><path d="M2 16 C12 16 16 34 28 34 S50 33 62 32"/></svg></button>
       </div>
     </div>
 
@@ -317,7 +358,7 @@ input#before, input#after { accent-color: var(--accent); }
       <p>Cuando prestas atención a tu cuerpo por dentro (respiración, pecho, tripa), ¿cómo te sientes?</p>
       <div class="bodycards" id="bodyChips">
         <button class="chip bodycard" data-body="ok" aria-pressed="false"><svg viewBox="0 0 60 70" aria-hidden="true"><circle cx="30" cy="16" r="10" fill="currentColor" opacity=".85"/><path d="M12 66c0-18 8-30 18-30s18 12 18 30z" fill="currentColor" opacity=".35"/><path d="M30 58s-8-5-8-11a4 4 0 0 1 8-2 4 4 0 0 1 8 2c0 6-8 11-8 11z" fill="currentColor"/><path d="M14 44l-5-3M46 44l5-3M30 36v-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg><span>Bien, me ayuda</span></button>
-        <button class="chip bodycard" data-body="cuesta" aria-pressed="false"><svg viewBox="0 0 60 70" aria-hidden="true"><circle cx="30" cy="16" r="10" fill="currentColor" opacity=".85"/><path d="M12 66c0-18 8-30 18-30s18 12 18 30z" fill="currentColor" opacity=".35"/><path d="M20 50c3-4 6 4 10 0s7 4 10 0M20 58c3-4 6 4 10 0s7 4 10 0" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg><span>Incómodo/a o me cuesta</span></button>
+        <button class="chip bodycard" data-body="cuesta" aria-pressed="false"><svg viewBox="0 0 60 70" aria-hidden="true"><circle cx="30" cy="16" r="10" fill="currentColor" opacity=".85"/><path d="M12 66c0-18 8-30 18-30s18 12 18 30z" fill="currentColor" opacity=".35"/><path d="M20 50c3-4 6 4 10 0s7 4 10 0M20 58c3-4 6 4 10 0s7 4 10 0" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg><span>Incómoda o me cuesta</span></button>
         <button class="chip bodycard" data-body="nose" aria-pressed="false"><svg viewBox="0 0 60 70" aria-hidden="true"><circle cx="30" cy="16" r="10" fill="currentColor" opacity=".85"/><path d="M12 66c0-18 8-30 18-30s18 12 18 30z" fill="currentColor" opacity=".35"/><path d="M25 47a5 5 0 1 1 7 4.6c-1.5.7-2 1.6-2 3M30 60v.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg><span>No lo sé</span></button>
       </div>
     </div>
@@ -369,7 +410,7 @@ input#before, input#after { accent-color: var(--accent); }
     </div>
     <div class="box">
       <span class="eyebrow">Cosas que nos decimos</span>
-      <p class="small">Toca cada tarjeta para ver lo que se sabe.</p>
+      <p class="small">Hay frases que repetimos sin pensarlo mucho. Toca cada una para mirarla de cerca y ver lo que se sabe.</p>
       <div class="flips" id="myths"></div>
     </div>
   </section>
@@ -382,6 +423,7 @@ input#before, input#after { accent-color: var(--accent); }
       <button class="chip" data-filter="aa" aria-pressed="false">De arriba abajo</button>
       <button class="chip" data-filter="ab" aria-pressed="false">Desde el cuerpo</button>
       <button class="chip" data-filter="suave" aria-pressed="false">De fuera hacia dentro</button>
+      <!--M+--><button class="chip" data-filter="peq" aria-pressed="false">Con mi bebé o mis peques</button><!--M-->
       <button class="chip" data-filter="fav" aria-pressed="false">★ Favoritas</button>
     </div>
     <div id="allList" class="card-list"></div>
@@ -462,15 +504,15 @@ const S = [
   { id:'problema', r:'aa', name:'Resolver el problema', when:'Cuando hay algo concreto que depende de ti.', states:['ventana'], guide:'problem',
     steps:['Define el problema en una frase.','Piensa en al menos tres opciones, sin juzgarlas.','Elige una y decide el primer paso pequeño.'] },
   { id:'lugar', r:'aa', name:'Mi lugar seguro', when:'Cuando necesitas un respiro mental.', states:['ventana','hiper'], guide:'timer', mins:3,
-    steps:['Imagina un lugar, real o inventado, donde te sientas tranquilo/a.','Fíjate en lo que ves, lo que oyes, la temperatura, los olores.','Quédate ahí unos minutos. Puedes volver cuando quieras.'] },
+    steps:['Imagina un lugar, real o inventado, donde te sientas tranquila.','Fíjate en lo que ves, lo que oyes, la temperatura, los olores.','Quédate ahí unos minutos. Puedes volver cuando quieras.'] },
   // Desde el cuerpo
-  { id:'respira', r:'ab', name:'Respiración con exhalación larga', when:'Cuando estás acelerado/a o con ansiedad.', states:['hiper'], guide:'breath',
+  { id:'respira', r:'ab', name:'Respiración con exhalación larga', when:'Cuando estás acelerada o con ansiedad.', states:['hiper'], guide:'breath',
     steps:['Siéntate con la espalda apoyada.','Toma aire por la nariz mientras el círculo crece (4 segundos).','Suéltalo despacio mientras se encoge (6 segundos).'] },
   { id:'suspiro', r:'ab', name:'Suspiro doble', when:'Cuando necesitas bajar la tensión rápido.', states:['hiper'], guide:'reps', reps:3, rep:'Inspira, añade una segunda inspiración corta encima y suelta todo despacio por la boca.',
     steps:['Toma aire por la nariz.','Sin soltarlo, haz una segunda inspiración corta.','Suelta todo el aire muy despacio por la boca. Repite 3 veces.'] },
   { id:'relajacion', r:'ab', name:'Relajación muscular', when:'Cuando notas el cuerpo rígido o tenso.', states:['hiper'], guide:'pmr',
     steps:['Tensa cada zona 5 segundos, sin hacerte daño.','Suéltala de golpe y nota la diferencia durante 10 segundos.','Sigue las indicaciones zona por zona.'] },
-  { id:'mano', r:'ab', name:'Mano en el pecho', when:'Cuando te sientes solo/a o necesitas consuelo.', states:['hiper','ventana'], guide:'timer', mins:2,
+  { id:'mano', r:'ab', name:'Mano en el pecho', when:'Cuando te sientes sola o necesitas consuelo.', states:['hiper','ventana'], guide:'timer', mins:2,
     steps:['Pon una mano en el pecho o en la tripa.','Nota el calor de tu mano y el movimiento al respirar.','Si te apetece, date un abrazo o dite algo amable.'] },
   { id:'sacudir', r:'ab', name:'Moverme y sacudir', when:'Cuando tienes rabia o mucha energía acumulada.', states:['hiper','hipo'], guide:'timer', mins:2,
     steps:['Ponte de pie.','Sacude manos, brazos, piernas, como si te quitaras agua de encima.','También puedes caminar rápido o bailar una canción.'] },
@@ -478,29 +520,41 @@ const S = [
     steps:['Lávate la cara o las muñecas con agua fresca.','O sostén algo frío unos segundos.','Respira despacio mientras lo notas.'] },
   { id:'estirar', r:'ab', name:'Estirar', when:'Cuando llevas mucho rato en tensión.', states:['hiper','hipo'], guide:'timer', mins:3,
     steps:['Estira despacio cuello, hombros, espalda y piernas.','Acompaña cada estiramiento con una respiración.','Sin forzar: solo hasta donde sea agradable.'] },
-  { id:'voz', r:'ab', name:'Voz y sonido', when:'Cuando te notas nervioso/a y no puedes parar.', states:['hiper'], guide:'timer', mins:2,
+  { id:'voz', r:'ab', name:'Voz y sonido', when:'Cuando te notas nerviosa y no puedes parar.', states:['hiper'], guide:'timer', mins:2,
     steps:['Tararea una canción o haz un sonido largo "mmm".','Nota la vibración en la cara y el pecho.','Repite varias veces, sin prisa.'] },
   // De fuera hacia dentro
-  { id:'orientar', r:'suave', name:'Orientarme en el espacio', when:'Cuando te sientes lejos o desconectado/a.', states:['hipo','hiper'], guide:'orient',
+  { id:'orientar', r:'suave', name:'Orientarme en el espacio', when:'Cuando te sientes lejos o desconectada.', states:['hipo','hiper'], guide:'orient',
     steps:['Mira a tu alrededor despacio, girando la cabeza.','Nombra cinco objetos y su color.','Recuerda dónde estás, qué día es y que ahora estás aquí.'] },
-  { id:'sentidos', r:'suave', name:'Mis cinco sentidos', when:'Cuando estás atrapado/a en tu cabeza.', states:['hiper','hipo','ventana'], guide:'senses',
+  { id:'sentidos', r:'suave', name:'Mis cinco sentidos', when:'Cuando estás atrapada en tu cabeza.', states:['hiper','hipo','ventana'], guide:'senses',
     steps:['Nombra 5 cosas que ves.','4 que oyes, 3 que puedes tocar.','2 que hueles y 1 que saboreas.'] },
   { id:'ancla', r:'suave', name:'Objeto ancla', when:'Cuando necesitas algo concreto a lo que agarrarte.', states:['hiper','hipo'], guide:'timer', mins:2,
     steps:['Coge un objeto con textura: una piedra, una tela, una pelota.','Descríbelo con detalle: peso, temperatura, bordes, color.','Si tu mente se va, vuelve al objeto.'] },
   { id:'pies', r:'suave', name:'Pies en el suelo', when:'Cuando te notas flotando o en blanco.', states:['hipo','hiper'], guide:'reps', reps:5, rep:'Empuja los pies contra el suelo (o las manos contra una pared) durante 5 segundos. Suelta.',
     steps:['Con los ojos abiertos, apoya bien los pies.','Empuja el suelo con fuerza 5 segundos y suelta.','Nota el apoyo. Repite 5 veces.'] },
-  { id:'ritmo', r:'suave', name:'Movimiento rítmico', when:'Cuando quedarte quieto/a te agobia.', states:['hiper','hipo'], guide:'timer', mins:3,
+  { id:'ritmo', r:'suave', name:'Movimiento rítmico', when:'Cuando quedarte quieta te agobia.', states:['hiper','hipo'], guide:'timer', mins:3,
     steps:['Camina contando los pasos, mécete o bota una pelota.','Busca un ritmo cómodo y mantenlo.','No hace falta mirar hacia dentro: el ritmo hace el trabajo.'] },
   { id:'manos', r:'suave', name:'Manos ocupadas', when:'Cuando no consigues parar la mente.', states:['hiper','ventana'], guide:'timer', mins:10,
     steps:['Elige algo con las manos: dibujar, colorear, amasar, ordenar.','Pon la atención en la tarea, no en ti.','Cuando la mente se vaya, vuelve a lo que haces.'] },
   { id:'olores', r:'suave', name:'Olores y sabores', when:'Cuando necesitas volver al presente rápido.', states:['hipo','hiper'], guide:'timer', mins:1,
     steps:['Huele algo agradable: café, una crema, un aceite.','O toma algo con sabor intenso, despacio.','Describe en voz baja lo que notas.'] },
-  { id:'musica', r:'suave', name:'Música', when:'Cuando te sientes apagado/a o sin energía.', states:['hipo'], guide:'timer', mins:4,
+  { id:'musica', r:'suave', name:'Música', when:'Cuando te sientes apagada o sin energía.', states:['hipo'], guide:'timer', mins:4,
     steps:['Pon una canción que te guste.','Sigue el ritmo con el pie o los dedos.','Si te apetece, canta o muévete.'] },
   { id:'compania', r:'suave', name:'Compañía que calma', when:'Cuando estar a solas lo hace más difícil.', states:['hiper','hipo'], guide:'none',
     steps:['Escribe o llama a alguien de confianza.','O acaricia a un animal, o escucha una voz tranquila.','Calmarse con otros también es regularse.'] },
-  { id:'manta', r:'suave', name:'Peso y abrigo', when:'Cuando necesitas sentirte contenido/a.', states:['hipo','hiper'], guide:'timer', mins:3,
+  { id:'manta', r:'suave', name:'Peso y abrigo', when:'Cuando necesitas sentirte contenida.', states:['hipo','hiper'], guide:'timer', mins:3,
     steps:['Tápate con una manta pesada o ponte una sudadera.','Apóyate en un cojín o contra el respaldo.','Nota el peso que te sostiene.'] },
+  /*M+*/// Con mi bebé o mis peques (solo en La Madrería)
+  { id:'conbebe', r:'peq', name:'Respirar con mi bebé en brazos', when:'Cuando tu bebé llora y notas que tú también te aceleras.', states:['hiper'], guide:'breath',
+    steps:['Apoya a tu bebé contra tu pecho, bien sujeto, y afloja los hombros.','Suelta el aire despacio y largo, como un suspiro. Tu bebé nota cómo sube y baja tu pecho.','Repite unas cuantas veces. Calmarte tú es la primera forma de calmarle.'] },
+  { id:'mecer', r:'peq', name:'Mecernos', when:'Cuando los dos necesitáis calma.', states:['hiper','hipo'], guide:'timer', mins:2,
+    steps:['De pie o sentada, empieza un balanceo lento de lado a lado, con o sin tu bebé en brazos.','Busca un ritmo tranquilo y repetido: el ritmo calma tu sistema nervioso y también el suyo.','Si te ayuda, tararea una canción o un «mmm» largo.'] },
+  { id:'mirarfuera', r:'peq', name:'Un respiro sin soltarle', when:'Cuando no puedes apartarte, pero necesitas un respiro.', states:['hiper','ventana'], guide:'mirar',
+    steps:['Sin soltar a tu bebé, busca con la vista algo agradable: una planta, la ventana, un color que te guste.','Nombra por dentro tres cosas que ves y nota tus pies en el suelo.','Es un respiro de segundos, pero cuenta.'] },
+  { id:'fraseancla', r:'peq', name:'Mi frase ancla', when:'Cuando su llanto o su rabieta te desbordan.', states:['hiper','ventana'], guide:'frase',
+    steps:['Elige una frase corta que te recuerde lo que está pasando: «No es una emergencia» o «Lo está pasando mal, no me lo está haciendo a mí».','Dítela por dentro mientras sueltas el aire despacio.','Repítela las veces que haga falta.'] },
+  { id:'pausasegura', r:'peq', name:'Una pausa segura', when:'Cuando sientes que vas a perder el control.', states:['hiper'], guide:'pausa',
+    steps:['Si es un bebé, déjale en un lugar seguro, como la cuna. Si es más mayor, asegúrate de que está a salvo.','Aléjate unos pasos o sal un momento de la habitación. Respira y moja tus manos con agua fresca.','Vuelve cuando estés algo más tranquila. Un bebé que llora en un lugar seguro está bien. Nunca le zarandees.'] },
+  /*M-*/
 ];
 const I = (inner, extra='') => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ${extra}>${inner}</svg>`;
 const P = (d) => `<path d="${d}"/>`;
@@ -530,13 +584,19 @@ const ICON = {
   musica: P('M9 18V5l11-2v13') + '<circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/>',
   compania: '<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/>' + P('M3 20c0-3.6 2.7-6 6-6s6 2.4 6 6M15 14.2c3.2-.4 6 1.6 6 5'),
   manta: P('M3 7c3-2 6 2 9 0s6-2 9 0v11c-3-2-6 2-9 0s-6-2-9 0V7zM3 12.5c3-2 6 2 9 0s6-2 9 0'),
+  /*M+*/conbebe: '<circle cx="9" cy="5.5" r="2.5"/>' + P('M4 20c0-5 2-8 5-8 2 0 3 1 4 2') + '<circle cx="16" cy="13.5" r="2"/>' + P('M11 17.5c1.5 1.5 6 1.5 8-1'),
+  mecer: P('M4 15c4 4 12 4 16 0') + '<circle cx="12" cy="7" r="3"/>' + P('M12 10v4'),
+  mirarfuera: P('M2 12s4-6 10-6 10 6 10 6-4 6-10 6S2 12 2 12z') + '<circle cx="12" cy="12" r="2.5"/>',
+  fraseancla: P('M4 5h16v10H10l-5 4v-4H4z') + P('M8 10h8'),
+  pausasegura: P('M6 21V4h10v17M4 21h16') + '<circle cx="13" cy="13" r=".9" fill="currentColor"/>',/*M-*/
 };
 const RICON = {
   aa: '<circle cx="12" cy="5" r="3"/>' + P('M12 10v10M8 16l4 4 4-4'),
   ab: '<circle cx="12" cy="5" r="3"/>' + P('M12 21V11M8 15l4-4 4 4'),
   suave: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/>',
+  /*M+*/peq: '<circle cx="8" cy="6" r="2.5"/><circle cx="16.5" cy="10.5" r="2"/>' + P('M4 20c0-4 1.8-7 4-7s4 3 4 7M13.5 20c0-2.8 1.3-4.8 3-4.8s3 2 3 4.8'),/*M-*/
 };
-const ROUTE = { aa:'De arriba abajo', ab:'Desde el cuerpo', suave:'De fuera hacia dentro' };
+const ROUTE = { aa:'De arriba abajo', ab:'Desde el cuerpo', suave:'De fuera hacia dentro'/*M+*/, peq:'Con mi bebé o mis peques'/*M-*/ };
 const ORDER = {
   hiper:{ ok:['respira','suspiro','agua','sacudir','relajacion','voz','sentidos','mano'], cuesta:['sentidos','orientar','pies','agua','ritmo','ancla','olores','manos'] },
   hipo:{ ok:['orientar','pies','agua','sacudir','musica','estirar','olores','compania'], cuesta:['orientar','pies','musica','olores','ritmo','manta','compania','ancla'] },
@@ -555,6 +615,32 @@ let state = { zone: null, body: store.get('body', null), favs: store.get('favs',
 
 function toast(msg) { const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(toast._t); toast._t = setTimeout(() => t.hidden = true, 2200); }
 function esc(s) { return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+const PQ1 = (s) => document.querySelector(s), PQ = (s) => [...document.querySelectorAll(s)];
+/* Pares en varios formatos, para que no se repita siempre la misma tarjeta: flip, lupa, chat, deck, tedices (para «lo que se sabe») y tachar, voz (para «me digo») */
+const PICO = { lupa: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/>', cloud: '<path d="M7 18a4 4 0 0 1-.6-8A5.5 5.5 0 0 1 17 8.5a4.5 4.5 0 0 1 .5 9z"/>', heart: '<path d="M12 20s-7-4.4-7-10A4 4 0 0 1 12 7a4 4 0 0 1 7 3c0 5.6-7 10-7 10z"/>' };
+function pairsUI(sel, list, style, o) {
+  o = o || {}; const el = PQ1(sel), F = o.front || 'Me digo', B = o.back || 'Lo que se sabe', k = sel.replace(/\W/g, '');
+  if (style === 'flip') { el.className = 'flips'; el.innerHTML = list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-pf${k}="${i}"><span class="in"><span class="ff"><small>${F}</small><b>«${esc(a)}»</b><i>${o.hint || 'Toca para ver lo que se sabe ↻'}</i></span><span class="fb"><small>${B}</small>${o.bold ? `<b>«${esc(b)}»</b>` : `<span class="small">${esc(b)}</span>`}</span></span></button>`).join(''); (typeof flipBind === 'function' ? flipBind(`[data-pf${k}]`) : 0); return; }
+  el.className = 'pairs p-' + style;
+  const q = (b) => o.bold ? `«${esc(b)}»` : esc(b);
+  if (style === 'lupa') { let op = -1; const r = () => { el.innerHTML = list.map(([a, b], i) => `<div class="pl${op === i ? ' on' : ''}"><button data-pl${k}="${i}" aria-expanded="${op === i}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">${PICO.lupa}</svg><span>«${esc(a)}»</span></button>${op === i ? `<div class="pa pop"><small>${B}</small><p>${q(b)}</p></div>` : ''}</div>`).join(''); PQ(`[data-pl${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['pl' + k]; op = op === n ? -1 : n; r(); }); }; r(); return; }
+  if (style === 'chat') { const on = new Set(); const r = () => { el.innerHTML = list.map(([a, b], i) => `<button class="cb l" data-pc${k}="${i}" aria-expanded="${on.has(i)}"><small>${F}</small>${esc(a)}</button>${on.has(i) ? `<div class="cb r pop"><small>${B}</small>${q(b)}</div>` : ''}`).join(''); PQ(`[data-pc${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['pc' + k]; on.has(n) ? on.delete(n) : on.add(n); r(); }); }; r(); return; }
+  if (style === 'deck' || style === 'tedices') {
+    let i = 0, shown = false; const ans = {};
+    const r = () => { const [a, b] = list[i], all = Object.keys(ans).length === list.length, yes = Object.values(ans).filter(Boolean).length;
+      el.innerHTML = `<div class="dk"><div class="dots">${list.map((_, j) => `<span class="${j === i ? 'on' : (ans[j] !== undefined || (style === 'deck' && j < i)) ? 'done' : ''}"></span>`).join('')}</div>
+        <div class="dc pop"><small>${F}</small><b>«${esc(a)}»</b>
+        ${style === 'tedices' && !shown ? `<p class="q">¿Te lo has dicho alguna vez?</p><div class="yn"><button data-yn="1">Sí</button><button data-yn="0">No</button></div>` : ''}
+        ${style === 'deck' && !shown ? `<button class="rev">Ver lo que se sabe</button>` : ''}
+        ${shown ? `<div class="dback pop"><small>${B}</small><p>${style === 'tedices' && ans[i] ? 'Es muy habitual decírselo. ' : ''}${q(b)}</p></div>` : ''}</div>
+        <div class="nav-row">${i ? '<button class="btn ghost small" data-dv="-1">← Anterior</button>' : '<span></span>'}<span>${i + 1} de ${list.length}</span>${i < list.length - 1 ? '<button class="btn small" data-dv="1">Siguiente →</button>' : '<span></span>'}</div>
+        ${style === 'tedices' && all ? `<div class="ok small pop">Te has dicho ${yes} de estas ${list.length} frases. No son toda la verdad: la próxima vez que aparezcan, puedes recordar lo que se sabe.</div>` : ''}</div>`;
+      PQ(`${sel} [data-yn]`).forEach(x => x.onclick = () => { ans[i] = x.dataset.yn === '1'; shown = true; r(); });
+      const rv = PQ1(`${sel} .rev`); if (rv) rv.onclick = () => { shown = true; r(); };
+      PQ(`${sel} [data-dv]`).forEach(x => x.onclick = () => { i += +x.dataset.dv; shown = style === 'tedices' ? ans[i] !== undefined : false; r(); });
+    }; r(); return; }
+}
+
 
 function cardHTML(s) {
   const fav = state.favs.includes(s.id);
@@ -584,7 +670,8 @@ function renderSuggestions() {
 function renderAll() {
   const groups = [['aa','De arriba abajo','Trabajan con lo que piensas y cómo te hablas. Mejor cuando puedes pensar con claridad.'],
                   ['ab','Desde el cuerpo','Para quienes conectan con facilidad con su cuerpo. Muy útiles cuando la emoción es intensa.'],
-                  ['suave','De fuera hacia dentro','Para quienes les cuesta conectar con su cuerpo: empiezan por lo que te rodea.']];
+                  ['suave','De fuera hacia dentro','Para quienes les cuesta conectar con su cuerpo: empiezan por lo que te rodea.']/*M+*/,
+                  ['peq','Con mi bebé o mis peques','Para calmarte tú cuando no puedes apartarte o cuando su llanto o sus rabietas te aceleran. Tu calma también le ayuda a encontrar la suya.']/*M-*/];
   let html = '';
   for (const [r, t, d] of groups) {
     let list = S.filter(s => s.r === r);
@@ -651,6 +738,7 @@ function fmt(s) { return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '
 
 const FIGB = '<circle cx="50" cy="22" r="9" fill="var(--deep)"/>';
 const ANIM = {
+  /*M+*/mecer: `<svg class="anim" viewBox="0 0 100 100" aria-hidden="true"><g class="a-metro" style="transform-origin:50px 92px"><circle cx="50" cy="22" r="9" fill="var(--deep)"/><path d="M50 31v34M50 65l-10 24M50 65l10 24" stroke="var(--deep)" stroke-width="5" stroke-linecap="round"/><ellipse cx="50" cy="46" rx="14" ry="8" fill="var(--accent)" opacity=".85"/><circle cx="38" cy="43" r="5" fill="var(--accent)"/></g></svg>`,/*M-*/
   sacudir: `<svg class="anim" viewBox="0 0 100 100" aria-hidden="true"><g class="a-shake">${FIGB}<path d="M50 31v30M50 61l-10 26M50 61l10 26" stroke="var(--deep)" stroke-width="5" stroke-linecap="round"/><path class="a-arm-l" d="M50 40l-20 12" stroke="var(--deep)" stroke-width="5" stroke-linecap="round"/><path class="a-arm-r" d="M50 40l20 12" stroke="var(--deep)" stroke-width="5" stroke-linecap="round"/></g><path class="a-fade" d="M18 40l-6-2M18 50h-8M82 40l6-2M82 50h8" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/></svg>`,
   estirar: `<svg class="anim" viewBox="0 0 100 100" aria-hidden="true">${FIGB}<path d="M50 31v30M50 61l-10 26M50 61l10 26" stroke="var(--deep)" stroke-width="5" stroke-linecap="round"/><g class="a-stretch"><path d="M50 38l-16-20M50 38l16-20" stroke="var(--deep)" stroke-width="5" stroke-linecap="round"/></g></svg>`,
   agua: `<svg class="anim" viewBox="0 0 100 100" aria-hidden="true"><path d="M30 18h40v8H30z" fill="var(--muted)"/><path d="M46 26h8v6h-8z" fill="var(--muted)"/>${[0, 1, 2].map(i => `<path class="a-drop" style="animation-delay:${i * .45}s" d="M50 38c0 0 5 6 5 9a5 5 0 0 1-10 0c0-3 5-9 5-9z" fill="var(--accent)"/>`).join('')}<path d="M28 82c6-8 16-10 22-10s16 2 22 10" stroke="var(--deep)" stroke-width="5" fill="none" stroke-linecap="round"/><path class="a-splash" d="M38 74l-4-4M62 74l4-4M50 70v-5" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/></svg>`,
@@ -697,6 +785,55 @@ function buildGuide(s) {
     case 'timer': timerWidget(g, s.mins, ANIM[s.id]); break;
     case 'write': g.innerHTML = '<textarea id="gW" rows="8" placeholder="Escribe aquí lo que salga. No se guarda."></textarea><div style="width:100%"></div>'; { const d = document.createElement('div'); g.appendChild(d); timerWidget(d, s.mins); d.style.display='flex'; d.style.flexDirection='column'; d.style.alignItems='center'; d.style.gap='12px'; } break;
     case 'none': g.hidden = true; break;
+    /*M+*/case 'mirar': {
+      let n = 0;
+      const OBJ = [(x) => `<g transform="translate(${x} 118)"><g class="pop"><path d="M-10 0h20l-3 18h-14z" fill="color-mix(in srgb, var(--accent) 40%, var(--surface))"/><path d="M0 0c-2-14-12-18-16-16 2 8 8 14 16 16zM0 0c2-16 12-20 17-18-2 9-9 16-17 18zM0 0v-22" stroke="var(--good, #2C6E5D)" stroke-width="2" fill="color-mix(in srgb, var(--good, #2C6E5D) 35%, transparent)"/></g></g>`,
+        (x) => `<g transform="translate(${x} 58)"><g class="pop"><circle r="12" fill="#F2C14E"/><ellipse cx="14" cy="8" rx="16" ry="8" fill="var(--surface)"/></g></g>`,
+        (x) => `<g transform="translate(${x} 122)"><g class="pop"><rect x="-11" y="-4" width="22" height="18" rx="4" fill="#D9775B"/><path d="M11 0c7 0 7 9 0 9" stroke="#D9775B" stroke-width="3" fill="none"/><path d="M-4 -9c0-4 4-4 4-8M3 -9c0-4 4-4 4-8" stroke="var(--muted)" stroke-width="1.5" fill="none"/></g></g>`];
+      const draw = () => {
+        let h = `<rect width="220" height="170" rx="18" fill="color-mix(in srgb, var(--accent) 8%, var(--surface))"/><rect x="118" y="26" width="78" height="64" rx="6" fill="color-mix(in srgb, #9CC9E0 40%, var(--surface))" stroke="var(--accent)" stroke-width="2"/><path d="M157 26v64M118 58h78" stroke="var(--accent)" stroke-width="2"/><path d="M14 140h192" stroke="var(--line)" stroke-width="3"/>`;
+        if (n >= 1) h += OBJ[0](52); if (n >= 2) h += OBJ[1](150); if (n >= 3) h += OBJ[2](110);
+        if (n >= 4) h += `<g class="pop" fill="var(--deep)"><ellipse cx="96" cy="152" rx="8" ry="5"/><ellipse cx="124" cy="152" rx="8" ry="5"/></g>`;
+        const P = ['Sin soltar a tu bebé, busca con la vista algo agradable.', 'Otra cosa que ves. ¿De qué color es?', 'Y una tercera.', 'Ahora nota tus pies apoyados en el suelo.', 'Unos segundos de respiro también cuentan.'][n];
+        g.innerHTML = `<svg viewBox="0 0 220 170" style="width:100%;max-width:280px" aria-hidden="true">${h}</svg><div class="counter">${[0, 1, 2, 3].map(k => `<span class="dot ${k < n ? 'on' : ''}"></span>`).join('')}</div><p class="prompt" style="text-align:center">${P}</p>${n < 4 ? `<button class="btn" id="mfN">${n < 3 ? 'Ya lo veo' : 'Los noto'}</button>` : `<button class="btn link" id="mfR">Otra vez</button>`}`;
+        const b1 = g.querySelector('#mfN'); if (b1) b1.onclick = () => { n++; draw(); };
+        const b2 = g.querySelector('#mfR'); if (b2) b2.onclick = () => { n = 0; draw(); };
+      };
+      draw(); break; }
+    case 'frase': {
+      const FR = ['No es una emergencia.', 'Lo está pasando mal, no me lo está haciendo a mí.', 'Esto pasará.', 'Puedo con este momento.', 'Primero respiro, luego actúo.', 'Está aprendiendo, y yo también.'];
+      let mine = store.get('ancla', '');
+      const draw = () => {
+        g.innerHTML = `<div class="chips" style="justify-content:center">${FR.map(f => `<button class="chip" data-fa="${esc(f)}" aria-pressed="${mine === f}">${esc(f)}</button>`).join('')}</div>
+          <input type="text" id="faOwn" placeholder="O escribe la tuya" value="${FR.includes(mine) ? '' : esc(mine)}" style="width:100%">
+          ${mine ? `<div class="pop" style="width:100%;text-align:center;padding:26px 18px;border-radius:22px;background:color-mix(in srgb, var(--accent) 12%, var(--surface));border:2px solid var(--accent)"><div id="faB" style="font-family:var(--display);font-size:1.5rem;color:var(--deep);transition:transform 4s ease-in-out">«${esc(mine)}»</div></div><p class="muted small" id="faL" style="text-align:center">Dítela por dentro mientras sueltas el aire despacio.</p>` : '<p class="muted small" style="text-align:center">Elige la frase que más te sirva. Se quedará guardada para la próxima vez.</p>'}`;
+        g.querySelectorAll('[data-fa]').forEach(b => b.onclick = () => { mine = b.dataset.fa; store.set('ancla', mine); clearTimers(); draw(); });
+        const inp = g.querySelector('#faOwn'); inp.onchange = () => { const v = inp.value.trim(); if (v) { mine = v; store.set('ancla', mine); clearTimers(); draw(); } };
+        const B = g.querySelector('#faB'), L = g.querySelector('#faL');
+        if (B) { let up = true; const step = () => { B.style.transitionDuration = up ? '4s' : '6s'; B.style.transform = up ? 'scale(1.08)' : 'scale(.94)'; L.textContent = up ? 'Toma aire…' : 'Suéltalo despacio y dítela por dentro.'; timers.push(setTimeout(() => { up = !up; step(); }, up ? 4000 : 6000)); }; timers.push(setTimeout(step, 300)); }
+      };
+      draw(); break; }
+    case 'pausa': {
+      let st = 0, left = 60;
+      const draw = () => {
+        let body = '';
+        if (st === 0) body = `<p class="prompt" style="text-align:center">Primero, que tu peque esté a salvo.</p><p class="muted small" style="text-align:center">Si es un bebé, déjale en la cuna o en otro lugar seguro. Si es más mayor, asegúrate de que no corre peligro.</p><button class="btn" id="pzN">Ya está a salvo</button>`;
+        if (st === 1) body = `<svg viewBox="0 0 220 150" style="width:100%;max-width:260px" aria-hidden="true"><rect width="220" height="150" rx="18" fill="color-mix(in srgb, var(--accent) 8%, var(--surface))"/><rect x="40" y="26" width="56" height="104" rx="4" fill="color-mix(in srgb, var(--accent) 25%, var(--surface))" stroke="var(--accent)" stroke-width="2"/><circle cx="86" cy="80" r="3" fill="var(--accent)"/><circle id="pzC" cx="152" cy="78" r="26" fill="var(--accent)" opacity=".18" style="transition:r 4s ease-in-out"/><text x="152" y="84" text-anchor="middle" font-family="var(--display)" font-size="18" fill="var(--deep)" id="pzT">1:00</text></svg>
+          <p class="prompt" style="text-align:center" id="pzP">Aléjate unos pasos y respira.</p><p class="muted small" style="text-align:center">Si puedes, moja tus manos o tu cara con agua fresca.</p>`;
+        if (st === 2) body = `<p class="prompt" style="text-align:center">¿Estás algo más tranquila?</p><div class="row"><button class="btn" id="pzY">Sí, vuelvo</button><button class="btn link" id="pzM">Necesito un poco más</button></div>`;
+        if (st === 3) body = `<p class="prompt" style="text-align:center">Has parado a tiempo. Eso es cuidar.</p><p class="muted small" style="text-align:center">Cuando vuelvas, no hace falta que lo hagas perfecto: basta con estar a su lado un poco más tranquila.</p><button class="btn link" id="pzR">Volver a empezar</button>`;
+        g.innerHTML = body + `<div class="note small" style="width:100%">Un bebé que llora en un lugar seguro está bien. Nunca le zarandees. Si sientes que no puedes más, llama a alguien de confianza para que te releve${st === 2 ? ', o al <b>112</b> si hay peligro' : ''}.</div>`;
+        const q = (id) => g.querySelector(id);
+        if (q('#pzN')) q('#pzN').onclick = () => { st = 1; left = 60; draw(); };
+        if (q('#pzY')) q('#pzY').onclick = () => { st = 3; draw(); };
+        if (q('#pzM')) q('#pzM').onclick = () => { st = 1; left = 60; draw(); };
+        if (q('#pzR')) q('#pzR').onclick = () => { st = 0; draw(); };
+        if (st === 1) { const C = q('#pzC'), T = q('#pzT'), Pp = q('#pzP'); let up = true;
+          const br = () => { C.setAttribute('r', up ? 44 : 26); C.style.transitionDuration = up ? '4s' : '6s'; Pp.textContent = up ? 'Toma aire…' : 'Suéltalo despacio.'; timers.push(setTimeout(() => { up = !up; br(); }, up ? 4000 : 6000)); };
+          timers.push(setTimeout(br, 200));
+          timers.push(setInterval(() => { left--; T.textContent = `0:${String(Math.max(left, 0)).padStart(2, '0')}`; if (left <= 0) { clearTimers(); st = 2; draw(); } }, 1000)); }
+      };
+      draw(); break; }/*M-*/
     case 'breath': {
       const PATS = { '46': ['4-6 calmante', [['Toma aire', 4, 'in'], ['Suelta despacio', 6, 'out']]], 'sq': ['Cuadrada', [['Toma aire', 4, 'in'], ['Mantén', 4, 'hold'], ['Suelta', 4, 'out'], ['Mantén vacío', 4, 'hold']]], '478': ['4-7-8 para dormir', [['Toma aire', 4, 'in'], ['Mantén', 7, 'hold'], ['Suelta muy despacio', 8, 'out']]] };
       let pat = '46', CYC = 6;
@@ -708,7 +845,7 @@ function buildGuide(s) {
         const shape = pat === 'sq' ? `<rect x="14" y="14" width="192" height="192" rx="14" fill="none" stroke="var(--line)" stroke-width="4"/>` : arcs;
         g.innerHTML = `<div class="chips" style="justify-content:center">${Object.entries(PATS).map(([k, [n]]) => `<button class="chip" data-pat="${k}" aria-pressed="${k === pat}">${n}</button>`).join('')}</div>
           <div class="bstage"><svg viewBox="0 0 220 220" aria-hidden="true">${shape}<circle id="bDot" r="9" fill="var(--deep)" cx="${pat === 'sq' ? 14 : 110}" cy="${pat === 'sq' ? 206 : 18}"/></svg>
-            <div class="bball" id="bBall"></div><div class="btext"><span id="bL">Listo/a</span><b id="bN"></b></div></div>
+            <div class="bball" id="bBall"></div><div class="btext"><span id="bL">Lista</span><b id="bN"></b></div></div>
           <p class="muted small" id="bC">${CYC} respiraciones · Puedes parar cuando quieras</p><div class="row"><button class="btn" id="bGo">Empezar</button></div>`;
         g.querySelectorAll('[data-pat]').forEach(x => x.onclick = () => { clearTimers(); pat = x.dataset.pat; draw(); });
         const ball = g.querySelector('#bBall'), L = g.querySelector('#bL'), N = g.querySelector('#bN'), dot = g.querySelector('#bDot'), Cc = g.querySelector('#bC');
@@ -749,7 +886,7 @@ function buildGuide(s) {
         <path class="part" data-z="4" d="M48 34c4 8 20 8 24 0v6c-4 6-20 6-24 0z"/>
         <rect class="part" data-z="6" x="40" y="128" width="17" height="66" rx="8"/><rect class="part" data-z="6" x="63" y="128" width="17" height="66" rx="8"/>
         <ellipse class="part" data-z="7" cx="46" cy="206" rx="13" ry="7"/><ellipse class="part" data-z="7" cx="74" cy="206" rx="13" ry="7"/></svg>`;
-      g.innerHTML = `${FIG}<p class="prompt" id="gP">Pulsa empezar cuando estés cómodo/a.</p><div class="timer" id="gT" style="font-size:1.8rem"></div><button class="btn" id="gGo">Empezar</button>`;
+      g.innerHTML = `${FIG}<p class="prompt" id="gP">Pulsa empezar cuando estés cómoda.</p><div class="timer" id="gT" style="font-size:1.8rem"></div><button class="btn" id="gGo">Empezar</button>`;
       const hl = (z) => g.querySelectorAll('.body-fig .part').forEach(p => p.classList.toggle('on', +p.dataset.z === z));
       g.querySelector('#gGo').onclick = (e) => {
         e.target.hidden = true; let i = 0;
@@ -839,7 +976,7 @@ function FACE(v) {
 }
 const setFaces = () => { const b = document.getElementById('beforeFace'), a = document.getElementById('afterFace'); if (b) b.innerHTML = FACE(+document.getElementById('before').value); if (a) a.innerHTML = FACE(+document.getElementById('after').value); };
 document.addEventListener('input', (e) => { if (e.target.id === 'before' || e.target.id === 'after') setFaces(); });
-const WORD = (v) => v <= 2 ? 'Bien' : v <= 4 ? 'Algo removido/a' : v <= 6 ? 'Regular' : v <= 8 ? 'Mal' : 'Me desborda';
+const WORD = (v) => v <= 2 ? 'Bien' : v <= 4 ? 'Algo removida' : v <= 6 ? 'Regular' : v <= 8 ? 'Mal' : 'Me desborda';
 $('#before').oninput = (e) => { $('#beforeVal').textContent = e.target.value; $('#beforeWord').textContent = WORD(+e.target.value); };
 $('#after').oninput = (e) => { $('#afterVal').textContent = e.target.value; $('#afterWord').textContent = WORD(+e.target.value); updateResult(); };
 $('#pClose').onclick = closePlayer;
@@ -891,8 +1028,8 @@ function drawVw() {
 }
 const RT = {
   aa: { n: 'De arriba abajo', c: 'var(--r-aa-ink)', t: 'Empiezas por lo que piensas y por cómo te hablas, y eso calma también al cuerpo. Funciona mejor cuando estás dentro de tu ventana y puedes pensar con claridad.' },
-  ab: { n: 'Desde el cuerpo', c: 'var(--r-ab-ink)', t: 'Empiezas por la respiración, los músculos o el movimiento, y el cuerpo le avisa a la mente de que puede bajar la guardia. Es muy útil cuando la emoción es intensa y te notas acelerado/a.' },
-  suave: { n: 'De fuera hacia dentro', c: 'var(--r-su-ink)', t: 'Empiezas por lo que te rodea: lo que ves, oyes, hueles o tocas. Es el camino más amable cuando mirar hacia dentro te agobia o cuando te sientes lejos o desconectado/a.' },
+  ab: { n: 'Desde el cuerpo', c: 'var(--r-ab-ink)', t: 'Empiezas por la respiración, los músculos o el movimiento, y el cuerpo le avisa a la mente de que puede bajar la guardia. Es muy útil cuando la emoción es intensa y te notas acelerada.' },
+  suave: { n: 'De fuera hacia dentro', c: 'var(--r-su-ink)', t: 'Empiezas por lo que te rodea: lo que ves, oyes, hueles o tocas. Es el camino más amable cuando mirar hacia dentro te agobia o cuando te sientes lejos o desconectada.' },
 };
 let rt = 'aa';
 function drawRt() {
@@ -915,7 +1052,7 @@ function drawRt() {
   $('#rtTxt').innerHTML = `<div class="info pop" style="--c:${c}"><p class="small">${v.t}</p><p class="small muted">Por ejemplo: ${ex.slice(0, -1).join(', ')} o ${ex[ex.length - 1]}.</p><button class="btn small" id="rtGo" style="align-self:flex-start">Ver estas estrategias</button></div>`;
   $('#rtGo').onclick = () => { document.querySelector('nav.tabs [data-view="todas"]').click(); document.querySelector(`#filterChips [data-filter="${rt}"]`).click(); };
 }
-const WD_MENOS = [['Dormir poco', P('M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z')], ['Estrés acumulado', P('M12 3l9 16H3zM12 9v4M12 16h.01')], ['Hambre o cansancio', P('M7 3v8a2 2 0 0 0 4 0V3M9 11v10M17 3c-2 0-3 2-3 5s1 4 3 4v9')], ['Sentirme solo/a', '<circle cx="12" cy="7" r="3"/>' + P('M6 20c0-3.5 2.7-6 6-6s6 2.5 6 6')], ['Dolor o malestar físico', P('M13 2L4 14h7l-1 8 9-12h-7z')], ['Recuerdos difíciles', P('M3 12a9 9 0 1 0 3-6.7M3 4v5h5M12 7v5l3 2')]];
+const WD_MENOS = [['Dormir poco', P('M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z')], ['Estrés acumulado', P('M12 3l9 16H3zM12 9v4M12 16h.01')], ['Hambre o cansancio', P('M7 3v8a2 2 0 0 0 4 0V3M9 11v10M17 3c-2 0-3 2-3 5s1 4 3 4v9')], ['Sentirme sola', '<circle cx="12" cy="7" r="3"/>' + P('M6 20c0-3.5 2.7-6 6-6s6 2.5 6 6')], ['Dolor o malestar físico', P('M13 2L4 14h7l-1 8 9-12h-7z')], ['Recuerdos difíciles', P('M3 12a9 9 0 1 0 3-6.7M3 4v5h5M12 7v5l3 2')]];
 const WD_MAS = [['Descansar bien', P('M3 18v-6a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v6M3 14h18M7 8V6')], ['Compañía que calma', ICON.compania], ['Moverme', ICON.sacudir], ['Practicar estas estrategias', ICON.respira], ['Rutinas que me sostienen', P('M4 6h16M4 12h16M4 18h10')], ['Cuidar lo básico', ICON.agua]];
 let WD = store.get('ventana', { menos: [], mas: [] });
 function drawWd() {
@@ -934,12 +1071,12 @@ function drawWd() {
 }
 const MYTHS = [['Calmarme es dejar de sentir', 'Calmarse no es apagar la emoción, sino bajarle el volumen hasta que puedas escucharla y decidir qué hacer con ella.'],
   ['Si respiro y no me funciona, es que esto no es para mí', 'Cada persona tiene su camino. Si mirar hacia dentro te agobia, empieza de fuera hacia dentro. Y practicar en momentos tranquilos hace que funcione mejor en los difíciles.'],
-  ['Tengo que calmarme yo solo/a', 'Las personas también nos regulamos con otras. Una voz tranquila, un abrazo o una compañía que calma son estrategias igual de válidas.'],
-  ['Si estoy apagado/a, es que estoy tranquilo/a', 'Estar desconectado/a no es lo mismo que estar en calma. Es otra forma de salir de la ventana, y también necesita cuidado.'],
+  ['Tengo que calmarme yo sola', 'Las personas también nos regulamos con otras. Una voz tranquila, un abrazo o una compañía que calma son estrategias igual de válidas.'],
+  ['Si estoy apagada, es que estoy tranquila', 'Estar desconectada no es lo mismo que estar en calma. Es otra forma de salir de la ventana, y también necesita cuidado.'],
   ['Debería poder controlar lo que siento', 'Lo que sentimos no se elige. Lo que sí se puede entrenar es qué hacemos cuando aparece la emoción.']];
 let entDone = false;
 function renderEnt() { drawVw(); drawRt(); drawWd();
-  if (!entDone) { entDone = true; $('#myths').innerHTML = MYTHS.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-my="${i}"><span class="in"><span class="ff"><small>Me digo</small><b>«${esc(a)}»</b><i>Toca para ver lo que se sabe ↻</i></span><span class="fb"><small>Lo que se sabe</small><span class="small">${esc(b)}</span></span></span></button>`).join('');
+  if (!entDone) { entDone = true; pairsUI('#myths', MYTHS, 'lupa', { front: 'Me digo' });
     document.querySelectorAll('[data-my]').forEach(f => f.onclick = () => f.setAttribute('aria-pressed', f.getAttribute('aria-pressed') !== 'true')); } }
 
 function summary() {
@@ -1218,7 +1355,8 @@ const PDFKIT = (() => {
     'impulsos.log': 'Registro de impulsos', 'incert.daily': 'Días', 'incert.logs': 'Exposiciones', 'incert.waves': 'Olas', 'liston.exps': 'Experimentos', 'liston.five': 'Cinco minutos', 'liston.friend': 'Como a una amiga', 'liston.logros': 'Tarro de logros', 'liston.suf': 'Suficientemente bien',
     'pensamientos.regs': 'Registro de pensamientos', 'quererme.jar': 'Tarro', 'rumbo.log': 'Pasos', 'rumbo.revs': 'Revisiones', 'rumbo.snaps': 'Dianas', 'sesion.hist': 'Sesiones preparadas', 'social.bien': 'Lo que fue bien', 'social.experimentos': 'Experimentos',
     'soledad.days': 'Días', 'soledad.small': 'Pequeños lazos', 'sueno.noches': 'Noches', 'sueno.preoc': 'Preocupaciones', 'verguenza.momentos': 'Momentos', 'vinculos.dates': 'Citas', 'vueltas.decs': 'Decisiones',
-    'm-ansiedad.niv': 'Cómo de preocupada me siento', 'm-carga.acuerdos': 'Acuerdos', 'm-carga.cabeza': 'Cómo de llena está mi cabeza', 'm-carga.revisiones': 'Revisiones de la semana', 'm-cuerpoemb.rel': 'Cómo me llevo con mi cuerpo', 'm-animo.animo': 'Mi ánimo',
+    'm-ansiedad.niv': 'Cómo de preocupada me siento', 'm-carga.acuerdos': 'Acuerdos', 'm-carga.cabeza': 'Cómo de llena está mi cabeza', 'm-carga.revisiones': 'Revisiones de la semana', 'm-duelo.dia': 'Cómo estoy',
+  'm-limpeq.bien': 'Le pillé haciendo algo bien', 'm-limpeq.log': 'Cómo he sostenido los límites', 'm-familia.rlog': 'Momentos en el bote', 'm-limfam.log': 'Límites que he puesto', 'm-suenopos.cont': 'Siestas y despertares', 'm-suenopos.des': 'Cómo he descansado', 'm-lactancia.lac': 'Cómo me siento con la lactancia', 'm-cuerpopos.rel': 'Cómo me llevo con mi cuerpo', 'm-cuerpoemb.rel': 'Cómo me llevo con mi cuerpo', 'm-animo.animo': 'Mi ánimo',
     'm-nacer.cartas': 'Cartas', 'm-nacer.piel': 'Cómo me siento en mi piel', 'm-pareja.hoy': 'Cómo de cerca me siento', 'm-pareja.mio.xh': 'Momentos de autocuidado en pareja', 'm-parto.conf': 'Cómo de preparada me siento',
     'm-recordar.peso': 'Cuánto me pesa el recuerdo', 'm-salto.log': 'Mi semana', 'm-soledad.hoy': 'Cómo de acompañada me siento', 'm-ventanas.anc': 'Cómo de ancha ha sido mi ventana', 'm-vinculo.cx': 'Cómo de conectada me siento', 'm-vinculo.momentos': 'Momentos juntos', 'm-vinculo.senales': 'Señales de mi bebé',
   };
@@ -1285,7 +1423,7 @@ const PDFKIT = (() => {
   const best = () => { const agg = {}; state.log.forEach(e => (agg[e.id] = agg[e.id] || []).push(e.before - e.after));
     return Object.entries(agg).filter(([id]) => byId[id]).map(([id, a]) => [id, a.reduce((x, y) => x + y, 0) / a.length, a.length]).sort((a, b) => b[1] - a[1]); };
   const strat = (s, short) => K.card(`<span class="k">${ROUTE[s.r]}</span><p><b>${K.esc(s.name)}</b> <span class="mut">${K.esc(s.when)}</span></p>${short ? '' : K.steps(s.steps.map(K.esc))}`);
-  const ZT = { hiper: ['Si estoy acelerado/a', 'Primero, bajar la activación desde el cuerpo o los sentidos.'], hipo: ['Si estoy apagado/a o desconectado/a', 'Activarme suavemente y volver al aquí y ahora.'], ventana: ['Si estoy inquieto/a, pero puedo pensar', 'Buen momento para entender lo que pasa y cuidar cómo me hablo.'] };
+  const ZT = { hiper: ['Si estoy acelerada', 'Primero, bajar la activación desde el cuerpo o los sentidos.'], hipo: ['Si estoy apagada o desconectada', 'Activarme suavemente y volver al aquí y ahora.'], ventana: ['Si estoy inquieta, pero puedo pensar', 'Buen momento para entender lo que pasa y cuidar cómo me hablo.'] };
   K.init({
     title: 'Calmarme o volver a mí', color: '#11667D',
     intro: 'Las estrategias que me ayudan cuando me desbordo o me desconecto.',

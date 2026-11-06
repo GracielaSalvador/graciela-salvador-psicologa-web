@@ -64,6 +64,7 @@ input[type=range] { width: 100%; accent-color: var(--c, var(--accent)); }
 .warn { background: var(--warn); color: var(--warn-ink); border-radius: 16px; padding: 12px 14px; font-size: .93rem; }
 .ok { background: var(--ok); color: var(--ok-ink); border-radius: 16px; padding: 12px 14px; font-size: .93rem; }
 .pop { animation: pop .45s ease-out; } @keyframes pop { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+svg .pop[transform] { animation-name: popfade; } @keyframes popfade { from { opacity: 0; } to { opacity: 1; } }
 .empty { text-align: center; padding: 18px; border: 1.5px dashed var(--line); border-radius: 18px; color: var(--muted); font-size: .93rem; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
 .seg { display: flex; gap: 6px; background: var(--tint); padding: 4px; border-radius: 999px; }
@@ -138,6 +139,43 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 .draw { stroke-dasharray: 900; stroke-dashoffset: 900; animation: draw 1.6s ease-out forwards; } @keyframes draw { to { stroke-dashoffset: 0; } }
 @media (max-width: 370px) { .gest.tiles { grid-template-columns: 1fr 1fr; } }
 @media (prefers-reduced-motion: reduce) { .pulse, .draw { animation: none !important; stroke-dashoffset: 0; } }
+/* Pares «frase / lo que se sabe» y «me digo / otra forma de verlo» en varios formatos */
+.pairs { display: flex; flex-direction: column; gap: 8px; }
+.p-lupa .pl { border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); overflow: hidden; }
+.p-lupa .pl.on { border-color: var(--tc); }
+.p-lupa .pl > button { width: 100%; border: 0; background: transparent; display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: center; text-align: left; padding: 11px 13px; font-family: var(--display); font-size: 1.02rem; color: var(--deep); }
+.p-lupa .pl > button svg { width: 22px; height: 22px; color: var(--tc); transition: transform .3s; }
+.p-lupa .pl.on > button svg { transform: scale(1.25); }
+.p-lupa .pa { padding: 0 14px 12px 49px; } .p-lupa .pa small, .p-chat small, .p-deck small, .p-tedices small, .p-tachar small, .p-voz small { display: block; font-size: .68rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; opacity: .8; margin-bottom: 2px; }
+.p-lupa .pa p { margin: 0; font-size: .95rem; }
+.p-chat { background: color-mix(in srgb, var(--tc) 6%, var(--surface)); border-radius: 18px; padding: 12px 10px; gap: 10px; }
+.p-chat .cb { max-width: 86%; border-radius: 18px; padding: 9px 13px; line-height: 1.35; font-size: .95rem; text-align: left; }
+.p-chat .cb.l { align-self: flex-start; border: 1.5px solid var(--line); background: var(--surface); border-bottom-left-radius: 4px; font-family: var(--display); font-size: 1.02rem; color: var(--deep); }
+.p-chat .cb.l[aria-expanded="true"] { border-color: var(--tc); }
+.p-chat .cb.r { align-self: flex-end; background: var(--ok); color: var(--ok-ink); border-bottom-right-radius: 4px; }
+.dk { display: flex; flex-direction: column; gap: 10px; }
+.dk .dots { display: flex; gap: 5px; justify-content: center; } .dk .dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--line); transition: all .3s; } .dk .dots span.done { background: color-mix(in srgb, var(--tc) 45%, var(--surface)); } .dk .dots span.on { background: var(--tc); width: 20px; border-radius: 6px; }
+.dk .dc { border-radius: 20px; padding: 18px 16px; min-height: 150px; background: color-mix(in srgb, var(--tc) 10%, var(--surface)); border: 1.5px solid color-mix(in srgb, var(--tc) 30%, transparent); display: flex; flex-direction: column; gap: 10px; justify-content: center; text-align: center; box-shadow: 0 6px 0 -2px color-mix(in srgb, var(--tc) 14%, var(--surface)), 0 12px 0 -5px color-mix(in srgb, var(--tc) 8%, var(--surface)); }
+.dk .dc > b { font-family: var(--display); font-weight: 500; font-size: 1.2rem; color: var(--deep); line-height: 1.3; }
+.dk .dback { background: var(--ok); color: var(--ok-ink); border-radius: 14px; padding: 10px 12px; text-align: left; } .dk .dback p { margin: 0; font-size: .95rem; }
+.dk .yn { display: flex; gap: 8px; justify-content: center; } .dk .yn button { border: 1.5px solid var(--tc); background: var(--surface); color: var(--tc); border-radius: 999px; padding: 8px 22px; font-weight: 800; }
+.dk .q { margin: 0; font-size: .9rem; color: var(--muted); font-weight: 700; }
+.dk .rev { align-self: center; border: 0; background: var(--tc); color: var(--onc, #fff); border-radius: 999px; padding: 8px 18px; font-weight: 800; }
+.dk .nav-row span { font-size: .82rem; color: var(--muted); font-weight: 700; }
+.p-tachar .tc { border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
+.p-tachar .tc > button { border: 0; background: transparent; padding: 0; text-align: left; font-family: var(--display); font-size: 1.05rem; color: var(--deep); position: relative; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+.p-tachar .tc > button .tx { position: relative; }
+.p-tachar .tc > button .tx::after { content: ''; position: absolute; left: 0; top: 55%; height: 2px; width: 0; background: var(--me, var(--li)); transition: width .45s ease; }
+.p-tachar .tc.on > button .tx { color: var(--muted); } .p-tachar .tc.on > button .tx::after { width: 100%; }
+.p-tachar .tc > button i { font-style: normal; font-family: var(--body); font-size: .74rem; font-weight: 800; color: var(--tc); white-space: nowrap; }
+.p-tachar .nw { font-family: var(--display); font-size: 1.1rem; color: var(--ok-ink); background: var(--ok); border-radius: 12px; padding: 8px 12px; }
+.p-voz .vz { display: flex; flex-direction: column; gap: 6px; }
+.p-voz .cloud { align-self: flex-start; max-width: 88%; border: 1.5px dashed var(--muted); background: color-mix(in srgb, var(--muted) 8%, var(--surface)); border-radius: 22px 22px 22px 6px; padding: 10px 14px; text-align: left; font-family: var(--display); font-size: 1.02rem; color: var(--deep); display: grid; grid-template-columns: 22px 1fr; gap: 8px; align-items: start; }
+.p-voz .cloud svg, .p-voz .warm svg { width: 20px; height: 20px; margin-top: 2px; }
+.p-voz .warm { align-self: flex-end; max-width: 88%; background: color-mix(in srgb, var(--rose, var(--tc)) 14%, var(--surface)); border: 1.5px solid var(--rose, var(--tc)); border-radius: 22px 22px 6px 22px; padding: 10px 14px; font-family: var(--display); font-size: 1.05rem; color: var(--deep); display: grid; grid-template-columns: 22px 1fr; gap: 8px; }
+.p-voz .warm svg { color: var(--rose, var(--tc)); } .p-voz .cloud svg { color: var(--muted); }
+.dk .dback p, .p-chat .cb.r, .p-lupa .pa p { color: var(--ink); }
+
 
 .map .z { cursor: pointer; } .map .z:focus { outline: none; } .map .z:focus-visible > * { stroke: var(--ink); stroke-width: 2.5; }
 .inside { display: flex; flex-direction: column; gap: 6px; }
@@ -194,7 +232,7 @@ details.reg[open] summary { margin-bottom: 6px; }
 
     <div class="card">
       <span class="eyebrow">Cosas que nos decimos</span>
-      <p class="small">Toca cada tarjeta para ver lo que se sabe.</p>
+      <p class="small">¿Te has dicho alguna vez estas frases? Responde con sinceridad y descubre lo que se sabe.</p>
       <div class="flips" id="myths"></div>
     </div>
   </section>
@@ -204,7 +242,8 @@ details.reg[open] summary { margin-bottom: 6px; }
     <h1>Mi cuerpo</h1>
     <div class="card">
       <span class="eyebrow">Cómo me siento con mi cuerpo</span>
-      <p class="small">Elige las palabras que mejor describen cómo te sientes estos días. Pueden ser contradictorias.</p>
+      <p class="small">Imagina que te miras al espejo. Elige las palabras que mejor describen cómo te sientes con tu cuerpo estos días y verás cómo se quedan pegadas en él. Pueden ser contradictorias, y casi siempre lo son.</p>
+      <svg class="fig" id="esp" viewBox="0 0 320 230" role="img" aria-label="Mi espejo"></svg>
       <div class="chips" id="sie"></div>
       <div id="sieTxt"></div>
     </div>
@@ -220,6 +259,12 @@ details.reg[open] summary { margin-bottom: 6px; }
       <div class="gest tiles" id="cue"></div>
       <div class="stack" id="cueTxt" style="gap:8px"></div>
     </div>
+    <div class="card">
+      <span class="eyebrow">Cuando el embarazo pesa más</span>
+      <p class="small">A veces el cuerpo no acompaña como esperabas, y entonces el embarazo se vive con más cansancio, más miedo o más soledad. Si te pasa alguna de estas cosas, tócala para leer lo que te puede ayudar.</p>
+      <div class="gest tiles" id="dif"></div>
+      <div id="difTxt"></div>
+    </div>
   </section>
 
   <!-- MIRARLO DISTINTO -->
@@ -234,7 +279,7 @@ details.reg[open] summary { margin-bottom: 6px; }
     </div>
     <div class="card">
       <span class="eyebrow">Lo que me digo</span>
-      <p class="small">Dales la vuelta a las frases que más te duelen.</p>
+      <p class="small">Toca cada frase para tacharla y reescribirla con más cariño.</p>
       <div class="flips" id="tho"></div>
       <span class="lbl">¿Cuáles te dices tú? Escribe tu propia respuesta.</span>
       <div class="chips" id="thoCh"></div>
@@ -243,7 +288,9 @@ details.reg[open] summary { margin-bottom: 6px; }
     <div class="card">
       <span class="eyebrow">Redes y comparaciones</span>
       <p class="small">En las redes abundan las tripas perfectas y los cuerpos que «se recuperan» en semanas. Son imágenes escogidas, a menudo retocadas, y no reflejan la mayoría de los embarazos. ¿Qué te gustaría probar?</p>
+      <svg class="fig" id="movil" viewBox="0 0 320 250" role="img" aria-label="Mis redes"></svg>
       <div class="chips" id="red"></div>
+      <div id="redTxt"></div>
     </div>
   </section>
 
@@ -258,6 +305,7 @@ details.reg[open] summary { margin-bottom: 6px; }
     <div class="card">
       <span class="eyebrow">¿Cómo me llevo hoy con mi cuerpo?</span>
       <p class="small">Vuelve de vez en cuando. Es normal que cambie de un día a otro.</p>
+      <svg class="fig" id="vz_rel" viewBox="0 0 320 120" aria-hidden="true"></svg>
       <div class="scale-row"><span class="lbl">Hoy me llevo con mi cuerpo…</span><input type="range" min="0" max="10" id="rel" style="accent-color:var(--rose)" aria-label="Cómo me llevo hoy con mi cuerpo"><span class="big-num" id="relV" style="--c:var(--rose)"></span><span class="ends"><span>muy mal</span><span>muy bien</span></span></div>
       <button class="btn" id="relSave" style="align-self:flex-start">Guardar</button>
       <div id="relList"></div>
@@ -309,8 +357,9 @@ function listEditor(o) {
 }
 /* Tarjetas «lo que me digo» con respuesta propia. o = { flips, chips, mine, list, sel(), setSel(a), own, save, front, back } */
 function sayings(o) {
+  if (o.style && o.style !== 'flip') sayPairs(o.flips, o.list, o.style, o.k); else {
   $(o.flips).innerHTML = o.list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-fl${o.k}="${i}"><span class="in"><span class="ff"><small>${o.front || 'Me digo'}</small><b>«${esc(a)}»</b><i>Toca para darle la vuelta ↻</i></span><span class="fb"><small>${o.back || 'Otra forma de verlo'}</small><b>«${esc(b)}»</b></span></span></button>`).join('');
-  flipBind(`[data-fl${o.k}]`);
+  flipBind(`[data-fl${o.k}]`); }
   const mine = () => { const s = o.sel();
     $(o.chips).innerHTML = o.list.map(([a], i) => `<button class="chip" style="--c:var(--tc)" data-sc${o.k}="${i}" aria-pressed="${s.includes(i)}">${esc(a)}</button>`).join('');
     $$(`[data-sc${o.k}]`).forEach(b => b.onclick = () => { o.setSel(toggle(o.sel(), +b.dataset['sc' + o.k])); keep(mine); });
@@ -334,6 +383,39 @@ function miniLine(pts, color, label) {
     ${n > 1 ? `<path d="${d.map((e, i) => `${i ? 'L' : 'M'}${x(i)} ${y(e.v)}`).join(' ')}" fill="none" stroke="${color}" stroke-width="3" stroke-linejoin="round"/>` : ''}
     ${d.map((e, i) => `<circle cx="${x(i)}" cy="${y(e.v)}" r="4.5" fill="${color}"/>`).join('')}
     <text x="30" y="114" font-family="var(--body)" font-size="9" fill="var(--muted)">${fdate(d[0].t)}</text><text x="310" y="114" text-anchor="end" font-family="var(--body)" font-size="9" fill="var(--muted)">${fdate(d[n - 1].t)}</text></svg>`;
+}
+/* Pares en varios formatos, para que no se repita siempre la misma tarjeta: flip, lupa, chat, deck, tedices (para «lo que se sabe») y tachar, voz (para «me digo») */
+const PICO = { lupa: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/>', cloud: '<path d="M7 18a4 4 0 0 1-.6-8A5.5 5.5 0 0 1 17 8.5a4.5 4.5 0 0 1 .5 9z"/>', heart: '<path d="M12 20s-7-4.4-7-10A4 4 0 0 1 12 7a4 4 0 0 1 7 3c0 5.6-7 10-7 10z"/>' };
+function pairsUI(sel, list, style, o) {
+  o = o || {}; const el = $(sel), F = o.front || 'Me digo', B = o.back || 'Lo que se sabe', k = sel.replace(/\W/g, '');
+  if (style === 'flip') { el.className = 'flips'; el.innerHTML = list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-pf${k}="${i}"><span class="in"><span class="ff"><small>${F}</small><b>«${esc(a)}»</b><i>${o.hint || 'Toca para ver lo que se sabe ↻'}</i></span><span class="fb"><small>${B}</small>${o.bold ? `<b>«${esc(b)}»</b>` : `<span class="small">${esc(b)}</span>`}</span></span></button>`).join(''); flipBind(`[data-pf${k}]`); return; }
+  el.className = 'pairs p-' + style;
+  const q = (b) => o.bold ? `«${esc(b)}»` : esc(b);
+  if (style === 'lupa') { let op = -1; const r = () => { el.innerHTML = list.map(([a, b], i) => `<div class="pl${op === i ? ' on' : ''}"><button data-pl${k}="${i}" aria-expanded="${op === i}">${SI(PICO.lupa)}<span>«${esc(a)}»</span></button>${op === i ? `<div class="pa pop"><small>${B}</small><p>${q(b)}</p></div>` : ''}</div>`).join(''); $$(`[data-pl${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['pl' + k]; op = op === n ? -1 : n; r(); }); }; r(); return; }
+  if (style === 'chat') { const on = new Set(); const r = () => { el.innerHTML = list.map(([a, b], i) => `<button class="cb l" data-pc${k}="${i}" aria-expanded="${on.has(i)}"><small>${F}</small>${esc(a)}</button>${on.has(i) ? `<div class="cb r pop"><small>${B}</small>${q(b)}</div>` : ''}`).join(''); $$(`[data-pc${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['pc' + k]; on.has(n) ? on.delete(n) : on.add(n); r(); }); }; r(); return; }
+  if (style === 'deck' || style === 'tedices') {
+    let i = 0, shown = false; const ans = {};
+    const r = () => { const [a, b] = list[i], all = Object.keys(ans).length === list.length, yes = Object.values(ans).filter(Boolean).length;
+      el.innerHTML = `<div class="dk"><div class="dots">${list.map((_, j) => `<span class="${j === i ? 'on' : (ans[j] !== undefined || (style === 'deck' && j < i)) ? 'done' : ''}"></span>`).join('')}</div>
+        <div class="dc pop"><small>${F}</small><b>«${esc(a)}»</b>
+        ${style === 'tedices' && !shown ? `<p class="q">¿Te lo has dicho alguna vez?</p><div class="yn"><button data-yn="1">Sí</button><button data-yn="0">No</button></div>` : ''}
+        ${style === 'deck' && !shown ? `<button class="rev">Ver lo que se sabe</button>` : ''}
+        ${shown ? `<div class="dback pop"><small>${B}</small><p>${style === 'tedices' && ans[i] ? 'Es muy habitual decírselo. ' : ''}${q(b)}</p></div>` : ''}</div>
+        <div class="nav-row">${i ? '<button class="btn ghost small" data-dv="-1">← Anterior</button>' : '<span></span>'}<span>${i + 1} de ${list.length}</span>${i < list.length - 1 ? '<button class="btn small" data-dv="1">Siguiente →</button>' : '<span></span>'}</div>
+        ${style === 'tedices' && all ? `<div class="ok small pop">Te has dicho ${yes} de estas ${list.length} frases. No son toda la verdad: la próxima vez que aparezcan, puedes recordar lo que se sabe.</div>` : ''}</div>`;
+      $$(`${sel} [data-yn]`).forEach(x => x.onclick = () => { ans[i] = x.dataset.yn === '1'; shown = true; r(); });
+      const rv = $(`${sel} .rev`); if (rv) rv.onclick = () => { shown = true; r(); };
+      $$(`${sel} [data-dv]`).forEach(x => x.onclick = () => { i += +x.dataset.dv; shown = style === 'tedices' ? ans[i] !== undefined : false; r(); });
+    }; r(); return; }
+}
+function sayPairs(sel, list, style, k) {
+  if (style === 'flip' || !style) { $(sel).className = 'flips'; $(sel).innerHTML = list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-fl${k}="${i}"><span class="in"><span class="ff"><small>Me digo</small><b>«${esc(a)}»</b><i>Toca para darle la vuelta ↻</i></span><span class="fb"><small>Otra forma de verlo</small><b>«${esc(b)}»</b></span></span></button>`).join(''); flipBind(`[data-fl${k}]`); return; }
+  const el = $(sel), on = new Set(); el.className = 'pairs p-' + style;
+  const r = () => {
+    el.innerHTML = style === 'tachar' ? list.map(([a, b], i) => `<div class="tc${on.has(i) ? ' on' : ''}"><button data-tt${k}="${i}" aria-pressed="${on.has(i)}"><span class="tx">«${esc(a)}»</span><i>${on.has(i) ? 'Deshacer' : 'Tachar y reescribir'}</i></button>${on.has(i) ? `<div class="nw pop">«${esc(b)}»</div>` : ''}</div>`).join('')
+      : list.map(([a, b], i) => `<div class="vz"><button class="cloud" data-tt${k}="${i}" aria-pressed="${on.has(i)}">${SI(PICO.cloud)}<span><small>Mi voz crítica</small>«${esc(a)}»</span></button>${on.has(i) ? `<div class="warm pop">${SI(PICO.heart)}<span><small>Mi voz amable</small>«${esc(b)}»</span></div>` : ''}</div>`).join('');
+    $$(`[data-tt${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['tt' + k]; on.has(n) ? on.delete(n) : on.add(n); r(); });
+  }; r();
 }
 
 
@@ -366,10 +448,18 @@ const CUE = [['No reconocerme en el espejo', '<rect x="6" y="3" width="12" heigh
 const GRA = [['Latir por dos', '<path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/>'], ['Crear la placenta', '<circle cx="12" cy="12" r="8"/><path d="M8 12c2-3 6-3 8 0"/>'], ['Sostener a mi bebé', '<path d="M6 12c0 4 3 7 6 7s6-3 6-7"/><circle cx="12" cy="10" r="3"/>'], ['Adaptarse cada día', '<path d="M4 12a8 8 0 0 1 14-5M20 12a8 8 0 0 1-14 5"/><path d="M18 3v4h-4M6 21v-4h4"/>'], ['Prepararse para el parto', '<path d="M3 15c3-3 6 3 9 0s6 3 9 0"/>'], ['Prepararse para alimentarle', '<path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/>'], ['Moverme y llevarme', '<circle cx="12" cy="5" r="2"/><path d="M12 7v6l-3 7M12 13l3 7M7 10l5-2 5 2"/>'], ['Avisarme de lo que necesito', '<circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/>'], ['Sentir sus patadas', '<path d="M8 12c1-3 3-3 4 0s3 3 4 0"/>']];
 const THO = [['Estoy horrible', 'Mi cuerpo está cambiando para hacer algo enorme. Puedo mirarlo con más amabilidad.'], ['Ya no me reconozco', 'Estoy en tránsito. Esta etapa también soy yo.'], ['Nunca volveré a ser la de antes', 'Mi cuerpo seguirá cambiando. No tengo que decidir hoy cómo será.'], ['Debería estar disfrutándolo', 'Puedo querer a mi bebé y que me cueste este cuerpo.'], ['Todo el mundo me mira la tripa', 'Mi cuerpo no es un tema público. Puedo poner límites.']];
 const RED = ['Dejar de seguir cuentas que me hacen sentir mal', 'Seguir cuentas con cuerpos reales y diversos', 'No mirar redes antes de dormir', 'Recordar que muchas fotos están retocadas'];
-const GES = [['Ropa cómoda que me guste', '<path d="M8 3l-5 4 3 3 2-1v12h8V9l2 1 3-3-5-4c-1 2-2 3-4 3S9 5 8 3z"/>'], ['Crema o masaje en la tripa', '<path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V11M11 10V4.5a1.5 1.5 0 0 1 3 0V11M14 10.5V6a1.5 1.5 0 0 1 3 0v7.5c0 4-2.8 7-6.3 7-2.4 0-4.2-1.4-5.3-3.5l-1.9-3.8a1.5 1.5 0 0 1 2.6-1.5L8 13"/>'], ['Moverme con suavidad', '<circle cx="12" cy="5" r="2"/><path d="M12 7v6l-3 7M12 13l3 7M7 10l5-2 5 2"/>'], ['Descansar sin culpa', '<path d="M3 18h18M5 18V9a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v9"/>'], ['Un baño o una ducha tranquila', '<path d="M4 12h16v3a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M6 12V6a2 2 0 0 1 4 0"/>'], ['Pedir un masaje', '<circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M3 20c0-3 2-5 5-5s5 2 5 5M11 20c0-3 2-5 5-5s5 2 5 5"/>'], ['Una foto de esta etapa, si me apetece', '<rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l2-3h4l2 3"/>'], ['Comer cosas que me sienten bien', '<path d="M7 3v8a2 2 0 0 0 4 0V3M9 11v10M17 3c-2 0-3 2-3 5s1 4 3 4v9"/>'], ['Dormir de lado con cojines', '<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>']];
+const DIF = [
+  ['nau', 'Náuseas o vómitos muy intensos', 'var(--rose)', '<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>', 'Cuando las náuseas no te dejan comer, trabajar ni descansar, no es «lo normal del embarazo» ni falta de aguante. Si son muy intensas pueden ser una hiperemesis gravídica, que tiene tratamiento y merece que te tomen en serio. Además de agotar el cuerpo, suele dejar tristeza y aislamiento: cuéntaselo a tu matrona y a tu médica, y pide ayuda en casa.'],
+  ['rep', 'Me han pedido reposo', 'var(--li)', '<path d="M3 18h18M5 18V9h6a4 4 0 0 1 4 4v5M17 13h4v5"/><circle cx="7" cy="6" r="2"/>', 'El reposo cambia de golpe tu día a día: pierdes rutinas, contacto con otras personas y la sensación de control sobre tu cuerpo. Es muy frecuente sentir aburrimiento, culpa o miedo. Ayuda organizar pequeñas rutinas para cada día, pedir visitas o llamadas y buscar actividades que puedas hacer desde casa, como leer, escribir o preparar cosas para tu bebé.'],
+  ['dia', 'Diabetes gestacional', 'var(--tc)', '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>', 'Recibir el diagnóstico puede traer culpa o miedo, y los controles de la comida y del azúcar pueden hacerse muy pesados. No es culpa tuya: tiene mucho que ver con las hormonas del embarazo. Si el control se vuelve una obsesión o te angustia cada comida, coméntalo con tu equipo y con tu psicóloga.'],
+  ['dol', 'Dolor de pelvis o de espalda', 'var(--hi)', '<path d="M12 3v18M8 7h8M7 12h10M8 17h8"/>', 'El dolor que no se va cansa y quita las ganas de todo. Coméntaselo a tu matrona: la fisioterapia especializada en embarazo suele ayudar mucho. Pedir que otros se ocupen de lo que más te duele hacer no es exagerar, es cuidarte.'],
+  ['mul', 'Espero gemelos o más', 'var(--sun)', '<circle cx="8" cy="12" r="4"/><circle cx="16" cy="12" r="4"/>', 'Con un embarazo múltiple, el cuerpo cambia más deprisa, el cansancio es mayor y las revisiones son más frecuentes. Es normal sentirte más preocupada y desbordada. Pide ayuda pronto, no solo cuando nazcan, y date permiso para bajar el ritmo.'],
+  ['pes', 'Comentarios sobre mi peso', 'var(--lo)', '<circle cx="12" cy="12" r="9"/><path d="M12 7v5"/>', 'Que te hablen de tu peso en cada revisión, o fuera de ellas, puede hacer que llegues a la consulta con angustia o que evites ir. Tu cuerpo no tiene que justificarse ante nadie. Puedes pedir que te expliquen solo lo que importa para tu salud y la de tu bebé, sin juicios ni comparaciones, y no tienes por qué mirar el número si no quieres.'],
+];
+const GES = [['Ropa cómoda que me guste', '<path d="M8 3l-5 4 3 3 2-1v12h8V9l2 1 3-3-5-4c-1 2-2 3-4 3S9 5 8 3z"/>'], ['Crema o masaje en la tripa', '<path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V11M11 10V4.5a1.5 1.5 0 0 1 3 0V11M14 10.5V6a1.5 1.5 0 0 1 3 0v7.5c0 4-2.8 7-6.3 7-2.4 0-4.2-1.4-5.3-3.5l-1.9-3.8a1.5 1.5 0 0 1 2.6-1.5L8 13"/>'], ['Moverme con suavidad', '<circle cx="12" cy="5" r="2"/><path d="M12 7v6l-3 7M12 13l3 7M7 10l5-2 5 2"/>'], ['Descansar sin culpa', '<path d="M3 18h18M5 18V9a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v9"/>'], ['Un baño o una ducha tranquila', '<path d="M4 12h16v3a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M6 12V6a2 2 0 0 1 4 0"/>'], ['Pedir un masaje', '<circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M3 20c0-3 2-5 5-5s5 2 5 5M11 20c0-3 2-5 5-5s5 2 5 5"/>'], ['Una foto de esta etapa, si me apetece', '<rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l2-3h4l2 3"/>'], ['Comer cosas que me sienten bien', '<path d="M7 3v8a2 2 0 0 0 4 0V3M9 11v10M17 3c-2 0-3 2-3 5s1 4 3 4v9"/>'], ['Dormir de lado con cojines', '<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>'], ['Moverme un poco cada día, como me siente bien', '<circle cx="12" cy="5" r="2"/><path d="M12 7v6l-3 7M12 13l3 7M8 10h8"/>']];
 const HELP = [['<path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z"/><path d="M12 8v5M12 16h.01"/>', 'Piensas en tu peso o en tu figura casi todo el tiempo, y eso te angustia.', 'var(--li)'], ['<path d="M7 3v8a2 2 0 0 0 4 0V3M9 11v10M17 3c-2 0-3 2-3 5s1 4 3 4v9"/><path d="M4 4l16 16"/>', 'Te saltas comidas o comes mucho menos por miedo a engordar, o te provocas el vómito.', 'var(--hi)'], ['<circle cx="12" cy="5" r="2"/><path d="M12 7v6l-3 7M12 13l3 7"/>', 'Haces ejercicio para compensar lo que comes, aunque estés cansada o te duela.', 'var(--or, var(--hi))'], ['<rect x="4" y="5" width="16" height="14" rx="3"/><path d="M9 9h6"/>', 'Evitas las revisiones porque te da miedo que te pesen.', 'var(--lo)'], ['<path d="M12 21v-8"/><path d="M12 13c0-4 3-6.5 7-6.5 0 4-3 6.5-7 6.5z"/>', 'Llevas más de dos semanas triste o sin ganas de nada.', 'var(--lo)'], ['<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>', 'Tienes pensamientos que te asustan o ideas de hacerte daño. En ese caso, llama al <b>024</b> (24 h) o al <b>112</b>.', 'var(--hi)']];
 
-let S = Object.assign({ tri: '2', com: null, sie: [], map: {}, cue: [], gra: [], tho: [], own: {}, red: [], ges: [] }, store.get('mio', {}) || {});
+let S = Object.assign({ dif: '', tri: '2', com: null, sie: [], map: {}, cue: [], gra: [], tho: [], own: {}, red: [], ges: [] }, store.get('mio', {}) || {});
 const saveS = () => store.set('mio', S);
 let REL = store.get('rel', []);
 const lc = (s) => s.charAt(0).toLowerCase() + s.slice(1);
@@ -407,12 +497,21 @@ function renderCom() {
   $$('[data-cm]').forEach(b => b.onclick = () => { S.com = S.com === +b.dataset.cm ? null : +b.dataset.cm; saveS(); keep(renderCom); });
   $('#comTxt').innerHTML = S.com !== null ? `<div class="resp pop">${COM[S.com][1].map((r, i) => `<div style="--c:${TONES[i][1]}"><small>${TONES[i][0]}</small><b>«${esc(r)}»</b></div>`).join('')}</div><p class="small muted">No tienes que responder siempre. Pero saber que puedes hacerlo ya te devuelve parte del control.</p>` : '';
 }
-$('#myths').innerHTML = MYTHS.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-my="${i}"><span class="in"><span class="ff"><small>Me digo</small><b>«${esc(a)}»</b><i>Toca para ver lo que se sabe ↻</i></span><span class="fb"><small>Lo que se sabe</small><span class="small">${esc(b)}</span></span></span></button>`).join('');
-flipBind('[data-my]');
+pairsUI('#myths', MYTHS, 'tedices', { front: 'Me digo' });
 function renderEnt() { drawSilu(); renderCom(); }
 
 /* ================= MI CUERPO ================= */
+function drawEsp() {
+  const W = S.sie.map(n => SIE.find(x => x[0] === n)).filter(Boolean), P = [[160, 40], [118, 76], [204, 82], [160, 112], [116, 146], [204, 150], [160, 182], [126, 110], [196, 116]];
+  let g = `<rect width="320" height="230" rx="18" fill="color-mix(in srgb, var(--rose) 6%, var(--surface))"/>`;
+  g += `<ellipse cx="160" cy="112" rx="96" ry="104" fill="color-mix(in srgb, var(--lo) 7%, var(--surface))" stroke="color-mix(in srgb, var(--sun) 65%, var(--rose))" stroke-width="5"/><ellipse cx="160" cy="112" rx="86" ry="94" fill="none" stroke="color-mix(in srgb, var(--lo) 25%, transparent)" stroke-width="1.5"/><path d="M112 40 q-14 30 -6 60" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".6" fill="none"/>`;
+  g += `<g fill="none" stroke="color-mix(in srgb, var(--rose) 45%, var(--surface))" stroke-width="2.4" stroke-linecap="round" opacity="${W.length ? .35 : .9}"><circle cx="160" cy="62" r="14"/><path d="M146 80c-14 8-18 26-14 46M174 80c10 6 18 20 20 34 4 22-10 40-30 40-12 0-22-6-28-14"/><path d="M140 196c4-14 8-30 6-44M180 196c-2-12-2-24 4-34"/></g>`;
+  if (!W.length) g += `<text x="160" y="222" text-anchor="middle" font-family="var(--body)" font-size="10" fill="var(--muted)">Elige abajo tus palabras</text>`;
+  W.slice(0, 9).forEach(([n, c], i) => { const [x, y] = P[i], w = n.length * 6.6 + 18, r = (i % 2 ? 4 : -4); g += `<g class="pop" transform="rotate(${r} ${x} ${y})"><rect x="${x - w / 2}" y="${y - 12}" width="${w}" height="24" rx="12" fill="${c}"/><text x="${x}" y="${y + 4}" text-anchor="middle" font-family="var(--body)" font-size="11" font-weight="800" fill="#fff">${esc(n)}</text></g>`; });
+  $('#esp').innerHTML = g;
+}
 function renderSie() {
+  drawEsp();
   $('#sie').innerHTML = SIE.map(([n, c]) => `<button class="chip" style="--c:${c}" data-si="${n}" aria-pressed="${S.sie.includes(n)}">${n}</button>`).join('');
   $$('[data-si]').forEach(b => b.onclick = () => { S.sie = toggle(S.sie, b.dataset.si); saveS(); keep(renderSie); });
   const good = S.sie.filter(x => ['Orgullosa', 'Poderosa', 'A gusto'].includes(x)), hard = S.sie.filter(x => !good.includes(x));
@@ -440,7 +539,13 @@ function renderCue() {
   $$('[data-cu]').forEach(b => b.onclick = () => { S.cue = toggle(S.cue, b.dataset.cu); saveS(); keep(renderCue); });
   $('#cueTxt').innerHTML = CUE.map((c, i) => [c, i]).filter(([[t]]) => S.cue.includes(t)).map(([[t, , d], i]) => `<div class="info pop" style="--c:${cols[i % cols.length]}"><h3>${esc(t)}</h3><p class="small">${esc(d)}</p></div>`).join('');
 }
-function renderMio() { renderSie(); drawMap(); renderCue(); }
+function renderDif() {
+  $('#dif').innerHTML = DIF.map(([k, n, c, ic]) => `<button style="--c:${c}" data-df="${k}" aria-pressed="${S.dif === k}"><span class="ic">${SI(ic)}</span>${esc(n)}</button>`).join('');
+  $$('[data-df]').forEach(b => b.onclick = () => { S.dif = S.dif === b.dataset.df ? '' : b.dataset.df; saveS(); keep(renderDif); });
+  const d = DIF.find(x => x[0] === S.dif);
+  $('#difTxt').innerHTML = d ? `<div class="info pop" style="--c:${d[2]}"><h3>${esc(d[1])}</h3><p class="small" style="margin:4px 0 0">${esc(d[4])}</p></div>` : '';
+}
+function renderMio() { renderSie(); drawMap(); renderCue(); renderDif(); }
 
 /* ================= MIRARLO DISTINTO ================= */
 function renderGra() {
@@ -449,12 +554,26 @@ function renderGra() {
   $$('[data-gr]').forEach(b => b.onclick = () => { S.gra = toggle(S.gra, b.dataset.gr); saveS(); keep(renderGra); });
   $('#graTxt').innerHTML = S.gra.length ? `<div class="sentence pop">«Gracias, cuerpo, por ${esc(joinY(S.gra.map(lc)))}.»</div><p class="small muted">Léela cuando te mires al espejo y te cueste. Tu cuerpo no es solo una imagen.</p>` : '';
 }
+function drawMovil() {
+  const n = S.red.length, posts = 6;
+  let g = `<rect width="320" height="250" rx="18" fill="color-mix(in srgb, var(--tc) 6%, var(--surface))"/><rect x="104" y="10" width="112" height="230" rx="18" fill="var(--surface)" stroke="var(--deep)" stroke-width="2.5"/><rect x="144" y="18" width="32" height="5" rx="2.5" fill="var(--line)"/>`;
+  for (let i = 0; i < posts; i++) { const y = 32 + i * 34, kind = i < n * 1.5 ? 'real' : 'perf';
+    g += `<rect x="114" y="${y}" width="92" height="28" rx="8" fill="${kind === 'real' ? 'color-mix(in srgb, var(--gr) 14%, var(--surface))' : 'color-mix(in srgb, var(--li) 10%, var(--surface))'}" stroke="${kind === 'real' ? 'var(--gr)' : 'var(--line)'}"/>`;
+    g += kind === 'real' ? `<g fill="none" stroke="var(--gr)" stroke-width="1.6" stroke-linecap="round"><circle cx="128" cy="${y + 10}" r="4"/><path d="M122 ${y + 24}c0-6 3-9 6-9 4 0 7 4 7 9"/><path d="M196 ${y + 18}c-1-2-4-1-3 1l3 3 3-3c1-2-2-3-3-1z"/></g><path d="M142 ${y + 10}h40M142 ${y + 17}h28" stroke="var(--gr)" stroke-width="2" stroke-linecap="round" opacity=".5"/>`
+      : `<g fill="none" stroke="var(--li)" stroke-width="1.6" stroke-linecap="round" opacity=".8"><circle cx="128" cy="${y + 10}" r="4"/><path d="M124 ${y + 24}c1-4 2-7 4-7s3 3 4 7"/><path d="M192 ${y + 9}l2 4 4 .5-3 2.5 1 4-4-2-4 2 1-4-3-2.5 4-.5z"/></g><path d="M142 ${y + 10}h40M142 ${y + 17}h28" stroke="var(--li)" stroke-width="2" stroke-linecap="round" opacity=".4"/>`; }
+  g += `<text x="54" y="66" text-anchor="middle" font-family="var(--body)" font-size="9.5" font-weight="800" fill="var(--gr)">Cuerpos</text><text x="54" y="79" text-anchor="middle" font-family="var(--body)" font-size="9.5" font-weight="800" fill="var(--gr)">reales</text><text x="54" y="186" text-anchor="middle" font-family="var(--body)" font-size="9.5" font-weight="800" fill="var(--li)">Cuerpos</text><text x="54" y="199" text-anchor="middle" font-family="var(--body)" font-size="9.5" font-weight="800" fill="var(--li)">«perfectos»</text><path d="M84 72h22M84 192h22" stroke="var(--line)" stroke-width="1.5"/>`;
+  g += `<g transform="translate(262 112)" fill="none" stroke="${n ? 'var(--gr)' : 'var(--li)'}" stroke-width="2" stroke-linecap="round"><circle r="22"/><path d="${n >= 2 ? 'M-9 4c3 5 15 5 18 0' : 'M-9 8c3-4 15-4 18 0'}"/><circle cx="-7" cy="-5" r="1.5" fill="currentColor"/><circle cx="7" cy="-5" r="1.5" fill="currentColor"/></g>`;
+  $('#movil').innerHTML = g;
+}
 function renderRed() {
+  drawMovil();
+  const n = S.red.length;
+  setTimeout(() => { if ($('#redTxt')) $('#redTxt').innerHTML = n >= 3 ? '<div class="ok small pop">Tu pantalla empieza a parecerse más a la vida real, con cuerpos diversos y embarazos de verdad. Lo que miras cada día también influye en cómo te miras.</div>' : n ? '<p class="small muted" style="margin:0">Cada cambio en lo que ves hace tu pantalla un poco más amable.</p>' : ''; }, 0);
   $('#red').innerHTML = RED.map(t => `<button class="chip" style="--c:var(--tc)" data-re="${esc(t)}" aria-pressed="${S.red.includes(t)}">${esc(t)}</button>`).join('');
   $$('[data-re]').forEach(b => b.onclick = () => { S.red = toggle(S.red, b.dataset.re); saveS(); keep(renderRed); });
 }
 function renderMir() { renderGra(); renderRed();
-  sayings({ k: 'a', flips: '#tho', chips: '#thoCh', mine: '#thoMine', list: THO, sel: () => S.tho, setSel: (a) => { S.tho = a; saveS(); }, own: S.own, save: saveS }); }
+  sayings({ k: 'a', style: 'tachar', flips: '#tho', chips: '#thoCh', mine: '#thoMine', list: THO, sel: () => S.tho, setSel: (a) => { S.tho = a; saveS(); }, own: S.own, save: saveS }); }
 
 /* ================= CUIDARME ================= */
 function renderGes() {
@@ -470,6 +589,10 @@ function renderRel() { $('#rel').value = relV; $('#relV').textContent = relV;
 function renderCui() { renderGes(); renderRel(); $('#ayuda').innerHTML = HELP.map(([ic, t, c]) => `<div class="ns" style="--c:${c}">${SI(ic)}<span>${t}</span></div>`).join(''); }
 
 /* ================= RESUMEN ================= */
+
+/* Dibujo que acompaña al registro de cada día */
+const VZ_rel = (v) => { let g = `<rect width="320" height="120" rx="16" fill="color-mix(in srgb, var(--tc) 6%, var(--surface))"/>`; const y = 94 - v * 6; g += `<circle cx="160" cy="${y}" r="20" fill="var(--sun, #D9A23A)" opacity="${.4 + v * .06}"/>`; for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4; g += `<path d="M${160 + Math.cos(a) * 26} ${y + Math.sin(a) * 26} L${160 + Math.cos(a) * (30 + v)} ${y + Math.sin(a) * (30 + v)}" stroke="var(--sun, #D9A23A)" stroke-width="2.5" stroke-linecap="round" opacity="${v / 10}"/>`; } g += `<rect x="0" y="92" width="320" height="28" fill="color-mix(in srgb, var(--rose) 18%, var(--surface))"/><text x="160" y="112" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--deep)">${v < 4 ? 'Amanece despacio' : v < 7 ? 'Va saliendo el sol' : 'Un día luminoso'}</text>`; return g; };
+(() => { const inp = $('#rel'), f = () => { const el = $('#vz_rel'); if (el && inp) el.innerHTML = VZ_rel(+inp.value); }; inp.addEventListener('input', f); document.addEventListener('click', () => setTimeout(f, 40)); setTimeout(f, 60); })();
 function summary() {
   const L = ['Mi cuerpo en el embarazo: resumen'];
   if (S.sie.length) L.push('Cómo me siento con mi cuerpo: ' + S.sie.join(', ').toLowerCase());
@@ -479,6 +602,7 @@ function summary() {
   S.tho.forEach(i => L.push(`Me digo «${THO[i][0]}» → me respondo «${(S.own[i] || '').trim() || THO[i][1]}»`));
   if (S.ges.length) L.push('Gestos de cuidado: ' + S.ges.join(', ').toLowerCase());
   if (REL.length) L.push('Cómo me llevo con mi cuerpo (0-10): ' + REL.slice(-8).map(h => `${fdate(h.t)} ${h.v}`).join(', '));
+  if (S.dif) L.push('Lo que hace más pesado mi embarazo: ' + DIF.find(x => x[0] === S.dif)[1].toLowerCase());
   return L.join('\n');
 }
 setupCopy(summary);
@@ -739,7 +863,8 @@ const PDFKIT = (() => {
     'impulsos.log': 'Registro de impulsos', 'incert.daily': 'Días', 'incert.logs': 'Exposiciones', 'incert.waves': 'Olas', 'liston.exps': 'Experimentos', 'liston.five': 'Cinco minutos', 'liston.friend': 'Como a una amiga', 'liston.logros': 'Tarro de logros', 'liston.suf': 'Suficientemente bien',
     'pensamientos.regs': 'Registro de pensamientos', 'quererme.jar': 'Tarro', 'rumbo.log': 'Pasos', 'rumbo.revs': 'Revisiones', 'rumbo.snaps': 'Dianas', 'sesion.hist': 'Sesiones preparadas', 'social.bien': 'Lo que fue bien', 'social.experimentos': 'Experimentos',
     'soledad.days': 'Días', 'soledad.small': 'Pequeños lazos', 'sueno.noches': 'Noches', 'sueno.preoc': 'Preocupaciones', 'verguenza.momentos': 'Momentos', 'vinculos.dates': 'Citas', 'vueltas.decs': 'Decisiones',
-    'm-ansiedad.niv': 'Cómo de preocupada me siento', 'm-carga.acuerdos': 'Acuerdos', 'm-carga.cabeza': 'Cómo de llena está mi cabeza', 'm-carga.revisiones': 'Revisiones de la semana', 'm-cuerpoemb.rel': 'Cómo me llevo con mi cuerpo', 'm-animo.animo': 'Mi ánimo',
+    'm-ansiedad.niv': 'Cómo de preocupada me siento', 'm-carga.acuerdos': 'Acuerdos', 'm-carga.cabeza': 'Cómo de llena está mi cabeza', 'm-carga.revisiones': 'Revisiones de la semana', 'm-duelo.dia': 'Cómo estoy',
+  'm-limpeq.bien': 'Le pillé haciendo algo bien', 'm-limpeq.log': 'Cómo he sostenido los límites', 'm-familia.rlog': 'Momentos en el bote', 'm-limfam.log': 'Límites que he puesto', 'm-suenopos.cont': 'Siestas y despertares', 'm-suenopos.des': 'Cómo he descansado', 'm-lactancia.lac': 'Cómo me siento con la lactancia', 'm-cuerpopos.rel': 'Cómo me llevo con mi cuerpo', 'm-cuerpoemb.rel': 'Cómo me llevo con mi cuerpo', 'm-animo.animo': 'Mi ánimo',
     'm-nacer.cartas': 'Cartas', 'm-nacer.piel': 'Cómo me siento en mi piel', 'm-pareja.hoy': 'Cómo de cerca me siento', 'm-pareja.mio.xh': 'Momentos de autocuidado en pareja', 'm-parto.conf': 'Cómo de preparada me siento',
     'm-recordar.peso': 'Cuánto me pesa el recuerdo', 'm-salto.log': 'Mi semana', 'm-soledad.hoy': 'Cómo de acompañada me siento', 'm-ventanas.anc': 'Cómo de ancha ha sido mi ventana', 'm-vinculo.cx': 'Cómo de conectada me siento', 'm-vinculo.momentos': 'Momentos juntos', 'm-vinculo.senales': 'Señales de mi bebé',
   };

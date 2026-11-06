@@ -64,6 +64,7 @@ input[type=range] { width: 100%; accent-color: var(--c, var(--accent)); }
 .warn { background: var(--warn); color: var(--warn-ink); border-radius: 16px; padding: 12px 14px; font-size: .93rem; }
 .ok { background: var(--ok); color: var(--ok-ink); border-radius: 16px; padding: 12px 14px; font-size: .93rem; }
 .pop { animation: pop .45s ease-out; } @keyframes pop { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+svg .pop[transform] { animation-name: popfade; } @keyframes popfade { from { opacity: 0; } to { opacity: 1; } }
 .empty { text-align: center; padding: 18px; border: 1.5px dashed var(--line); border-radius: 18px; color: var(--muted); font-size: .93rem; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
 .seg { display: flex; gap: 6px; background: var(--tint); padding: 4px; border-radius: 999px; }
@@ -138,6 +139,43 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 .draw { stroke-dasharray: 900; stroke-dashoffset: 900; animation: draw 1.6s ease-out forwards; } @keyframes draw { to { stroke-dashoffset: 0; } }
 @media (max-width: 370px) { .gest.tiles { grid-template-columns: 1fr 1fr; } }
 @media (prefers-reduced-motion: reduce) { .pulse, .draw { animation: none !important; stroke-dashoffset: 0; } }
+/* Pares «frase / lo que se sabe» y «me digo / otra forma de verlo» en varios formatos */
+.pairs { display: flex; flex-direction: column; gap: 8px; }
+.p-lupa .pl { border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); overflow: hidden; }
+.p-lupa .pl.on { border-color: var(--tc); }
+.p-lupa .pl > button { width: 100%; border: 0; background: transparent; display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: center; text-align: left; padding: 11px 13px; font-family: var(--display); font-size: 1.02rem; color: var(--deep); }
+.p-lupa .pl > button svg { width: 22px; height: 22px; color: var(--tc); transition: transform .3s; }
+.p-lupa .pl.on > button svg { transform: scale(1.25); }
+.p-lupa .pa { padding: 0 14px 12px 49px; } .p-lupa .pa small, .p-chat small, .p-deck small, .p-tedices small, .p-tachar small, .p-voz small { display: block; font-size: .68rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; opacity: .8; margin-bottom: 2px; }
+.p-lupa .pa p { margin: 0; font-size: .95rem; }
+.p-chat { background: color-mix(in srgb, var(--tc) 6%, var(--surface)); border-radius: 18px; padding: 12px 10px; gap: 10px; }
+.p-chat .cb { max-width: 86%; border-radius: 18px; padding: 9px 13px; line-height: 1.35; font-size: .95rem; text-align: left; }
+.p-chat .cb.l { align-self: flex-start; border: 1.5px solid var(--line); background: var(--surface); border-bottom-left-radius: 4px; font-family: var(--display); font-size: 1.02rem; color: var(--deep); }
+.p-chat .cb.l[aria-expanded="true"] { border-color: var(--tc); }
+.p-chat .cb.r { align-self: flex-end; background: var(--ok); color: var(--ok-ink); border-bottom-right-radius: 4px; }
+.dk { display: flex; flex-direction: column; gap: 10px; }
+.dk .dots { display: flex; gap: 5px; justify-content: center; } .dk .dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--line); transition: all .3s; } .dk .dots span.done { background: color-mix(in srgb, var(--tc) 45%, var(--surface)); } .dk .dots span.on { background: var(--tc); width: 20px; border-radius: 6px; }
+.dk .dc { border-radius: 20px; padding: 18px 16px; min-height: 150px; background: color-mix(in srgb, var(--tc) 10%, var(--surface)); border: 1.5px solid color-mix(in srgb, var(--tc) 30%, transparent); display: flex; flex-direction: column; gap: 10px; justify-content: center; text-align: center; box-shadow: 0 6px 0 -2px color-mix(in srgb, var(--tc) 14%, var(--surface)), 0 12px 0 -5px color-mix(in srgb, var(--tc) 8%, var(--surface)); }
+.dk .dc > b { font-family: var(--display); font-weight: 500; font-size: 1.2rem; color: var(--deep); line-height: 1.3; }
+.dk .dback { background: var(--ok); color: var(--ok-ink); border-radius: 14px; padding: 10px 12px; text-align: left; } .dk .dback p { margin: 0; font-size: .95rem; }
+.dk .yn { display: flex; gap: 8px; justify-content: center; } .dk .yn button { border: 1.5px solid var(--tc); background: var(--surface); color: var(--tc); border-radius: 999px; padding: 8px 22px; font-weight: 800; }
+.dk .q { margin: 0; font-size: .9rem; color: var(--muted); font-weight: 700; }
+.dk .rev { align-self: center; border: 0; background: var(--tc); color: var(--onc, #fff); border-radius: 999px; padding: 8px 18px; font-weight: 800; }
+.dk .nav-row span { font-size: .82rem; color: var(--muted); font-weight: 700; }
+.p-tachar .tc { border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
+.p-tachar .tc > button { border: 0; background: transparent; padding: 0; text-align: left; font-family: var(--display); font-size: 1.05rem; color: var(--deep); position: relative; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+.p-tachar .tc > button .tx { position: relative; }
+.p-tachar .tc > button .tx::after { content: ''; position: absolute; left: 0; top: 55%; height: 2px; width: 0; background: var(--me, var(--li)); transition: width .45s ease; }
+.p-tachar .tc.on > button .tx { color: var(--muted); } .p-tachar .tc.on > button .tx::after { width: 100%; }
+.p-tachar .tc > button i { font-style: normal; font-family: var(--body); font-size: .74rem; font-weight: 800; color: var(--tc); white-space: nowrap; }
+.p-tachar .nw { font-family: var(--display); font-size: 1.1rem; color: var(--ok-ink); background: var(--ok); border-radius: 12px; padding: 8px 12px; }
+.p-voz .vz { display: flex; flex-direction: column; gap: 6px; }
+.p-voz .cloud { align-self: flex-start; max-width: 88%; border: 1.5px dashed var(--muted); background: color-mix(in srgb, var(--muted) 8%, var(--surface)); border-radius: 22px 22px 22px 6px; padding: 10px 14px; text-align: left; font-family: var(--display); font-size: 1.02rem; color: var(--deep); display: grid; grid-template-columns: 22px 1fr; gap: 8px; align-items: start; }
+.p-voz .cloud svg, .p-voz .warm svg { width: 20px; height: 20px; margin-top: 2px; }
+.p-voz .warm { align-self: flex-end; max-width: 88%; background: color-mix(in srgb, var(--rose, var(--tc)) 14%, var(--surface)); border: 1.5px solid var(--rose, var(--tc)); border-radius: 22px 22px 6px 22px; padding: 10px 14px; font-family: var(--display); font-size: 1.05rem; color: var(--deep); display: grid; grid-template-columns: 22px 1fr; gap: 8px; }
+.p-voz .warm svg { color: var(--rose, var(--tc)); } .p-voz .cloud svg { color: var(--muted); }
+.dk .dback p, .p-chat .cb.r, .p-lupa .pa p { color: var(--ink); }
+
 
 .hot { cursor: pointer; } .hot:focus { outline: none; } .hot:focus-visible circle { stroke: var(--ink); stroke-width: 3; }
 .bub { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -194,7 +232,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 
     <div class="card">
       <span class="eyebrow">¿Cómo se lo dirías a alguien que quieres?</span>
-      <p class="small">Solemos ser mucho más duros/as con nosotros/as que con los demás. Elige una situación y compara.</p>
+      <p class="small">Solemos ser mucho más duras con nosotras que con los demás. Elige una situación y compara.</p>
       <div class="chips" id="sit"></div>
       <div class="seg" id="sitSeg"></div>
       <svg class="fig" id="sitScene" viewBox="0 0 320 222" role="img" aria-label="Lo que le diría a alguien que quiero y lo que me digo a mí"></svg>
@@ -203,7 +241,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 
     <div class="card">
       <span class="eyebrow">Cosas que nos decimos</span>
-      <p class="small">A veces nos cuesta tratarnos bien por miedo a lo que pueda pasar. Toca cada tarjeta para ver lo que se sabe.</p>
+      <p class="small">Pasa las tarjetas una a una. En cada frase, toca para ver lo que se sabe.</p>
       <div class="flips" id="myths"></div>
     </div>
   </section>
@@ -342,8 +380,9 @@ function listEditor(o) {
 }
 /* Tarjetas «lo que me digo» con respuesta propia. o = { flips, chips, mine, list, sel(), setSel(a), own, save, front, back } */
 function sayings(o) {
+  if (o.style && o.style !== 'flip') sayPairs(o.flips, o.list, o.style, o.k); else {
   $(o.flips).innerHTML = o.list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-fl${o.k}="${i}"><span class="in"><span class="ff"><small>${o.front || 'Me digo'}</small><b>«${esc(a)}»</b><i>Toca para darle la vuelta ↻</i></span><span class="fb"><small>${o.back || 'Otra forma de verlo'}</small><b>«${esc(b)}»</b></span></span></button>`).join('');
-  flipBind(`[data-fl${o.k}]`);
+  flipBind(`[data-fl${o.k}]`); }
   const mine = () => { const s = o.sel();
     $(o.chips).innerHTML = o.list.map(([a], i) => `<button class="chip" style="--c:var(--tc)" data-sc${o.k}="${i}" aria-pressed="${s.includes(i)}">${esc(a)}</button>`).join('');
     $$(`[data-sc${o.k}]`).forEach(b => b.onclick = () => { o.setSel(toggle(o.sel(), +b.dataset['sc' + o.k])); keep(mine); });
@@ -368,23 +407,56 @@ function miniLine(pts, color, label) {
     ${d.map((e, i) => `<circle cx="${x(i)}" cy="${y(e.v)}" r="4.5" fill="${color}"/>`).join('')}
     <text x="30" y="114" font-family="var(--body)" font-size="9" fill="var(--muted)">${fdate(d[0].t)}</text><text x="310" y="114" text-anchor="end" font-family="var(--body)" font-size="9" fill="var(--muted)">${fdate(d[n - 1].t)}</text></svg>`;
 }
+/* Pares en varios formatos, para que no se repita siempre la misma tarjeta: flip, lupa, chat, deck, tedices (para «lo que se sabe») y tachar, voz (para «me digo») */
+const PICO = { lupa: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/>', cloud: '<path d="M7 18a4 4 0 0 1-.6-8A5.5 5.5 0 0 1 17 8.5a4.5 4.5 0 0 1 .5 9z"/>', heart: '<path d="M12 20s-7-4.4-7-10A4 4 0 0 1 12 7a4 4 0 0 1 7 3c0 5.6-7 10-7 10z"/>' };
+function pairsUI(sel, list, style, o) {
+  o = o || {}; const el = $(sel), F = o.front || 'Me digo', B = o.back || 'Lo que se sabe', k = sel.replace(/\W/g, '');
+  if (style === 'flip') { el.className = 'flips'; el.innerHTML = list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-pf${k}="${i}"><span class="in"><span class="ff"><small>${F}</small><b>«${esc(a)}»</b><i>${o.hint || 'Toca para ver lo que se sabe ↻'}</i></span><span class="fb"><small>${B}</small>${o.bold ? `<b>«${esc(b)}»</b>` : `<span class="small">${esc(b)}</span>`}</span></span></button>`).join(''); flipBind(`[data-pf${k}]`); return; }
+  el.className = 'pairs p-' + style;
+  const q = (b) => o.bold ? `«${esc(b)}»` : esc(b);
+  if (style === 'lupa') { let op = -1; const r = () => { el.innerHTML = list.map(([a, b], i) => `<div class="pl${op === i ? ' on' : ''}"><button data-pl${k}="${i}" aria-expanded="${op === i}">${SI(PICO.lupa)}<span>«${esc(a)}»</span></button>${op === i ? `<div class="pa pop"><small>${B}</small><p>${q(b)}</p></div>` : ''}</div>`).join(''); $$(`[data-pl${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['pl' + k]; op = op === n ? -1 : n; r(); }); }; r(); return; }
+  if (style === 'chat') { const on = new Set(); const r = () => { el.innerHTML = list.map(([a, b], i) => `<button class="cb l" data-pc${k}="${i}" aria-expanded="${on.has(i)}"><small>${F}</small>${esc(a)}</button>${on.has(i) ? `<div class="cb r pop"><small>${B}</small>${q(b)}</div>` : ''}`).join(''); $$(`[data-pc${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['pc' + k]; on.has(n) ? on.delete(n) : on.add(n); r(); }); }; r(); return; }
+  if (style === 'deck' || style === 'tedices') {
+    let i = 0, shown = false; const ans = {};
+    const r = () => { const [a, b] = list[i], all = Object.keys(ans).length === list.length, yes = Object.values(ans).filter(Boolean).length;
+      el.innerHTML = `<div class="dk"><div class="dots">${list.map((_, j) => `<span class="${j === i ? 'on' : (ans[j] !== undefined || (style === 'deck' && j < i)) ? 'done' : ''}"></span>`).join('')}</div>
+        <div class="dc pop"><small>${F}</small><b>«${esc(a)}»</b>
+        ${style === 'tedices' && !shown ? `<p class="q">¿Te lo has dicho alguna vez?</p><div class="yn"><button data-yn="1">Sí</button><button data-yn="0">No</button></div>` : ''}
+        ${style === 'deck' && !shown ? `<button class="rev">Ver lo que se sabe</button>` : ''}
+        ${shown ? `<div class="dback pop"><small>${B}</small><p>${style === 'tedices' && ans[i] ? 'Es muy habitual decírselo. ' : ''}${q(b)}</p></div>` : ''}</div>
+        <div class="nav-row">${i ? '<button class="btn ghost small" data-dv="-1">← Anterior</button>' : '<span></span>'}<span>${i + 1} de ${list.length}</span>${i < list.length - 1 ? '<button class="btn small" data-dv="1">Siguiente →</button>' : '<span></span>'}</div>
+        ${style === 'tedices' && all ? `<div class="ok small pop">Te has dicho ${yes} de estas ${list.length} frases. No son toda la verdad: la próxima vez que aparezcan, puedes recordar lo que se sabe.</div>` : ''}</div>`;
+      $$(`${sel} [data-yn]`).forEach(x => x.onclick = () => { ans[i] = x.dataset.yn === '1'; shown = true; r(); });
+      const rv = $(`${sel} .rev`); if (rv) rv.onclick = () => { shown = true; r(); };
+      $$(`${sel} [data-dv]`).forEach(x => x.onclick = () => { i += +x.dataset.dv; shown = style === 'tedices' ? ans[i] !== undefined : false; r(); });
+    }; r(); return; }
+}
+function sayPairs(sel, list, style, k) {
+  if (style === 'flip' || !style) { $(sel).className = 'flips'; $(sel).innerHTML = list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-fl${k}="${i}"><span class="in"><span class="ff"><small>Me digo</small><b>«${esc(a)}»</b><i>Toca para darle la vuelta ↻</i></span><span class="fb"><small>Otra forma de verlo</small><b>«${esc(b)}»</b></span></span></button>`).join(''); flipBind(`[data-fl${k}]`); return; }
+  const el = $(sel), on = new Set(); el.className = 'pairs p-' + style;
+  const r = () => {
+    el.innerHTML = style === 'tachar' ? list.map(([a, b], i) => `<div class="tc${on.has(i) ? ' on' : ''}"><button data-tt${k}="${i}" aria-pressed="${on.has(i)}"><span class="tx">«${esc(a)}»</span><i>${on.has(i) ? 'Deshacer' : 'Tachar y reescribir'}</i></button>${on.has(i) ? `<div class="nw pop">«${esc(b)}»</div>` : ''}</div>`).join('')
+      : list.map(([a, b], i) => `<div class="vz"><button class="cloud" data-tt${k}="${i}" aria-pressed="${on.has(i)}">${SI(PICO.cloud)}<span><small>Mi voz crítica</small>«${esc(a)}»</span></button>${on.has(i) ? `<div class="warm pop">${SI(PICO.heart)}<span><small>Mi voz amable</small>«${esc(b)}»</span></div>` : ''}</div>`).join('');
+    $$(`[data-tt${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['tt' + k]; on.has(n) ? on.delete(n) : on.add(n); r(); });
+  }; r();
+}
 
 
 /* ================= DATOS ================= */
 const AYC = ['var(--tc)', 'var(--calm)', 'var(--soft)', 'var(--drive)', 'var(--threat)'];
-const SYS = [['amenaza', 'Amenaza', 'var(--threat)', 'Nos protege del peligro. Trae ansiedad, enfado o miedo, y también la voz crítica. Es rápido y muy fuerte.', 92, 82], ['logro', 'Logro', 'var(--drive)', 'Nos mueve a conseguir cosas, a avanzar y a disfrutar de los logros. Cuando se pasa, vivimos con prisa y sin descanso.', 228, 82], ['calma', 'Calma y cuidado', 'var(--calm)', 'Nos da seguridad, descanso y conexión con los demás. Se activa con el cariño, también con el que nos damos a nosotros/as. Es el que equilibra a los otros dos.', 160, 150]];
-const INGR = [['Amabilidad', 'En lugar de criticarme', '«Soy idiota, siempre igual.»', '«Me he equivocado y me duele. Puedo tratarme con cuidado mientras lo arreglo.»'], ['Humanidad compartida', 'En lugar de sentirme solo/a', '«Solo a mí me pasan estas cosas.»', '«Equivocarse y sufrir es parte de ser humano. A mucha gente le pasa lo mismo.»'], ['Atención plena', 'En lugar de ahogarme en ello', '«Todo es horrible, no puedo más.»', '«Ahora mismo estoy sintiendo mucha tristeza. La noto, y puedo hacerle sitio.»']];
-const SIT = [['Ha cometido un error en el trabajo', '«No pasa nada, nos equivocamos todos. ¿Qué necesitas para arreglarlo?»', '«Eres un inútil. Siempre la fastidias.»'], ['Ha perdido los nervios con sus hijos', '«Estabas agotado/a. Puedes pedirles perdón y seguir intentándolo.»', '«Eres un padre o una madre horrible.»'], ['Lo ha dejado su pareja', '«Debe de doler muchísimo. Estoy aquí contigo.»', '«Normal, ¿quién te va a querer?»'], ['No ha llegado a todo', '«Has hecho mucho con lo que tenías. Mañana será otro día.»', '«Eres un desastre. Los demás pueden y tú no.»'], ['No se gusta en el espejo', '«Tu cuerpo te sostiene cada día. Mereces mirarlo con más cariño.»', '«Qué asco das.»']];
-const MYTHS = [['Si me trato con cariño, me volveré vago/a', 'La investigación muestra lo contrario: tratarse con cariño después de un error aumenta las ganas de mejorar, porque el error asusta menos.'], ['Es egoísta', 'Cuidarte te permite cuidar mejor a los demás. Nadie da lo que no tiene.'], ['Es tenerme lástima', 'La lástima nos encierra en «pobre de mí». El cariño reconoce que a todo el mundo le pasa y nos ayuda a seguir.'], ['No me lo merezco', 'El cariño no hay que ganárselo. Se lo darías a cualquier persona que sufre, también a ti.'], ['Si dejo de criticarme, cometeré más errores', 'La crítica dura aumenta el miedo y el bloqueo. Se aprende mejor desde la calma que desde el castigo.']];
+const SYS = [['amenaza', 'Amenaza', 'var(--threat)', 'Nos protege del peligro. Trae ansiedad, enfado o miedo, y también la voz crítica. Es rápido y muy fuerte.', 92, 82], ['logro', 'Logro', 'var(--drive)', 'Nos mueve a conseguir cosas, a avanzar y a disfrutar de los logros. Cuando se pasa, vivimos con prisa y sin descanso.', 228, 82], ['calma', 'Calma y cuidado', 'var(--calm)', 'Nos da seguridad, descanso y conexión con los demás. Se activa con el cariño, también con el que nos damos a nosotras. Es el que equilibra a los otros dos.', 160, 150]];
+const INGR = [['Amabilidad', 'En lugar de criticarme', '«Soy idiota, siempre igual.»', '«Me he equivocado y me duele. Puedo tratarme con cuidado mientras lo arreglo.»'], ['Humanidad compartida', 'En lugar de sentirme sola', '«Solo a mí me pasan estas cosas.»', '«Equivocarse y sufrir es parte de ser humano. A mucha gente le pasa lo mismo.»'], ['Atención plena', 'En lugar de ahogarme en ello', '«Todo es horrible, no puedo más.»', '«Ahora mismo estoy sintiendo mucha tristeza. La noto, y puedo hacerle sitio.»']];
+const SIT = [['Ha cometido un error en el trabajo', '«No pasa nada, nos equivocamos todos. ¿Qué necesitas para arreglarlo?»', '«Eres un inútil. Siempre la fastidias.»'], ['Ha perdido los nervios con sus hijos', '«Estabas agotada. Puedes pedirles perdón y seguir intentándolo.»', '«Eres un padre o una madre horrible.»'], ['Lo ha dejado su pareja', '«Debe de doler muchísimo. Estoy aquí contigo.»', '«Normal, ¿quién te va a querer?»'], ['No ha llegado a todo', '«Has hecho mucho con lo que tenías. Mañana será otro día.»', '«Eres un desastre. Los demás pueden y tú no.»'], ['No se gusta en el espejo', '«Tu cuerpo te sostiene cada día. Mereces mirarlo con más cariño.»', '«Qué asco das.»']];
+const MYTHS = [['Si me trato con cariño, me volveré vaga', 'La investigación muestra lo contrario: tratarse con cariño después de un error aumenta las ganas de mejorar, porque el error asusta menos.'], ['Es egoísta', 'Cuidarte te permite cuidar mejor a los demás. Nadie da lo que no tiene.'], ['Es tenerme lástima', 'La lástima nos encierra en «pobre de mí». El cariño reconoce que a todo el mundo le pasa y nos ayuda a seguir.'], ['No me lo merezco', 'El cariño no hay que ganárselo. Se lo darías a cualquier persona que sufre, también a ti.'], ['Si dejo de criticarme, cometeré más errores', 'La crítica dura aumenta el miedo y el bloqueo. Se aprende mejor desde la calma que desde el castigo.']];
 const CUANDO = [['Cuando me equivoco', '<path d="M12 3l9 16H3z"/><path d="M12 9v4M12 16h.01"/>'], ['Con mi cuerpo', '<circle cx="12" cy="5" r="2.5"/><path d="M12 8v7M8 11h8M10 21l2-6 2 6"/>'], ['Cuando descanso', '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>'], ['Con mis hijos', '<circle cx="9" cy="6" r="2.5"/><circle cx="16" cy="10" r="1.8"/><path d="M5 21v-6a4 4 0 0 1 8 0v6M14 21v-4a2 2 0 0 1 4 0v4"/>'], ['En el trabajo', '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/>'], ['Al compararme', '<path d="M12 4v16M7 20h10M5 7h14M5 7l-3 6h6zM19 7l-3 6h6z"/>'], ['Cuando me rechazan', '<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6"/><path d="M16 11l5 5M21 11l-5 5"/>'], ['Cuando no llego a todo', '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/>']];
-const FRASES = ['Eres un desastre', 'No vales para nada', 'Siempre la fastidias', 'Deberías haberlo hecho mejor', '¿Quién te va a querer así?', 'Eres un vago/a', 'Los demás pueden y tú no', 'Das pena'];
-const BUSCA = ['Que no me equivoque', 'Que no me rechacen', 'Que mejore', 'Que no me hagan daño', 'Que esté preparado/a', 'Que me esfuerce'];
-const FRENA = ['Creo que me volveré vago/a', 'Me parece egoísta', 'Siento que no me lo merezco', 'Me resulta raro o incómodo', 'Me da miedo bajar la guardia', 'Nadie me trató así de pequeño/a'];
-const FRENAR = { 'Creo que me volveré vago/a': 'tratarte con cariño no te vuelve vago/a: te ayuda a levantarte antes', 'Me parece egoísta': 'cuidarte no le quita nada a nadie; al contrario, te permite cuidar mejor', 'Siento que no me lo merezco': 'el cariño no se gana: se lo darías a cualquier persona que sufre', 'Me resulta raro o incómodo': 'es normal que algo nuevo resulte raro; con la práctica se vuelve más natural', 'Me da miedo bajar la guardia': 'la calma no te deja indefenso/a: te da más claridad para protegerte', 'Nadie me trató así de pequeño/a': 'lo que no recibimos se puede aprender ahora, poco a poco' };
-const STEP2 = ['A todo el mundo le pasa alguna vez.', 'No estoy solo/a en esto.', 'Sufrir es parte de ser humano.'];
+const FRASES = ['Eres un desastre', 'No vales para nada', 'Siempre la fastidias', 'Deberías haberlo hecho mejor', '¿Quién te va a querer así?', 'Eres un vaga', 'Los demás pueden y tú no', 'Das pena'];
+const BUSCA = ['Que no me equivoque', 'Que no me rechacen', 'Que mejore', 'Que no me hagan daño', 'Que esté preparada', 'Que me esfuerce'];
+const FRENA = ['Creo que me volveré vaga', 'Me parece egoísta', 'Siento que no me lo merezco', 'Me resulta raro o incómodo', 'Me da miedo bajar la guardia', 'Nadie me trató así de pequeña'];
+const FRENAR = { 'Creo que me volveré vaga': 'tratarte con cariño no te vuelve vaga: te ayuda a levantarte antes', 'Me parece egoísta': 'cuidarte no le quita nada a nadie; al contrario, te permite cuidar mejor', 'Siento que no me lo merezco': 'el cariño no se gana: se lo darías a cualquier persona que sufre', 'Me resulta raro o incómodo': 'es normal que algo nuevo resulte raro; con la práctica se vuelve más natural', 'Me da miedo bajar la guardia': 'la calma no te deja indefensa: te da más claridad para protegerte', 'Nadie me trató así de pequeña': 'lo que no recibimos se puede aprender ahora, poco a poco' };
+const STEP2 = ['A todo el mundo le pasa alguna vez.', 'No estoy sola en esto.', 'Sufrir es parte de ser humano.'];
 const STEP3 = ['Que me trate con cariño.', 'Que esto pase, y que pueda con ello.', 'Que me perdone.', 'Que me dé lo que necesito.', 'Que sea paciente conmigo.'];
 const THO = [['Eres un desastre', 'Me ha salido algo mal, y eso no me convierte en un desastre.'], ['Deberías haberlo hecho mejor', 'Lo hice lo mejor que pude con lo que tenía en ese momento.'], ['No vales para nada', 'Valgo por ser quien soy, no por lo que consigo.'], ['Los demás pueden y tú no', 'Cada persona tiene su ritmo y sus circunstancias. Yo también estoy haciendo mi camino.'], ['Siempre la fastidias', 'A veces me equivoco, como todo el mundo. Y otras muchas veces lo hago bien.']];
-const LB = [['nom', 'Querido/a…', 'Tu nombre', null], ['pasa', 'Sé que estás pasando por…', 'Ej.: una época de mucho cansancio', ['una época difícil', 'mucho cansancio', 'una pérdida', 'un momento de dudas']], ['norm', 'Es comprensible que…', 'O escríbelo a tu manera', ['te sientas así', 'estés agotado/a', 'te duela tanto', 'tengas miedo']], ['hum', 'No eres la única persona…', 'O escríbelo a tu manera', ['a la que le pasa', 'que se equivoca', 'que lo está pasando mal']], ['des', 'Me gustaría que…', 'O escríbelo a tu manera', ['te trataras con paciencia', 'descansaras un poco', 'recordaras todo lo que has superado', 'te pidieras menos']]];
+const LB = [['nom', 'Querida…', 'Tu nombre', null], ['pasa', 'Sé que estás pasando por…', 'Ej.: una época de mucho cansancio', ['una época difícil', 'mucho cansancio', 'una pérdida', 'un momento de dudas']], ['norm', 'Es comprensible que…', 'O escríbelo a tu manera', ['te sientas así', 'estés agotada', 'te duela tanto', 'tengas miedo']], ['hum', 'No eres la única persona…', 'O escríbelo a tu manera', ['a la que le pasa', 'que se equivoca', 'que lo está pasando mal']], ['des', 'Me gustaría que…', 'O escríbelo a tu manera', ['te trataras con paciencia', 'descansaras un poco', 'recordaras todo lo que has superado', 'te pidieras menos']]];
 const KIT = [['Mano en el pecho', '<path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/>'], ['Abrazarme', '<circle cx="12" cy="6" r="2.5"/><path d="M6 21v-7a6 6 0 0 1 12 0v7M6 13l6 3 6-3"/>'], ['Respirar despacio', '<path d="M3 8h11a3 3 0 1 0-3-3M3 12h15a3 3 0 1 1-3 3M3 16h8"/>'], ['Una ducha templada', '<path d="M4 4h9a5 5 0 0 1 5 5v1H8"/><path d="M9 14v2M13 14v3M17 14v2M11 19v1M15 19v1"/>'], ['Una manta', '<path d="M4 6h16v12H4z"/><path d="M4 10h16M4 14h16M8 6v12"/>'], ['Música suave', '<path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/>'], ['Pasear', '<circle cx="13" cy="4.5" r="2"/><path d="M9 21l3-6 3 2v4M7 12l3-3 4 1 3 3"/>'], ['Algo caliente', '<path d="M5 9h11v5a5 5 0 0 1-5 5H10a5 5 0 0 1-5-5zM16 10h2a2 2 0 0 1 0 4h-2M8 3v3M11 3v3"/>'], ['Hablar con alguien que me quiere', '<path d="M4 5h16v10H9l-5 4z"/><path d="M12 12s-3-1.5-3-3a1.5 1.5 0 0 1 3-.6 1.5 1.5 0 0 1 3 .6c0 1.5-3 3-3 3z"/>'], ['Mi mascota', '<circle cx="7" cy="9" r="1.8"/><circle cx="11" cy="6" r="1.8"/><circle cx="15" cy="6" r="1.8"/><circle cx="19" cy="9" r="1.8"/><path d="M13 12c-3 0-5 3-5 5.5S10 21 13 20s5 1 5-2.5S16 12 13 12z"/>'], ['Estar en la naturaleza', '<path d="M12 21v-5M12 3l6 8H6zM12 8l6 8H6z"/>'], ['Una frase amable', '<path d="M4 5h16v10H9l-5 4z"/><path d="M8 9h8M8 12h5"/>']];
 const FFORM = ['Una persona sabia', 'Un animal', 'Una luz', 'Un lugar'];
 const FCOL = ['#E7A8B8', '#F2C27A', '#9FD1B6', '#A9B8EC', '#D4B6E8'];
@@ -438,11 +510,11 @@ function drawIng() {
   g += bubble(80, 14, 226, (con ? b : a).replace(/^«|»$/g, ''), con ? c : 'var(--threat)', 118, -1, true);
   if (con && iSel === 1) g += face(56, 132, 'var(--soft)', 'ok', '', .7) + face(250, 132, 'var(--calm)', 'ok', '', .7) + face(290, 138, 'var(--drive)', 'ok', '', .6);
   if (con && iSel === 2) g += `<circle class="breath" cx="150" cy="148" r="56" fill="none" stroke="var(--calm)" stroke-width="2" stroke-dasharray="4 5" opacity=".7"/>`;
-  if (!con && iSel === 1) g += `<text x="250" y="150" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--threat)">solo/a</text>`;
+  if (!con && iSel === 1) g += `<text x="250" y="150" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--threat)">sola</text>`;
   g += face(150, 132, con ? c : 'var(--threat)', con ? 'ok' : 'hurt', 'yo');
   if (con && iSel === 0) g += HEART(150, 172, 'var(--surface)');
   $('#ingScene').innerHTML = g;
-  $('#ingInfo').innerHTML = `<div class="info pop" style="--c:${c}"><h3>${iSel + 1}. ${n}</h3><p class="small">${sub}: ${['hablarte con el mismo cuidado que usarías con alguien que quieres', 'recordar que equivocarse y sufrir le pasa a todo el mundo, y que no estás solo/a', 'notar lo que sientes y hacerle sitio, sin ignorarlo y sin ahogarte en ello'][iSel]}.</p></div>`;
+  $('#ingInfo').innerHTML = `<div class="info pop" style="--c:${c}"><h3>${iSel + 1}. ${n}</h3><p class="small">${sub}: ${['hablarte con el mismo cuidado que usarías con alguien que quieres', 'recordar que equivocarse y sufrir le pasa a todo el mundo, y que no estás sola', 'notar lo que sientes y hacerle sitio, sin ignorarlo y sin ahogarte en ello'][iSel]}.</p></div>`;
 }
 drawIng();
 let sit = 0;
@@ -462,8 +534,7 @@ function drawSit() {
   $('#bub').innerHTML = `<div class="bub pop" hidden><div style="background:color-mix(in srgb,var(--calm) 13%,var(--surface));color:var(--calm)"><b>A alguien que quiero le diría</b><span class="q" style="color:var(--ink)">${esc(amiga)}</span></div><div style="background:color-mix(in srgb,var(--threat) 12%,var(--surface));color:var(--threat)"><b>Y a mí me digo</b><span class="q" style="color:var(--ink)">${esc(yo)}</span></div></div><p class="small muted" style="margin-top:8px">¿Notas la diferencia? Tratarte con cariño es empezar a usar contigo la voz de la izquierda.</p>`;
 }
 drawSit();
-$('#myths').innerHTML = MYTHS.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-my="${i}"><span class="in"><span class="ff"><small>Me digo</small><b>«${esc(a)}»</b><i>Toca para ver lo que se sabe ↻</i></span><span class="fb"><small>Lo que se sabe</small><span class="small">${esc(b)}</span></span></span></button>`).join('');
-flipBind('[data-my]');
+pairsUI('#myths', MYTHS, 'deck', { front: 'Me digo' });
 
 /* ================= MI CRÍTICA ================= */
 function drawFace() {
@@ -496,7 +567,7 @@ function renderCri() {
 /* ================= PRACTICAR ================= */
 const G0 = () => ({ step: 0, antes: 6, despues: 6, hum: '', nec: '' });
 let G = G0(), hT = null, hStart = 0;
-const GS = ['Esto es un momento difícil', 'No estoy solo/a', '¿Qué necesito oír?'];
+const GS = ['Esto es un momento difícil', 'No estoy sola', '¿Qué necesito oír?'];
 function stopHand() { clearInterval(hT); hT = null; }
 function heart(on) { const el = hT ? Math.floor((Date.now() - hStart) / 1000) : 0, inh = el % 10 < 4;
   return `<div class="timer"><svg viewBox="0 0 170 170" aria-hidden="true"><circle class="breath" cx="85" cy="85" r="${hT && inh ? 70 : 42}" fill="var(--tc)" opacity=".22"/><path d="M85 118 s-28-17-28-38a15 15 0 0 1 28-8 15 15 0 0 1 28 8c0 21-28 38-28 38z" fill="var(--tc)"/></svg>${hT ? `<p>${inh ? 'Toma aire…' : 'Suéltalo despacio…'}</p>` : ''}</div>`; }
@@ -535,8 +606,8 @@ function renderLB() {
 }
 const lp = (v) => v.trim() ? esc(v.trim()) : '<span class="e">…</span>';
 function drawLetter() { const l = S.l;
-  $('#letter').innerHTML = `Querido/a ${lp(l.nom)}:<br><br>Sé que estás pasando por ${lp(l.pasa)}. Es comprensible que ${lp(l.norm)}. No eres la única persona ${lp(l.hum)}.<br><br>Me gustaría que ${lp(l.des)}.<br><br>Con todo mi cariño,<br>yo`; }
-const letterTxt = () => { const l = S.l; return `Querido/a ${l.nom.trim()}: Sé que estás pasando por ${l.pasa.trim()}. Es comprensible que ${l.norm.trim()}. No eres la única persona ${l.hum.trim()}. Me gustaría que ${l.des.trim()}. Con todo mi cariño, yo.`; };
+  $('#letter').innerHTML = `Querida ${lp(l.nom)}:<br><br>Sé que estás pasando por ${lp(l.pasa)}. Es comprensible que ${lp(l.norm)}. No eres la única persona ${lp(l.hum)}.<br><br>Me gustaría que ${lp(l.des)}.<br><br>Con todo mi cariño,<br>yo`; }
+const letterTxt = () => { const l = S.l; return `Querida ${l.nom.trim()}: Sé que estás pasando por ${l.pasa.trim()}. Es comprensible que ${l.norm.trim()}. No eres la única persona ${l.hum.trim()}. Me gustaría que ${l.des.trim()}. Con todo mi cariño, yo.`; };
 $('#lSave').onclick = () => { if (!S.l.pasa.trim() || !S.l.des.trim()) { toast('Completa al menos «Sé que estás pasando por…» y «Me gustaría que…»'); return; } LT.push({ t: Date.now(), s: letterTxt() }); store.set('cartas', LT); S.l = { nom: S.l.nom, pasa: '', norm: '', hum: '', des: '' }; saveS(); keep(renderLB); toast('Carta guardada. Léela cuando lo necesites.'); };
 function renderLetters() { $('#letters').innerHTML = LT.slice(-2).reverse().map(c => `<div class="mine small"><span class="muted">${fdate(c.t)}</span><span style="font-family:var(--display)">${esc(c.s)}</span></div>`).join(''); }
 let vSel = 0, vKind = false;
@@ -871,7 +942,8 @@ const PDFKIT = (() => {
     'impulsos.log': 'Registro de impulsos', 'incert.daily': 'Días', 'incert.logs': 'Exposiciones', 'incert.waves': 'Olas', 'liston.exps': 'Experimentos', 'liston.five': 'Cinco minutos', 'liston.friend': 'Como a una amiga', 'liston.logros': 'Tarro de logros', 'liston.suf': 'Suficientemente bien',
     'pensamientos.regs': 'Registro de pensamientos', 'quererme.jar': 'Tarro', 'rumbo.log': 'Pasos', 'rumbo.revs': 'Revisiones', 'rumbo.snaps': 'Dianas', 'sesion.hist': 'Sesiones preparadas', 'social.bien': 'Lo que fue bien', 'social.experimentos': 'Experimentos',
     'soledad.days': 'Días', 'soledad.small': 'Pequeños lazos', 'sueno.noches': 'Noches', 'sueno.preoc': 'Preocupaciones', 'verguenza.momentos': 'Momentos', 'vinculos.dates': 'Citas', 'vueltas.decs': 'Decisiones',
-    'm-ansiedad.niv': 'Cómo de preocupada me siento', 'm-carga.acuerdos': 'Acuerdos', 'm-carga.cabeza': 'Cómo de llena está mi cabeza', 'm-carga.revisiones': 'Revisiones de la semana', 'm-cuerpoemb.rel': 'Cómo me llevo con mi cuerpo', 'm-animo.animo': 'Mi ánimo',
+    'm-ansiedad.niv': 'Cómo de preocupada me siento', 'm-carga.acuerdos': 'Acuerdos', 'm-carga.cabeza': 'Cómo de llena está mi cabeza', 'm-carga.revisiones': 'Revisiones de la semana', 'm-duelo.dia': 'Cómo estoy',
+  'm-limpeq.bien': 'Le pillé haciendo algo bien', 'm-limpeq.log': 'Cómo he sostenido los límites', 'm-familia.rlog': 'Momentos en el bote', 'm-limfam.log': 'Límites que he puesto', 'm-suenopos.cont': 'Siestas y despertares', 'm-suenopos.des': 'Cómo he descansado', 'm-lactancia.lac': 'Cómo me siento con la lactancia', 'm-cuerpopos.rel': 'Cómo me llevo con mi cuerpo', 'm-cuerpoemb.rel': 'Cómo me llevo con mi cuerpo', 'm-animo.animo': 'Mi ánimo',
     'm-nacer.cartas': 'Cartas', 'm-nacer.piel': 'Cómo me siento en mi piel', 'm-pareja.hoy': 'Cómo de cerca me siento', 'm-pareja.mio.xh': 'Momentos de autocuidado en pareja', 'm-parto.conf': 'Cómo de preparada me siento',
     'm-recordar.peso': 'Cuánto me pesa el recuerdo', 'm-salto.log': 'Mi semana', 'm-soledad.hoy': 'Cómo de acompañada me siento', 'm-ventanas.anc': 'Cómo de ancha ha sido mi ventana', 'm-vinculo.cx': 'Cómo de conectada me siento', 'm-vinculo.momentos': 'Momentos juntos', 'm-vinculo.senales': 'Señales de mi bebé',
   };
@@ -952,7 +1024,7 @@ const PDFKIT = (() => {
       <div class="sec">${K.card('Tratarte con cariño es hablarte y cuidarte como lo harías con alguien a quien quieres cuando lo está pasando mal. No es darte la razón en todo ni quitarle importancia a lo que pasa: es acompañarte en el malestar en lugar de atacarte.', 'soft')}</div>
       <div class="sec"><h2>Tres sistemas dentro de mí</h2>${K.card(K.list(SYS.map(s => `${s[1]}: ${s[3]}`)))}</div>
       <div class="sec"><h2>Los tres ingredientes</h2><table>${INGR.map(i => `<tr><td style="width:30%"><b>${i[0]}</b><br><span class="mut">${i[1].toLowerCase()}</span></td><td><span class="mut">${K.esc(i[2])}</span><br><b>${K.esc(i[3])}</b></td></tr>`).join('')}</table></div>
-      <div class="sec"><h2>Una pausa de cariño</h2>${K.card(K.steps(['Con la mano en el pecho: «Esto es un momento difícil. Esto duele».', '«A todo el mundo le pasa alguna vez. No estoy solo/a».', '¿Qué necesito oír? «Que me trate con cariño. Que sea paciente conmigo».']), 'good')}</div>
+      <div class="sec"><h2>Una pausa de cariño</h2>${K.card(K.steps(['Con la mano en el pecho: «Esto es un momento difícil. Esto duele».', '«A todo el mundo le pasa alguna vez. No estoy sola».', '¿Qué necesito oír? «Que me trate con cariño. Que sea paciente conmigo».']), 'good')}</div>
       <div class="sec"><h2>Cosas que nos decimos y lo que se sabe</h2><table>${MYTHS.map(([a, b]) => `<tr><td style="width:36%" class="mut">«${K.esc(a)}»</td><td>${K.esc(b)}</td></tr>`).join('')}</table></div>
       <div class="sec"><h2>Cuándo pedir ayuda</h2>${K.card(K.list(['La voz crítica no me deja en paz casi nunca.', 'Me castigo, me hago daño o me niego cosas básicas.', 'Tratarme con cariño me remueve mucho o me trae recuerdos dolorosos.', 'Si pienso que no merezco vivir, llamo al 024 (24 h) o al 112.']))}</div>`,
     pocketNote: 'Para cuando la voz crítica aprieta',

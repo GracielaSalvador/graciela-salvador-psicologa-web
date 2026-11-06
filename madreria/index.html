@@ -282,7 +282,7 @@ const TOOLS = [
     ico: '<path d="M5 21V8M19 21V8"/><path d="M3 12h18" stroke-width="2.6"/><path d="M12 12v6M9.5 15.5L12 18l2.5-2.5"/>' },
   { id: 'carino', titulo: 'Tratarme con cariño', desc: 'Para cuando la voz crítica aprieta: entender por qué nos cuesta tratarnos bien, practicar una voz amable y cuidarte en los momentos difíciles.', c: 27, area: 'mia', nueva: false, kw: 'autocompasion compasion cariño carino critica interna autocritica amabilidad cuidarme tratarme bien exigencia voz',
     ico: '<path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/><path d="M9 12c1 1.5 5 1.5 6 0"/>' },
-  { id: 'calma', titulo: 'Calmarme o volver a mí', desc: 'Estrategias guiadas para cuando estás desbordado/a o desconectado/a.', c: 1, area: 'reg', nueva: false, kw: 'calma ansiedad nervios respirar respiracion panico crisis desbordada desbordado bloqueo disociacion desconectada desconectado relajar',
+  { id: 'calma', titulo: 'Calmarme o volver a mí', desc: 'Estrategias guiadas para cuando estás desbordada o desconectada.', c: 1, area: 'reg', nueva: false, kw: 'calma ansiedad nervios respirar respiracion panico crisis desbordada desbordado bloqueo disociacion desconectada desconectado relajar',
     ico: '<circle cx="12" cy="12" r="9"/><path d="M7 13c1.5-2 3.5 2 5 0s3.5 2 5 0"/>' },
   { id: 'emociones', titulo: 'Entender lo que siento', desc: 'Ponerle nombre a la emoción y ver qué te está diciendo.', c: 3, area: 'reg', nueva: false, kw: 'emociones sentir tristeza rabia miedo rueda cuerpo validar',
     ico: '<path d="M3 12V4h8l10 10-8 8L3 12z"/><circle cx="7.5" cy="8" r="1.5"/>' },
@@ -299,8 +299,8 @@ const NEEDS = [
   ['reco', 'No me reconozco desde que soy madre', '<circle cx="12" cy="8" r="4"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/><path d="M10 8h4" stroke-dasharray="1 2"/>', ['nacer', 'carino', 'carga']],
   ['sola', 'Me siento sola', '<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6"/><circle cx="17" cy="11" r="2.5"/>', ['soledad', 'nacer', 'hablar']],
   ['cab', 'Tengo mil cosas en la cabeza', '<path d="M12 3c5 0 8 3.5 7.6 8.5-.2 2.6.6 4.4 0 6.6C19 20.6 16 22 12 22s-7-1.4-7.6-3.9c-.6-2.2.2-4 0-6.6C4 6.5 7 3 12 3z"/><path d="M8 10h8M8 14h6"/>', ['carga', 'ahora', 'energia']],
-  ['desb', 'Estoy desbordado/a', '<path d="M3 10c2.5-3 5 3 7.5 0s5 3 7.5 0M3 15c2.5-3 5 3 7.5 0s5 3 7.5 0"/>', ['calma', 'carga', 'emociones']],
-  ['agot', 'Estoy agotado/a', '<rect x="3" y="7" width="16" height="10" rx="2"/><path d="M21 10.5v3M6 10v4"/>', ['energia', 'carga', 'calma']],
+  ['desb', 'Estoy desbordada', '<path d="M3 10c2.5-3 5 3 7.5 0s5 3 7.5 0M3 15c2.5-3 5 3 7.5 0s5 3 7.5 0"/>', ['calma', 'carga', 'emociones']],
+  ['agot', 'Estoy agotada', '<rect x="3" y="7" width="16" height="10" rx="2"/><path d="M21 10.5v3M6 10v4"/>', ['energia', 'carga', 'calma']],
   ['nolle', 'Siento que no llego a todo', '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/>', ['carga', 'liston', 'carino']],
   ['exi', 'Me exijo demasiado como madre o padre', '<path d="M5 21V8M19 21V8"/><path d="M3 12h18"/>', ['liston', 'carino', 'carga']],
   ['lejos', 'Me siento lejos de mi pareja', '<circle cx="6" cy="12" r="3"/><circle cx="18" cy="12" r="3"/><path d="M9 12h6" stroke-dasharray="2 2"/>', ['pareja', 'hablar', 'carga']],
@@ -393,7 +393,7 @@ const SKY = {
   tarde: '<svg class="sky dusk" viewBox="0 0 32 32" aria-hidden="true"><path d="M7 21a9 9 0 0 1 18 0z" fill="var(--duskc)"/><g stroke="var(--duskc)" stroke-width="2.2" stroke-linecap="round"><line x1="16" y1="5" x2="16" y2="8.5"/><line x1="6" y1="10" x2="8.4" y2="12.4"/><line x1="26" y1="10" x2="23.6" y2="12.4"/></g><line x1="3" y1="24.5" x2="29" y2="24.5" stroke="var(--duskc)" stroke-width="2.2" stroke-linecap="round" opacity=".55"/></svg>',
   luna: '<svg class="sky moon" viewBox="0 0 32 32" aria-hidden="true"><path d="M21 4.5A11.5 11.5 0 1 0 27.5 21 9 9 0 0 1 21 4.5z" fill="var(--moonc)"/><g fill="var(--moonc)"><circle class="tw" cx="26" cy="7" r="1.4"/><circle class="tw t2" cx="29" cy="13" r="1"/></g></svg>',
 };
-const [sky, hola, frase] = h < 6 ? ['luna', 'Hola.', 'Si estás despierto/a de madrugada, aquí tienes un ratito para ti.'] : h < 12 ? ['sol', 'Buenos días.', 'Un ratito para ti antes de que empiece el día.'] : h < 14 ? ['sol', 'Buenos días.', 'Haz una pausa y mira qué necesitas ahora.'] : h < 21 ? ['tarde', 'Buenas tardes.', 'Haz una pausa y mira qué necesitas ahora.'] : ['luna', 'Buenas noches.', 'Antes de descansar, un momento para ti.'];
+const [sky, hola, frase] = h < 6 ? ['luna', 'Hola.', 'Si estás despierta de madrugada, aquí tienes un ratito para ti.'] : h < 12 ? ['sol', 'Buenos días.', 'Un ratito para ti antes de que empiece el día.'] : h < 14 ? ['sol', 'Buenos días.', 'Haz una pausa y mira qué necesitas ahora.'] : h < 21 ? ['tarde', 'Buenas tardes.', 'Haz una pausa y mira qué necesitas ahora.'] : ['luna', 'Buenas noches.', 'Antes de descansar, un momento para ti.'];
 $('#saludo').innerHTML = `<span class="hi">${SKY[sky]}<b>${hola}</b></span> ${frase}`;
 
 /* ---------- Contacto por WhatsApp ---------- */

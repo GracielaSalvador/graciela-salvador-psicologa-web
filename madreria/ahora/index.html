@@ -64,6 +64,7 @@ input[type=range] { width: 100%; accent-color: var(--c, var(--accent)); }
 .warn { background: var(--warn); color: var(--warn-ink); border-radius: 16px; padding: 12px 14px; font-size: .93rem; }
 .ok { background: var(--ok); color: var(--ok-ink); border-radius: 16px; padding: 12px 14px; font-size: .93rem; }
 .pop { animation: pop .45s ease-out; } @keyframes pop { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+svg .pop[transform] { animation-name: popfade; } @keyframes popfade { from { opacity: 0; } to { opacity: 1; } }
 .empty { text-align: center; padding: 18px; border: 1.5px dashed var(--line); border-radius: 18px; color: var(--muted); font-size: .93rem; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
 .seg { display: flex; gap: 6px; background: var(--tint); padding: 4px; border-radius: 999px; }
@@ -138,6 +139,43 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 .draw { stroke-dasharray: 900; stroke-dashoffset: 900; animation: draw 1.6s ease-out forwards; } @keyframes draw { to { stroke-dashoffset: 0; } }
 @media (max-width: 370px) { .gest.tiles { grid-template-columns: 1fr 1fr; } }
 @media (prefers-reduced-motion: reduce) { .pulse, .draw { animation: none !important; stroke-dashoffset: 0; } }
+/* Pares «frase / lo que se sabe» y «me digo / otra forma de verlo» en varios formatos */
+.pairs { display: flex; flex-direction: column; gap: 8px; }
+.p-lupa .pl { border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); overflow: hidden; }
+.p-lupa .pl.on { border-color: var(--tc); }
+.p-lupa .pl > button { width: 100%; border: 0; background: transparent; display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: center; text-align: left; padding: 11px 13px; font-family: var(--display); font-size: 1.02rem; color: var(--deep); }
+.p-lupa .pl > button svg { width: 22px; height: 22px; color: var(--tc); transition: transform .3s; }
+.p-lupa .pl.on > button svg { transform: scale(1.25); }
+.p-lupa .pa { padding: 0 14px 12px 49px; } .p-lupa .pa small, .p-chat small, .p-deck small, .p-tedices small, .p-tachar small, .p-voz small { display: block; font-size: .68rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; opacity: .8; margin-bottom: 2px; }
+.p-lupa .pa p { margin: 0; font-size: .95rem; }
+.p-chat { background: color-mix(in srgb, var(--tc) 6%, var(--surface)); border-radius: 18px; padding: 12px 10px; gap: 10px; }
+.p-chat .cb { max-width: 86%; border-radius: 18px; padding: 9px 13px; line-height: 1.35; font-size: .95rem; text-align: left; }
+.p-chat .cb.l { align-self: flex-start; border: 1.5px solid var(--line); background: var(--surface); border-bottom-left-radius: 4px; font-family: var(--display); font-size: 1.02rem; color: var(--deep); }
+.p-chat .cb.l[aria-expanded="true"] { border-color: var(--tc); }
+.p-chat .cb.r { align-self: flex-end; background: var(--ok); color: var(--ok-ink); border-bottom-right-radius: 4px; }
+.dk { display: flex; flex-direction: column; gap: 10px; }
+.dk .dots { display: flex; gap: 5px; justify-content: center; } .dk .dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--line); transition: all .3s; } .dk .dots span.done { background: color-mix(in srgb, var(--tc) 45%, var(--surface)); } .dk .dots span.on { background: var(--tc); width: 20px; border-radius: 6px; }
+.dk .dc { border-radius: 20px; padding: 18px 16px; min-height: 150px; background: color-mix(in srgb, var(--tc) 10%, var(--surface)); border: 1.5px solid color-mix(in srgb, var(--tc) 30%, transparent); display: flex; flex-direction: column; gap: 10px; justify-content: center; text-align: center; box-shadow: 0 6px 0 -2px color-mix(in srgb, var(--tc) 14%, var(--surface)), 0 12px 0 -5px color-mix(in srgb, var(--tc) 8%, var(--surface)); }
+.dk .dc > b { font-family: var(--display); font-weight: 500; font-size: 1.2rem; color: var(--deep); line-height: 1.3; }
+.dk .dback { background: var(--ok); color: var(--ok-ink); border-radius: 14px; padding: 10px 12px; text-align: left; } .dk .dback p { margin: 0; font-size: .95rem; }
+.dk .yn { display: flex; gap: 8px; justify-content: center; } .dk .yn button { border: 1.5px solid var(--tc); background: var(--surface); color: var(--tc); border-radius: 999px; padding: 8px 22px; font-weight: 800; }
+.dk .q { margin: 0; font-size: .9rem; color: var(--muted); font-weight: 700; }
+.dk .rev { align-self: center; border: 0; background: var(--tc); color: var(--onc, #fff); border-radius: 999px; padding: 8px 18px; font-weight: 800; }
+.dk .nav-row span { font-size: .82rem; color: var(--muted); font-weight: 700; }
+.p-tachar .tc { border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
+.p-tachar .tc > button { border: 0; background: transparent; padding: 0; text-align: left; font-family: var(--display); font-size: 1.05rem; color: var(--deep); position: relative; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+.p-tachar .tc > button .tx { position: relative; }
+.p-tachar .tc > button .tx::after { content: ''; position: absolute; left: 0; top: 55%; height: 2px; width: 0; background: var(--me, var(--li)); transition: width .45s ease; }
+.p-tachar .tc.on > button .tx { color: var(--muted); } .p-tachar .tc.on > button .tx::after { width: 100%; }
+.p-tachar .tc > button i { font-style: normal; font-family: var(--body); font-size: .74rem; font-weight: 800; color: var(--tc); white-space: nowrap; }
+.p-tachar .nw { font-family: var(--display); font-size: 1.1rem; color: var(--ok-ink); background: var(--ok); border-radius: 12px; padding: 8px 12px; }
+.p-voz .vz { display: flex; flex-direction: column; gap: 6px; }
+.p-voz .cloud { align-self: flex-start; max-width: 88%; border: 1.5px dashed var(--muted); background: color-mix(in srgb, var(--muted) 8%, var(--surface)); border-radius: 22px 22px 22px 6px; padding: 10px 14px; text-align: left; font-family: var(--display); font-size: 1.02rem; color: var(--deep); display: grid; grid-template-columns: 22px 1fr; gap: 8px; align-items: start; }
+.p-voz .cloud svg, .p-voz .warm svg { width: 20px; height: 20px; margin-top: 2px; }
+.p-voz .warm { align-self: flex-end; max-width: 88%; background: color-mix(in srgb, var(--rose, var(--tc)) 14%, var(--surface)); border: 1.5px solid var(--rose, var(--tc)); border-radius: 22px 22px 6px 22px; padding: 10px 14px; font-family: var(--display); font-size: 1.05rem; color: var(--deep); display: grid; grid-template-columns: 22px 1fr; gap: 8px; }
+.p-voz .warm svg { color: var(--rose, var(--tc)); } .p-voz .cloud svg { color: var(--muted); }
+.dk .dback p, .p-chat .cb.r, .p-lupa .pa p { color: var(--ink); }
+
 
 .player { border: 2px solid var(--tc); }
 .boat { transform-origin: 160px 96px; animation: rock 2.6s ease-in-out infinite alternate; }
@@ -210,7 +248,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 
     <div class="card">
       <span class="eyebrow">Cosas que se dicen</span>
-      <p class="small">Toca cada tarjeta para ver lo que se sabe.</p>
+      <p class="small">Pasa las tarjetas una a una. En cada frase, toca para ver lo que se sabe.</p>
       <div class="flips" id="myths"></div>
     </div>
   </section>
@@ -250,7 +288,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
   <!-- PRACTICAR -->
   <section class="view" id="view-pra" hidden>
     <h1>Practicar</h1>
-    <p class="muted">Elige una práctica corta. Puedes hacerlas con los ojos abiertos o cerrados, sentado/a, de pie o caminando.</p>
+    <p class="muted">Elige una práctica corta. Puedes hacerlas con los ojos abiertos o cerrados, sentada, de pie o caminando.</p>
     <div class="gest" id="prac"></div>
     <div class="card player" id="player" hidden></div>
     <div class="note small">Si alguna práctica te remueve mucho, puedes abrir los ojos, moverte o parar. Escucharte también es estar presente.</div>
@@ -321,8 +359,9 @@ function listEditor(o) {
 }
 /* Tarjetas «lo que me digo» con respuesta propia. o = { flips, chips, mine, list, sel(), setSel(a), own, save, front, back } */
 function sayings(o) {
+  if (o.style && o.style !== 'flip') sayPairs(o.flips, o.list, o.style, o.k); else {
   $(o.flips).innerHTML = o.list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-fl${o.k}="${i}"><span class="in"><span class="ff"><small>${o.front || 'Me digo'}</small><b>«${esc(a)}»</b><i>Toca para darle la vuelta ↻</i></span><span class="fb"><small>${o.back || 'Otra forma de verlo'}</small><b>«${esc(b)}»</b></span></span></button>`).join('');
-  flipBind(`[data-fl${o.k}]`);
+  flipBind(`[data-fl${o.k}]`); }
   const mine = () => { const s = o.sel();
     $(o.chips).innerHTML = o.list.map(([a], i) => `<button class="chip" style="--c:var(--tc)" data-sc${o.k}="${i}" aria-pressed="${s.includes(i)}">${esc(a)}</button>`).join('');
     $$(`[data-sc${o.k}]`).forEach(b => b.onclick = () => { o.setSel(toggle(o.sel(), +b.dataset['sc' + o.k])); keep(mine); });
@@ -347,6 +386,39 @@ function miniLine(pts, color, label) {
     ${d.map((e, i) => `<circle cx="${x(i)}" cy="${y(e.v)}" r="4.5" fill="${color}"/>`).join('')}
     <text x="30" y="114" font-family="var(--body)" font-size="9" fill="var(--muted)">${fdate(d[0].t)}</text><text x="310" y="114" text-anchor="end" font-family="var(--body)" font-size="9" fill="var(--muted)">${fdate(d[n - 1].t)}</text></svg>`;
 }
+/* Pares en varios formatos, para que no se repita siempre la misma tarjeta: flip, lupa, chat, deck, tedices (para «lo que se sabe») y tachar, voz (para «me digo») */
+const PICO = { lupa: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/>', cloud: '<path d="M7 18a4 4 0 0 1-.6-8A5.5 5.5 0 0 1 17 8.5a4.5 4.5 0 0 1 .5 9z"/>', heart: '<path d="M12 20s-7-4.4-7-10A4 4 0 0 1 12 7a4 4 0 0 1 7 3c0 5.6-7 10-7 10z"/>' };
+function pairsUI(sel, list, style, o) {
+  o = o || {}; const el = $(sel), F = o.front || 'Me digo', B = o.back || 'Lo que se sabe', k = sel.replace(/\W/g, '');
+  if (style === 'flip') { el.className = 'flips'; el.innerHTML = list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-pf${k}="${i}"><span class="in"><span class="ff"><small>${F}</small><b>«${esc(a)}»</b><i>${o.hint || 'Toca para ver lo que se sabe ↻'}</i></span><span class="fb"><small>${B}</small>${o.bold ? `<b>«${esc(b)}»</b>` : `<span class="small">${esc(b)}</span>`}</span></span></button>`).join(''); flipBind(`[data-pf${k}]`); return; }
+  el.className = 'pairs p-' + style;
+  const q = (b) => o.bold ? `«${esc(b)}»` : esc(b);
+  if (style === 'lupa') { let op = -1; const r = () => { el.innerHTML = list.map(([a, b], i) => `<div class="pl${op === i ? ' on' : ''}"><button data-pl${k}="${i}" aria-expanded="${op === i}">${SI(PICO.lupa)}<span>«${esc(a)}»</span></button>${op === i ? `<div class="pa pop"><small>${B}</small><p>${q(b)}</p></div>` : ''}</div>`).join(''); $$(`[data-pl${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['pl' + k]; op = op === n ? -1 : n; r(); }); }; r(); return; }
+  if (style === 'chat') { const on = new Set(); const r = () => { el.innerHTML = list.map(([a, b], i) => `<button class="cb l" data-pc${k}="${i}" aria-expanded="${on.has(i)}"><small>${F}</small>${esc(a)}</button>${on.has(i) ? `<div class="cb r pop"><small>${B}</small>${q(b)}</div>` : ''}`).join(''); $$(`[data-pc${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['pc' + k]; on.has(n) ? on.delete(n) : on.add(n); r(); }); }; r(); return; }
+  if (style === 'deck' || style === 'tedices') {
+    let i = 0, shown = false; const ans = {};
+    const r = () => { const [a, b] = list[i], all = Object.keys(ans).length === list.length, yes = Object.values(ans).filter(Boolean).length;
+      el.innerHTML = `<div class="dk"><div class="dots">${list.map((_, j) => `<span class="${j === i ? 'on' : (ans[j] !== undefined || (style === 'deck' && j < i)) ? 'done' : ''}"></span>`).join('')}</div>
+        <div class="dc pop"><small>${F}</small><b>«${esc(a)}»</b>
+        ${style === 'tedices' && !shown ? `<p class="q">¿Te lo has dicho alguna vez?</p><div class="yn"><button data-yn="1">Sí</button><button data-yn="0">No</button></div>` : ''}
+        ${style === 'deck' && !shown ? `<button class="rev">Ver lo que se sabe</button>` : ''}
+        ${shown ? `<div class="dback pop"><small>${B}</small><p>${style === 'tedices' && ans[i] ? 'Es muy habitual decírselo. ' : ''}${q(b)}</p></div>` : ''}</div>
+        <div class="nav-row">${i ? '<button class="btn ghost small" data-dv="-1">← Anterior</button>' : '<span></span>'}<span>${i + 1} de ${list.length}</span>${i < list.length - 1 ? '<button class="btn small" data-dv="1">Siguiente →</button>' : '<span></span>'}</div>
+        ${style === 'tedices' && all ? `<div class="ok small pop">Te has dicho ${yes} de estas ${list.length} frases. No son toda la verdad: la próxima vez que aparezcan, puedes recordar lo que se sabe.</div>` : ''}</div>`;
+      $$(`${sel} [data-yn]`).forEach(x => x.onclick = () => { ans[i] = x.dataset.yn === '1'; shown = true; r(); });
+      const rv = $(`${sel} .rev`); if (rv) rv.onclick = () => { shown = true; r(); };
+      $$(`${sel} [data-dv]`).forEach(x => x.onclick = () => { i += +x.dataset.dv; shown = style === 'tedices' ? ans[i] !== undefined : false; r(); });
+    }; r(); return; }
+}
+function sayPairs(sel, list, style, k) {
+  if (style === 'flip' || !style) { $(sel).className = 'flips'; $(sel).innerHTML = list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-fl${k}="${i}"><span class="in"><span class="ff"><small>Me digo</small><b>«${esc(a)}»</b><i>Toca para darle la vuelta ↻</i></span><span class="fb"><small>Otra forma de verlo</small><b>«${esc(b)}»</b></span></span></button>`).join(''); flipBind(`[data-fl${k}]`); return; }
+  const el = $(sel), on = new Set(); el.className = 'pairs p-' + style;
+  const r = () => {
+    el.innerHTML = style === 'tachar' ? list.map(([a, b], i) => `<div class="tc${on.has(i) ? ' on' : ''}"><button data-tt${k}="${i}" aria-pressed="${on.has(i)}"><span class="tx">«${esc(a)}»</span><i>${on.has(i) ? 'Deshacer' : 'Tachar y reescribir'}</i></button>${on.has(i) ? `<div class="nw pop">«${esc(b)}»</div>` : ''}</div>`).join('')
+      : list.map(([a, b], i) => `<div class="vz"><button class="cloud" data-tt${k}="${i}" aria-pressed="${on.has(i)}">${SI(PICO.cloud)}<span><small>Mi voz crítica</small>«${esc(a)}»</span></button>${on.has(i) ? `<div class="warm pop">${SI(PICO.heart)}<span><small>Mi voz amable</small>«${esc(b)}»</span></div>` : ''}</div>`).join('');
+    $$(`[data-tt${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['tt' + k]; on.has(n) ? on.delete(n) : on.add(n); r(); });
+  }; r();
+}
 
 
 /* ================= DATOS ================= */
@@ -356,7 +428,7 @@ const ACT = [['Ducharme', ['¿Y si mañana sale mal?', 'Tendría que haberle dic
   ['Caminar', ['Llego tarde', 'Aquella discusión de ayer', '¿Y si no me da tiempo?'], ['los pies en el suelo', 'el aire en la cara', 'los colores de la calle']],
   ['Jugar con mis hijos', ['La lavadora, la cena…', 'El correo que no he contestado', '¿Lo estaré haciendo bien?'], ['su risa', 'su mirada', 'el juego']]];
 const SENSI = { ver: '<path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="2.5"/>', oir: '<path d="M6 18a6 6 0 1 1 10-4.5c0 2-2 3-2 5a3 3 0 0 1-5 2"/>', tocar: '<path d="M8 13V5a1.5 1.5 0 0 1 3 0v6M11 10V4a1.5 1.5 0 0 1 3 0v6M14 10V5a1.5 1.5 0 0 1 3 0v8a6 6 0 0 1-6 6h-1a5 5 0 0 1-4-2l-3-4a1.5 1.5 0 0 1 2.3-2L8 13"/>' };
-const TRIP = [['Lo que dije ayer en la reunión', 'p'], ['¿Y si mañana sale mal?', 'f'], ['Aquella discusión', 'p'], ['Todo lo que tengo que hacer', 'f'], ['Cuando era pequeño/a…', 'p'], ['Las vacaciones de verano', 'f']];
+const TRIP = [['Lo que dije ayer en la reunión', 'p'], ['¿Y si mañana sale mal?', 'f'], ['Aquella discusión', 'p'], ['Todo lo que tengo que hacer', 'f'], ['Cuando era pequeña…', 'p'], ['Las vacaciones de verano', 'f']];
 const MYTHS = [['Tengo que dejar la mente en blanco', 'La mente siempre piensa: es su trabajo. No se trata de vaciarla, sino de darte cuenta de adónde se va y volver.'], ['Si me distraigo, lo estoy haciendo mal', 'Distraerse es lo normal. Cada vez que te das cuenta y vuelves, estás practicando, como una repetición en el gimnasio.'], ['Estar en el presente sirve para relajarme', 'A veces relaja y a veces no. Su objetivo no es relajarte, sino darte cuenta de lo que está pasando en cada momento, sea agradable o no.'], ['Necesito mucho tiempo', 'Tres minutos ya cuentan. Lo que más ayuda es practicar a menudo, aunque sea poco.'], ['Es solo respirar', 'También se puede practicar comiendo, caminando, escuchando o jugando. Cualquier momento sirve.']];
 const CUANDO = [['Comiendo', '<path d="M7 3v8a2 2 0 0 0 4 0V3M9 11v10M17 3c-2 0-3 2-3 5s1 4 3 4v9"/>'], ['Conduciendo', '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2"/><path d="M12 14v7M10 12H3M14 12h7"/>'], ['Con el móvil', '<rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18.5h2"/>'], ['Duchándome', '<path d="M4 4h9a5 5 0 0 1 5 5v1H8"/><path d="M9 14v2M13 14v3M17 14v2M11 19v1M15 19v1"/>'], ['Con mis hijos', '<circle cx="9" cy="6" r="2.5"/><circle cx="16" cy="10" r="1.8"/><path d="M5 21v-6a4 4 0 0 1 8 0v6M14 21v-4a2 2 0 0 1 4 0v4"/>'], ['Caminando', '<circle cx="13" cy="4.5" r="2"/><path d="M9 21l3-6 3 2v4M7 12l3-3 4 1 3 3"/>'], ['Trabajando', '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/>'], ['Hablando con alguien', '<path d="M4 5h16v10H9l-5 4z"/>'], ['Antes de dormir', '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>']];
 const ALEJA = ['El móvil', 'Las prisas', 'Las preocupaciones', 'Hacer mil cosas a la vez', 'El cansancio', 'Los recuerdos', 'La lista de tareas', 'Compararme'];
@@ -366,11 +438,11 @@ const TRES = [['Darme cuenta de cómo estoy', 'Para un momento y pregúntate: ¿
 const SENT = [['ver', 5, 'cosas que puedes ver', 'Busca detalles en los que normalmente no te fijas: un color, una forma, una sombra.'], ['tocar', 4, 'cosas que puedes tocar o sentir', 'La ropa en la piel, la silla, el suelo, la temperatura del aire.'], ['oir', 3, 'cosas que puedes oír', 'Sonidos cercanos y lejanos, incluso los que suelen pasar desapercibidos.'], ['oler', 2, 'cosas que puedes oler', 'Si no notas nada, acércate a algo: tu ropa, tu piel, una taza.'], ['saborear', 1, 'cosa que puedes saborear', 'El sabor de tu boca, un sorbo de agua, un trozo de algo.']];
 const SENTC = { ver: 'var(--now)', tocar: 'var(--warm)', oir: 'var(--past)', oler: 'var(--tc)', saborear: 'var(--fut)' };
 const BODY = [['los pies', 186], ['las piernas', 156], ['la tripa', 112], ['el pecho', 92], ['las manos y los brazos', 104], ['los hombros', 74], ['el cuello', 64], ['la cara', 44], ['todo el cuerpo', 0]];
-const HOJA = ['Tengo mucho que hacer', 'No lo estoy haciendo bien', 'Esto es una tontería', 'Me duele la espalda', '¿Qué hago esta noche?', 'Estoy cansado/a'];
+const HOJA = ['Tengo mucho que hacer', 'No lo estoy haciendo bien', 'Esto es una tontería', 'Me duele la espalda', '¿Qué hago esta noche?', 'Estoy cansada'];
 const COME = { comer: [['Mirar', 'Mira lo que vas a comer como si fuera la primera vez: los colores, las formas, los brillos.'], ['Oler', 'Acércalo a la nariz. ¿Qué olores notas?'], ['Tocar', 'Nota su textura, su peso, su temperatura.'], ['Saborear despacio', 'Llévalo a la boca sin masticar todavía. Después, mastica despacio y nota cómo cambia el sabor.'], ['Tragar', 'Nota el momento de tragar y lo que queda en la boca después.']], caminar: [['Los pies', 'Camina más despacio de lo habitual. Nota cómo se apoya cada pie: el talón, la planta, los dedos.'], ['El cuerpo', 'Nota el balanceo de los brazos, el peso que pasa de una pierna a otra.'], ['Alrededor', 'Abre la atención a lo que ves, oyes y hueles mientras caminas.'], ['Volver', 'Cuando la mente se vaya, vuelve a los pies, paso a paso.']] };
-const FEEL = [['mejor', 'Más tranquilo/a', 'var(--tc)'], ['igual', 'Igual', 'var(--now)'], ['inq', 'Más inquieto/a', 'var(--fut)']];
+const FEEL = [['mejor', 'Más tranquila', 'var(--tc)'], ['igual', 'Igual', 'var(--now)'], ['inq', 'Más inquieta', 'var(--fut)']];
 const MSUG = ['Al despertarme, tres respiraciones', 'Al lavarme los dientes', 'El primer sorbo de café', 'Al subir al coche o al bus', 'Antes de comer', 'Al abrazar a alguien', 'Al acostarme'];
-const HELP = [['<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>', 'La cabeza no para casi nunca y me cuesta mucho estar en el presente.', 'var(--fut)'], ['<path d="M12 3c-3 4-3 7 0 9 3-2 3-5 0-9z"/><rect x="9" y="12" width="6" height="9" rx="1.5"/>', 'Al practicar me vienen recuerdos muy dolorosos o me siento desconectado/a de mí.', 'var(--past)'], ['<path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="4"/>', 'La ansiedad o la tristeza no bajan aunque practique.', 'var(--warm)'], ['<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>', 'Si sientes que no puedes mantenerte a salvo, llama al <b>024</b> (24 h) o al <b>112</b>.', 'var(--warm)']];
+const HELP = [['<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>', 'La cabeza no para casi nunca y me cuesta mucho estar en el presente.', 'var(--fut)'], ['<path d="M12 3c-3 4-3 7 0 9 3-2 3-5 0-9z"/><rect x="9" y="12" width="6" height="9" rx="1.5"/>', 'Al practicar me vienen recuerdos muy dolorosos o me siento desconectada de mí.', 'var(--past)'], ['<path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="4"/>', 'La ansiedad o la tristeza no bajan aunque practique.', 'var(--warm)'], ['<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>', 'Si sientes que no puedes mantenerte a salvo, llama al <b>024</b> (24 h) o al <b>112</b>.', 'var(--warm)']];
 
 let S = Object.assign({ cuando: [], past: 5, fut: 5, aleja: [], anclas: [], mom: [] }, store.get('mio', {}) || {});
 const saveS = () => store.set('mio', S);
@@ -419,8 +491,7 @@ function drawTrip() {
 }
 $('#tripBack').onclick = () => { mind = 0; mTxt = ''; backs++; keep(drawTrip); };
 drawTrip();
-$('#myths').innerHTML = MYTHS.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-my="${i}"><span class="in"><span class="ff"><small>Se dice</small><b>«${esc(a)}»</b><i>Toca para ver lo que se sabe ↻</i></span><span class="fb"><small>Lo que se sabe</small><span class="small">${esc(b)}</span></span></span></button>`).join('');
-flipBind('[data-my]');
+pairsUI('#myths', MYTHS, 'deck', { front: 'Me digo' });
 
 const WEATHER = [['Tormenta', 'enfado', 'var(--warm)', (x, y) => `<ellipse cx="${x}" cy="${y}" rx="34" ry="16" fill="#7C8794"/><path d="M${x - 4} ${y + 12} l-8 16 h9 l-6 14" fill="none" stroke="var(--fut)" stroke-width="3" stroke-linejoin="round"/>`], ['Nubes', 'preocupación', 'var(--past)', (x, y) => `<ellipse cx="${x}" cy="${y}" rx="30" ry="14" fill="#B9C3CC"/><ellipse cx="${x + 18}" cy="${y - 8}" rx="18" ry="12" fill="#C9D2DA"/>`], ['Lluvia', 'tristeza', 'var(--water)', (x, y) => `<ellipse cx="${x}" cy="${y}" rx="30" ry="13" fill="#9AA8B6"/>${[-14, -2, 10].map(d => `<path d="M${x + d} ${y + 16} l-3 9" stroke="var(--water)" stroke-width="2.5" stroke-linecap="round"/>`).join('')}`], ['Niebla', 'cansancio', 'var(--muted)', (x, y) => [0, 9, 18].map(d => `<path d="M${x - 34 + d} ${y + d - 6} h${56 - d}" stroke="#C3CBD2" stroke-width="5" stroke-linecap="round"/>`).join('')], ['Viento', 'nervios', 'var(--now)', (x, y) => `<path d="M${x - 30} ${y - 6} h40 a8 8 0 1 0 -8 -8 M${x - 30} ${y + 6} h50 a8 8 0 1 1 -8 8" fill="none" stroke="var(--now)" stroke-width="3" stroke-linecap="round"/>`], ['Sol', 'alegría', 'var(--fut)', (x, y) => `<circle cx="${x}" cy="${y}" r="14" fill="var(--fut)"/>${Array.from({ length: 8 }, (_, i) => { const a = i * Math.PI / 4; return `<line x1="${x + 19 * Math.cos(a)}" y1="${y + 19 * Math.sin(a)}" x2="${x + 26 * Math.cos(a)}" y2="${y + 26 * Math.sin(a)}" stroke="var(--fut)" stroke-width="3" stroke-linecap="round"/>`; }).join('')}`]];
 let SKY = [], skyGone = false;
@@ -529,7 +600,7 @@ function renderPlayer() {
       ${f >= n ? `<button class="btn" id="sNext" style="align-self:center">${P.i < 4 ? 'Siguiente sentido' : 'Terminar'}</button>` : ''}`}`;
     if (P.end) { h += `<div class="ok small pop">Has vuelto al presente a través de tus sentidos. Puedes hacerlo en cualquier lugar, con los ojos abiertos.</div>` + endBox(); } }
   if (P.k === 'hoja') {
-    h += `<p class="small">Imagina que estás sentado/a a la orilla de un río. Cada vez que aparezca un pensamiento, ponlo sobre una hoja y deja que el agua se lo lleve. No hace falta empujarlo ni retenerlo.</p>
+    h += `<p class="small">Imagina que estás sentada a la orilla de un río. Cada vez que aparezca un pensamiento, ponlo sobre una hoja y deja que el agua se lo lleve. No hace falta empujarlo ni retenerlo.</p>
       <svg class="fig" id="river" viewBox="0 0 320 160" aria-hidden="true"><rect width="320" height="160" rx="16" fill="var(--water)" opacity=".08"/><rect x="0" y="54" width="320" height="76" fill="var(--water)" opacity=".22"/><path class="wv" d="M-40 70 q10 -6 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0" fill="none" stroke="var(--water)" stroke-width="2" opacity=".6"/><path class="wv" d="M-40 112 q10 -6 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0" fill="none" stroke="var(--water)" stroke-width="2" opacity=".6"/><path d="M0 54 h320 M0 130 h320" stroke="var(--tc)" stroke-width="3" opacity=".5"/><g id="leaves"></g></svg>
       <div class="chips">${HOJA.map(t => `<button class="chip ex" data-hj="${esc(t)}">+ ${esc(t)}</button>`).join('')}</div>
       <div class="addrow"><input type="text" id="hIn" placeholder="Un pensamiento mío" aria-label="Un pensamiento mío"><button class="btn small" id="hAdd">A la hoja</button></div>
@@ -578,7 +649,7 @@ function drawPond() {
   const today = new Date(), ds = Array.from({ length: 7 }, (_, i) => { const d = new Date(today); d.setDate(d.getDate() - 6 + i); return d; }), has = (d) => LOG.some(l => dkey(new Date(l.t)) === dkey(d)) || S.mom.some(m => (m.days || []).includes(dkey(d)));
   $('#days').innerHTML = ds.map(d => `<span><i class="${has(d) ? 'on' : ''}">${has(d) ? '✓' : ''}</i>${d.toLocaleDateString('es-ES', { weekday: 'short' }).replace('.', '')}</span>`).join('');
   const fav = PRAC.map(p => [p, LOG.filter(l => l.k === p[0]).length]).sort((a, b) => b[1] - a[1])[0], mins = LOG.reduce((s, l) => s + (l.min || 0), 0), better = LOG.filter(l => l.feel === 'mejor').length;
-  $('#stats').innerHTML = LOG.length ? `<div class="ok small">Llevas ${LOG.length} ${LOG.length === 1 ? 'práctica' : 'prácticas'}${mins > 1 ? `, unos ${mins} minutos en total` : ''}. ${fav[1] ? `La que más haces es «${fav[0][1]}».` : ''}${better ? ` En ${better === 1 ? 'una ocasión' : better + ' ocasiones'} terminaste más tranquilo/a.` : ''}</div>` : '';
+  $('#stats').innerHTML = LOG.length ? `<div class="ok small">Llevas ${LOG.length} ${LOG.length === 1 ? 'práctica' : 'prácticas'}${mins > 1 ? `, unos ${mins} minutos en total` : ''}. ${fav[1] ? `La que más haces es «${fav[0][1]}».` : ''}${better ? ` En ${better === 1 ? 'una ocasión' : better + ' ocasiones'} terminaste más tranquila.` : ''}</div>` : '';
 }
 function renderMom() {
   const today = dkey(new Date());
@@ -864,7 +935,8 @@ const PDFKIT = (() => {
     'impulsos.log': 'Registro de impulsos', 'incert.daily': 'Días', 'incert.logs': 'Exposiciones', 'incert.waves': 'Olas', 'liston.exps': 'Experimentos', 'liston.five': 'Cinco minutos', 'liston.friend': 'Como a una amiga', 'liston.logros': 'Tarro de logros', 'liston.suf': 'Suficientemente bien',
     'pensamientos.regs': 'Registro de pensamientos', 'quererme.jar': 'Tarro', 'rumbo.log': 'Pasos', 'rumbo.revs': 'Revisiones', 'rumbo.snaps': 'Dianas', 'sesion.hist': 'Sesiones preparadas', 'social.bien': 'Lo que fue bien', 'social.experimentos': 'Experimentos',
     'soledad.days': 'Días', 'soledad.small': 'Pequeños lazos', 'sueno.noches': 'Noches', 'sueno.preoc': 'Preocupaciones', 'verguenza.momentos': 'Momentos', 'vinculos.dates': 'Citas', 'vueltas.decs': 'Decisiones',
-    'm-ansiedad.niv': 'Cómo de preocupada me siento', 'm-carga.acuerdos': 'Acuerdos', 'm-carga.cabeza': 'Cómo de llena está mi cabeza', 'm-carga.revisiones': 'Revisiones de la semana', 'm-cuerpoemb.rel': 'Cómo me llevo con mi cuerpo', 'm-animo.animo': 'Mi ánimo',
+    'm-ansiedad.niv': 'Cómo de preocupada me siento', 'm-carga.acuerdos': 'Acuerdos', 'm-carga.cabeza': 'Cómo de llena está mi cabeza', 'm-carga.revisiones': 'Revisiones de la semana', 'm-duelo.dia': 'Cómo estoy',
+  'm-limpeq.bien': 'Le pillé haciendo algo bien', 'm-limpeq.log': 'Cómo he sostenido los límites', 'm-familia.rlog': 'Momentos en el bote', 'm-limfam.log': 'Límites que he puesto', 'm-suenopos.cont': 'Siestas y despertares', 'm-suenopos.des': 'Cómo he descansado', 'm-lactancia.lac': 'Cómo me siento con la lactancia', 'm-cuerpopos.rel': 'Cómo me llevo con mi cuerpo', 'm-cuerpoemb.rel': 'Cómo me llevo con mi cuerpo', 'm-animo.animo': 'Mi ánimo',
     'm-nacer.cartas': 'Cartas', 'm-nacer.piel': 'Cómo me siento en mi piel', 'm-pareja.hoy': 'Cómo de cerca me siento', 'm-pareja.mio.xh': 'Momentos de autocuidado en pareja', 'm-parto.conf': 'Cómo de preparada me siento',
     'm-recordar.peso': 'Cuánto me pesa el recuerdo', 'm-salto.log': 'Mi semana', 'm-soledad.hoy': 'Cómo de acompañada me siento', 'm-ventanas.anc': 'Cómo de ancha ha sido mi ventana', 'm-vinculo.cx': 'Cómo de conectada me siento', 'm-vinculo.momentos': 'Momentos juntos', 'm-vinculo.senales': 'Señales de mi bebé',
   };

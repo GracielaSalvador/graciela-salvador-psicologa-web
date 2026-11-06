@@ -64,6 +64,7 @@ input[type=range] { width: 100%; accent-color: var(--c, var(--accent)); }
 .warn { background: var(--warn); color: var(--warn-ink); border-radius: 16px; padding: 12px 14px; font-size: .93rem; }
 .ok { background: var(--ok); color: var(--ok-ink); border-radius: 16px; padding: 12px 14px; font-size: .93rem; }
 .pop { animation: pop .45s ease-out; } @keyframes pop { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+svg .pop[transform] { animation-name: popfade; } @keyframes popfade { from { opacity: 0; } to { opacity: 1; } }
 .empty { text-align: center; padding: 18px; border: 1.5px dashed var(--line); border-radius: 18px; color: var(--muted); font-size: .93rem; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
 .seg { display: flex; gap: 6px; background: var(--tint); padding: 4px; border-radius: 999px; }
@@ -138,6 +139,43 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 .draw { stroke-dasharray: 900; stroke-dashoffset: 900; animation: draw 1.6s ease-out forwards; } @keyframes draw { to { stroke-dashoffset: 0; } }
 @media (max-width: 370px) { .gest.tiles { grid-template-columns: 1fr 1fr; } }
 @media (prefers-reduced-motion: reduce) { .pulse, .draw { animation: none !important; stroke-dashoffset: 0; } }
+/* Pares «frase / lo que se sabe» y «me digo / otra forma de verlo» en varios formatos */
+.pairs { display: flex; flex-direction: column; gap: 8px; }
+.p-lupa .pl { border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); overflow: hidden; }
+.p-lupa .pl.on { border-color: var(--tc); }
+.p-lupa .pl > button { width: 100%; border: 0; background: transparent; display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: center; text-align: left; padding: 11px 13px; font-family: var(--display); font-size: 1.02rem; color: var(--deep); }
+.p-lupa .pl > button svg { width: 22px; height: 22px; color: var(--tc); transition: transform .3s; }
+.p-lupa .pl.on > button svg { transform: scale(1.25); }
+.p-lupa .pa { padding: 0 14px 12px 49px; } .p-lupa .pa small, .p-chat small, .p-deck small, .p-tedices small, .p-tachar small, .p-voz small { display: block; font-size: .68rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; opacity: .8; margin-bottom: 2px; }
+.p-lupa .pa p { margin: 0; font-size: .95rem; }
+.p-chat { background: color-mix(in srgb, var(--tc) 6%, var(--surface)); border-radius: 18px; padding: 12px 10px; gap: 10px; }
+.p-chat .cb { max-width: 86%; border-radius: 18px; padding: 9px 13px; line-height: 1.35; font-size: .95rem; text-align: left; }
+.p-chat .cb.l { align-self: flex-start; border: 1.5px solid var(--line); background: var(--surface); border-bottom-left-radius: 4px; font-family: var(--display); font-size: 1.02rem; color: var(--deep); }
+.p-chat .cb.l[aria-expanded="true"] { border-color: var(--tc); }
+.p-chat .cb.r { align-self: flex-end; background: var(--ok); color: var(--ok-ink); border-bottom-right-radius: 4px; }
+.dk { display: flex; flex-direction: column; gap: 10px; }
+.dk .dots { display: flex; gap: 5px; justify-content: center; } .dk .dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--line); transition: all .3s; } .dk .dots span.done { background: color-mix(in srgb, var(--tc) 45%, var(--surface)); } .dk .dots span.on { background: var(--tc); width: 20px; border-radius: 6px; }
+.dk .dc { border-radius: 20px; padding: 18px 16px; min-height: 150px; background: color-mix(in srgb, var(--tc) 10%, var(--surface)); border: 1.5px solid color-mix(in srgb, var(--tc) 30%, transparent); display: flex; flex-direction: column; gap: 10px; justify-content: center; text-align: center; box-shadow: 0 6px 0 -2px color-mix(in srgb, var(--tc) 14%, var(--surface)), 0 12px 0 -5px color-mix(in srgb, var(--tc) 8%, var(--surface)); }
+.dk .dc > b { font-family: var(--display); font-weight: 500; font-size: 1.2rem; color: var(--deep); line-height: 1.3; }
+.dk .dback { background: var(--ok); color: var(--ok-ink); border-radius: 14px; padding: 10px 12px; text-align: left; } .dk .dback p { margin: 0; font-size: .95rem; }
+.dk .yn { display: flex; gap: 8px; justify-content: center; } .dk .yn button { border: 1.5px solid var(--tc); background: var(--surface); color: var(--tc); border-radius: 999px; padding: 8px 22px; font-weight: 800; }
+.dk .q { margin: 0; font-size: .9rem; color: var(--muted); font-weight: 700; }
+.dk .rev { align-self: center; border: 0; background: var(--tc); color: var(--onc, #fff); border-radius: 999px; padding: 8px 18px; font-weight: 800; }
+.dk .nav-row span { font-size: .82rem; color: var(--muted); font-weight: 700; }
+.p-tachar .tc { border: 1.5px solid var(--line); border-radius: 16px; background: var(--surface); padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
+.p-tachar .tc > button { border: 0; background: transparent; padding: 0; text-align: left; font-family: var(--display); font-size: 1.05rem; color: var(--deep); position: relative; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+.p-tachar .tc > button .tx { position: relative; }
+.p-tachar .tc > button .tx::after { content: ''; position: absolute; left: 0; top: 55%; height: 2px; width: 0; background: var(--me, var(--li)); transition: width .45s ease; }
+.p-tachar .tc.on > button .tx { color: var(--muted); } .p-tachar .tc.on > button .tx::after { width: 100%; }
+.p-tachar .tc > button i { font-style: normal; font-family: var(--body); font-size: .74rem; font-weight: 800; color: var(--tc); white-space: nowrap; }
+.p-tachar .nw { font-family: var(--display); font-size: 1.1rem; color: var(--ok-ink); background: var(--ok); border-radius: 12px; padding: 8px 12px; }
+.p-voz .vz { display: flex; flex-direction: column; gap: 6px; }
+.p-voz .cloud { align-self: flex-start; max-width: 88%; border: 1.5px dashed var(--muted); background: color-mix(in srgb, var(--muted) 8%, var(--surface)); border-radius: 22px 22px 22px 6px; padding: 10px 14px; text-align: left; font-family: var(--display); font-size: 1.02rem; color: var(--deep); display: grid; grid-template-columns: 22px 1fr; gap: 8px; align-items: start; }
+.p-voz .cloud svg, .p-voz .warm svg { width: 20px; height: 20px; margin-top: 2px; }
+.p-voz .warm { align-self: flex-end; max-width: 88%; background: color-mix(in srgb, var(--rose, var(--tc)) 14%, var(--surface)); border: 1.5px solid var(--rose, var(--tc)); border-radius: 22px 22px 6px 22px; padding: 10px 14px; font-family: var(--display); font-size: 1.05rem; color: var(--deep); display: grid; grid-template-columns: 22px 1fr; gap: 8px; }
+.p-voz .warm svg { color: var(--rose, var(--tc)); } .p-voz .cloud svg { color: var(--muted); }
+.dk .dback p, .p-chat .cb.r, .p-lupa .pa p { color: var(--ink); }
+
 
 .tsteps { display: flex; flex-direction: column; gap: 6px; }
 .tsteps button { display: grid; grid-template-columns: 30px 1fr; gap: 10px; align-items: start; text-align: left; border: 1.5px solid var(--line); background: var(--surface); border-radius: 14px; padding: 9px 10px; color: var(--ink); }
@@ -196,7 +234,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 
     <div class="card">
       <span class="eyebrow">Cosas que nos decimos sobre las rabietas</span>
-      <p class="small">Toca cada tarjeta para ver lo que se sabe.</p>
+      <p class="small">Hay frases que repetimos sin pensarlo mucho. Toca cada una para mirarla de cerca y ver lo que se sabe.</p>
       <div class="flips" id="myths"></div>
     </div>
   </section>
@@ -247,8 +285,15 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
     </div>
     <div class="card">
       <span class="eyebrow">Frases que ayudan</span>
-      <p class="small">En plena tormenta, menos palabras ayudan más. Toca cada tarjeta.</p>
+      <p class="small">En plena tormenta, menos palabras ayudan más. Toca cada frase para ver otra forma de decirlo.</p>
       <div class="flips" id="frases"></div>
+    </div>
+    <div class="card">
+      <span class="eyebrow">Cuando la tormenta es en público</span>
+      <p class="small">Una rabieta en el súper, en el parque o en casa de la familia pesa el doble: a la tormenta de tu peque se suman las miradas, la vergüenza y las ganas de que pare cuanto antes. Esa prisa hace más difícil mantener la calma. Toca cada pensamiento para darle la vuelta y mira cómo el foco vuelve a vosotros.</p>
+      <svg class="fig" id="pubSvg" viewBox="0 0 320 180" role="img" aria-label="Las miradas alrededor de una madre y su peque"></svg>
+      <div class="stack" id="pub" style="gap:8px"></div>
+      <div id="pubTxt"></div>
     </div>
     <div class="card">
       <span class="eyebrow">Mi plan para la próxima tormenta</span>
@@ -330,8 +375,9 @@ function listEditor(o) {
 }
 /* Tarjetas «lo que me digo» con respuesta propia. o = { flips, chips, mine, list, sel(), setSel(a), own, save, front, back } */
 function sayings(o) {
+  if (o.style && o.style !== 'flip') sayPairs(o.flips, o.list, o.style, o.k); else {
   $(o.flips).innerHTML = o.list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-fl${o.k}="${i}"><span class="in"><span class="ff"><small>${o.front || 'Me digo'}</small><b>«${esc(a)}»</b><i>Toca para darle la vuelta ↻</i></span><span class="fb"><small>${o.back || 'Otra forma de verlo'}</small><b>«${esc(b)}»</b></span></span></button>`).join('');
-  flipBind(`[data-fl${o.k}]`);
+  flipBind(`[data-fl${o.k}]`); }
   const mine = () => { const s = o.sel();
     $(o.chips).innerHTML = o.list.map(([a], i) => `<button class="chip" style="--c:var(--tc)" data-sc${o.k}="${i}" aria-pressed="${s.includes(i)}">${esc(a)}</button>`).join('');
     $$(`[data-sc${o.k}]`).forEach(b => b.onclick = () => { o.setSel(toggle(o.sel(), +b.dataset['sc' + o.k])); keep(mine); });
@@ -355,6 +401,39 @@ function miniLine(pts, color, label) {
     ${n > 1 ? `<path d="${d.map((e, i) => `${i ? 'L' : 'M'}${x(i)} ${y(e.v)}`).join(' ')}" fill="none" stroke="${color}" stroke-width="3" stroke-linejoin="round"/>` : ''}
     ${d.map((e, i) => `<circle cx="${x(i)}" cy="${y(e.v)}" r="4.5" fill="${color}"/>`).join('')}
     <text x="30" y="114" font-family="var(--body)" font-size="9" fill="var(--muted)">${fdate(d[0].t)}</text><text x="310" y="114" text-anchor="end" font-family="var(--body)" font-size="9" fill="var(--muted)">${fdate(d[n - 1].t)}</text></svg>`;
+}
+/* Pares en varios formatos, para que no se repita siempre la misma tarjeta: flip, lupa, chat, deck, tedices (para «lo que se sabe») y tachar, voz (para «me digo») */
+const PICO = { lupa: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/>', cloud: '<path d="M7 18a4 4 0 0 1-.6-8A5.5 5.5 0 0 1 17 8.5a4.5 4.5 0 0 1 .5 9z"/>', heart: '<path d="M12 20s-7-4.4-7-10A4 4 0 0 1 12 7a4 4 0 0 1 7 3c0 5.6-7 10-7 10z"/>' };
+function pairsUI(sel, list, style, o) {
+  o = o || {}; const el = $(sel), F = o.front || 'Me digo', B = o.back || 'Lo que se sabe', k = sel.replace(/\W/g, '');
+  if (style === 'flip') { el.className = 'flips'; el.innerHTML = list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-pf${k}="${i}"><span class="in"><span class="ff"><small>${F}</small><b>«${esc(a)}»</b><i>${o.hint || 'Toca para ver lo que se sabe ↻'}</i></span><span class="fb"><small>${B}</small>${o.bold ? `<b>«${esc(b)}»</b>` : `<span class="small">${esc(b)}</span>`}</span></span></button>`).join(''); flipBind(`[data-pf${k}]`); return; }
+  el.className = 'pairs p-' + style;
+  const q = (b) => o.bold ? `«${esc(b)}»` : esc(b);
+  if (style === 'lupa') { let op = -1; const r = () => { el.innerHTML = list.map(([a, b], i) => `<div class="pl${op === i ? ' on' : ''}"><button data-pl${k}="${i}" aria-expanded="${op === i}">${SI(PICO.lupa)}<span>«${esc(a)}»</span></button>${op === i ? `<div class="pa pop"><small>${B}</small><p>${q(b)}</p></div>` : ''}</div>`).join(''); $$(`[data-pl${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['pl' + k]; op = op === n ? -1 : n; r(); }); }; r(); return; }
+  if (style === 'chat') { const on = new Set(); const r = () => { el.innerHTML = list.map(([a, b], i) => `<button class="cb l" data-pc${k}="${i}" aria-expanded="${on.has(i)}"><small>${F}</small>${esc(a)}</button>${on.has(i) ? `<div class="cb r pop"><small>${B}</small>${q(b)}</div>` : ''}`).join(''); $$(`[data-pc${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['pc' + k]; on.has(n) ? on.delete(n) : on.add(n); r(); }); }; r(); return; }
+  if (style === 'deck' || style === 'tedices') {
+    let i = 0, shown = false; const ans = {};
+    const r = () => { const [a, b] = list[i], all = Object.keys(ans).length === list.length, yes = Object.values(ans).filter(Boolean).length;
+      el.innerHTML = `<div class="dk"><div class="dots">${list.map((_, j) => `<span class="${j === i ? 'on' : (ans[j] !== undefined || (style === 'deck' && j < i)) ? 'done' : ''}"></span>`).join('')}</div>
+        <div class="dc pop"><small>${F}</small><b>«${esc(a)}»</b>
+        ${style === 'tedices' && !shown ? `<p class="q">¿Te lo has dicho alguna vez?</p><div class="yn"><button data-yn="1">Sí</button><button data-yn="0">No</button></div>` : ''}
+        ${style === 'deck' && !shown ? `<button class="rev">Ver lo que se sabe</button>` : ''}
+        ${shown ? `<div class="dback pop"><small>${B}</small><p>${style === 'tedices' && ans[i] ? 'Es muy habitual decírselo. ' : ''}${q(b)}</p></div>` : ''}</div>
+        <div class="nav-row">${i ? '<button class="btn ghost small" data-dv="-1">← Anterior</button>' : '<span></span>'}<span>${i + 1} de ${list.length}</span>${i < list.length - 1 ? '<button class="btn small" data-dv="1">Siguiente →</button>' : '<span></span>'}</div>
+        ${style === 'tedices' && all ? `<div class="ok small pop">Te has dicho ${yes} de estas ${list.length} frases. No son toda la verdad: la próxima vez que aparezcan, puedes recordar lo que se sabe.</div>` : ''}</div>`;
+      $$(`${sel} [data-yn]`).forEach(x => x.onclick = () => { ans[i] = x.dataset.yn === '1'; shown = true; r(); });
+      const rv = $(`${sel} .rev`); if (rv) rv.onclick = () => { shown = true; r(); };
+      $$(`${sel} [data-dv]`).forEach(x => x.onclick = () => { i += +x.dataset.dv; shown = style === 'tedices' ? ans[i] !== undefined : false; r(); });
+    }; r(); return; }
+}
+function sayPairs(sel, list, style, k) {
+  if (style === 'flip' || !style) { $(sel).className = 'flips'; $(sel).innerHTML = list.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-fl${k}="${i}"><span class="in"><span class="ff"><small>Me digo</small><b>«${esc(a)}»</b><i>Toca para darle la vuelta ↻</i></span><span class="fb"><small>Otra forma de verlo</small><b>«${esc(b)}»</b></span></span></button>`).join(''); flipBind(`[data-fl${k}]`); return; }
+  const el = $(sel), on = new Set(); el.className = 'pairs p-' + style;
+  const r = () => {
+    el.innerHTML = style === 'tachar' ? list.map(([a, b], i) => `<div class="tc${on.has(i) ? ' on' : ''}"><button data-tt${k}="${i}" aria-pressed="${on.has(i)}"><span class="tx">«${esc(a)}»</span><i>${on.has(i) ? 'Deshacer' : 'Tachar y reescribir'}</i></button>${on.has(i) ? `<div class="nw pop">«${esc(b)}»</div>` : ''}</div>`).join('')
+      : list.map(([a, b], i) => `<div class="vz"><button class="cloud" data-tt${k}="${i}" aria-pressed="${on.has(i)}">${SI(PICO.cloud)}<span><small>Mi voz crítica</small>«${esc(a)}»</span></button>${on.has(i) ? `<div class="warm pop">${SI(PICO.heart)}<span><small>Mi voz amable</small>«${esc(b)}»</span></div>` : ''}</div>`).join('');
+    $$(`[data-tt${k}]`).forEach(x => x.onclick = () => { const n = +x.dataset['tt' + k]; on.has(n) ? on.delete(n) : on.add(n); r(); });
+  }; r();
 }
 
 
@@ -384,6 +463,12 @@ const AGEG = [
   ['De 1 a 3 años', 'la edad de las rabietas', 'Quiere hacerlo todo y todavía no tiene palabras para lo que siente. Las rabietas son frecuentes e intensas. Ayudan los límites sencillos, anticipar los cambios («Cinco minutos más y nos vamos»), ofrecer dos opciones y, en plena rabieta, más presencia y menos palabras.'],
   ['De 3 a 6 años', 'ponerle palabras', 'Ya puede empezar a nombrar lo que siente y a aprender estrategias, siempre con tu ayuda. Podéis preparar juntos un rincón de la calma, practicar respiraciones con juego («soplar la vela») y hablar después de lo que pasó.'],
 ];
+const PUB = [['Todo el mundo me está juzgando', 'Muchas de las personas que miran han pasado por lo mismo. Y lo que piensen dura un minuto; lo que vive mi peque, más.'],
+  ['Pensarán que no sé educar', 'Una rabieta dice mucho de su edad y poco de mi crianza.'],
+  ['Tengo que cortarlo ya', 'No tengo que pararla, tengo que acompañarla. Las tormentas pasan.'],
+  ['Le doy lo que pide para que pare', 'Puedo mantener el límite y acompañarle, también delante de la gente.'],
+  ['Qué vergüenza', 'Sentir vergüenza es humano. No estamos haciendo nada malo: mi peque está aprendiendo.'],
+  ['Si alguien opina, voy a explotar', 'Puedo llevar una frase preparada: «Es un momento difícil. Ya se le pasará, gracias».']];
 const FRASES = [['¡Para ya!', 'Estoy aquí. Te ayudo a calmarte.'], ['No es para tanto', 'Para ti es muy importante. Lo entiendo.'], ['Si sigues así, me voy', 'No me voy. Espero contigo a que pase.'], ['¡Mira cómo te pones!', 'Es mucho lo que sientes. Respiramos juntos.'], ['Los niños mayores no lloran', 'Puedes llorar. Las emociones no tienen edad.']];
 const PL = [['yo', 'Cuando note que me salgo de mi ventana, voy a…', ['respirar tres veces antes de hablar', 'bajar la voz', 'decir «necesito un minuto»', 'salir un momento si no hay peligro']],
   ['peque', 'Para ayudar a mi peque, voy a…', ['agacharme a su altura', 'nombrar lo que siente', 'quedarme cerca en silencio', 'ofrecerle un abrazo']],
@@ -395,7 +480,7 @@ const RM = [['hice', 'Lo que pasó', ['Antes te grité.', 'Antes me enfadé much
   ['prox', 'Lo que haré la próxima vez', ['La próxima vez, voy a respirar antes de hablar.', 'La próxima vez, te pediré un minuto para calmarme.']]];
 const HELP = [['<path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z"/><path d="M12 8v5M12 16h.01"/>', 'Te sales de tu ventana casi todos los días y te cuesta volver.', 'var(--li)'], ['<path d="M13 3L5 14h6l-1 7 8-11h-6z"/>', 'Te da miedo hacerle daño a tu peque cuando te enfadas.', 'var(--hi)'], ['<circle cx="12" cy="8" r="3"/><path d="M6 20c0-4 2.7-7 6-7s6 3 6 7"/>', 'Las rabietas de tu peque son muy intensas, muy frecuentes o se hace daño a menudo. En ese caso, coméntalo también con su pediatra.', 'var(--lo)'], ['<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>', 'Tienes pensamientos que te asustan o ideas de hacerte daño. En ese caso, llama al <b>024</b> (24 h) o al <b>112</b>.', 'var(--hi)']];
 
-let S = Object.assign({ age: 2, co: 'calma', lvl: 5, estr: [], ens: [], sen: [], ts: 0, ag: null, plan: {}, kn: [], rm: {} }, store.get('mio', {}) || {});
+let S = Object.assign({ age: 2, co: 'calma', lvl: 5, estr: [], ens: [], sen: [], ts: 0, ag: null, plan: {}, kn: [], rm: {}, pub: [] }, store.get('mio', {}) || {});
 const saveS = () => store.set('mio', S);
 let ANC = store.get('anc', []);
 const lc = (s) => s.charAt(0).toLowerCase() + s.slice(1);
@@ -438,8 +523,7 @@ function drawCo() {
 
 /* ================= ENTENDER ================= */
 $('#age').oninput = (e) => { S.age = +e.target.value; S.ag = null; saveS(); drawDos(); };
-$('#myths').innerHTML = MYTHS.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-my="${i}"><span class="in"><span class="ff"><small>Me digo</small><b>«${esc(a)}»</b><i>Toca para ver lo que se sabe ↻</i></span><span class="fb"><small>Lo que se sabe</small><span class="small">${esc(b)}</span></span></span></button>`).join('');
-flipBind('[data-my]');
+pairsUI('#myths', MYTHS, 'lupa', { front: 'Me digo' });
 function renderEnt() { $('#age').value = S.age; drawDos(); drawCo(); }
 
 /* ================= MI VENTANA ================= */
@@ -516,10 +600,25 @@ function renderPlan() {
 }
 function planOut() { const P = S.plan, s = (v) => v && v.trim() ? `<span class="s">${esc(v.trim())}</span>` : `<span class="e">…</span>`;
   $('#planOut').innerHTML = `«Cuando note que me salgo de mi ventana, voy a ${s(P.yo)}. Para ayudar a mi peque, voy a ${s(P.peque)}. Y si no puedo más, pediré relevo a ${s(P.relevo)}.»`; }
+function renderPub() {
+  const n = S.pub.length, all = n >= PUB.length, cx = 160, cy = 112;
+  let g = `<rect width="320" height="180" rx="16" fill="var(--sky)"/><ellipse cx="${cx}" cy="150" rx="${70 + n * 6}" ry="18" fill="var(--rose)" opacity="${(0.08 + n * 0.04).toFixed(2)}"/>`;
+  const E = [[44, 46], [112, 26], [208, 26], [276, 46], [30, 108], [290, 108]];
+  E.forEach(([x, y], i) => { const off = i < n;
+    g += off ? `<path class="pop" d="M${x - 11} ${y} q11 7 22 0" stroke="var(--muted)" stroke-width="2" fill="none" stroke-linecap="round" opacity=".55"/>`
+      : `<g><path d="M${x - 14} ${y} q14 -12 28 0 q-14 12 -28 0z" fill="var(--surface)" stroke="var(--deep)" stroke-width="1.5"/><circle cx="${x + (cx - x) * 0.05}" cy="${y + 1}" r="4.5" fill="var(--deep)"/></g>`; });
+  g += `<g transform="translate(${cx - 18} ${cy})"><circle cx="0" cy="-34" r="11" fill="color-mix(in srgb, var(--rose) 45%, var(--surface))"/><path d="M-14 22 q0 -40 14 -44 q14 4 14 44z" fill="var(--rose)" opacity=".85"/></g>`;
+  g += `<g transform="translate(${cx + 16} ${cy + 16})"><circle cx="0" cy="-16" r="8" fill="color-mix(in srgb, var(--sun) 50%, var(--surface))"/><path d="M-9 14 q0 -24 9 -26 q9 2 9 26z" fill="var(--sun)" opacity=".9"/></g>`;
+  if (n) g += `<path d="M${cx - 6} ${cy - 2} q10 -4 14 10" stroke="var(--rose)" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+  if (all) g += `<text x="${cx}" y="172" text-anchor="middle" font-family="var(--body)" font-size="10" font-weight="800" fill="var(--rose)" class="pop">Solo importáis vosotros dos</text>`;
+  $('#pubSvg').innerHTML = g;
+  $('#pub').innerHTML = PUB.map(([a, b], i) => { const on = S.pub.includes(i); return `<button class="chip" style="--c:var(--rose);text-align:left;border-radius:14px;padding:10px 14px" data-pb="${i}" aria-pressed="${on}">${on ? `<s style="opacity:.6">${esc(a)}</s><br><b>${esc(b)}</b>` : esc(a)}</button>`; }).join('');
+  $$('[data-pb]').forEach(b => b.onclick = () => { S.pub = toggle(S.pub, +b.dataset.pb); saveS(); keep(renderPub); });
+  $('#pubTxt').innerHTML = n ? `<div class="ok small pop">${all ? 'Las miradas siguen ahí, pero ya no mandan. ' : ''}Si puedes, llévale a un sitio algo más tranquilo y agáchate a su altura: tu público es tu peque, no la gente. No tienes que demostrar nada a nadie. Y si alguien te ofrece ayuda de verdad, también puedes aceptarla.</div>` : '';
+}
 function renderTor() {
-  renderTs(); renderAges(); renderPlan();
-  $('#frases').innerHTML = FRASES.map(([a, b], i) => `<button class="flip" aria-pressed="false" data-fr="${i}"><span class="in"><span class="ff"><small>En lugar de</small><b>«${esc(a)}»</b><i>Toca para ver otra forma ↻</i></span><span class="fb"><small>Prueba con</small><b>«${esc(b)}»</b></span></span></button>`).join('');
-  flipBind('[data-fr]');
+  renderTs(); renderAges(); renderPlan(); renderPub();
+  pairsUI('#frases', FRASES, 'chat', { front: 'En lugar de', back: 'Prueba con', bold: true });
 }
 
 /* ================= REPARAR ================= */
@@ -559,6 +658,7 @@ function summary() {
   if (S.ens.length) L.push('Lo que la ensancha: ' + S.ens.join(', ').toLowerCase());
   if (S.sen.length) L.push('Mis señales de alarma: ' + S.sen.join(', ').toLowerCase());
   const P = S.plan; if (P.yo || P.peque || P.relevo) L.push(`Mi plan: cuando me salga de mi ventana, ${P.yo || '…'}; para ayudar a mi peque, ${P.peque || '…'}; relevo: ${P.relevo || '…'}`);
+  if (S.pub.length) L.push('En público me ayuda pensar: ' + S.pub.map(i => '«' + PUB[i][1] + '»').join(' '));
   if (S.kn.length) L.push('Pasos de reparación que doy: ' + S.kn.map(i => KN[i]).join(', ').toLowerCase());
   if (ANC.length) L.push('Cómo de ancha mi ventana (0-10): ' + ANC.slice(-8).map(h => `${fdate(h.t)} ${h.v}`).join(', '));
   return L.join('\n');
@@ -821,7 +921,8 @@ const PDFKIT = (() => {
     'impulsos.log': 'Registro de impulsos', 'incert.daily': 'Días', 'incert.logs': 'Exposiciones', 'incert.waves': 'Olas', 'liston.exps': 'Experimentos', 'liston.five': 'Cinco minutos', 'liston.friend': 'Como a una amiga', 'liston.logros': 'Tarro de logros', 'liston.suf': 'Suficientemente bien',
     'pensamientos.regs': 'Registro de pensamientos', 'quererme.jar': 'Tarro', 'rumbo.log': 'Pasos', 'rumbo.revs': 'Revisiones', 'rumbo.snaps': 'Dianas', 'sesion.hist': 'Sesiones preparadas', 'social.bien': 'Lo que fue bien', 'social.experimentos': 'Experimentos',
     'soledad.days': 'Días', 'soledad.small': 'Pequeños lazos', 'sueno.noches': 'Noches', 'sueno.preoc': 'Preocupaciones', 'verguenza.momentos': 'Momentos', 'vinculos.dates': 'Citas', 'vueltas.decs': 'Decisiones',
-    'm-ansiedad.niv': 'Cómo de preocupada me siento', 'm-carga.acuerdos': 'Acuerdos', 'm-carga.cabeza': 'Cómo de llena está mi cabeza', 'm-carga.revisiones': 'Revisiones de la semana', 'm-cuerpoemb.rel': 'Cómo me llevo con mi cuerpo', 'm-animo.animo': 'Mi ánimo',
+    'm-ansiedad.niv': 'Cómo de preocupada me siento', 'm-carga.acuerdos': 'Acuerdos', 'm-carga.cabeza': 'Cómo de llena está mi cabeza', 'm-carga.revisiones': 'Revisiones de la semana', 'm-duelo.dia': 'Cómo estoy',
+  'm-limpeq.bien': 'Le pillé haciendo algo bien', 'm-limpeq.log': 'Cómo he sostenido los límites', 'm-familia.rlog': 'Momentos en el bote', 'm-limfam.log': 'Límites que he puesto', 'm-suenopos.cont': 'Siestas y despertares', 'm-suenopos.des': 'Cómo he descansado', 'm-lactancia.lac': 'Cómo me siento con la lactancia', 'm-cuerpopos.rel': 'Cómo me llevo con mi cuerpo', 'm-cuerpoemb.rel': 'Cómo me llevo con mi cuerpo', 'm-animo.animo': 'Mi ánimo',
     'm-nacer.cartas': 'Cartas', 'm-nacer.piel': 'Cómo me siento en mi piel', 'm-pareja.hoy': 'Cómo de cerca me siento', 'm-pareja.mio.xh': 'Momentos de autocuidado en pareja', 'm-parto.conf': 'Cómo de preparada me siento',
     'm-recordar.peso': 'Cuánto me pesa el recuerdo', 'm-salto.log': 'Mi semana', 'm-soledad.hoy': 'Cómo de acompañada me siento', 'm-ventanas.anc': 'Cómo de ancha ha sido mi ventana', 'm-vinculo.cx': 'Cómo de conectada me siento', 'm-vinculo.momentos': 'Momentos juntos', 'm-vinculo.senales': 'Señales de mi bebé',
   };
