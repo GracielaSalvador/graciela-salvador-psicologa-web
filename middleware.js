@@ -1,12 +1,14 @@
 // middleware.js — Pantallas de acceso de «Mi psicóloga en el bolsillo»
 //   gracielasalvador.com/bolsillo   → versión general      (contraseña en Vercel: HERRAMIENTAS_PASSWORD)
-//   gracielasalvador.com/madreria   → La Madrería          (contraseña en Vercel: MADRERIA_PASSWORD)
+//   madreria.gracielasalvador.com   → La Madrería          (contraseña en Vercel: MADRERIA_PASSWORD)
+//     Va en su propio subdominio para que el móvil deje instalar las dos apps a la vez.
+//     La dirección antigua gracielasalvador.com/madreria lleva sola a la nueva.
 // Cada entrada tiene su propia contraseña y su propio acceso recordado: entrar en una no abre la otra.
 // Va en la RAÍZ del proyecto (al lado de index.html principal).
 // La dirección antigua /herramientas (el «Área de pacientes» del pie de la web) lleva a /pacientes/, donde se elige entre las dos entradas.
 // Las contraseñas NO están aquí: se guardan en Vercel como variables de entorno.
 
-export const config = { matcher: ['/bolsillo', '/bolsillo/:path*', '/herramientas', '/herramientas/:path*', '/madreria', '/madreria/:path*'] };
+export const config = { matcher: ['/', '/pacientes', '/pacientes/:path*', '/bolsillo', '/bolsillo/:path*', '/herramientas', '/herramientas/:path*', '/madreria', '/madreria/:path*'] };
 
 const DIAS = 30; // días que el dispositivo recuerda el acceso
 
@@ -45,8 +47,19 @@ function leerCookie(req, nombre) {
 
 const continuar = () => new Response(null, { headers: { 'x-middleware-next': '1' } });
 
+const MADRERIA = 'madreria.gracielasalvador.com';
+
 export default async function middleware(req) {
   const url = new URL(req.url);
+  const host = url.hostname, primero = url.pathname.split('/')[1];
+  if (host === MADRERIA) {
+    // En el subdominio solo vive La Madrería: la portada lleva a ella y lo demás, a la web principal
+    if (primero !== 'madreria') return Response.redirect(url.pathname === '/' ? new URL('/madreria/' + url.search, url) : 'https://www.gracielasalvador.com' + url.pathname + url.search, 308);
+  } else if (primero === 'madreria' && /(^|\.)gracielasalvador\.com$|\.vercel\.app$/.test(host)) {
+    // Dirección antigua de La Madrería → la nueva
+    return Response.redirect('https://' + MADRERIA + url.pathname + url.search, 308);
+  }
+  if (url.pathname === '/' || primero === 'pacientes') return continuar();
   // «Área de pacientes» (enlace antiguo /herramientas en el pie de la web) → página para elegir entre las dos entradas
   if (url.pathname === '/herramientas' || url.pathname === '/herramientas/') return Response.redirect(new URL('/pacientes/', url), 308);
   if (url.pathname.startsWith('/herramientas/')) return Response.redirect(new URL(url.pathname.replace(/^\/herramientas/, '/bolsillo') + url.search, url), 308);
