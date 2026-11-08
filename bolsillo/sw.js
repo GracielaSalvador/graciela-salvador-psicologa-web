@@ -1,7 +1,7 @@
 // Para que la app funcione también sin conexión.
 // Siempre intenta traer la versión más nueva de internet; si no hay conexión, enseña la última que se guardó.
 // Así, cuando Graciela sube cambios, se ven en cuanto hay conexión, sin tener que hacer nada.
-const CACHE = 'bolsillo-v4';
+const CACHE = 'bolsillo-v5';
 const BASE = '/bolsillo/';
 const PRIMERO = [BASE, BASE + 'calma/', BASE + 'casa/', '/fuentes/fuentes.css', '/fuentes/nunito-sans.woff', '/fuentes/lora.woff'].concat([]);  // se guardan al instalar: el inicio, «Calmarme» y la casa (en La Madrería, también lo del día del parto)
 
@@ -24,5 +24,5 @@ self.addEventListener('fetch', (e) => {
     // Solo se guarda lo que se ha abierto bien (la pantalla de contraseña no se guarda)
     if (r.ok || r.type === 'opaque') { const copia = r.clone(); caches.open(CACHE).then((c) => c.put(req, copia)); }
     return r;
-  }).catch(() => caches.match(req, { ignoreSearch: true }).then((m) => m || (req.mode === 'navigate' ? caches.match(BASE) : Response.error()))));
+  }).catch(() => caches.match(req, { ignoreSearch: true }).then((m) => m || (req.mode === 'navigate' ? Response.redirect(new URL(BASE + '?sinconexion=1', location.origin).href, 302) : Response.error()))));
 });

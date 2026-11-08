@@ -39,6 +39,11 @@ header { display: flex; align-items: center; gap: 12px; }
 .logo img { width: 38px; }
 .brand { font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .brand b { color: var(--deep); }
+.offline { background: var(--surface); border: 1.5px dashed var(--accent); border-radius: 16px; padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start; font-size: .92rem; line-height: 1.45; }
+.offline svg { width: 22px; height: 22px; flex: none; color: var(--accent); margin-top: 1px; }
+.offline b { color: var(--deep); }
+a.nocache { opacity: .42; filter: grayscale(.6); position: relative; }
+a.nocache::after { content: 'Necesita conexión'; position: absolute; right: 8px; bottom: 6px; font-size: .68rem; font-weight: 800; color: var(--muted); background: var(--surface); border-radius: 999px; padding: 1px 7px; }
 .casaico { margin-left: auto; width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--line); background: var(--surface); color: var(--accent); display: grid; place-items: center; flex: none; text-decoration: none; }
 .casaico svg { width: 22px; height: 22px; }
 h1 { font-family: var(--display); font-weight: 500; color: var(--deep); font-size: 2.1rem; line-height: 1.12; margin: 6px 0 0; text-wrap: balance; }
@@ -186,6 +191,7 @@ footer p { margin: 0; }
     <div class="brand"><b>La Madrería</b> · Graciela Salvador</div>
     <a class="casaico" id="casaIco" href="casa/" aria-label="Nuestro hogar" title="Nuestro hogar" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><rect x="10" y="14" width="4" height="6"/></svg></a>
   </header>
+  <div class="offline" id="offBox" role="status" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8.8a15 15 0 0 1 4.2-2.7M22 8.8A15 15 0 0 0 10.7 5M5 12.6a10 10 0 0 1 3.5-2.3M19 12.6a10 10 0 0 0-2.7-1.9M8.5 16.4a5 5 0 0 1 7 0M12 20h.01M3 3l18 18"/></svg><div id="offTxt"></div></div>
   <div><p class="eyebrow">Mi psicóloga en el bolsillo</p><h1>¿Qué necesitas <em>hoy</em>?</h1></div>
   <p class="lead" id="saludo"></p>
   <div class="tipbar" id="tipbar" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2M12 7v6M9.5 10.5L12 13l2.5-2.5"/></svg><span>Ponla en tu pantalla de inicio para tenerla siempre a mano.</span><button id="tipHow">Cómo</button><button id="tipX" aria-label="Cerrar aviso">✕</button></div>
@@ -229,6 +235,7 @@ footer p { margin: 0; }
       <div class="rb"><div class="os"><button data-os="ios" aria-pressed="false">iPhone</button><button data-os="and" aria-pressed="false">Android</button></div>
       <button class="bt" id="instNow" hidden>Instalar ahora</button>
       <ol class="steps" id="osSteps"></ol>
+      <p class="hint"><b>Sin conexión.</b> La app guarda en este móvil las herramientas que vas abriendo, así que podrás volver a usarlas aunque no tengas cobertura. «Calmarme o volver a mí», «En pleno parto», «Las primeras horas» y «Lo que no puede faltar» están guardadas desde el principio, por si en el hospital no hay cobertura. Una herramienta que no hayas abierto nunca necesita conexión la primera vez.</p>
       <p class="hint" id="osNote">Si al abrirla desde el icono te pide otra vez la contraseña o no ves lo que habías escrito, es porque el iPhone la abre como una app aparte. Escribe la contraseña y, para traer lo anterior, usa la copia de seguridad.</p></div>
     </details>
     <details class="row" id="backup"><summary><span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7.5 10.5L12 15l4.5-4.5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span><span class="rt"><b>Copia de seguridad</b><span id="bkSub">Para no perder lo que escribes si cambias de móvil</span></span><span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></summary>
@@ -448,6 +455,20 @@ let instEv = null;
 window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); instEv = e; $('#instNow').hidden = false; });
 $('#instNow').onclick = async () => { if (!instEv) return; instEv.prompt(); try { await instEv.userChoice; } catch (e) {} instEv = null; $('#instNow').hidden = true; };
 window.addEventListener('appinstalled', () => { $('#install').hidden = true; });
+/* ---------- Sin conexión: avisar y marcar qué herramientas están guardadas en este móvil ---------- */
+const offFrom = new URLSearchParams(location.search).has('sinconexion');
+async function offState() {
+  const off = !navigator.onLine, box = $('#offBox');
+  box.hidden = !off;
+  if (off) $('#offTxt').innerHTML = (offFrom ? '<b>La herramienta que intentabas abrir aún no está guardada en este móvil.</b> Ábrela una vez con conexión y después estará disponible siempre. ' : '<b>Ahora estás sin conexión.</b> ') + 'Puedes usar las herramientas que ya habías abierto antes en este móvil. Las que necesitan conexión se ven más claras.';
+  const links = $$('a[data-go]');
+  if (!off || !('caches' in window)) { links.forEach(a => a.classList.remove('nocache')); return; }
+  for (const a of links) { let ok = false; try { ok = !!(await caches.match(new URL(a.getAttribute('href'), location.href).href, { ignoreSearch: true })); } catch (e) {} a.classList.toggle('nocache', !ok); }
+}
+window.addEventListener('online', offState); window.addEventListener('offline', offState);
+setTimeout(offState, 300);
+new MutationObserver(() => { if (!navigator.onLine) { clearTimeout(window._offT); window._offT = setTimeout(offState, 150); } }).observe(document.body, { childList: true, subtree: true });
+if (offFrom && navigator.onLine) history.replaceState(null, '', location.pathname);
 /* ---------- La casa que crece: la casita aparece cuando ya se ha completado algo ---------- */
 (() => { const CASA = 'casa.m'; let c = {}; try { c = JSON.parse(localStorage.getItem(CASA)) || {}; } catch (e) {}
   if (!c.n && !c.seen) return; if (c.off) $('#casaRow').hidden = false; else $('#casaIco').hidden = false; })();
