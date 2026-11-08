@@ -54,6 +54,8 @@ export default async function middleware(req) {
   const id = url.pathname.split('/')[1];
   const E = ESPACIOS[id];
   if (!E) return continuar();
+  // Lo que necesita el móvil para instalar la app (sin datos de nadie): se sirve sin pedir contraseña
+  if (/^\/(bolsillo|madreria)\/(manifest\.webmanifest|sw\.js|icono-[\w-]+\.png)$/.test(url.pathname)) return continuar();
   const pass = process.env[E.variable];
   if (!pass) return pantalla(E, id, 'Falta configurar la contraseña en Vercel.', 500);
   const valida = await huella(E.semilla, pass);
@@ -81,7 +83,7 @@ function pantalla(E, id, error, status) {
 <meta name="robots" content="noindex"><meta name="theme-color" content="${E.tema}">
 <title>${E.titulo}${E.edicion ? ' · ' + E.edicion : ''} · Acceso</title>
 <link rel="icon" type="image/png" href="data:image/png;base64,${E.logo}">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;1,500&family=Nunito+Sans:opsz,wght@6..12,400;6..12,700&display=swap">
+<link rel="stylesheet" href="/fuentes/fuentes.css">
 <style>
 :root{${E.claro}}
 @media (prefers-color-scheme:dark){:root{${E.oscuro};color-scheme:dark}}

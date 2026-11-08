@@ -1,0 +1,28 @@
+// Para que la app funcione también sin conexión.
+// Siempre intenta traer la versión más nueva de internet; si no hay conexión, enseña la última que se guardó.
+// Así, cuando Graciela sube cambios, se ven en cuanto hay conexión, sin tener que hacer nada.
+const CACHE = 'madreria-v4';
+const BASE = '/madreria/';
+const PRIMERO = [BASE, BASE + 'calma/', BASE + 'casa/', '/fuentes/fuentes.css', '/fuentes/nunito-sans.woff', '/fuentes/lora.woff'].concat([BASE + 'pleno/', BASE + 'primeras/', BASE + 'faltar/']);  // se guardan al instalar: el inicio, «Calmarme» y la casa (en La Madrería, también lo del día del parto)
+
+self.addEventListener('install', (e) => {
+  e.waitUntil(caches.open(CACHE).then((c) => Promise.all(PRIMERO.map((u) =>
+    fetch(u, { credentials: 'same-origin' }).then((r) => { if (r.ok) return c.put(u, r); }).catch(() => {})))));
+  self.skipWaiting();
+});
+self.addEventListener('activate', (e) => {
+  e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k.startsWith('madreria-') && k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim()));
+});
+self.addEventListener('fetch', (e) => {
+  const req = e.request;
+  if (req.method !== 'GET') return;
+  const url = new URL(req.url);
+  const propia = url.origin === location.origin && (url.pathname.startsWith(BASE) || url.pathname.startsWith('/fuentes/'));
+  const letras = /fonts\.(googleapis|gstatic)\.com$/.test(url.hostname);
+  if (!propia && !letras) return;
+  e.respondWith(fetch(req).then((r) => {
+    // Solo se guarda lo que se ha abierto bien (la pantalla de contraseña no se guarda)
+    if (r.ok || r.type === 'opaque') { const copia = r.clone(); caches.open(CACHE).then((c) => c.put(req, copia)); }
+    return r;
+  }).catch(() => caches.match(req, { ignoreSearch: true }).then((m) => m || (req.mode === 'navigate' ? caches.match(BASE) : Response.error()))));
+});

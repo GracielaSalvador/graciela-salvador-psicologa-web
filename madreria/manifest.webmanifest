@@ -1,0 +1,28 @@
+{
+ "name": "La Madrería · Mi psicóloga en el bolsillo",
+ "short_name": "La Madrería",
+ "lang": "es",
+ "start_url": "/madreria/",
+ "scope": "/madreria/",
+ "display": "standalone",
+ "background_color": "#FDFDFB",
+ "theme_color": "#0B4757",
+ "icons": [
+  {
+   "src": "icono-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "icono-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  },
+  {
+   "src": "icono-512-adaptable.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}

@@ -1,0 +1,5 @@
+/* Letras servidas desde la propia web (sin enviar datos a Google). Licencia SIL Open Font License. */
+@font-face { font-family: "Nunito Sans"; font-style: normal; font-weight: 400 800; font-display: swap; src: url("/fuentes/nunito-sans.woff") format("woff"); }
+@font-face { font-family: "Nunito Sans"; font-style: italic; font-weight: 400 800; font-display: swap; src: url("/fuentes/nunito-sans-italic.woff") format("woff"); }
+@font-face { font-family: "Lora"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("/fuentes/lora.woff") format("woff"); }
+@font-face { font-family: "Lora"; font-style: italic; font-weight: 400 700; font-display: swap; src: url("/fuentes/lora-italic.woff") format("woff"); }
