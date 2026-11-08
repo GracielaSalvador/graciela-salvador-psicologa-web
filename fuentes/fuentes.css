@@ -3,3 +3,7 @@
 @font-face { font-family: "Nunito Sans"; font-style: italic; font-weight: 400 800; font-display: swap; src: url("/fuentes/nunito-sans-italic.woff") format("woff"); }
 @font-face { font-family: "Lora"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("/fuentes/lora.woff") format("woff"); }
 @font-face { font-family: "Lora"; font-style: italic; font-weight: 400 700; font-display: swap; src: url("/fuentes/lora-italic.woff") format("woff"); }
+/* Letras de la web principal */
+@font-face { font-family: "Fraunces"; font-style: normal; font-weight: 340 560; font-display: swap; src: url("/fuentes/fraunces.woff") format("woff"); }
+@font-face { font-family: "Fraunces"; font-style: italic; font-weight: 440; font-display: swap; src: url("/fuentes/fraunces-italic.woff") format("woff"); }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400 600; font-display: swap; src: url("/fuentes/inter.woff") format("woff"); }
