@@ -8,7 +8,7 @@
 // La dirección antigua /herramientas (el «Área de pacientes» del pie de la web) lleva a /pacientes/, donde se elige entre las dos entradas.
 // Las contraseñas NO están aquí: se guardan en Vercel como variables de entorno.
 
-export const config = { matcher: ['/', '/pacientes', '/pacientes/:path*', '/bolsillo', '/bolsillo/:path*', '/herramientas', '/herramientas/:path*', '/madreria', '/madreria/:path*'] };
+export const config = { matcher: ['/:path*'] };  // pasa por aquí todo, para poder llevar la dirección de Vercel a la principal
 
 const DIAS = 30; // días que el dispositivo recuerda el acceso
 
@@ -48,18 +48,19 @@ function leerCookie(req, nombre) {
 const continuar = () => new Response(null, { headers: { 'x-middleware-next': '1' } });
 
 const MADRERIA = 'madreria.gracielasalvador.com';
+const VERCEL = 'graciela-salvador-psicologa-web.vercel.app';  // dirección que pone Vercel por defecto: lleva a la principal
 
 export default async function middleware(req) {
   const url = new URL(req.url);
   const host = url.hostname, primero = url.pathname.split('/')[1];
+  if (host === VERCEL) return Response.redirect((primero === 'madreria' ? 'https://' + MADRERIA : 'https://www.gracielasalvador.com') + url.pathname + url.search, 308);
   if (host === MADRERIA) {
     // En el subdominio solo vive La Madrería: la portada lleva a ella y lo demás, a la web principal
-    if (primero !== 'madreria') return Response.redirect(url.pathname === '/' ? new URL('/madreria/' + url.search, url) : 'https://www.gracielasalvador.com' + url.pathname + url.search, 308);
+    if (primero !== 'madreria' && primero !== 'fuentes') return Response.redirect(url.pathname === '/' ? new URL('/madreria/' + url.search, url) : 'https://www.gracielasalvador.com' + url.pathname + url.search, 308);
   } else if (primero === 'madreria' && /(^|\.)gracielasalvador\.com$|\.vercel\.app$/.test(host)) {
     // Dirección antigua de La Madrería → la nueva
     return Response.redirect('https://' + MADRERIA + url.pathname + url.search, 308);
   }
-  if (url.pathname === '/' || primero === 'pacientes') return continuar();
   // «Área de pacientes» (enlace antiguo /herramientas en el pie de la web) → página para elegir entre las dos entradas
   if (url.pathname === '/herramientas' || url.pathname === '/herramientas/') return Response.redirect(new URL('/pacientes/', url), 308);
   if (url.pathname.startsWith('/herramientas/')) return Response.redirect(new URL(url.pathname.replace(/^\/herramientas/, '/bolsillo') + url.search, url), 308);
