@@ -433,6 +433,10 @@ const D = {
   reloj: () => `<circle cx="0" cy="0" r="11" fill="#FFFFFF" stroke="#C2557A" stroke-width="3"/><path d="M0 0 v-7 M0 0 h5" stroke="#1B2430" stroke-width="1.8" stroke-linecap="round"/><path d="M-8 10 l-3 4 M8 10 l3 4" stroke="#C2557A" stroke-width="2.5" stroke-linecap="round"/><circle cx="-8" cy="-11" r="3" fill="#C2557A"/><circle cx="8" cy="-11" r="3" fill="#C2557A"/>`,
   osito: () => `<circle cx="-8" cy="-12" r="4.5" fill="#B98A5A"/><circle cx="8" cy="-12" r="4.5" fill="#B98A5A"/><circle cx="0" cy="-6" r="9" fill="#C99A6A"/><ellipse cx="0" cy="10" rx="11" ry="10" fill="#C99A6A"/><ellipse cx="0" cy="-3" rx="4" ry="3" fill="#E8CFA8"/><circle cx="-3.5" cy="-8" r="1.3" fill="#2B1E12"/><circle cx="3.5" cy="-8" r="1.3" fill="#2B1E12"/><circle cx="0" cy="-4" r="1.2" fill="#2B1E12"/><ellipse cx="0" cy="11" rx="5" ry="5" fill="#E8CFA8"/>`,
   caja: () => `<rect x="-12" y="-10" width="24" height="20" fill="#C9A26A" stroke="#8E6A3E" stroke-width="1.5"/><path d="M-12 -4 h24 M0 -10 v6" stroke="#E8D7B0" stroke-width="3"/>`,
+  florC: () => `<path d="M0 15 V-2" stroke="#4F7A3A" stroke-width="2.5"/><path d="M0 9 q-9 -1 -10 -8 q8 0 10 6" fill="#5F8A50"/><path d="M0 -1 q-8 -7 0 -17 q8 10 0 17 z" fill="#E7A1BD"/><path d="M0 -2 q-3 -7 0 -14 M0 -2 q4 -6 2 -12" stroke="#B9658A" stroke-width="1" fill="none"/>`,
+  florA: () => `<path d="M0 15 V0" stroke="#4F7A3A" stroke-width="2.5"/><path d="M0 9 q-9 -1 -10 -8 q8 0 10 6" fill="#5F8A50"/><g transform="translate(0 -7)"><circle cx="0" cy="-6" r="4.5" fill="#E7A1BD"/><circle cx="5.7" cy="-1.9" r="4.5" fill="#E7A1BD"/><circle cx="3.5" cy="4.9" r="4.5" fill="#E7A1BD"/><circle cx="-3.5" cy="4.9" r="4.5" fill="#E7A1BD"/><circle cx="-5.7" cy="-1.9" r="4.5" fill="#E7A1BD"/><circle cx="0" cy="0" r="3" fill="#F4DE8A"/></g>`,
+  regadera: () => `<path d="M-11 -5 h17 l-1 15 h-15 z" fill="#5F8A9A"/><path d="M5 0 l12 -10" stroke="#5F8A9A" stroke-width="4" stroke-linecap="round"/><path d="M14 -13 l7 5" stroke="#3E6270" stroke-width="4.5" stroke-linecap="round"/><path d="M-11 -2 q-9 1 -6 9" stroke="#3E6270" stroke-width="2.5" fill="none"/><path d="M-10 -5 q8 -9 15 0" stroke="#3E6270" stroke-width="2.5" fill="none"/>`,
+  gato: () => `<path d="M-11 14 q-3 -16 4 -22 h14 q7 6 4 22 z" fill="#55556A"/><path d="M10 12 q11 -2 8 -13" stroke="#55556A" stroke-width="3.5" fill="none" stroke-linecap="round"/><circle cx="0" cy="-12" r="9" fill="#55556A"/><path d="M-8.5 -16 l1 -10 l7 6 z M8.5 -16 l-1 -10 l-7 6 z" fill="#55556A"/><ellipse cx="-3.6" cy="-13" rx="2.3" ry="2.9" fill="#D7E37A"/><ellipse cx="3.6" cy="-13" rx="2.3" ry="2.9" fill="#D7E37A"/><path d="M-3.6 -14.8 v3.6 M3.6 -14.8 v3.6" stroke="#1B1B1B" stroke-width="1.3"/><path d="M-1.3 -8.6 h2.6 l-1.3 1.4 z" fill="#E7A1BD"/>`,
   vela: () => `<rect x="-4" y="-6" width="8" height="16" rx="1.5" fill="#F3EEDC" stroke="#C9C2B3" stroke-width="1"/><path d="M0 -6 v-3" stroke="#3B2A22" stroke-width="1"/><path d="M0 -9 q-3 -4 0 -8 q3 4 0 8" fill="#F2C744"/>`,
   ranaS: () => `<ellipse cx="0" cy="0" rx="12" ry="8" fill="#6FA84A"/><path d="M-10 4 q-10 4 -14 10 M10 4 q10 4 14 10" stroke="#5A8F3A" stroke-width="3.5" fill="none" stroke-linecap="round"/><circle cx="6" cy="-6" r="3.5" fill="#6FA84A"/><circle cx="6" cy="-6.5" r="1.8" fill="#FFFFFF"/><circle cx="6" cy="-6.5" r="1" fill="#1B2B22"/>`,
   concha: () => `<path d="M-11 6 q11 -26 22 0 z" fill="#F7E3DF" stroke="#C9907A" stroke-width="1.5"/><path d="M0 6 L0 -12 M0 6 L-6 -9 M0 6 L6 -9 M0 6 L-10 -2 M0 6 L10 -2" stroke="#C9907A" stroke-width="1"/>`,
@@ -496,20 +500,35 @@ const DESVAN = { id: 'desvan', name: 'El desván',
     [322, 356, 390].forEach((y, row) => { for (let x = 30 + (row % 2) * 16; x <= 296; x += 36) sl.push([x + rand(-4, 4), y + rand(-3, 3)]); });
     return sl; },
   fg: (r) => { let g = ''; for (let i = 0; i < 3; i++) { const x = 30 + r() * 260, y = 330 + r() * 70; g += `<path d="M${x - 20} ${y + 8} q6 -16 20 -14 q14 -2 20 14 z" fill="#B9A882" opacity=".95"/>`; } return g; } };
-const NAMES = { libro: ['un', 'libro', 'libros'], taza: ['una', 'taza', 'tazas'], llave: ['una', 'llave', 'llaves'], reloj: ['un', 'reloj', 'relojes'], osito: ['un', 'osito de peluche', 'ositos de peluche'], caja: ['una', 'caja', 'cajas'], vela: ['una', 'vela', 'velas'],
+const JARDIN = { id: 'jardin', name: 'El jardín de noche', mueve: { caracol: [3, 6] },
+  reto: [['caracol', 5, [24, 296, 170, 404]], ['florC', 4, [24, 296, 160, 400]], ['erizo', 3, [40, 270, 200, 400]], ['regadera', 2, [30, 290, 180, 400]], ['gato', 1, [40, 280, 170, 390]]],
+  suave: [['caracol', 3, [30, 290, 190, 400]], ['florC', 2, [30, 290, 180, 395]], ['gato', 1, [40, 280, 180, 380]]],
+  dec: { reto: [['florA', 4, [24, 296, 160, 400]], ['piedra', 4, [24, 296, 170, 404]]], suave: [['piedra', 3, [30, 290, 190, 400]]] },
+  bg: () => { const r = decoRand(13); let g = `<rect width="${W}" height="${H}" fill="#7FA86A"/><rect width="${W}" height="150" fill="#3A4C7A"/><circle cx="250" cy="48" r="20" fill="#F3EEDC"/>`;
+    for (let i = 0; i < 18; i++) g += `<circle cx="${r() * W}" cy="${r() * 110}" r="${(.7 + r()).toFixed(1)}" fill="#FFFFFF" opacity=".7"/>`;
+    for (let x = 4; x < W; x += 22) g += `<path d="M${x} 152 V98 l8 -8 l8 8 V152 Z" fill="#B98A5A" stroke="#8E6A3E" stroke-width="2"/>`;
+    g += `<path d="M0 112 H${W} M0 138 H${W}" stroke="#8E6A3E" stroke-width="5"/><rect y="148" width="${W}" height="${H - 148}" fill="#7FA86A"/>`;
+    g += `<path d="M150 ${H} Q170 320 140 250 T160 160" stroke="#D9C79E" stroke-width="34" fill="none" stroke-linecap="round" opacity=".85"/>`;
+    [[40, 176, 30], [282, 182, 34], [26, 300, 26], [292, 330, 30]].forEach(([x, y, rr]) => { g += `<circle cx="${x}" cy="${y}" r="${rr}" fill="#4F7A3A"/><circle cx="${x + rr * .4}" cy="${y - rr * .3}" r="${rr * .6}" fill="#5F8A50"/>`; });
+    for (let i = 0; i < 26; i++) { const x = r() * W, y = 160 + r() * 255; g += `<path d="M${x} ${y} l2 -7 l2 7" stroke="#5F8A50" stroke-width="1.5" fill="none"/>`; }
+    return g; },
+  fg: () => '' };
+const NAMES = { florC: ['una', 'flor cerrada', 'flores cerradas'], florA: ['una', 'flor abierta', 'flores abiertas'], regadera: ['una', 'regadera', 'regaderas'], gato: ['un', 'gato', 'gatos'], libro: ['un', 'libro', 'libros'], taza: ['una', 'taza', 'tazas'], llave: ['una', 'llave', 'llaves'], reloj: ['un', 'reloj', 'relojes'], osito: ['un', 'osito de peluche', 'ositos de peluche'], caja: ['una', 'caja', 'cajas'], vela: ['una', 'vela', 'velas'],
   rana: ['una', 'rana', 'ranas'], sapo: ['un', 'sapo', 'sapos'], nenufar: ['un', 'nenúfar con flor', 'nenúfares con flor'], hoja: ['un', 'nenúfar sin flor', 'nenúfares sin flor'], piedra: ['una', 'piedra', 'piedras'], pezE: ['un', 'pez', 'peces'], libelula: ['una', 'libélula', 'libélulas'],
   seta: ['una', 'seta roja', 'setas rojas'], setaM: ['una', 'seta marrón', 'setas marrones'], pajaro: ['un', 'pájaro', 'pájaros'], bellota: ['una', 'bellota', 'bellotas'], caracol: ['un', 'caracol', 'caracoles'], erizo: ['un', 'erizo', 'erizos'],
   estrella: ['una', 'estrella grande', 'estrellas grandes'], chispa: ['una', 'estrella pequeña', 'estrellas pequeñas'], luciernaga: ['una', 'luciérnaga', 'luciérnagas'], fugaz: ['una', 'estrella fugaz', 'estrellas fugaces'], ventana: ['una', 'ventana encendida', 'ventanas encendidas'], buho: ['un', 'búho', 'búhos'],
   pezR: ['un', 'pez de rayas', 'peces de rayas'], pezL: ['un', 'pez sin rayas', 'peces sin rayas'], caracola: ['una', 'caracola', 'caracolas'], estrellaM: ['una', 'estrella de mar', 'estrellas de mar'], tortuga: ['una', 'tortuga', 'tortugas'], concha: ['una', 'concha', 'conchas'], medusa: ['una', 'medusa', 'medusas'] };
 const LUZ = { id: 'luz', name: 'Sigue la luz', sub: 'Sigue con el dedo una luciérnaga que vuela despacio' };
 const LINT_G = { id: 'linterna', name: 'La linterna a oscuras', sub: 'Recorre el desván a oscuras con una linterna, sin prisa' };
+const LINT_J = { id: 'linternaJ', name: 'El jardín de noche', sub: 'Recorre un jardín a oscuras con la linterna: caracoles, flores cerradas y algún animal escondido' };
 const CONT = { id: 'contar', name: 'Peces que saltan', sub: 'Cuenta los peces que saltan del agua, entre ranas que también saltan' };
 const CONTE = { id: 'contarE', name: 'Estrellas fugaces', sub: 'Cuenta las estrellas fugaces, entre luciérnagas y aviones' };
-const EXTRA = [LINT_G, CONT, CONTE, LUZ];
+const EXTRA = [LINT_G, LINT_J, CONT, CONTE, LUZ];
 const PEZC = ['#E08A5B', '#F2C744', '#E7A1BD', '#C2557A', '#5F7BB0'];
 
 function thumb(sc) {
   if (sc.id === 'linterna') return `<svg viewBox="0 0 160 100" aria-hidden="true"><defs><mask id="tmk"><rect width="160" height="100" fill="#fff"/><circle cx="96" cy="52" r="26" fill="#000"/></mask></defs><rect width="160" height="100" fill="#E9D9BF"/><g transform="translate(90 54)">${D.osito()}</g><g transform="translate(40 40)">${D.caja()}</g><rect width="160" height="100" fill="#070D14" opacity=".96" mask="url(#tmk)"/><circle cx="96" cy="52" r="26" fill="none" stroke="#F4DE8A" stroke-opacity=".5" stroke-width="2"/></svg>`;
+  if (sc.id === 'linternaJ') return `<svg viewBox="0 0 160 100" aria-hidden="true"><defs><mask id="tmkJ"><rect width="160" height="100" fill="#fff"/><circle cx="70" cy="56" r="27" fill="#000"/></mask></defs><rect width="160" height="100" fill="#7FA86A"/><g transform="translate(62 60)">${D.gato()}</g><g transform="translate(84 66)">${D.caracol()}</g><rect width="160" height="100" fill="#070D14" opacity=".96" mask="url(#tmkJ)"/><circle cx="70" cy="56" r="27" fill="none" stroke="#F4DE8A" stroke-opacity=".5" stroke-width="2"/><circle cx="132" cy="18" r="7" fill="#F3EEDC" opacity=".5"/></svg>`;
   if (sc.id === 'contar') return `<svg viewBox="0 0 160 100" aria-hidden="true"><rect width="160" height="100" fill="#A9D3E3"/><path d="M30 70 q40 -60 80 0" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="3 4" fill="none" opacity=".8"/><g transform="translate(72 30) rotate(-10)">${D.pezE()}</g><circle cx="110" cy="72" r="10" fill="none" stroke="#FFFFFF" stroke-width="2" opacity=".7"/><circle cx="30" cy="72" r="6" fill="none" stroke="#FFFFFF" stroke-width="2" opacity=".5"/></svg>`;
   if (sc.id === 'contarE') return `<svg viewBox="0 0 160 100" aria-hidden="true"><rect width="160" height="100" fill="#1D2A4A"/><circle cx="30" cy="20" r="1" fill="#fff"/><circle cx="130" cy="14" r="1.2" fill="#fff"/><circle cx="70" cy="80" r="1" fill="#fff"/><g transform="translate(104 36) scale(1.4)">${D.fugaz()}</g><g transform="translate(44 66)">${D.luciernaga()}</g><path d="M0 90 Q80 70 160 86 V100 H0 Z" fill="#1B2A44"/></svg>`;
   if (sc.id === 'luz') return `<svg viewBox="0 0 160 100" aria-hidden="true"><rect width="160" height="100" fill="#22304F"/><path d="M20 70 q40 -50 80 -20 t50 -10" stroke="#F2C744" stroke-width="2" stroke-dasharray="2 5" fill="none" opacity=".7"/><circle cx="118" cy="44" r="12" fill="#F2C744" opacity=".3"/><circle cx="118" cy="44" r="4.5" fill="#F2C744"/></svg>`;
@@ -550,7 +569,7 @@ function thermo(when) {
   $('#tskip').onclick = () => { if (when === 'antes') { if (!G.manual) G.nivel = store.get('nivel', 'reto'); game(); } else finish(); };
   $('#tok').onclick = () => { if (when === 'antes') { G.a = +$('#tr').value; game(); } else { G.b = +$('#tr').value; finish(); } };
 }
-function game() { if (G.id === 'luz') return luz(); if (G.id === 'linterna') return linterna(); if (G.id === 'contar') return contar('peces'); if (G.id === 'contarE') return contar('estrellas'); search(SCENES.find(s => s.id === G.id)); }
+function game() { if (G.id === 'luz') return luz(); if (G.id === 'linterna') return linterna(DESVAN, LINT_G.name); if (G.id === 'linternaJ') return linterna(JARDIN, LINT_J.name); if (G.id === 'contar') return contar('peces'); if (G.id === 'contarE') return contar('estrellas'); search(SCENES.find(s => s.id === G.id)); }
 
 /* Buscar: cuenta atrás (5·4·3·2·1 con más reto, 3·2·1 en suave), con cosas parecidas que no cuentan y plantas que tapan un poco */
 function place(sc, lv) {
@@ -589,30 +608,49 @@ function search(sc) {
   $$('#sc .tg').forEach(g => { g.onclick = () => tap(g); g.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tap(g); } }; });
 }
 
-/* La linterna a oscuras: la escena está a oscuras y el dedo es una linterna. Lo que se busca cuenta cuando se queda un momento bajo la luz */
-function linterna() {
-  const sc = DESVAN, lv = G.nivel || 'reto', RAD = lv === 'suave' ? 64 : 48, order = sc[lv].map(o => [...o]), items = place(sc, lv);
-  let step = 0, found = 0, lx = W / 2, ly = H / 2, tLast = 0, said = '';
+/* La linterna a oscuras: la escena está a oscuras y se mueve una linterna. El dedo se desliza por cualquier parte y la luz sigue su movimiento,
+   así el dedo nunca tapa lo que se alumbra. Lo que se busca cuenta cuando se queda un momento bajo la luz */
+function linterna(sc, titulo) {
+  const lv = G.nivel || 'reto', RAD = lv === 'suave' ? 64 : 48, order = sc[lv].map(o => [...o]), items = place(sc, lv);
+  let step = 0, found = 0, lx = W / 2, ly = H * .42, tLast = 0, said = '', drag = null;
+  const TX = W / 2, TY = H + 4;
   const lit = {};
-  $('#play').innerHTML = head(LINT_G.name) + `<div class="goal fade" aria-live="polite"><div><b id="gt"></b><small id="gs"></small></div><div class="pips" id="gp"></div></div>
-    <div class="stage"><svg viewBox="0 0 ${W} ${H}" id="sc" role="application" tabindex="0" aria-label="Escena a oscuras. Mueve la linterna con el dedo o con las flechas del teclado.">
+  $('#play').innerHTML = head(titulo) + `<div class="goal fade" aria-live="polite"><div><b id="gt"></b><small id="gs"></small></div><div class="pips" id="gp"></div></div>
+    <div class="stage"><svg viewBox="0 0 ${W} ${H}" id="sc" role="application" tabindex="0" aria-label="Escena a oscuras. Mueve la linterna deslizando el dedo o con las flechas del teclado.">
       <defs><mask id="lmk"><rect width="${W}" height="${H}" fill="#fff"/><circle id="hole" cx="${lx}" cy="${ly}" r="${RAD}" fill="#000"/></mask><radialGradient id="lg"><stop offset=".6" stop-color="#F4DE8A" stop-opacity="0"/><stop offset="1" stop-color="#F4DE8A" stop-opacity=".35"/></radialGradient></defs>
       ${sc.bg()}${items.map(it => `<g class="tg" data-i="${it.id}" transform="translate(${it.x.toFixed(0)} ${it.y.toFixed(0)})"><circle class="halo" r="22" fill="#FFF6C9" opacity="0"/>${D[it.k](it.c)}</g>`).join('')}
-      <g style="pointer-events:none"><rect width="${W}" height="${H}" fill="#070D14" opacity=".985" mask="url(#lmk)"/><circle id="ring" cx="${lx}" cy="${ly}" r="${RAD}" fill="url(#lg)" stroke="#F4DE8A" stroke-opacity=".45" stroke-width="2"/></g></svg></div>
-    <p class="small muted" style="margin:0">Arrastra el dedo despacio para mover la luz. Cuando encuentres lo que buscas, deja la luz quieta encima un momento.</p>`;
+      <g style="pointer-events:none"><rect width="${W}" height="${H}" fill="#070D14" opacity=".985" mask="url(#lmk)"/><circle id="ring" cx="${lx}" cy="${ly}" r="${RAD}" fill="url(#lg)" stroke="#F4DE8A" stroke-opacity=".45" stroke-width="2"/>
+        <polygon id="beam" points="" fill="#F4DE8A" opacity=".07"/>
+        <g id="torch"><rect x="-9" y="-40" width="18" height="44" rx="5" fill="#5B4A3A" stroke="#2E241C" stroke-width="1.5"/><rect x="-9" y="-26" width="18" height="5" fill="#3E3128"/><path d="M-13 -54 L13 -54 L9 -40 L-9 -40 Z" fill="#8A7560" stroke="#2E241C" stroke-width="1.5"/><ellipse cx="0" cy="-54" rx="13" ry="3.5" fill="#FFF3C4"/><circle cx="0" cy="-12" r="3" fill="#C9A86A"/></g></g></svg></div>
+    <p class="small muted" style="margin:0">Desliza el dedo despacio por cualquier parte de la escena: la linterna sigue tu movimiento y el dedo no tapa la luz. Cuando encuentres lo que buscas, deja la luz quieta encima un momento.</p>`;
   $('#bk').onclick = back; $('#play').scrollIntoView({ block: 'start' });
   const show = () => { const [k, n] = order[step], [ar, sg, pl] = NAMES[k];
     $('#gt').textContent = `${step ? 'Ahora, ' : 'Busca '}${n === 1 ? ar + ' ' + sg : n + ' ' + pl}`;
     $('#gp').innerHTML = Array.from({ length: n }, (_, i) => `<i class="${i < found ? 'on' : ''}"></i>`).join(''); };
   $('#gs').textContent = 'Todo está a oscuras. Ve alumbrando sin prisa.'; show();
   const sv = $('#sc');
-  const move = (x, y) => { lx = Math.max(0, Math.min(W, x)); ly = Math.max(0, Math.min(H, y)); ['#hole', '#ring'].forEach(q => { $(q).setAttribute('cx', lx.toFixed(1)); $(q).setAttribute('cy', ly.toFixed(1)); }); };
-  const pos = (e) => { const r = sv.getBoundingClientRect(); move((e.clientX - r.left) / r.width * W, (e.clientY - r.top) / r.height * H); };
-  sv.onpointerdown = (e) => { sv.setPointerCapture(e.pointerId); pos(e); }; sv.onpointermove = (e) => { if (e.buttons || e.pointerType !== 'mouse') pos(e); else pos(e); };
+  const move = (x, y) => { lx = Math.max(0, Math.min(W, x)); ly = Math.max(0, Math.min(H, y)); ['#hole', '#ring'].forEach(q => { $(q).setAttribute('cx', lx.toFixed(1)); $(q).setAttribute('cy', ly.toFixed(1)); });
+    // la linterna, abajo, apunta hacia la luz; el haz va de su cabeza al círculo
+    const a = Math.atan2(ly - TY, lx - TX), ux = Math.cos(a), uy = Math.sin(a), hx = TX + ux * 54, hy = TY + uy * 54;
+    $('#torch').setAttribute('transform', `translate(${TX} ${TY}) rotate(${(a * 180 / Math.PI + 90).toFixed(1)})`);
+    $('#torch').setAttribute('opacity', Math.hypot(lx - TX, ly - TY) < RAD + 70 ? .3 : .95);
+    $('#beam').setAttribute('points', `${(hx - uy * 9).toFixed(1)},${(hy + ux * 9).toFixed(1)} ${(hx + uy * 9).toFixed(1)},${(hy - ux * 9).toFixed(1)} ${(lx + uy * RAD).toFixed(1)},${(ly - ux * RAD).toFixed(1)} ${(lx - uy * RAD).toFixed(1)},${(ly + ux * RAD).toFixed(1)}`); };
+  // Movimiento relativo: lo que se desliza el dedo, se desliza la luz (como un ratón en un portátil)
+  const toSvg = (e) => { const r = sv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width * W, (e.clientY - r.top) / r.height * H]; };
+  sv.onpointerdown = (e) => { sv.setPointerCapture(e.pointerId); drag = toSvg(e); };
+  sv.onpointermove = (e) => { if (!drag) return; const p = toSvg(e); move(lx + (p[0] - drag[0]) * 1.1, ly + (p[1] - drag[1]) * 1.1); drag = p; };
+  sv.onpointerup = sv.onpointercancel = () => { drag = null; };
+  move(lx, ly);
   sv.onkeydown = (e) => { const d = { ArrowLeft: [-12, 0], ArrowRight: [12, 0], ArrowUp: [0, -12], ArrowDown: [0, 12] }[e.key]; if (d) { e.preventDefault(); move(lx + d[0], ly + d[1]); } };
-  const done = () => { stopAll(); $('#gt').textContent = 'Ya está'; $('#gs').textContent = 'Has recorrido la oscuridad con calma.'; $('#gp').innerHTML = ''; $('#hole').setAttribute('r', 400); $('#ring').setAttribute('r', 0);
+  const done = () => { stopAll(); $('#gt').textContent = 'Ya está'; $('#gs').textContent = 'Has recorrido la oscuridad con calma.'; $('#gp').innerHTML = ''; $('#hole').setAttribute('r', 400); $('#ring').setAttribute('r', 0); $('#beam').setAttribute('opacity', 0); $('#torch').setAttribute('opacity', 0);
     $('#play').insertAdjacentHTML('beforeend', `<div class="nav-row fade" style="margin:0"><button class="btn" id="go">Ahora, a lo que tienes alrededor →</button></div>`); $('#go').onclick = real; };
+  // Lo que se mueve (los caracoles del jardín): avanza muy despacio y se da la vuelta al llegar al borde
+  if (sc.mueve) items.forEach(it => { const v = sc.mueve[it.k]; if (v) it.vx = rand(v[0], v[1]) * (Math.random() < .5 ? -1 : 1); });
+  let tPrev = 0;
   const frame = (now) => { if (step >= order.length || !G) return; const [k, n] = order[step];
+    const dt = tPrev ? Math.min(.1, (now - tPrev) / 1000) : 0; tPrev = now;
+    items.forEach(it => { if (!it.vx) return; it.x += it.vx * dt; if (it.x < 24 || it.x > 296) { it.vx = -it.vx; it.x = Math.max(24, Math.min(296, it.x)); }
+      sv.querySelector(`.tg[data-i="${it.id}"]`).setAttribute('transform', `translate(${it.x.toFixed(1)} ${it.y.toFixed(0)})${it.vx < 0 ? ' scale(-1 1)' : ''}`); });
     items.forEach(it => { const g = sv.querySelector(`.tg[data-i="${it.id}"]`); if (g.classList.contains('got')) return;
       const inL = Math.hypot(it.x - lx, it.y - ly) < RAD - 6;
       if (!inL) { delete lit[it.id]; return; }
@@ -627,7 +665,7 @@ function linterna() {
 
 /* Contar lo que pasa: cosas que aparecen de vez en cuando; hay que estar atento/a y tocarlas. No pasa nada si se escapa alguna */
 function contar(modo) {
-  const lv = G.nivel || 'reto', DUR = lv === 'suave' ? 90000 : 120000;
+  const lv = G.nivel || 'reto', DUR = lv === 'suave' ? 60000 : 75000;
   const M = modo === 'peces'
     ? { t: 'Toca solo los peces que saltan', bg: SCENES[0].bg(), tg: () => D.pezE(), dz: [[() => D.ranaS(), 'una rana', true], [() => `<path d="M-8 0 q8 -6 16 0 q-8 6 -16 0" fill="#C98A3A"/><path d="M-8 0 h16" stroke="#8E5A20" stroke-width="1"/>`, 'una hoja', false]], solo: 'Solo contamos peces.' }
     : { t: 'Toca solo las estrellas fugaces', bg: SCENES[2].bg(), tg: () => D.fugaz(), dz: [[() => D.luciernaga(), 'una luciérnaga', true], [() => `<g class="blink"><circle r="2.5" fill="#E7A1BD"/><circle cx="6" r="2.5" fill="#FFFFFF"/></g>`, 'un avión muy lejos', false]], solo: 'Solo contamos estrellas fugaces.' };
@@ -667,9 +705,9 @@ function contar(modo) {
   raf = requestAnimationFrame(frame);
 }
 
-/* Sigue la luz: una luciérnaga que se mueve despacio durante un minuto */
+/* Sigue la luz: una luciérnaga que se mueve despacio durante 45 s o 1 minuto */
 function luz() {
-  const R = G.nivel === 'suave' ? 1 : 1.35, DUR = G.nivel === 'suave' ? 60000 : 90000; let t0 = 0, near = false, px = -99, py = -99, trail = [];
+  const R = G.nivel === 'suave' ? 1 : 1.35, DUR = G.nivel === 'suave' ? 45000 : 60000; let t0 = 0, near = false, px = -99, py = -99, trail = [];
   $('#play').innerHTML = head(LUZ.name) + `<div class="goal fade"><div><b>Sigue la luz con el dedo</b><small id="ls">Pon el dedo encima de la luciérnaga y acompáñala. Si se te escapa, no pasa nada: la vuelves a encontrar.</small></div></div>
     <div class="stage" id="lst"><svg viewBox="0 0 ${W} ${H}" id="lsv" role="img" aria-label="Una luciérnaga que vuela despacio">
       <defs><linearGradient id="skyL" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1B2640"/><stop offset="1" stop-color="#2F4A5C"/></linearGradient></defs>
@@ -690,7 +728,7 @@ function luz() {
     $('#tr').innerHTML = trail.map(p => `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="2.2" fill="#F2C744" opacity="${(1 - (now - p[2]) / 2200).toFixed(2)}"/>`).join('');
     $('#prog').setAttribute('stroke-dasharray', `${(Math.min(1, el / DUR) * 75.4).toFixed(1)} 76`);
     if (el < DUR) raf = requestAnimationFrame(frame);
-    else { $('#ls').textContent = `Ya está. Has acompañado a la luz durante ${G.nivel === 'suave' ? 'un minuto' : 'un minuto y medio'}.`; $('#play').insertAdjacentHTML('beforeend', `<div class="nav-row fade" style="margin:0"><button class="btn" id="go">Ahora, a lo que tienes alrededor →</button></div>`); $('#go').onclick = real; }
+    else { $('#ls').textContent = `Ya está. Has acompañado a la luz durante ${G.nivel === 'suave' ? 'casi un minuto' : 'un minuto'}.`; $('#play').insertAdjacentHTML('beforeend', `<div class="nav-row fade" style="margin:0"><button class="btn" id="go">Ahora, a lo que tienes alrededor →</button></div>`); $('#go').onclick = real; }
   };
   raf = requestAnimationFrame(frame);
 }
