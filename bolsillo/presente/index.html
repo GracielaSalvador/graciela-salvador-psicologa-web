@@ -203,6 +203,9 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 .thermo .val b { font-family: var(--display); font-size: 2.6rem; color: var(--tc); font-weight: 500; line-height: 1; min-width: 1.4em; text-align: center; }
 .thermo .val span { font-weight: 700; color: var(--muted); }
 .thermo input[type=range] { width: 100%; height: 44px; accent-color: var(--tc); }
+.toca { display: grid; grid-template-columns: 110px 1fr; gap: 12px; align-items: center; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+.toca svg { width: 100%; height: auto; border-radius: 12px; display: block; } .toca > div { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.toca b { font-family: var(--display); font-weight: 500; font-size: 1.15rem; color: var(--tc); line-height: 1.2; }
 .lvl { display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--line); padding-top: 10px; } .lvl .seg button { flex: 1; }
 .thermo .ends { display: flex; justify-content: space-between; font-size: .8rem; color: var(--muted); }
 .real { display: flex; flex-direction: column; gap: 14px; align-items: center; text-align: center; padding: 18px 14px; border-radius: 22px; background: var(--soft); }
@@ -433,6 +436,19 @@ const D = {
   reloj: () => `<circle cx="0" cy="0" r="11" fill="#FFFFFF" stroke="#C2557A" stroke-width="3"/><path d="M0 0 v-7 M0 0 h5" stroke="#1B2430" stroke-width="1.8" stroke-linecap="round"/><path d="M-8 10 l-3 4 M8 10 l3 4" stroke="#C2557A" stroke-width="2.5" stroke-linecap="round"/><circle cx="-8" cy="-11" r="3" fill="#C2557A"/><circle cx="8" cy="-11" r="3" fill="#C2557A"/>`,
   osito: () => `<circle cx="-8" cy="-12" r="4.5" fill="#B98A5A"/><circle cx="8" cy="-12" r="4.5" fill="#B98A5A"/><circle cx="0" cy="-6" r="9" fill="#C99A6A"/><ellipse cx="0" cy="10" rx="11" ry="10" fill="#C99A6A"/><ellipse cx="0" cy="-3" rx="4" ry="3" fill="#E8CFA8"/><circle cx="-3.5" cy="-8" r="1.3" fill="#2B1E12"/><circle cx="3.5" cy="-8" r="1.3" fill="#2B1E12"/><circle cx="0" cy="-4" r="1.2" fill="#2B1E12"/><ellipse cx="0" cy="11" rx="5" ry="5" fill="#E8CFA8"/>`,
   caja: () => `<rect x="-12" y="-10" width="24" height="20" fill="#C9A26A" stroke="#8E6A3E" stroke-width="1.5"/><path d="M-12 -4 h24 M0 -10 v6" stroke="#E8D7B0" stroke-width="3"/>`,
+  pato: () => `<g class="bob"><ellipse cx="-2" cy="4" rx="15" ry="8" fill="#F2C744"/><path d="M-16 2 l-5 -5 l1 8 z" fill="#F2C744"/><circle cx="9" cy="-6" r="6.5" fill="#F2C744"/><path d="M14 -6.5 l8 1.5 l-8 2.5 z" fill="#E08A3A"/><circle cx="10.5" cy="-7.5" r="1.4" fill="#1B2430"/><path d="M-10 2 q6 -6 12 0" stroke="#D9A82A" stroke-width="2" fill="none"/></g>`,
+  mariposa: () => `<g class="hover"><ellipse cx="-7" cy="-4" rx="7" ry="9" fill="#E08A5B" transform="rotate(-20 -7 -4)"/><ellipse cx="7" cy="-4" rx="7" ry="9" fill="#E08A5B" transform="rotate(20 7 -4)"/><ellipse cx="-5" cy="7" rx="4.5" ry="6" fill="#F2C744" transform="rotate(20 -5 7)"/><ellipse cx="5" cy="7" rx="4.5" ry="6" fill="#F2C744" transform="rotate(-20 5 7)"/><circle cx="-7" cy="-5" r="2" fill="#FFFFFF" opacity=".7"/><circle cx="7" cy="-5" r="2" fill="#FFFFFF" opacity=".7"/><path d="M0 -10 V12" stroke="#3B2A22" stroke-width="2.5" stroke-linecap="round"/><path d="M0 -10 l-4 -5 M0 -10 l4 -5" stroke="#3B2A22" stroke-width="1"/></g>`,
+  ardilla: () => `<path d="M-4 12 q-16 0 -14 -16 q2 -12 10 -8 q-6 6 -2 12 q4 6 6 12 z" fill="#B0652E"/><ellipse cx="3" cy="5" rx="7" ry="9" fill="#C97A3A"/><circle cx="6" cy="-7" r="6" fill="#C97A3A"/><path d="M2 -11 l1 -6 l4 4 z" fill="#C97A3A"/><circle cx="8" cy="-8" r="1.3" fill="#2B1E12"/><circle cx="12" cy="-5.5" r="1" fill="#2B1E12"/><ellipse cx="5" cy="7" rx="3.5" ry="5" fill="#E8C49A"/><circle cx="9" cy="2" r="2.5" fill="#8E5A20"/>`,
+  pina: () => `<path d="M0 -13 q10 6 8 16 q-3 9 -8 11 q-5 -2 -8 -11 q-2 -10 8 -16 z" fill="#8E5A2E"/><path d="M-6 -4 h12 M-7 2 h14 M-5 8 h10 M-3 -9 l3 4 l3 -4" stroke="#5E3A1A" stroke-width="1.4" fill="none"/>`,
+  hojaO: () => `<path d="M0 -13 q12 6 10 14 q-4 8 -10 12 q-6 -4 -10 -12 q-2 -8 10 -14 z" fill="#D9762E"/><path d="M0 -12 V14 M0 -2 l6 -5 M0 4 l-6 -5 M0 8 l5 -3" stroke="#A04E1A" stroke-width="1.3" fill="none"/>`,
+  murcielago: () => `<g class="hover"><path d="M0 -4 q-6 -6 -15 -6 q2 4 -2 6 q4 0 2 5 q6 -4 15 1 q9 -5 15 -1 q-2 -5 2 -5 q-4 -2 -2 -6 q-9 0 -15 6 z" fill="#7A7398"/><circle cx="0" cy="-2" r="4.5" fill="#8C85AA"/><path d="M-3 -6 l-1 -4 l3 2 z M3 -6 l1 -4 l-3 2 z" fill="#8C85AA"/><circle cx="-1.5" cy="-2.5" r=".9" fill="#F4DE8A"/><circle cx="1.5" cy="-2.5" r=".9" fill="#F4DE8A"/></g>`,
+  nube: () => `<path d="M-17 7 q-3 -11 8 -11 q2 -9 11 -7 q8 -5 13 4 q9 0 6 14 z" fill="#8C98B8" opacity=".9"/>`,
+  cangrejo: () => `<ellipse cx="0" cy="2" rx="12" ry="8" fill="#D9573A"/><path d="M-10 6 l-6 5 M-9 8 l-4 6 M10 6 l6 5 M9 8 l4 6" stroke="#B8432A" stroke-width="2.2" stroke-linecap="round"/><path d="M-10 -2 q-8 -4 -8 -10 M10 -2 q8 -4 8 -10" stroke="#D9573A" stroke-width="3" fill="none"/><circle cx="-18" cy="-13" r="3.5" fill="#D9573A"/><circle cx="18" cy="-13" r="3.5" fill="#D9573A"/><path d="M-4 -5 v-5 M4 -5 v-5" stroke="#B8432A" stroke-width="1.5"/><circle cx="-4" cy="-10" r="1.8" fill="#1B2430"/><circle cx="4" cy="-10" r="1.8" fill="#1B2430"/>`,
+  pulpo: () => `<g class="bob"><path d="M-11 0 q0 -16 11 -16 q11 0 11 16 z" fill="#B9658A"/><path d="M-10 0 q-4 8 -8 10 M-5 1 q-2 9 -4 13 M0 1 v14 M5 1 q2 9 4 13 M10 0 q4 8 8 10" stroke="#B9658A" stroke-width="3.5" fill="none" stroke-linecap="round"/><circle cx="-4" cy="-6" r="2.2" fill="#FFFFFF"/><circle cx="4" cy="-6" r="2.2" fill="#FFFFFF"/><circle cx="-4" cy="-6" r="1.1" fill="#1B2430"/><circle cx="4" cy="-6" r="1.1" fill="#1B2430"/></g>`,
+  caballito: () => `<g class="bob"><path d="M2 -12 q8 0 8 6 q0 4 -5 5 q5 4 4 10 q-1 8 -8 8 q-6 0 -6 -6 q0 -4 4 -4" fill="none" stroke="#E0A23A" stroke-width="6" stroke-linecap="round"/><path d="M7 -10 l8 2" stroke="#E0A23A" stroke-width="4" stroke-linecap="round"/><circle cx="4" cy="-10" r="1.3" fill="#1B2430"/><path d="M-2 -11 l-4 -3 M-2 -5 l-5 0 M-1 1 l-4 1" stroke="#C98A2A" stroke-width="2" stroke-linecap="round"/></g>`,
+  pelota: () => `<circle r="11" fill="#F3EEDC"/><path d="M0 -11 A11 11 0 0 1 9.5 5.5 L0 0 Z" fill="#C2557A"/><path d="M9.5 5.5 A11 11 0 0 1 -9.5 5.5 L0 0 Z" fill="#5F7BB0"/><path d="M-9.5 5.5 A11 11 0 0 1 0 -11 L0 0 Z" fill="#F2C744"/><circle r="11" fill="none" stroke="#8E6A3E" stroke-width="1"/><circle r="2.5" fill="#F3EEDC"/>`,
+  sombrero: () => `<ellipse cx="0" cy="6" rx="16" ry="4.5" fill="#B98A2A"/><path d="M-9 6 q0 -16 9 -16 q9 0 9 16 z" fill="#C9A26A"/><path d="M-9 1 h18" stroke="#C2557A" stroke-width="3"/>`,
+  maceta: () => `<path d="M-9 2 h18 l-3 12 h-12 z" fill="#C2693A"/><rect x="-10" y="-1" width="20" height="5" rx="1" fill="#A85A30"/><path d="M0 -1 q-2 -10 -8 -12 M0 -1 q2 -12 8 -13 M0 -1 v-12" stroke="#4F7A3A" stroke-width="2.5" fill="none" stroke-linecap="round"/>`,
   florC: () => `<path d="M0 15 V-2" stroke="#4F7A3A" stroke-width="2.5"/><path d="M0 9 q-9 -1 -10 -8 q8 0 10 6" fill="#5F8A50"/><path d="M0 -1 q-8 -7 0 -17 q8 10 0 17 z" fill="#E7A1BD"/><path d="M0 -2 q-3 -7 0 -14 M0 -2 q4 -6 2 -12" stroke="#B9658A" stroke-width="1" fill="none"/>`,
   florA: () => `<path d="M0 15 V0" stroke="#4F7A3A" stroke-width="2.5"/><path d="M0 9 q-9 -1 -10 -8 q8 0 10 6" fill="#5F8A50"/><g transform="translate(0 -7)"><circle cx="0" cy="-6" r="4.5" fill="#E7A1BD"/><circle cx="5.7" cy="-1.9" r="4.5" fill="#E7A1BD"/><circle cx="3.5" cy="4.9" r="4.5" fill="#E7A1BD"/><circle cx="-3.5" cy="4.9" r="4.5" fill="#E7A1BD"/><circle cx="-5.7" cy="-1.9" r="4.5" fill="#E7A1BD"/><circle cx="0" cy="0" r="3" fill="#F4DE8A"/></g>`,
   regadera: () => `<path d="M-11 -5 h17 l-1 15 h-15 z" fill="#5F8A9A"/><path d="M5 0 l12 -10" stroke="#5F8A9A" stroke-width="4" stroke-linecap="round"/><path d="M14 -13 l7 5" stroke="#3E6270" stroke-width="4.5" stroke-linecap="round"/><path d="M-11 -2 q-9 1 -6 9" stroke="#3E6270" stroke-width="2.5" fill="none"/><path d="M-10 -5 q8 -9 15 0" stroke="#3E6270" stroke-width="2.5" fill="none"/>`,
@@ -446,22 +462,34 @@ const D = {
 
 /* ---------- Escenas: fondo, decorado y zonas donde aparece cada cosa ---------- */
 const W = 320, H = 420;
+// La estación del año (como en la casita) y si es de día o de tarde: cambian un poco los colores de algunos escenarios
+const EST = (() => { const m = (window.__fecha || new Date()).getMonth(); return m >= 2 && m <= 4 ? 'pri' : m >= 5 && m <= 7 ? 'ver' : m >= 8 && m <= 10 ? 'oto' : 'inv'; })();
+let TARDE = Math.random() < .5;
 function decoRand(seed) { let s = seed; return () => { s = (s * 9301 + 49297) % 233280; return s / 233280; }; }
 const SCENES = [
   { id: 'estanque', name: 'El estanque', sub: 'Busca ranas, nenúfares y otras cosas en un estanque tranquilo',
     reto: [['rana', 5, [30, 290, 90, 395]], ['nenufar', 4, [40, 280, 100, 360]], ['piedra', 3, [30, 290, 100, 370]], ['pezE', 2, [50, 270, 120, 340]], ['libelula', 1, [50, 270, 50, 200]]],
     suave: [['rana', 3, [40, 280, 110, 380]], ['nenufar', 2, [40, 280, 100, 360]], ['libelula', 1, [50, 270, 60, 200]]],
     dec: { reto: [['sapo', 3, [30, 290, 100, 390]], ['hoja', 4, [40, 280, 100, 360]]], suave: [['hoja', 2, [40, 280, 100, 360]]] },
-    bg: () => { const r = decoRand(3); let g = `<rect width="${W}" height="${H}" fill="#A9D3E3"/><path d="M0 0 H${W} V60 Q160 90 0 60 Z" fill="#7FB86A"/><path d="M0 ${H} V370 Q160 340 ${W} 370 V${H} Z" fill="#7FB86A"/>`;
+    bg: () => { const r = decoRand(3), ori = { pri: '#86C06A', ver: '#7FB86A', oto: '#A9A85A', inv: '#9DB09A' }[EST], agua = TARDE ? '#B7D3E3' : EST === 'inv' ? '#B3CFDA' : '#A9D3E3';
+      let g = `<rect width="${W}" height="${H}" fill="${agua}"/><path d="M0 0 H${W} V60 Q160 90 0 60 Z" fill="${ori}"/><path d="M0 ${H} V370 Q160 340 ${W} 370 V${H} Z" fill="${ori}"/>`;
+      if (TARDE) g += `<rect width="${W}" height="${H}" fill="#F7C49A" opacity=".22"/>`;
+      if (EST === 'pri') for (let i = 0; i < 14; i++) g += `<circle cx="${(r() * W).toFixed(0)}" cy="${(i % 2 ? 8 + r() * 46 : 378 + r() * 36).toFixed(0)}" r="2.2" fill="${i % 3 ? '#FFFFFF' : '#F3B6CB'}"/>`;
+      if (EST === 'oto') for (let i = 0; i < 6; i++) g += `<ellipse cx="${(30 + r() * 260).toFixed(0)}" cy="${(110 + r() * 230).toFixed(0)}" rx="4" ry="2.4" fill="#D9962E" opacity=".75"/>`;
+      if (EST === 'inv') for (let i = 0; i < 16; i++) g += `<circle cx="${(r() * W).toFixed(0)}" cy="${(i % 2 ? 6 + r() * 50 : 380 + r() * 36).toFixed(0)}" r="1.6" fill="#FFFFFF" opacity=".8"/>`;
       for (let i = 0; i < 5; i++) g += `<circle class="rip" style="animation-delay:${i}s" cx="${40 + r() * 240}" cy="${120 + r() * 220}" r="${14 + r() * 10}" fill="none" stroke="#FFFFFF" stroke-width="1.5" opacity=".5"/>`;
       return g; },
     fg: (r) => { let g = ''; for (let i = 0; i < 5; i++) { const x = 20 + r() * 280, y = 120 + r() * 270; g += `<g class="sway" style="animation-delay:${i * .8}s"><path d="M${x} ${y} q-4 -26 2 -44 M${x + 6} ${y} q2 -22 9 -36 M${x - 6} ${y} q-6 -18 -2 -32" stroke="#4F7A3A" stroke-width="3.2" fill="none" stroke-linecap="round"/><rect x="${x - 2}" y="${y - 46}" width="5" height="13" rx="2.5" fill="#7A5A3A"/></g>`; } return g; } },
-  { id: 'bosque', name: 'El bosque al atardecer', sub: 'Busca setas, pájaros y otras cosas en un bosque al caer la tarde',
+  { id: 'bosque', name: 'El bosque', sub: 'Busca setas, pájaros y otras cosas en un bosque',
     reto: [['seta', 5, [24, 296, 290, 398]], ['pajaro', 4, [30, 290, 90, 260]], ['bellota', 3, [24, 296, 280, 398]], ['caracol', 2, [30, 290, 300, 398]], ['erizo', 1, [40, 280, 320, 395]]],
     suave: [['seta', 3, [30, 290, 300, 395]], ['pajaro', 2, [30, 290, 110, 250]], ['erizo', 1, [40, 280, 320, 395]]],
     dec: { reto: [['setaM', 4, [24, 296, 290, 398]]], suave: [['setaM', 2, [30, 290, 300, 395]]] },
-    bg: () => { const r = decoRand(7); let g = `<defs><linearGradient id="skyB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F3B79C"/><stop offset="1" stop-color="#F6DDB8"/></linearGradient></defs><rect width="${W}" height="${H}" fill="url(#skyB)"/><circle cx="240" cy="210" r="34" fill="#F7C86E" opacity=".9"/><path d="M0 250 Q80 200 160 240 T${W} 230 V${H} H0 Z" fill="#9DBB84"/><path d="M0 300 Q100 270 200 296 T${W} 290 V${H} H0 Z" fill="#7EA36A"/>`;
-      [[40, 300, 90], [120, 296, 70], [270, 292, 100], [200, 300, 60]].forEach(([x, y, h]) => { g += `<rect x="${x - 5}" y="${y - h}" width="10" height="${h}" fill="#7A5A3A"/><circle cx="${x}" cy="${y - h}" r="${h * .42}" fill="#4F7A5A"/><circle cx="${x - h * .25}" cy="${y - h + 10}" r="${h * .3}" fill="#5F8A68"/>`; });
+    bg: () => { const r = decoRand(7), sky = TARDE ? ['#F3B79C', '#F6DDB8'] : ['#A9D8EC', '#E3F2EC'];
+      const hill = { pri: ['#A3CF84', '#86B56A'], ver: ['#9DBB84', '#7EA36A'], oto: ['#C2B074', '#A89A5E'], inv: ['#B5C2AE', '#9AAA94'] }[EST];
+      const copa = { pri: ['#5F9A5A', '#6FAE68'], ver: ['#4F7A5A', '#5F8A68'], oto: ['#C2693A', '#D9962E'], inv: ['#7A8A84', '#8E9C96'] }[EST];
+      let g = `<defs><linearGradient id="skyB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${sky[0]}"/><stop offset="1" stop-color="${sky[1]}"/></linearGradient></defs><rect width="${W}" height="${H}" fill="url(#skyB)"/>${TARDE ? '<circle cx="240" cy="210" r="34" fill="#F7C86E" opacity=".9"/>' : '<circle cx="250" cy="60" r="22" fill="#FFF1B0"/>'}<path d="M0 250 Q80 200 160 240 T${W} 230 V${H} H0 Z" fill="${hill[0]}"/><path d="M0 300 Q100 270 200 296 T${W} 290 V${H} H0 Z" fill="${hill[1]}"/>`;
+      [[40, 300, 90], [120, 296, 70], [270, 292, 100], [200, 300, 60]].forEach(([x, y, h]) => { const k = EST === 'inv' ? .8 : 1; g += `<rect x="${x - 5}" y="${y - h}" width="10" height="${h}" fill="#7A5A3A"/><circle cx="${x}" cy="${y - h}" r="${h * .42 * k}" fill="${copa[0]}"/><circle cx="${x - h * .25}" cy="${y - h + 10}" r="${h * .3 * k}" fill="${copa[1]}"/>`;
+        if (EST === 'pri') for (let i = 0; i < 5; i++) g += `<circle cx="${(x + (r() - .5) * h * .7).toFixed(0)}" cy="${(y - h + (r() - .5) * h * .6).toFixed(0)}" r="2.6" fill="#F3B6CB"/>`; });
       g += `<path d="M30 150 h70 M220 140 h80 M120 200 h70" stroke="#7A5A3A" stroke-width="5" stroke-linecap="round"/>`;
       for (let i = 0; i < 8; i++) g += `<path d="M${20 + r() * 280} ${310 + r() * 90} q4 -4 8 0 q-4 4 -8 0" fill="#C98A3A" opacity=".7"/>`;
       return g; },
@@ -500,30 +528,64 @@ const DESVAN = { id: 'desvan', name: 'El desván',
     [322, 356, 390].forEach((y, row) => { for (let x = 30 + (row % 2) * 16; x <= 296; x += 36) sl.push([x + rand(-4, 4), y + rand(-3, 3)]); });
     return sl; },
   fg: (r) => { let g = ''; for (let i = 0; i < 3; i++) { const x = 30 + r() * 260, y = 330 + r() * 70; g += `<path d="M${x - 20} ${y + 8} q6 -16 20 -14 q14 -2 20 14 z" fill="#B9A882" opacity=".95"/>`; } return g; } };
-const JARDIN = { id: 'jardin', name: 'El jardín de noche', mueve: { caracol: [3, 6] },
+const JARDIN = { id: 'jardin', name: 'El jardín de noche', mueve: { caracol: [3, 6], erizo: [2, 3] },
   reto: [['caracol', 5, [24, 296, 170, 404]], ['florC', 4, [24, 296, 160, 400]], ['erizo', 3, [40, 270, 200, 400]], ['regadera', 2, [30, 290, 180, 400]], ['gato', 1, [40, 280, 170, 390]]],
   suave: [['caracol', 3, [30, 290, 190, 400]], ['florC', 2, [30, 290, 180, 395]], ['gato', 1, [40, 280, 180, 380]]],
   dec: { reto: [['florA', 4, [24, 296, 160, 400]], ['piedra', 4, [24, 296, 170, 404]]], suave: [['piedra', 3, [30, 290, 190, 400]]] },
-  bg: () => { const r = decoRand(13); let g = `<rect width="${W}" height="${H}" fill="#7FA86A"/><rect width="${W}" height="150" fill="#3A4C7A"/><circle cx="250" cy="48" r="20" fill="#F3EEDC"/>`;
+  bg: () => { const r = decoRand(13), cesped = { pri: '#86B06A', ver: '#7FA86A', oto: '#A4A266', inv: '#93A48E' }[EST]; let g = `<rect width="${W}" height="${H}" fill="${cesped}"/><rect width="${W}" height="150" fill="#3A4C7A"/><circle cx="250" cy="48" r="20" fill="#F3EEDC"/>`;
     for (let i = 0; i < 18; i++) g += `<circle cx="${r() * W}" cy="${r() * 110}" r="${(.7 + r()).toFixed(1)}" fill="#FFFFFF" opacity=".7"/>`;
     for (let x = 4; x < W; x += 22) g += `<path d="M${x} 152 V98 l8 -8 l8 8 V152 Z" fill="#B98A5A" stroke="#8E6A3E" stroke-width="2"/>`;
-    g += `<path d="M0 112 H${W} M0 138 H${W}" stroke="#8E6A3E" stroke-width="5"/><rect y="148" width="${W}" height="${H - 148}" fill="#7FA86A"/>`;
+    g += `<path d="M0 112 H${W} M0 138 H${W}" stroke="#8E6A3E" stroke-width="5"/><rect y="148" width="${W}" height="${H - 148}" fill="${cesped}"/>`;
     g += `<path d="M150 ${H} Q170 320 140 250 T160 160" stroke="#D9C79E" stroke-width="34" fill="none" stroke-linecap="round" opacity=".85"/>`;
     [[40, 176, 30], [282, 182, 34], [26, 300, 26], [292, 330, 30]].forEach(([x, y, rr]) => { g += `<circle cx="${x}" cy="${y}" r="${rr}" fill="#4F7A3A"/><circle cx="${x + rr * .4}" cy="${y - rr * .3}" r="${rr * .6}" fill="#5F8A50"/>`; });
     for (let i = 0; i < 26; i++) { const x = r() * W, y = 160 + r() * 255; g += `<path d="M${x} ${y} l2 -7 l2 7" stroke="#5F8A50" stroke-width="1.5" fill="none"/>`; }
     return g; },
   fg: () => '' };
-const NAMES = { florC: ['una', 'flor cerrada', 'flores cerradas'], florA: ['una', 'flor abierta', 'flores abiertas'], regadera: ['una', 'regadera', 'regaderas'], gato: ['un', 'gato', 'gatos'], libro: ['un', 'libro', 'libros'], taza: ['una', 'taza', 'tazas'], llave: ['una', 'llave', 'llaves'], reloj: ['un', 'reloj', 'relojes'], osito: ['un', 'osito de peluche', 'ositos de peluche'], caja: ['una', 'caja', 'cajas'], vela: ['una', 'vela', 'velas'],
+// Lo que puede salir en cada escenario: en cada partida se eligen al azar las cosas que buscar (5 con más reto, 3 en suave);
+// lo que no toca buscar puede aparecer como despiste, junto a las cosas parecidas (par). max = cuántas caben como mucho
+Object.assign(SCENES[0], { pool: ['rana', 'nenufar', 'piedra', 'pezE', 'libelula', 'pato', 'mariposa', 'tortuga'], par: { rana: 'sapo', nenufar: 'hoja' }, max: { libelula: 3, pato: 3, tortuga: 3, mariposa: 4 }, mueve: { pato: [3, 6], tortuga: [2, 4] },
+  reg: { rana: [30, 290, 90, 395], sapo: [30, 290, 100, 390], nenufar: [40, 280, 100, 360], hoja: [40, 280, 100, 360], piedra: [30, 290, 100, 370], pezE: [50, 270, 120, 340], libelula: [50, 270, 50, 200], pato: [40, 280, 110, 340], mariposa: [30, 290, 30, 120], tortuga: [40, 270, 120, 340] } });
+Object.assign(SCENES[1], { pool: ['seta', 'pajaro', 'bellota', 'caracol', 'erizo', 'ardilla', 'pina', 'hojaO', 'mariposa'], par: { seta: 'setaM', bellota: 'pina', pina: 'bellota' }, max: { erizo: 3, ardilla: 2 }, mueve: { caracol: [2, 4], erizo: [2, 3] },
+  reg: { seta: [24, 296, 290, 398], setaM: [24, 296, 290, 398], pajaro: [30, 290, 90, 260], bellota: [24, 296, 280, 398], caracol: [30, 290, 300, 398], erizo: [40, 280, 320, 395], ardilla: [30, 290, 110, 280], pina: [24, 296, 280, 398], hojaO: [24, 296, 260, 398], mariposa: [30, 290, 80, 260] } });
+Object.assign(SCENES[2], { pool: ['estrella', 'luciernaga', 'fugaz', 'ventana', 'buho', 'murcielago', 'nube'], par: { estrella: 'chispa', luciernaga: 'chispa' }, max: { buho: 1, ventana: 3, nube: 3 }, mueve: { nube: [3, 6] },
+  reg: { estrella: [24, 296, 30, 240], chispa: [20, 300, 30, 250], luciernaga: [24, 296, 250, 400], fugaz: [40, 280, 40, 220], ventana: [30, 220, 320, 380], buho: [240, 290, 170, 210], murcielago: [30, 290, 40, 240], nube: [30, 290, 30, 200] } });
+Object.assign(SCENES[3], { pool: ['pezR', 'caracola', 'estrellaM', 'tortuga', 'medusa', 'cangrejo', 'pulpo', 'caballito'], par: { pezR: 'pezL', caracola: 'concha' }, max: { tortuga: 3, medusa: 3, pulpo: 2, caballito: 3 }, mueve: { pezR: [5, 10], pezL: [5, 10], tortuga: [3, 6], cangrejo: [2, 4] },
+  reg: { pezR: [30, 290, 70, 320], pezL: [30, 290, 70, 320], caracola: [24, 296, 352, 404], concha: [24, 296, 352, 404], estrellaM: [24, 296, 348, 404], tortuga: [40, 270, 80, 300], medusa: [50, 270, 50, 220], cangrejo: [24, 296, 350, 404], pulpo: [40, 280, 230, 320], caballito: [40, 280, 80, 300] } });
+Object.assign(DESVAN, { pool: ['libro', 'taza', 'llave', 'reloj', 'osito', 'vela', 'caja', 'pelota', 'sombrero'], max: { osito: 3, sombrero: 3 } });
+Object.assign(JARDIN, { pool: ['caracol', 'florC', 'erizo', 'regadera', 'gato', 'rana', 'seta', 'maceta'], par: { florC: 'florA', seta: 'setaM', caracol: 'piedra' }, max: { gato: 2, erizo: 3, regadera: 3 },
+  reg: { caracol: [24, 296, 170, 404], florC: [24, 296, 160, 400], florA: [24, 296, 160, 400], erizo: [40, 270, 200, 400], regadera: [30, 290, 180, 400], gato: [40, 280, 170, 390], rana: [30, 290, 180, 400], seta: [24, 296, 180, 404], setaM: [24, 296, 180, 404], maceta: [30, 290, 170, 400], piedra: [24, 296, 170, 404] } });
+function ronda(sc, lv) {
+  const reg = (k) => (sc.reg && sc.reg[k]) || [24, 296, 80, 400], mx = (k) => (sc.max && sc.max[k]) || 9;
+  const pool = shuffle(sc.pool), nT = lv === 'reto' ? 5 : 3, ch = pool.slice(0, nT), rest = pool.slice(nT), cnts = lv === 'reto' ? [5, 4, 3, 2, 1] : [3, 2, 1];
+  const n = {}; [...ch].sort((a, b) => mx(b) - mx(a) || Math.random() - .5).forEach((k, i) => n[k] = Math.min(cnts[i], mx(k)));
+  const order = ch.map(k => [k, n[k], reg(k)]).sort((a, b) => b[1] - a[1]);
+  const dec = [];
+  if (lv === 'reto') { ch.forEach(k => { const p = sc.par && sc.par[k]; if (p && !ch.includes(p) && !dec.some(d => d[0] === p) && dec.length < 2) dec.push([p, Math.min(3, mx(p)), reg(p)]); });
+    rest.filter(k => !dec.some(d => d[0] === k)).slice(0, 1).forEach(k => dec.push([k, Math.min(3, mx(k)), reg(k)])); }
+  else rest.slice(0, 1).forEach(k => dec.push([k, Math.min(2, mx(k)), reg(k)]));
+  return { order, dec };
+}
+const NAMES = { pato: ['un', 'pato', 'patos'], mariposa: ['una', 'mariposa', 'mariposas'], ardilla: ['una', 'ardilla', 'ardillas'], pina: ['una', 'piña', 'piñas'], hojaO: ['una', 'hoja seca', 'hojas secas'], murcielago: ['un', 'murciélago', 'murciélagos'], nube: ['una', 'nube', 'nubes'], cangrejo: ['un', 'cangrejo', 'cangrejos'], pulpo: ['un', 'pulpo', 'pulpos'], caballito: ['un', 'caballito de mar', 'caballitos de mar'], pelota: ['una', 'pelota', 'pelotas'], sombrero: ['un', 'sombrero', 'sombreros'], maceta: ['una', 'maceta', 'macetas'], florC: ['una', 'flor cerrada', 'flores cerradas'], florA: ['una', 'flor abierta', 'flores abiertas'], regadera: ['una', 'regadera', 'regaderas'], gato: ['un', 'gato', 'gatos'], libro: ['un', 'libro', 'libros'], taza: ['una', 'taza', 'tazas'], llave: ['una', 'llave', 'llaves'], reloj: ['un', 'reloj', 'relojes'], osito: ['un', 'osito de peluche', 'ositos de peluche'], caja: ['una', 'caja', 'cajas'], vela: ['una', 'vela', 'velas'],
   rana: ['una', 'rana', 'ranas'], sapo: ['un', 'sapo', 'sapos'], nenufar: ['un', 'nenúfar con flor', 'nenúfares con flor'], hoja: ['un', 'nenúfar sin flor', 'nenúfares sin flor'], piedra: ['una', 'piedra', 'piedras'], pezE: ['un', 'pez', 'peces'], libelula: ['una', 'libélula', 'libélulas'],
   seta: ['una', 'seta roja', 'setas rojas'], setaM: ['una', 'seta marrón', 'setas marrones'], pajaro: ['un', 'pájaro', 'pájaros'], bellota: ['una', 'bellota', 'bellotas'], caracol: ['un', 'caracol', 'caracoles'], erizo: ['un', 'erizo', 'erizos'],
   estrella: ['una', 'estrella grande', 'estrellas grandes'], chispa: ['una', 'estrella pequeña', 'estrellas pequeñas'], luciernaga: ['una', 'luciérnaga', 'luciérnagas'], fugaz: ['una', 'estrella fugaz', 'estrellas fugaces'], ventana: ['una', 'ventana encendida', 'ventanas encendidas'], buho: ['un', 'búho', 'búhos'],
   pezR: ['un', 'pez de rayas', 'peces de rayas'], pezL: ['un', 'pez sin rayas', 'peces sin rayas'], caracola: ['una', 'caracola', 'caracolas'], estrellaM: ['una', 'estrella de mar', 'estrellas de mar'], tortuga: ['una', 'tortuga', 'tortugas'], concha: ['una', 'concha', 'conchas'], medusa: ['una', 'medusa', 'medusas'] };
 const LUZ = { id: 'luz', name: 'Sigue la luz', sub: 'Sigue con el dedo una luciérnaga que vuela despacio' };
-const LINT_G = { id: 'linterna', name: 'La linterna a oscuras', sub: 'Recorre el desván a oscuras con una linterna, sin prisa' };
+const LINT_G = { id: 'linterna', name: 'El desván a oscuras', sub: 'Recorre el desván a oscuras con una linterna, sin prisa' };
 const LINT_J = { id: 'linternaJ', name: 'El jardín de noche', sub: 'Recorre un jardín a oscuras con la linterna: caracoles, flores cerradas y algún animal escondido' };
 const CONT = { id: 'contar', name: 'Peces que saltan', sub: 'Cuenta los peces que saltan del agua, entre ranas que también saltan' };
 const CONTE = { id: 'contarE', name: 'Estrellas fugaces', sub: 'Cuenta las estrellas fugaces, entre luciérnagas y aviones' };
 const EXTRA = [LINT_G, LINT_J, CONT, CONTE, LUZ];
+// Los juegos se agrupan por tipo: cada vez toca un escenario al azar (distinto del de la última vez), y se puede cambiar
+const TIPOS = [
+  { id: 'buscar', name: 'Buscar', sub: 'Busca cosas en un paisaje tranquilo: un estanque, un bosque, el cielo de noche o el fondo del mar', esc: ['estanque', 'bosque', 'noche', 'mar'] },
+  { id: 'linterna', name: 'La linterna a oscuras', sub: 'Recorre a oscuras un desván o un jardín de noche y busca cosas con la linterna', esc: ['linterna', 'linternaJ'] },
+  { id: 'contar', name: 'Contar lo que pasa', sub: 'Cuenta peces que saltan o estrellas fugaces sin dejarte despistar por lo demás', esc: ['contar', 'contarE'] },
+  { id: 'luz', name: 'Sigue la luz', sub: 'Sigue con el dedo una luciérnaga que vuela despacio', esc: ['luz'] }];
+const TIPO_DE = Object.fromEntries(TIPOS.flatMap(t => t.esc.map(e => [e, t])));
+const ESC = Object.fromEntries([...SCENES, ...EXTRA].map(s => [s.id, s]));
+const otroEsc = (t, sin) => { const op = t.esc.filter(e => e !== sin); return op.length ? pick(op) : t.esc[0]; };
+const NEXT = {};
 const PEZC = ['#E08A5B', '#F2C744', '#E7A1BD', '#C2557A', '#5F7BB0'];
 
 function thumb(sc) {
@@ -536,8 +598,10 @@ function thumb(sc) {
   const sample = { estanque: [['rana', 120, 220], ['nenufar', 200, 260], ['libelula', 230, 130]], bosque: [['seta', 90, 360], ['pajaro', 150, 196], ['erizo', 220, 370]], noche: [['estrella', 120, 120], ['luciernaga', 180, 330], ['buho', 262, 190]], mar: [['pezR', 140, 200], ['caracola', 100, 384], ['medusa', 220, 120]] }[sc.id];
   return `<svg viewBox="0 70 ${W} 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${big}${sample.map(([k, x, y]) => `<g transform="translate(${x} ${y}) scale(1.6)">${D[k]()}</g>`).join('')}</svg>`;
 }
+const thumbQ = (sc) => thumb(sc).replace(/id="(\w+)"/g, 'id="$1Q"').replace(/url\(#(\w+)\)/g, 'url(#$1Q)');
 function renderGames() {
-  $('#games').innerHTML = [...SCENES, ...EXTRA].map(sc => `<button class="game" data-g="${sc.id}">${thumb(sc)}<b>${sc.name}</b><span>${sc.sub}</span></button>`).join('');
+  TARDE = Math.random() < .5;
+  $('#games').innerHTML = TIPOS.map(t => { const e = NEXT[t.id] = otroEsc(t, store.get('ult.' + t.id, '')); return `<button class="game" data-t="${t.id}" data-g="${e}">${thumb(ESC[e])}<b>${t.name}</b><span>${t.sub}</span></button>`; }).join('');
   $$('#games .game').forEach(b => b.onclick = () => start(b.dataset.g));
 }
 
@@ -545,12 +609,13 @@ function renderGames() {
 let G = null, raf = 0;
 const LV = (v) => v <= 3 ? 'Tranquilo/a' : v <= 6 ? 'Algo activado/a' : v <= 8 ? 'Muy activado/a' : 'Desbordado/a';
 function stopAll() { cancelAnimationFrame(raf); raf = 0; }
-function back() { stopAll(); G = null; $('#play').hidden = true; $('#pick').hidden = false; window.scrollTo(0, 0); }
+function back() { stopAll(); G = null; $('#play').hidden = true; $('#pick').hidden = false; renderGames(); window.scrollTo(0, 0); }
 function start(id) { G = { id, a: null, b: null, h: null, t: Date.now(), nivel: store.get('nivel', 'reto'), manual: false }; $('#pick').hidden = true; $('#play').hidden = false; thermo('antes'); window.scrollTo(0, 0); }
 function head(t) { return `<div class="nav-row" style="justify-content:space-between;margin:0"><button class="btn ghost small" id="bk">← Otros juegos</button><span class="small muted">${t}</span></div>`; }
 function thermo(when) {
   const v0 = when === 'antes' ? 5 : (G.a ?? 5);
   $('#play').innerHTML = head(when === 'antes' ? 'Antes de empezar' : 'Para terminar') + `<div class="card fade thermo">
+    ${when === 'antes' ? `<div class="toca"><span id="tthumb">${thumbQ(ESC[G.id])}</span><div><span class="small muted">Te ha tocado</span><b id="tname">${ESC[G.id].name}</b>${TIPO_DE[G.id].esc.length > 1 ? '<button class="btn ghost small" id="chg">Cambiar escenario</button>' : ''}</div></div>` : ''}
     <span class="eyebrow">${when === 'antes' ? '¿Cómo de activado/a estás ahora?' : '¿Y ahora? ¿Cómo estás?'}</span>
     <div class="val"><b id="tv">${v0}</b><span id="tl">${LV(v0)}</span></div>
     <input type="range" min="0" max="10" step="1" value="${v0}" id="tr" aria-label="Nivel de activación del 0 al 10">
@@ -559,6 +624,7 @@ function thermo(when) {
     ${when === 'antes' ? `<div class="lvl"><span class="small muted">Nivel del juego</span><div class="seg" id="lvSeg"><button data-l="suave">Suave</button><button data-l="reto">Con más reto</button></div><p class="small muted" id="lvTxt"></p></div>` : ''}
     <div class="nav-row" style="margin:0"><button class="btn ghost" id="tskip">${when === 'antes' ? 'Saltar' : 'Prefiero no marcarlo'}</button><button class="btn" id="tok">${when === 'antes' ? 'Empezar' : 'Listo'}</button></div></div>`;
   $('#bk').onclick = back;
+  if ($('#chg')) $('#chg').onclick = () => { G.id = otroEsc(TIPO_DE[G.id], G.id); TARDE = Math.random() < .5; $('#tthumb').innerHTML = thumbQ(ESC[G.id]); $('#tname').textContent = ESC[G.id].name; };
   const upd = () => { const v = +$('#tr').value; $('#tv').textContent = v; $('#tl').textContent = LV(v);
     $('#tnote').innerHTML = when === 'antes' && v >= 9 ? 'Si estás desbordado/a, quizá ahora te ayude más <a href="../calma/">«Calmarme o volver a mí»</a>. También puedes jugar igualmente.' : ''; };
   const LVT = { suave: 'Más sencillo y más despacio. Para cuando estás muy acelerado/a.', reto: 'Pide más atención: más cosas que buscar, algunas parecidas entre sí o medio escondidas.' };
@@ -569,28 +635,28 @@ function thermo(when) {
   $('#tskip').onclick = () => { if (when === 'antes') { if (!G.manual) G.nivel = store.get('nivel', 'reto'); game(); } else finish(); };
   $('#tok').onclick = () => { if (when === 'antes') { G.a = +$('#tr').value; game(); } else { G.b = +$('#tr').value; finish(); } };
 }
-function game() { if (G.id === 'luz') return luz(); if (G.id === 'linterna') return linterna(DESVAN, LINT_G.name); if (G.id === 'linternaJ') return linterna(JARDIN, LINT_J.name); if (G.id === 'contar') return contar('peces'); if (G.id === 'contarE') return contar('estrellas'); search(SCENES.find(s => s.id === G.id)); }
+function game() { store.set('ult.' + TIPO_DE[G.id].id, G.id); if (G.id === 'luz') return luz(); if (G.id === 'linterna') return linterna(DESVAN, LINT_G.name); if (G.id === 'linternaJ') return linterna(JARDIN, LINT_J.name); if (G.id === 'contar') return contar('peces'); if (G.id === 'contarE') return contar('estrellas'); search(SCENES.find(s => s.id === G.id)); }
 
 /* Buscar: cuenta atrás (5·4·3·2·1 con más reto, 3·2·1 en suave), con cosas parecidas que no cuentan y plantas que tapan un poco */
-function place(sc, lv) {
+function place(sc, lv, Rd) {
   const pts = [], items = [], md = lv === 'reto' ? 34 : 44;
   const put = (k, n, [x0, x1, y0, y1], gi) => { for (let i = 0; i < n; i++) { let x, y, tries = 0;
     do { x = rand(x0, x1); y = rand(y0, y1); tries++; } while (tries < 120 && pts.some(p => Math.hypot(p[0] - x, p[1] - y) < md));
     pts.push([x, y]); items.push({ k, gi, x, y, id: items.length, c: k === 'pezR' || k === 'pezL' ? pick(PEZC) : k === 'libro' ? pick(['#5F7BB0', '#C2557A', '#2C6E5D', '#B98A2A']) : null }); } };
   if (sc.slots) { const sl = shuffle(sc.slots()); let j = 0;
-    [...sc[lv].map((o, gi) => [o[0], o[1], gi]), ...(sc.dec[lv] || []).map(o => [o[0], o[1], -1])].forEach(([k, n, gi]) => { for (let i = 0; i < n; i++) { const [x, y] = sl[j++]; items.push({ k, gi, x, y, id: items.length, c: k === 'libro' ? pick(['#5F7BB0', '#C2557A', '#2C6E5D', '#B98A2A']) : null }); } });
+    [...Rd.order.map((o, gi) => [o[0], o[1], gi]), ...Rd.dec.map(o => [o[0], o[1], -1])].forEach(([k, n, gi]) => { for (let i = 0; i < n; i++) { const [x, y] = sl[j++]; items.push({ k, gi, x, y, id: items.length, c: k === 'libro' ? pick(['#5F7BB0', '#C2557A', '#2C6E5D', '#B98A2A']) : null }); } });
     return items; }
-  sc[lv].forEach(([k, n, reg], gi) => put(k, n, reg, gi));
-  (sc.dec[lv] || []).forEach(([k, n, reg]) => put(k, n, reg, -1));
+  Rd.order.forEach(([k, n, reg], gi) => put(k, n, reg, gi));
+  Rd.dec.forEach(([k, n, reg]) => put(k, n, reg, -1));
   return shuffle(items).map((it, i) => ({ ...it, id: i }));
 }
 function search(sc) {
-  const lv = G.nivel || 'reto', order = sc[lv], items = place(sc, lv), sc2 = lv === 'reto' ? .9 : 1; let step = 0, found = 0;
+  const lv = G.nivel || 'reto', Rd = ronda(sc, lv), order = Rd.order, items = place(sc, lv, Rd), sc2 = lv === 'reto' ? .9 : 1; let step = 0, found = 0;
   let seed = Math.floor(Math.random() * 9999); const fr = decoRand(seed);
   $('#play').innerHTML = head(sc.name + (lv === 'reto' ? ' · con más reto' : ' · suave')) + `<div class="goal fade" aria-live="polite"><div><b id="gt"></b><small id="gs"></small></div><div class="pips" id="gp"></div></div>
     <div class="stage"><svg viewBox="0 0 ${W} ${H}" id="sc" role="group" aria-label="${sc.name}">${sc.bg()}${items.map(it => `<g class="tg" data-i="${it.id}" tabindex="0" role="button" aria-label="${NAMES[it.k][1]}" transform="translate(${it.x.toFixed(0)} ${it.y.toFixed(0)}) scale(${sc2})"><circle class="halo" r="22" fill="#FFF6C9" opacity="0"/>${D[it.k](it.c)}<circle class="hit" r="19" fill="transparent"/></g>`).join('')}<g style="pointer-events:none">${lv === 'reto' ? sc.fg(fr) : ''}</g></svg></div>`;
   $('#bk').onclick = back; $('#play').scrollIntoView({ block: 'start' });
-  const show = () => { const [k, n] = order[step], [ar, sg, pl] = NAMES[k];
+  const show = () => { if (step >= order.length) return; const [k, n] = order[step], [ar, sg, pl] = NAMES[k];
     $('#gt').textContent = `${step ? 'Ahora, ' : 'Busca '}${n === 1 ? ar + ' ' + sg : n + ' ' + pl}`;
     $('#gs').textContent = step === 0 ? 'Tómate tu tiempo. No hay prisa.' : '';
     $('#gp').innerHTML = Array.from({ length: n }, (_, i) => `<i class="${i < found ? 'on' : ''}"></i>`).join(''); };
@@ -606,25 +672,38 @@ function search(sc) {
         $('#play').insertAdjacentHTML('beforeend', `<div class="nav-row fade" style="margin:0"><button class="btn" id="go">Ahora, a lo que tienes alrededor →</button></div>`); $('#go').onclick = real; $('#go').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }); }, 900); }
   };
   $$('#sc .tg').forEach(g => { g.onclick = () => tap(g); g.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tap(g); } }; });
+  mover(sc, items, (it) => `scale(${it.vx < 0 ? -sc2 : sc2} ${sc2})`);
+}
+// Algunas cosas se mueven muy despacio de lado a lado (peces, patos, caracoles, nubes) y se dan la vuelta al llegar al borde
+function mover(sc, items, esc) {
+  if (!sc.mueve || reduce) return;
+  const mv = items.filter(it => sc.mueve[it.k]); if (!mv.length) return;
+  mv.forEach(it => { const v = sc.mueve[it.k]; it.vx = rand(v[0], v[1]) * (Math.random() < .5 ? -1 : 1); });
+  const g0 = G; let tP = 0;
+  const fr = (now) => { if (G !== g0 || !document.querySelector('#sc')) return; const dt = tP ? Math.min(.1, (now - tP) / 1000) : 0; tP = now;
+    mv.forEach(it => { it.x += it.vx * dt; if (it.x < 24 || it.x > 296) { it.vx = -it.vx; it.x = Math.max(24, Math.min(296, it.x)); }
+      const g = document.querySelector(`#sc .tg[data-i="${it.id}"]`); if (g) g.setAttribute('transform', `translate(${it.x.toFixed(1)} ${it.y.toFixed(0)}) ${esc(it)}`); });
+    raf = requestAnimationFrame(fr); };
+  raf = requestAnimationFrame(fr);
 }
 
 /* La linterna a oscuras: la escena está a oscuras y se mueve una linterna. El dedo se desliza por cualquier parte y la luz sigue su movimiento,
    así el dedo nunca tapa lo que se alumbra. Lo que se busca cuenta cuando se queda un momento bajo la luz */
 function linterna(sc, titulo) {
-  const lv = G.nivel || 'reto', RAD = lv === 'suave' ? 64 : 48, order = sc[lv].map(o => [...o]), items = place(sc, lv);
+  const lv = G.nivel || 'reto', RAD = lv === 'suave' ? 64 : 48, Rd = ronda(sc, lv), order = Rd.order, items = place(sc, lv, Rd);
   let step = 0, found = 0, lx = W / 2, ly = H * .42, tLast = 0, said = '', drag = null;
   const TX = W / 2, TY = H + 4;
   const lit = {};
   $('#play').innerHTML = head(titulo) + `<div class="goal fade" aria-live="polite"><div><b id="gt"></b><small id="gs"></small></div><div class="pips" id="gp"></div></div>
     <div class="stage"><svg viewBox="0 0 ${W} ${H}" id="sc" role="application" tabindex="0" aria-label="Escena a oscuras. Mueve la linterna deslizando el dedo o con las flechas del teclado.">
       <defs><mask id="lmk"><rect width="${W}" height="${H}" fill="#fff"/><circle id="hole" cx="${lx}" cy="${ly}" r="${RAD}" fill="#000"/></mask><radialGradient id="lg"><stop offset=".6" stop-color="#F4DE8A" stop-opacity="0"/><stop offset="1" stop-color="#F4DE8A" stop-opacity=".35"/></radialGradient></defs>
-      ${sc.bg()}${items.map(it => `<g class="tg" data-i="${it.id}" transform="translate(${it.x.toFixed(0)} ${it.y.toFixed(0)})"><circle class="halo" r="22" fill="#FFF6C9" opacity="0"/>${D[it.k](it.c)}</g>`).join('')}
+      ${sc.bg()}${items.map(it => `<g class="tg" data-i="${it.id}" data-k="${it.k}" transform="translate(${it.x.toFixed(0)} ${it.y.toFixed(0)})"><circle class="halo" r="22" fill="#FFF6C9" opacity="0"/>${D[it.k](it.c)}</g>`).join('')}
       <g style="pointer-events:none"><rect width="${W}" height="${H}" fill="#070D14" opacity=".985" mask="url(#lmk)"/><circle id="ring" cx="${lx}" cy="${ly}" r="${RAD}" fill="url(#lg)" stroke="#F4DE8A" stroke-opacity=".45" stroke-width="2"/>
         <polygon id="beam" points="" fill="#F4DE8A" opacity=".07"/>
         <g id="torch"><rect x="-9" y="-40" width="18" height="44" rx="5" fill="#5B4A3A" stroke="#2E241C" stroke-width="1.5"/><rect x="-9" y="-26" width="18" height="5" fill="#3E3128"/><path d="M-13 -54 L13 -54 L9 -40 L-9 -40 Z" fill="#8A7560" stroke="#2E241C" stroke-width="1.5"/><ellipse cx="0" cy="-54" rx="13" ry="3.5" fill="#FFF3C4"/><circle cx="0" cy="-12" r="3" fill="#C9A86A"/></g></g></svg></div>
     <p class="small muted" style="margin:0">Desliza el dedo despacio por cualquier parte de la escena: la linterna sigue tu movimiento y el dedo no tapa la luz. Cuando encuentres lo que buscas, deja la luz quieta encima un momento.</p>`;
   $('#bk').onclick = back; $('#play').scrollIntoView({ block: 'start' });
-  const show = () => { const [k, n] = order[step], [ar, sg, pl] = NAMES[k];
+  const show = () => { if (step >= order.length) return; const [k, n] = order[step], [ar, sg, pl] = NAMES[k];
     $('#gt').textContent = `${step ? 'Ahora, ' : 'Busca '}${n === 1 ? ar + ' ' + sg : n + ' ' + pl}`;
     $('#gp').innerHTML = Array.from({ length: n }, (_, i) => `<i class="${i < found ? 'on' : ''}"></i>`).join(''); };
   $('#gs').textContent = 'Todo está a oscuras. Ve alumbrando sin prisa.'; show();
@@ -649,9 +728,9 @@ function linterna(sc, titulo) {
   let tPrev = 0;
   const frame = (now) => { if (step >= order.length || !G) return; const [k, n] = order[step];
     const dt = tPrev ? Math.min(.1, (now - tPrev) / 1000) : 0; tPrev = now;
-    items.forEach(it => { if (!it.vx) return; it.x += it.vx * dt; if (it.x < 24 || it.x > 296) { it.vx = -it.vx; it.x = Math.max(24, Math.min(296, it.x)); }
+    if (!reduce) items.forEach(it => { if (!it.vx) return; it.x += it.vx * dt; if (it.x < 24 || it.x > 296) { it.vx = -it.vx; it.x = Math.max(24, Math.min(296, it.x)); }
       sv.querySelector(`.tg[data-i="${it.id}"]`).setAttribute('transform', `translate(${it.x.toFixed(1)} ${it.y.toFixed(0)})${it.vx < 0 ? ' scale(-1 1)' : ''}`); });
-    items.forEach(it => { const g = sv.querySelector(`.tg[data-i="${it.id}"]`); if (g.classList.contains('got')) return;
+    items.forEach(it => { if (step >= order.length) return; const g = sv.querySelector(`.tg[data-i="${it.id}"]`); if (g.classList.contains('got')) return;
       const inL = Math.hypot(it.x - lx, it.y - ly) < RAD - 6;
       if (!inL) { delete lit[it.id]; return; }
       lit[it.id] = lit[it.id] || now;
@@ -768,10 +847,11 @@ function save() { const e = { t: G.t, g: G.id, a: G.a, b: G.b, h: G.h }; const i
 
 /* ---------- Lo que me ayuda ---------- */
 const GN = Object.fromEntries([...SCENES, ...EXTRA].map(s => [s.id, s.name]));
+const TN = (g) => (TIPO_DE[g] || { name: GN[g] || g }).name;
 function renderMia() {
   const has = LOG.length; $('#miaEmpty').hidden = !!has; ['#miaG', '#miaT', '#miaA', '#miaL'].forEach(s => $(s).hidden = !has); if (!has) return;
-  const cnt = {}; LOG.forEach(l => cnt[l.g] = (cnt[l.g] || 0) + 1); const mx = Math.max(...Object.values(cnt));
-  $('#gBars').innerHTML = Object.entries(cnt).sort((a, b) => b[1] - a[1]).map(([g, n]) => `<div class="bar"><span>${GN[g]}</span><span class="tr"><i style="width:${n / mx * 100}%"></i></span><b>${n}</b></div>`).join('');
+  const cnt = {}; LOG.forEach(l => { const t = TN(l.g); cnt[t] = (cnt[t] || 0) + 1; }); const mx = Math.max(...Object.values(cnt));
+  $('#gBars').innerHTML = Object.entries(cnt).sort((a, b) => b[1] - a[1]).map(([g, n]) => `<div class="bar"><span>${g}</span><span class="tr"><i style="width:${n / mx * 100}%"></i></span><b>${n}</b></div>`).join('');
   const T = LOG.filter(l => l.a != null && l.b != null).slice(-10);
   $('#miaT').hidden = !T.length;
   if (T.length) { const x = (i) => 30 + i * (270 / Math.max(1, T.length - 1 || 1)), y = (v) => 130 - v * 11;
@@ -784,8 +864,8 @@ function renderMia() {
 function summary() {
   const L = ['Volver al presente jugando'];
   if (!LOG.length) L.push('Todavía no he jugado.');
-  else { const cnt = {}; LOG.forEach(l => cnt[l.g] = (cnt[l.g] || 0) + 1);
-    L.push('Juegos: ' + Object.entries(cnt).sort((a, b) => b[1] - a[1]).map(([g, n]) => `${GN[g]} (${n})`).join(', '));
+  else { const cnt = {}; LOG.forEach(l => { const t = TN(l.g); cnt[t] = (cnt[t] || 0) + 1; });
+    L.push('Juegos: ' + Object.entries(cnt).sort((a, b) => b[1] - a[1]).map(([g, n]) => `${g} (${n})`).join(', '));
     const T = LOG.filter(l => l.a != null && l.b != null); if (T.length) L.push(`Antes y después (últimas veces): ${T.slice(-6).map(l => `${l.a}→${l.b}`).join(', ')}`);
     const hc = {}; LOG.forEach(l => { if (l.h) hc[l.h] = (hc[l.h] || 0) + 1; }); if (Object.keys(hc).length) L.push('Lo que más me ayuda a volver: ' + HELP.filter(h => hc[h[0]]).map(h => h[1].toLowerCase()).join(', ')); }
   return L.join('\n');
@@ -1137,11 +1217,11 @@ const PDFKIT = (() => {
     title: 'Volver al presente jugando', color: '#1F7A8C',
     intro: 'Los juegos que uso cuando me acelero y lo que más me ayuda a volver.',
     sections: () => {
-      const cnt = {}; LOG.forEach(l => cnt[l.g] = (cnt[l.g] || 0) + 1);
+      const cnt = {}; LOG.forEach(l => { const t = TN(l.g); cnt[t] = (cnt[t] || 0) + 1; });
       const hc = {}; LOG.forEach(l => { if (l.h) hc[l.h] = (hc[l.h] || 0) + 1; });
       const T = LOG.filter(l => l.a != null && l.b != null).slice(-14);
       return [
-        { id: 'juegos', title: 'Mis juegos', html: LOG.length ? K.card(K.list(Object.entries(cnt).sort((a, b) => b[1] - a[1]).map(([g, n]) => `${GN[g]} (${n})`))) : '' },
+        { id: 'juegos', title: 'Mis juegos', html: LOG.length ? K.card(K.list(Object.entries(cnt).sort((a, b) => b[1] - a[1]).map(([g, n]) => `${g} (${n})`))) : '' },
         { id: 'ayuda', title: 'Lo que más me ayuda a volver', html: Object.keys(hc).length ? K.card(K.list(HELP.filter(h => hc[h[0]]).map(h => `${h[1]} (${hc[h[0]]})`)), 'good') : '' },
         { id: 'antes', title: 'Antes y después', long: true, html: T.length ? `<table>${T.reverse().map(l => `<tr><td style="width:22%">${K.fcorta(l.t)}</td><td>${GN[l.g]}</td><td style="width:26%">de ${l.a} a ${l.b}</td></tr>`).join('')}</table>` : '' },
       ]; },
