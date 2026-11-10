@@ -244,7 +244,7 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
   <section class="view" id="view-jug">
     <div id="pick">
       <h1>Volver al presente jugando</h1>
-      <p class="muted">Juegos cortos para cuando notas que te estás acelerando. Le dan a tu atención algo sencillo en lo que fijarse y, al final, te ayudan a volver a lo que tienes alrededor. No hay prisa, ni puntos, ni forma de hacerlo mal. Se juegan con una sola mano.</p>
+      <p class="muted" style="margin-top:12px">Juegos cortos para cuando notas que te estás acelerando, que le dan a tu atención algo sencillo en lo que fijarse y te ayudan a volver poco a poco a lo que tienes alrededor. No hay prisa ni forma de hacerlo mal, y se juegan con una sola mano.</p>
       <div class="games" id="games" style="margin-top:14px"></div>
     </div>
     <div class="play" id="play" hidden></div>
@@ -447,7 +447,7 @@ const D = {
 const W = 320, H = 420;
 function decoRand(seed) { let s = seed; return () => { s = (s * 9301 + 49297) % 233280; return s / 233280; }; }
 const SCENES = [
-  { id: 'estanque', name: 'El estanque', sub: 'Ranas, nenúfares, piedras, peces y una libélula',
+  { id: 'estanque', name: 'El estanque', sub: 'Busca ranas, nenúfares y otras cosas en un estanque tranquilo',
     reto: [['rana', 5, [30, 290, 90, 395]], ['nenufar', 4, [40, 280, 100, 360]], ['piedra', 3, [30, 290, 100, 370]], ['pezE', 2, [50, 270, 120, 340]], ['libelula', 1, [50, 270, 50, 200]]],
     suave: [['rana', 3, [40, 280, 110, 380]], ['nenufar', 2, [40, 280, 100, 360]], ['libelula', 1, [50, 270, 60, 200]]],
     dec: { reto: [['sapo', 3, [30, 290, 100, 390]], ['hoja', 4, [40, 280, 100, 360]]], suave: [['hoja', 2, [40, 280, 100, 360]]] },
@@ -455,7 +455,7 @@ const SCENES = [
       for (let i = 0; i < 5; i++) g += `<circle class="rip" style="animation-delay:${i}s" cx="${40 + r() * 240}" cy="${120 + r() * 220}" r="${14 + r() * 10}" fill="none" stroke="#FFFFFF" stroke-width="1.5" opacity=".5"/>`;
       return g; },
     fg: (r) => { let g = ''; for (let i = 0; i < 5; i++) { const x = 20 + r() * 280, y = 120 + r() * 270; g += `<g class="sway" style="animation-delay:${i * .8}s"><path d="M${x} ${y} q-4 -26 2 -44 M${x + 6} ${y} q2 -22 9 -36 M${x - 6} ${y} q-6 -18 -2 -32" stroke="#4F7A3A" stroke-width="3.2" fill="none" stroke-linecap="round"/><rect x="${x - 2}" y="${y - 46}" width="5" height="13" rx="2.5" fill="#7A5A3A"/></g>`; } return g; } },
-  { id: 'bosque', name: 'El bosque al atardecer', sub: 'Setas, pájaros, bellotas, caracoles y un erizo',
+  { id: 'bosque', name: 'El bosque al atardecer', sub: 'Busca setas, pájaros y otras cosas en un bosque al caer la tarde',
     reto: [['seta', 5, [24, 296, 290, 398]], ['pajaro', 4, [30, 290, 90, 260]], ['bellota', 3, [24, 296, 280, 398]], ['caracol', 2, [30, 290, 300, 398]], ['erizo', 1, [40, 280, 320, 395]]],
     suave: [['seta', 3, [30, 290, 300, 395]], ['pajaro', 2, [30, 290, 110, 250]], ['erizo', 1, [40, 280, 320, 395]]],
     dec: { reto: [['setaM', 4, [24, 296, 290, 398]]], suave: [['setaM', 2, [30, 290, 300, 395]]] },
@@ -465,7 +465,7 @@ const SCENES = [
       for (let i = 0; i < 8; i++) g += `<path d="M${20 + r() * 280} ${310 + r() * 90} q4 -4 8 0 q-4 4 -8 0" fill="#C98A3A" opacity=".7"/>`;
       return g; },
     fg: (r) => { let g = ''; for (let i = 0; i < 6; i++) { const x = 20 + r() * 280, y = 300 + r() * 100; g += `<path d="M${x - 12} ${y} q4 -16 8 -4 q2 -18 8 -2 q4 -14 8 2 z" fill="#5F8A50"/>`; } for (let i = 0; i < 2; i++) { const x = 40 + r() * 240, y = 120 + r() * 120; g += `<circle cx="${x}" cy="${y}" r="16" fill="#4F7A5A" opacity=".95"/>`; } return g; } },
-  { id: 'noche', name: 'El cielo de noche', sub: 'Estrellas, luciérnagas, ventanas y un búho',
+  { id: 'noche', name: 'El cielo de noche', sub: 'Busca estrellas, luciérnagas y otras cosas en un cielo de noche',
     reto: [['estrella', 5, [24, 296, 30, 240]], ['luciernaga', 4, [24, 296, 250, 400]], ['fugaz', 3, [40, 280, 40, 220]], ['ventana', 2, [30, 220, 320, 380]], ['buho', 1, [240, 290, 170, 210]]],
     suave: [['estrella', 3, [24, 296, 30, 240]], ['luciernaga', 2, [30, 290, 270, 380]], ['buho', 1, [240, 290, 170, 210]]],
     dec: { reto: [['chispa', 6, [20, 300, 30, 250]]], suave: [['chispa', 3, [20, 300, 30, 250]]] },
@@ -475,7 +475,7 @@ const SCENES = [
       g += `<path d="M0 300 Q90 260 180 290 T${W} 280 V${H} H0 Z" fill="#1B2A44"/><path d="M${W} 120 q-40 30 -70 80 h-40" stroke="#14203A" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M${W} 120 v300" stroke="#14203A" stroke-width="18"/>`;
       return g; },
     fg: (r) => { let g = ''; for (let i = 0; i < 4; i++) { const x = 20 + r() * 280, y = 330 + r() * 80; g += `<path d="M${x - 14} ${y} q4 -20 8 -6 q3 -22 8 -4 q4 -18 8 4 z" fill="#14203A"/>`; } return g; } },
-  { id: 'mar', name: 'El fondo del mar', sub: 'Peces de rayas, caracolas, estrellas de mar, tortugas y una medusa',
+  { id: 'mar', name: 'El fondo del mar', sub: 'Busca peces, caracolas y otras cosas en el fondo del mar',
     reto: [['pezR', 5, [30, 290, 70, 320]], ['caracola', 4, [24, 296, 362, 404]], ['estrellaM', 3, [24, 296, 352, 404]], ['tortuga', 2, [40, 270, 80, 300]], ['medusa', 1, [50, 270, 50, 220]]],
     suave: [['pezR', 3, [40, 270, 90, 300]], ['caracola', 2, [30, 290, 365, 400]], ['medusa', 1, [50, 270, 60, 220]]],
     dec: { reto: [['pezL', 4, [30, 290, 70, 320]], ['concha', 3, [24, 296, 362, 404]]], suave: [['pezL', 2, [40, 270, 90, 300]]] },
