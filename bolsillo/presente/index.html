@@ -474,12 +474,12 @@ const SCENES = [
     bg: () => { const r = decoRand(3), ori = { pri: '#86C06A', ver: '#7FB86A', oto: '#A9A85A', inv: '#9DB09A' }[EST], agua = TARDE ? '#B7D3E3' : EST === 'inv' ? '#B3CFDA' : '#A9D3E3';
       let g = `<rect width="${W}" height="${H}" fill="${agua}"/><path d="M0 0 H${W} V60 Q160 90 0 60 Z" fill="${ori}"/><path d="M0 ${H} V370 Q160 340 ${W} 370 V${H} Z" fill="${ori}"/>`;
       if (TARDE) g += `<rect width="${W}" height="${H}" fill="#F7C49A" opacity=".22"/>`;
-      if (EST === 'pri') for (let i = 0; i < 14; i++) g += `<circle cx="${(r() * W).toFixed(0)}" cy="${(i % 2 ? 8 + r() * 46 : 378 + r() * 36).toFixed(0)}" r="2.2" fill="${i % 3 ? '#FFFFFF' : '#F3B6CB'}"/>`;
-      if (EST === 'oto') for (let i = 0; i < 6; i++) g += `<ellipse cx="${(30 + r() * 260).toFixed(0)}" cy="${(110 + r() * 230).toFixed(0)}" rx="4" ry="2.4" fill="#D9962E" opacity=".75"/>`;
-      if (EST === 'inv') for (let i = 0; i < 16; i++) g += `<circle cx="${(r() * W).toFixed(0)}" cy="${(i % 2 ? 6 + r() * 50 : 380 + r() * 36).toFixed(0)}" r="1.6" fill="#FFFFFF" opacity=".8"/>`;
+      if (EST === 'pri') for (let i = 0; i < 7; i++) g += `<circle cx="${(r() * W).toFixed(0)}" cy="${(i % 2 ? 8 + r() * 46 : 378 + r() * 36).toFixed(0)}" r="1.8" fill="${i % 3 ? '#FFFFFF' : '#F3B6CB'}" opacity=".8"/>`;
+      if (EST === 'oto') for (let i = 0; i < 3; i++) g += `<ellipse cx="${(30 + r() * 260).toFixed(0)}" cy="${(110 + r() * 230).toFixed(0)}" rx="4" ry="2.4" fill="#D9962E" opacity=".75"/>`;
+      if (EST === 'inv') for (let i = 0; i < 8; i++) g += `<circle cx="${(r() * W).toFixed(0)}" cy="${(i % 2 ? 6 + r() * 50 : 380 + r() * 36).toFixed(0)}" r="1.6" fill="#FFFFFF" opacity=".8"/>`;
       for (let i = 0; i < 5; i++) g += `<circle class="rip" style="animation-delay:${i}s" cx="${40 + r() * 240}" cy="${120 + r() * 220}" r="${14 + r() * 10}" fill="none" stroke="#FFFFFF" stroke-width="1.5" opacity=".5"/>`;
       return g; },
-    fg: (r) => { let g = ''; for (let i = 0; i < 5; i++) { const x = 20 + r() * 280, y = 120 + r() * 270; g += `<g class="sway" style="animation-delay:${i * .8}s"><path d="M${x} ${y} q-4 -26 2 -44 M${x + 6} ${y} q2 -22 9 -36 M${x - 6} ${y} q-6 -18 -2 -32" stroke="#4F7A3A" stroke-width="3.2" fill="none" stroke-linecap="round"/><rect x="${x - 2}" y="${y - 46}" width="5" height="13" rx="2.5" fill="#7A5A3A"/></g>`; } return g; } },
+    fg: (r) => { let g = ''; for (let i = 0; i < 3; i++) { const x = 20 + r() * 280, y = 120 + r() * 270; g += `<g class="sway" style="animation-delay:${i * .8}s"><path d="M${x} ${y} q-4 -26 2 -44 M${x + 6} ${y} q2 -22 9 -36 M${x - 6} ${y} q-6 -18 -2 -32" stroke="#4F7A3A" stroke-width="3.2" fill="none" stroke-linecap="round"/><rect x="${x - 2}" y="${y - 46}" width="5" height="13" rx="2.5" fill="#7A5A3A"/></g>`; } return g; } },
   { id: 'bosque', name: 'El bosque', sub: 'Busca setas, pájaros y otras cosas en un bosque',
     reto: [['seta', 5, [24, 296, 290, 398]], ['pajaro', 4, [30, 290, 90, 260]], ['bellota', 3, [24, 296, 280, 398]], ['caracol', 2, [30, 290, 300, 398]], ['erizo', 1, [40, 280, 320, 395]]],
     suave: [['seta', 3, [30, 290, 300, 395]], ['pajaro', 2, [30, 290, 110, 250]], ['erizo', 1, [40, 280, 320, 395]]],
@@ -489,11 +489,11 @@ const SCENES = [
       const copa = { pri: ['#5F9A5A', '#6FAE68'], ver: ['#4F7A5A', '#5F8A68'], oto: ['#C2693A', '#D9962E'], inv: ['#7A8A84', '#8E9C96'] }[EST];
       let g = `<defs><linearGradient id="skyB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${sky[0]}"/><stop offset="1" stop-color="${sky[1]}"/></linearGradient></defs><rect width="${W}" height="${H}" fill="url(#skyB)"/>${TARDE ? '<circle cx="240" cy="210" r="34" fill="#F7C86E" opacity=".9"/>' : '<circle cx="250" cy="60" r="22" fill="#FFF1B0"/>'}<path d="M0 250 Q80 200 160 240 T${W} 230 V${H} H0 Z" fill="${hill[0]}"/><path d="M0 300 Q100 270 200 296 T${W} 290 V${H} H0 Z" fill="${hill[1]}"/>`;
       [[40, 300, 90], [120, 296, 70], [270, 292, 100], [200, 300, 60]].forEach(([x, y, h]) => { const k = EST === 'inv' ? .8 : 1; g += `<rect x="${x - 5}" y="${y - h}" width="10" height="${h}" fill="#7A5A3A"/><circle cx="${x}" cy="${y - h}" r="${h * .42 * k}" fill="${copa[0]}"/><circle cx="${x - h * .25}" cy="${y - h + 10}" r="${h * .3 * k}" fill="${copa[1]}"/>`;
-        if (EST === 'pri') for (let i = 0; i < 5; i++) g += `<circle cx="${(x + (r() - .5) * h * .7).toFixed(0)}" cy="${(y - h + (r() - .5) * h * .6).toFixed(0)}" r="2.6" fill="#F3B6CB"/>`; });
+        if (EST === 'pri') for (let i = 0; i < 3; i++) g += `<circle cx="${(x + (r() - .5) * h * .7).toFixed(0)}" cy="${(y - h + (r() - .5) * h * .6).toFixed(0)}" r="2.2" fill="#F3B6CB"/>`; });
       g += `<path d="M30 150 h70 M220 140 h80 M120 200 h70" stroke="#7A5A3A" stroke-width="5" stroke-linecap="round"/>`;
-      for (let i = 0; i < 8; i++) g += `<path d="M${20 + r() * 280} ${310 + r() * 90} q4 -4 8 0 q-4 4 -8 0" fill="#C98A3A" opacity=".7"/>`;
+      for (let i = 0; i < 4; i++) g += `<path d="M${20 + r() * 280} ${310 + r() * 90} q4 -4 8 0 q-4 4 -8 0" fill="#C98A3A" opacity=".7"/>`;
       return g; },
-    fg: (r) => { let g = ''; for (let i = 0; i < 6; i++) { const x = 20 + r() * 280, y = 300 + r() * 100; g += `<path d="M${x - 12} ${y} q4 -16 8 -4 q2 -18 8 -2 q4 -14 8 2 z" fill="#5F8A50"/>`; } for (let i = 0; i < 2; i++) { const x = 40 + r() * 240, y = 120 + r() * 120; g += `<circle cx="${x}" cy="${y}" r="16" fill="#4F7A5A" opacity=".95"/>`; } return g; } },
+    fg: (r) => { let g = ''; for (let i = 0; i < 3; i++) { const x = 20 + r() * 280, y = 300 + r() * 100; g += `<path d="M${x - 12} ${y} q4 -16 8 -4 q2 -18 8 -2 q4 -14 8 2 z" fill="#5F8A50"/>`; } for (let i = 0; i < 0; i++) { const x = 40 + r() * 240, y = 120 + r() * 120; g += `<circle cx="${x}" cy="${y}" r="16" fill="#4F7A5A" opacity=".95"/>`; } return g; } },
   { id: 'noche', name: 'El cielo de noche', sub: 'Busca estrellas, luciérnagas y otras cosas en un cielo de noche',
     reto: [['estrella', 5, [24, 296, 30, 240]], ['luciernaga', 4, [24, 296, 250, 400]], ['fugaz', 3, [40, 280, 40, 220]], ['ventana', 2, [30, 220, 320, 380]], ['buho', 1, [240, 290, 170, 210]]],
     suave: [['estrella', 3, [24, 296, 30, 240]], ['luciernaga', 2, [30, 290, 270, 380]], ['buho', 1, [240, 290, 170, 210]]],
@@ -546,7 +546,7 @@ const JARDIN = { id: 'jardin', name: 'El jardín de noche', mueve: { caracol: [3
 Object.assign(SCENES[0], { pool: ['rana', 'nenufar', 'piedra', 'pezE', 'libelula', 'pato', 'mariposa', 'tortuga'], par: { rana: 'sapo', nenufar: 'hoja' }, max: { libelula: 3, pato: 3, tortuga: 3, mariposa: 4 }, mueve: { pato: [3, 6], tortuga: [2, 4] },
   reg: { rana: [30, 290, 90, 395], sapo: [30, 290, 100, 390], nenufar: [40, 280, 100, 360], hoja: [40, 280, 100, 360], piedra: [30, 290, 100, 370], pezE: [50, 270, 120, 340], libelula: [50, 270, 50, 200], pato: [40, 280, 110, 340], mariposa: [30, 290, 30, 120], tortuga: [40, 270, 120, 340] } });
 Object.assign(SCENES[1], { pool: ['seta', 'pajaro', 'bellota', 'caracol', 'erizo', 'ardilla', 'pina', 'hojaO', 'mariposa'], par: { seta: 'setaM', bellota: 'pina', pina: 'bellota' }, max: { erizo: 3, ardilla: 2 }, mueve: { caracol: [2, 4], erizo: [2, 3] },
-  reg: { seta: [24, 296, 290, 398], setaM: [24, 296, 290, 398], pajaro: [30, 290, 90, 260], bellota: [24, 296, 280, 398], caracol: [30, 290, 300, 398], erizo: [40, 280, 320, 395], ardilla: [30, 290, 110, 280], pina: [24, 296, 280, 398], hojaO: [24, 296, 260, 398], mariposa: [30, 290, 80, 260] } });
+  reg: { seta: [24, 296, 290, 398], setaM: [24, 296, 290, 398], pajaro: [30, 290, 90, 260], bellota: [24, 296, 280, 398], caracol: [30, 290, 300, 398], erizo: [40, 280, 320, 395], ardilla: [30, 290, 250, 300], pina: [24, 296, 280, 398], hojaO: [24, 296, 260, 398], mariposa: [30, 290, 80, 260] } });
 Object.assign(SCENES[2], { pool: ['estrella', 'luciernaga', 'fugaz', 'ventana', 'buho', 'murcielago', 'nube'], par: { estrella: 'chispa', luciernaga: 'chispa' }, max: { buho: 1, ventana: 3, nube: 3 }, mueve: { nube: [3, 6] },
   reg: { estrella: [24, 296, 30, 240], chispa: [20, 300, 30, 250], luciernaga: [24, 296, 250, 400], fugaz: [40, 280, 40, 220], ventana: [30, 220, 320, 380], buho: [240, 290, 170, 210], murcielago: [30, 290, 40, 240], nube: [30, 290, 30, 200] } });
 Object.assign(SCENES[3], { pool: ['pezR', 'caracola', 'estrellaM', 'tortuga', 'medusa', 'cangrejo', 'pulpo', 'caballito'], par: { pezR: 'pezL', caracola: 'concha' }, max: { tortuga: 3, medusa: 3, pulpo: 2, caballito: 3 }, mueve: { pezR: [5, 10], pezL: [5, 10], tortuga: [3, 6], cangrejo: [2, 4] },
@@ -554,14 +554,14 @@ Object.assign(SCENES[3], { pool: ['pezR', 'caracola', 'estrellaM', 'tortuga', 'm
 Object.assign(DESVAN, { pool: ['libro', 'taza', 'llave', 'reloj', 'osito', 'vela', 'caja', 'pelota', 'sombrero'], max: { osito: 3, sombrero: 3 } });
 Object.assign(JARDIN, { pool: ['caracol', 'florC', 'erizo', 'regadera', 'gato', 'rana', 'seta', 'maceta'], par: { florC: 'florA', seta: 'setaM', caracol: 'piedra' }, max: { gato: 2, erizo: 3, regadera: 3 },
   reg: { caracol: [24, 296, 170, 404], florC: [24, 296, 160, 400], florA: [24, 296, 160, 400], erizo: [40, 270, 200, 400], regadera: [30, 290, 180, 400], gato: [40, 280, 170, 390], rana: [30, 290, 180, 400], seta: [24, 296, 180, 404], setaM: [24, 296, 180, 404], maceta: [30, 290, 170, 400], piedra: [24, 296, 170, 404] } });
-function ronda(sc, lv) {
+function ronda(sc, lv, menos) {
   const reg = (k) => (sc.reg && sc.reg[k]) || [24, 296, 80, 400], mx = (k) => (sc.max && sc.max[k]) || 9;
-  const pool = shuffle(sc.pool), nT = lv === 'reto' ? 5 : 3, ch = pool.slice(0, nT), rest = pool.slice(nT), cnts = lv === 'reto' ? [5, 4, 3, 2, 1] : [3, 2, 1];
+  const pool = shuffle(sc.pool), nT = lv === 'reto' ? (menos ? 4 : 5) : 3, ch = pool.slice(0, nT), rest = pool.slice(nT), cnts = lv === 'reto' ? (menos ? [4, 3, 2, 1] : [5, 4, 3, 2, 1]) : [3, 2, 1], nd = menos ? 2 : 3;
   const n = {}; [...ch].sort((a, b) => mx(b) - mx(a) || Math.random() - .5).forEach((k, i) => n[k] = Math.min(cnts[i], mx(k)));
   const order = ch.map(k => [k, n[k], reg(k)]).sort((a, b) => b[1] - a[1]);
   const dec = [];
-  if (lv === 'reto') { ch.forEach(k => { const p = sc.par && sc.par[k]; if (p && !ch.includes(p) && !dec.some(d => d[0] === p) && dec.length < 2) dec.push([p, Math.min(3, mx(p)), reg(p)]); });
-    rest.filter(k => !dec.some(d => d[0] === k)).slice(0, 1).forEach(k => dec.push([k, Math.min(3, mx(k)), reg(k)])); }
+  if (lv === 'reto') { ch.forEach(k => { const p = sc.par && sc.par[k]; if (p && !ch.includes(p) && !dec.some(d => d[0] === p) && dec.length < 2) dec.push([p, Math.min(nd, mx(p)), reg(p)]); });
+    rest.filter(k => !dec.some(d => d[0] === k)).slice(0, menos && dec.length >= 2 ? 0 : 1).forEach(k => dec.push([k, Math.min(nd, mx(k)), reg(k)])); }
   else rest.slice(0, 1).forEach(k => dec.push([k, Math.min(2, mx(k)), reg(k)]));
   return { order, dec };
 }
@@ -651,7 +651,7 @@ function place(sc, lv, Rd) {
   return shuffle(items).map((it, i) => ({ ...it, id: i }));
 }
 function search(sc) {
-  const lv = G.nivel || 'reto', Rd = ronda(sc, lv), order = Rd.order, items = place(sc, lv, Rd), sc2 = lv === 'reto' ? .9 : 1; let step = 0, found = 0;
+  const lv = G.nivel || 'reto', Rd = ronda(sc, lv, true), order = Rd.order, items = place(sc, lv, Rd), sc2 = lv === 'reto' ? .9 : 1; let step = 0, found = 0;
   let seed = Math.floor(Math.random() * 9999); const fr = decoRand(seed);
   $('#play').innerHTML = head(sc.name + (lv === 'reto' ? ' · con más reto' : ' · suave')) + `<div class="goal fade" aria-live="polite"><div><b id="gt"></b><small id="gs"></small></div><div class="pips" id="gp"></div></div>
     <div class="stage"><svg viewBox="0 0 ${W} ${H}" id="sc" role="group" aria-label="${sc.name}">${sc.bg()}${items.map(it => `<g class="tg" data-i="${it.id}" tabindex="0" role="button" aria-label="${NAMES[it.k][1]}" transform="translate(${it.x.toFixed(0)} ${it.y.toFixed(0)}) scale(${sc2})"><circle class="halo" r="22" fill="#FFF6C9" opacity="0"/>${D[it.k](it.c)}<circle class="hit" r="19" fill="transparent"/></g>`).join('')}<g style="pointer-events:none">${lv === 'reto' ? sc.fg(fr) : ''}</g></svg></div>`;
