@@ -342,6 +342,7 @@ svg .pop[transform] { animation-name: popfade; } @keyframes popfade { from { opa
   <rect x="96" y="92" width="28" height="14" rx="4" fill="var(--bg)"/>
   <path d="M86 66v-8a6 6 0 0 1 6-6h36a6 6 0 0 1 6 6v8" fill="none" stroke="var(--deep)" stroke-width="5"/>
 </svg><div><h1>Calmarme o volver a mí</h1><p class="muted">Elige cómo estás ahora mismo y te propongo por dónde empezar.</p></div></div>
+    <p class="small muted" style="margin:0">Si te ayuda más algo de juego para salir del bucle, prueba <a href="../presente/">«Volver al presente jugando»</a>.</p>
 
     <div class="step">
       <span class="eyebrow">1 · ¿Cómo estás?</span>
@@ -1401,6 +1402,7 @@ const PDFKIT = (() => {
     var s = read(), hoy = day(); s.a = s.a || {}; s.d = s.d || {};
     if (s.d[C.id] === hoy) return;
     s.d[C.id] = hoy; s.a[C.area] = (s.a[C.area] || 0) + 1; s.n = (s.n || 0) + 1;
+    if (s.ld !== hoy) { var f = new Date(), ym = f.getFullYear() + '-' + ('0' + (f.getMonth() + 1)).slice(-2); s.m = s.m || {}; s.m[ym] = (s.m[ym] || 0) + 1; s.ld = hoy; }  // días de cada mes en los que se ha completado algo (tarros / flores)
     var first = !s.seen; s.seen = true;
     try { setI.call(ls, K, JSON.stringify(s)); } catch (e) { return; }
     if (first && !s.off) setTimeout(invite, 900);

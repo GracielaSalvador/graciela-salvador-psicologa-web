@@ -1078,6 +1078,7 @@ const PDFKIT = (() => {
     var s = read(), hoy = day(); s.a = s.a || {}; s.d = s.d || {};
     if (s.d[C.id] === hoy) return;
     s.d[C.id] = hoy; s.a[C.area] = (s.a[C.area] || 0) + 1; s.n = (s.n || 0) + 1;
+    if (s.ld !== hoy) { var f = new Date(), ym = f.getFullYear() + '-' + ('0' + (f.getMonth() + 1)).slice(-2); s.m = s.m || {}; s.m[ym] = (s.m[ym] || 0) + 1; s.ld = hoy; }  // días de cada mes en los que se ha completado algo (tarros / flores)
     var first = !s.seen; s.seen = true;
     try { setI.call(ls, K, JSON.stringify(s)); } catch (e) { return; }
     if (first && !s.off) setTimeout(invite, 900);

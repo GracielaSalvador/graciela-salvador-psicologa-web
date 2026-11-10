@@ -48,9 +48,25 @@ summary { font-weight: 700; color: var(--deep); cursor: pointer; } details p { m
 .ask { background: var(--tint); border-radius: 16px; padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
 .ask .r { display: flex; gap: 8px; } .ask button { flex: 1; min-height: 44px; border-radius: 999px; font: inherit; font-weight: 800; cursor: pointer; }
 .ask .y { border: 0; background: var(--accent); color: var(--on-accent); } .ask .n { border: 1.5px solid var(--line); background: var(--surface); color: var(--muted); }
+.mes { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.mes h2 { font-family: var(--display); font-weight: 600; color: var(--deep); font-size: 1.2rem; margin: 0; }
+.mes .now { display: grid; grid-template-columns: 110px 1fr; gap: 14px; align-items: center; }
+.mes .now svg { width: 110px; height: auto; display: block; }
+.mes .now b { display: block; font-family: var(--display); font-size: 1.1rem; color: var(--deep); font-weight: 600; }
+.mes .now span { color: var(--muted); font-size: .92rem; }
+.shelf { display: flex; flex-direction: column; gap: 6px; }
+.shelf h3 { margin: 6px 0 0; font-size: .82rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.shelf .row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px 4px; padding-bottom: 6px; border-bottom: 4px solid #C9A26A; }
+.shelf .it { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: .72rem; font-weight: 700; color: var(--muted); }
+.shelf .it svg { width: 100%; max-width: 52px; height: auto; display: block; }
+.ff { animation: ff 3.2s ease-in-out infinite; } @keyframes ff { 50% { opacity: .35; } }
+.house .fall { animation: fall 7s linear infinite; } @keyframes fall { from { transform: translateY(-20px); } to { transform: translateY(40px); } }
+.house .flakes { animation: snow 9s linear infinite; } @keyframes snow { from { transform: translateY(-14px); } to { transform: translateY(14px); } }
+.house .fly { animation: fly 5s ease-in-out infinite alternate; } @keyframes fly { to { transform: translate(14px, -10px); } }
+.house .tw { animation: ff 2.4s ease-in-out infinite; }
 .note { font-size: .88rem; color: var(--muted); text-align: center; }
 button:focus-visible, input:focus-visible, summary:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-@media (prefers-reduced-motion: reduce) { .lv { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .lv { transition: none; } .ff, .house .fall, .house .flakes, .house .fly, .house .tw { animation: none; } }
 </style>
 </head>
 <body>
@@ -62,6 +78,7 @@ button:focus-visible, input:focus-visible, summary:focus-visible, a:focus-visibl
       <rect x="0" y="0" width="340" height="350" rx="16" fill="#E6F0F2"></rect>
       <circle cx="56" cy="46" r="18" fill="#B9B20E" opacity=".45"></circle>
       <path d="M0 268 Q 90 252 170 262 T 340 258 V350 H0 Z" fill="#D7E6C8"></path>
+      <g class="sea" data-season="inv" opacity="0"><path d="M0 268 Q 90 252 170 262 T 340 258 V268 Q 250 264 170 272 T 0 280 Z" fill="#FFFFFF"></path></g>
 
       <!-- Pareja y familia: humo y ventanas -->
       <g class="lv" data-k="m_rel2" opacity="0"><path d="M214 72 q-8 -10 0 -18 q8 -8 0 -16" stroke="#9AAAB0" stroke-width="4" fill="none" stroke-linecap="round"></path></g>
@@ -100,11 +117,48 @@ button:focus-visible, input:focus-visible, summary:focus-visible, a:focus-visibl
       <!-- Para mi terapia: buzón -->
       <g class="lv" data-k="m_ter1" opacity="0"><path d="M290 338 v-26" stroke="#0E3D4A" stroke-width="3"></path><rect x="278" y="298" width="24" height="16" rx="5" fill="#11667D"></rect></g>
       <g class="lv" data-k="m_ter2" opacity="0"><rect x="283" y="290" width="14" height="10" rx="1" fill="#FFFFFF" stroke="#0E3D4A" stroke-width="1.2"></rect><path d="M283 290 l7 5 l7 -5" stroke="#0E3D4A" stroke-width="1.2" fill="none"></path></g>
+
+      <!-- Detalles nuevos (pasos 3, 4 y 5) -->
+      <g class="lv" data-k="m_rel3" opacity="0"><path d="M129 169 q6 8 0 24 M153 169 q-6 8 0 24 M187 169 q6 8 0 24 M211 169 q-6 8 0 24" stroke="#E7A1BD" stroke-width="3" fill="none"></path></g>
+      <g class="lv" data-k="m_rel4" opacity="0"><rect x="126" y="194" width="30" height="6" rx="2" fill="#8B6A3E"></rect><rect x="184" y="194" width="30" height="6" rx="2" fill="#8B6A3E"></rect><circle cx="132" cy="192" r="3" fill="#C2557A"></circle><circle cx="141" cy="191" r="3" fill="#B9B20E"></circle><circle cx="150" cy="192" r="3" fill="#E08A5B"></circle><circle cx="190" cy="192" r="3" fill="#E08A5B"></circle><circle cx="199" cy="191" r="3" fill="#C2557A"></circle><circle cx="208" cy="192" r="3" fill="#B9B20E"></circle></g>
+      <g class="lv" data-k="m_rel5" opacity="0"><circle cx="170" cy="128" r="8" fill="#F4DE8A" stroke="#0E3D4A" stroke-width="2"></circle><path d="M170 120 v16 M162 128 h16" stroke="#0E3D4A" stroke-width="1.2"></path></g>
+      <g class="lv" data-k="m_par3" opacity="0"><rect x="152" y="262" width="36" height="5" rx="2" fill="#C2557A" opacity=".8"></rect></g>
+      <g class="lv" data-k="m_par4" opacity="0"><path d="M144 214 v8" stroke="#0E3D4A" stroke-width="1.5"></path><rect x="139" y="222" width="10" height="14" rx="3" fill="#F4DE8A" stroke="#0E3D4A" stroke-width="1.5"></rect><circle cx="144" cy="229" r="12" fill="#F4DE8A" opacity=".35"></circle></g>
+      <g class="lv" data-k="m_par5" opacity="0"><path d="M112 152 q58 12 116 0" stroke="#0E3D4A" stroke-width="1" fill="none"></path><path d="M120 154 l5 8 l5 -7 z M140 157 l5 8 l5 -7 z M160 158 l5 8 l5 -8 z M180 158 l5 8 l5 -8 z M200 157 l5 8 l5 -8 z M218 154 l5 7 l5 -8 z" fill="#C2557A"></path><path d="M150 158 l5 8 l5 -8 z M190 158 l5 8 l5 -8 z" fill="#B9B20E"></path></g>
+      <g class="lv" data-k="m_emb3" opacity="0"><path d="M32 276 v-26 M48 276 v-28 M64 276 v-26 M80 276 v-28" stroke="#8B6A3E" stroke-width="1.5"></path><path d="M32 256 q-6 -2 -6 -6 q6 0 6 6 M48 254 q6 -2 6 -6 q-6 0 -6 6 M64 256 q-6 -2 -6 -6 q6 0 6 6 M80 254 q6 -2 6 -6 q-6 0 -6 6" fill="#4F9A7C"></path></g>
+      <g class="lv" data-k="m_emb4" opacity="0"><path d="M98 290 h14 l-2 -12 h-10 z" fill="#5F7BB0"></path><path d="M110 282 q8 -4 10 -10" stroke="#5F7BB0" stroke-width="2.5" fill="none"></path><path d="M100 278 q5 -6 10 0" stroke="#5F7BB0" stroke-width="1.5" fill="none"></path></g>
+      <g class="lv" data-k="m_emb5" opacity="0"><path d="M16 290 v-58" stroke="#2C6E5D" stroke-width="2.5"></path><path d="M16 262 q-8 -2 -8 -8 q8 0 8 8 M16 250 q8 -2 8 -8 q-8 0 -8 8" fill="#4F9A7C"></path><circle cx="16" cy="226" r="9" fill="#B9B20E"></circle><circle cx="16" cy="226" r="4" fill="#8B6A3E"></circle></g>
+      <g class="lv" data-k="m_cri3" opacity="0"><circle cx="276" cy="132" r="3.5" fill="#C2557A"></circle><circle cx="300" cy="126" r="3.5" fill="#E08A5B"></circle><circle cx="294" cy="150" r="3.5" fill="#C2557A"></circle><circle cx="312" cy="142" r="3.5" fill="#E08A5B"></circle><circle cx="258" cy="156" r="3" fill="#C2557A"></circle></g>
+      <g class="lv" data-k="m_cri4" opacity="0"><path d="M280 190 l8 -8 l8 8 z" fill="#C2557A"></path><rect x="281" y="190" width="14" height="13" fill="#F4DE8A" stroke="#0E3D4A" stroke-width="1"></rect><circle cx="288" cy="196" r="2.5" fill="#0E3D4A"></circle></g>
+      <g class="lv" data-k="m_cri5" opacity="0"><circle cx="226" cy="280" r="6" fill="#FFFFFF" stroke="#11667D" stroke-width="1.5"></circle><path d="M220 280 h12 M226 274 q-3 6 0 12" stroke="#C2557A" stroke-width="1.5" fill="none"></path></g>
+      <g class="lv" data-k="m_pos3" opacity="0"><path d="M240 296 h20 l-2 -10 h-16 z" fill="#C9A26A"></path><path d="M244 286 q4 -5 8 0 q3 -4 6 0" fill="#E7A1BD"></path></g>
+      <g class="lv" data-k="m_pos4" opacity="0"><ellipse cx="246" cy="254" rx="5" ry="3.5" fill="#5F7BB0"></ellipse><circle cx="250" cy="251" r="2.5" fill="#5F7BB0"></circle><path d="M252 251 l3 1 l-3 1" fill="#E0A23A"></path></g>
+      <g class="lv" data-k="m_pos5" opacity="0"><path d="M240 257 h14 v16 q-7 3 -14 0 z" fill="#FFFFFF" stroke="#E7A1BD" stroke-width="1.5"></path><path d="M243 263 h8 M243 267 h8" stroke="#E7A1BD" stroke-width="1"></path></g>
+      <g class="lv" data-k="m_mia3" opacity="0"><path d="M56 302 l7 -4 l7 4 z" fill="#FFFFFF" stroke="#0E3D4A" stroke-width="1"></path><path d="M63 298 v4" stroke="#0E3D4A" stroke-width=".8"></path></g>
+      <g class="lv" data-k="m_mia4" opacity="0"><ellipse cx="114" cy="326" rx="9" ry="5" fill="#8B6A3E"></ellipse><circle cx="123" cy="323" r="4" fill="#8B6A3E"></circle><path d="M120 320 l1 -4 l2 3 M124 319 l2 -4 l1 4" fill="#8B6A3E" stroke="#8B6A3E" stroke-width="1"></path><path d="M105 328 q-6 0 -6 -5" stroke="#8B6A3E" stroke-width="2.5" fill="none" stroke-linecap="round"></path></g>
+      <g class="lv" data-k="m_mia5" opacity="0"><path d="M28 330 v-36" stroke="#0E3D4A" stroke-width="2.5"></path><path d="M22 294 h12 l-2 -8 h-8 z" fill="#F4DE8A" stroke="#0E3D4A" stroke-width="1.5"></path><circle cx="28" cy="292" r="10" fill="#F4DE8A" opacity=".3"></circle></g>
+      <g class="lv" data-k="m_reg3" opacity="0"><ellipse cx="170" cy="274" rx="9" ry="3.5" fill="#C9C2B3"></ellipse><ellipse cx="164" cy="288" rx="9" ry="3.5" fill="#C9C2B3"></ellipse><ellipse cx="172" cy="302" rx="9" ry="3.5" fill="#C9C2B3"></ellipse></g>
+      <g class="lv" data-k="m_reg4" opacity="0"><path d="M104 266 h12 l-2 -10 h-8 z M222 266 h12 l-2 -10 h-8 z" fill="#C2557A" opacity=".85"></path><path d="M110 256 q-4 -8 0 -12 q4 4 0 12 M228 256 q-4 -8 0 -12 q4 4 0 12" fill="#4F9A7C"></path></g>
+      <g class="lv" data-k="m_reg5" opacity="0"><path d="M138 238 q-4 -5 0 -6 q3 1 0 6 q4 -5 7 -3 q-1 4 -7 3" fill="#B9B20E"></path><path d="M204 232 q-4 -5 0 -6 q3 1 0 6 q4 -5 7 -3 q-1 4 -7 3" fill="#E7A1BD"></path></g>
+      <g class="lv" data-k="m_ter3" opacity="0"><path d="M300 314 v-14 l6 3 l-6 3" stroke="#C2557A" stroke-width="2" fill="#C2557A" stroke-linejoin="round"></path></g>
+      <g class="lv" data-k="m_ter4" opacity="0"><circle cx="282" cy="336" r="3" fill="#E08A5B"></circle><circle cx="298" cy="336" r="3" fill="#B9B20E"></circle><path d="M282 339 v-3 M298 339 v-3" stroke="#2C6E5D" stroke-width="1.5"></path></g>
+      <g class="lv" data-k="m_ter5" opacity="0"><rect x="306" y="326" width="12" height="11" rx="1.5" fill="#C9A26A"></rect><path d="M312 326 v11 M306 331 h12" stroke="#FFFFFF" stroke-width="1.5"></path></g>
+
+      <!-- Estaciones (según la fecha) -->
+      <g class="sea" data-season="oto" opacity="0"><path d="M30 340 q4 -4 8 0 q-4 4 -8 0 M140 334 q4 -4 8 0 q-4 4 -8 0 M210 344 q4 -4 8 0 q-4 4 -8 0 M320 330 q4 -4 8 0 q-4 4 -8 0" fill="#E08A5B"></path><path d="M96 120 q4 -4 8 0 q-4 4 -8 0 M250 92 q4 -4 8 0 q-4 4 -8 0 M30 180 q4 -4 8 0 q-4 4 -8 0" fill="#B98A2A" class="fall"></path></g>
+      <g class="sea" data-season="inv" opacity="0"><path d="M104 150 L170 94 L236 150 L228 150 Q200 120 170 102 Q140 120 112 150 Z" fill="#FFFFFF" stroke="#C9DCE2" stroke-width="1"></path><g fill="#FFFFFF" class="flakes"><circle cx="30" cy="100" r="2.5"></circle><circle cx="90" cy="40" r="2"></circle><circle cx="140" cy="60" r="2.5"></circle><circle cx="250" cy="40" r="2"></circle><circle cx="310" cy="70" r="2.5"></circle><circle cx="60" cy="200" r="2"></circle><circle cx="320" cy="200" r="2"></circle></g></g>
+      <g class="sea" data-season="pri" opacity="0"><g><circle cx="12" cy="300" r="3" fill="#E7A1BD"></circle><circle cx="136" cy="320" r="3.5" fill="#FFFFFF"></circle><circle cx="200" cy="330" r="3" fill="#F4DE8A"></circle><circle cx="250" cy="312" r="3.5" fill="#E7A1BD"></circle><circle cx="330" cy="300" r="3" fill="#FFFFFF"></circle></g><path d="M240 46 q6 -6 12 0 q6 -6 12 0" stroke="#0E3D4A" stroke-width="2" fill="none" stroke-linecap="round"></path></g>
+      <g class="sea" data-season="ver" opacity="0"><g stroke="#B9B20E" stroke-width="2.5" stroke-linecap="round"><path d="M56 18 v-8 M56 74 v8 M28 46 h-8 M84 46 h8 M36 26 l-6 -6 M76 66 l6 6 M76 26 l6 -6 M36 66 l-6 6"></path></g><circle cx="56" cy="46" r="18" fill="#B9B20E" opacity=".35"></circle><path d="M120 236 q-6 -8 0 -10 q4 2 0 10 q6 -8 10 -4 q-2 6 -10 4" fill="#C2557A" class="fly"></path></g>
+      <g class="sea" data-season="nav" opacity="0"><g class="tw"><circle cx="110" cy="148" r="3" fill="#F4DE8A"></circle><circle cx="126" cy="136" r="3" fill="#C2557A"></circle><circle cx="142" cy="122" r="3" fill="#F4DE8A"></circle><circle cx="158" cy="108" r="3" fill="#2C6E5D"></circle><circle cx="182" cy="108" r="3" fill="#F4DE8A"></circle><circle cx="198" cy="122" r="3" fill="#C2557A"></circle><circle cx="214" cy="136" r="3" fill="#F4DE8A"></circle><circle cx="230" cy="148" r="3" fill="#2C6E5D"></circle></g><circle cx="170" cy="200" r="0" fill="none"></circle><circle cx="170" cy="226" r="0"></circle><path d="M164 224 a7 7 0 1 0 12 0 a7 7 0 1 0 -12 0" stroke="#2C6E5D" stroke-width="3.5" fill="none"></path><circle cx="170" cy="231" r="2" fill="#C2557A"></circle></g>
     </svg></div>
   <p class="empty" id="empty" hidden>El jardín todavía está por brotar. La primera planta sale cuando completas algo en cualquier herramienta.</p>
+  <section class="mes" aria-labelledby="mesT"><h2 id="mesT">Vuestro parterre</h2><p class="muted" style="font-size:.95rem">Cada mes se planta una flor junto a la casa. Crece un poco cada día que completas algo y, al acabar el mes, se queda en el parterre.</p>
+    <div class="now" id="mesNow"></div>
+    <div class="shelf" id="shelf" hidden></div></section>
   <ul class="rooms" id="rooms"></ul>
   <details><summary>¿Cómo crece?</summary>
-    <p>Cada herramienta suma una vez al día, cuando escribes o guardas algo o cuando haces una práctica con calma. La primera vez que usas un área aparece algo nuevo y, si sigues volviendo, se va llenando de detalles.</p>
+    <p>Cada herramienta suma una vez al día, cuando escribes o guardas algo o cuando haces una práctica con calma. La primera vez que usas un área aparece algo nuevo y, si sigues volviendo, se va llenando de detalles poco a poco, durante meses.</p>
+    <p>Además, cada mes tiene lo suyo, que crece con los días en los que completas algo. Y la casa cambia con las estaciones del año.</p>
     <p>No hay rachas ni nada que se pierda: si pasas días sin entrar, nada se marchita. Te espera tal y como la dejaste. Todo se guarda solo en este dispositivo y entra en tu copia de seguridad.</p></details>
   <div class="opts">
     <label class="sw"><span>Mostrar la casita en el inicio</span><input type="checkbox" id="show"></label>
@@ -114,10 +168,47 @@ button:focus-visible, input:focus-visible, summary:focus-visible, a:focus-visibl
   <p class="note">Sin rachas: nada se marchita si no entras.</p>
 </div>
 <script>
-const APP = 'm', K = 'casa.' + APP, AREAS = [["emb", "Embarazo", "El huerto", "#2C6E5D"], ["par", "Parto", "La guirnalda de la puerta", "#C2557A"], ["pos", "Posparto", "El tendedero", "#E7A1BD"], ["cri", "Crianza", "El árbol y el columpio", "#4F9A7C"], ["mia", "Lo que me pasa a mí", "El banco al sol", "#11667D"], ["reg", "Calmarme y cuidarme", "Las flores de la entrada", "#B9B20E"], ["rel", "Pareja y familia", "Las ventanas encendidas", "#E08A5B"], ["ter", "Para mi terapia", "El buzón", "#2A7387"]], LV = ["Por brotar", "Ha brotado", "En flor"], TH = [1, 3];
+const APP = 'm', K = 'casa.' + APP, AREAS = [["emb", "Embarazo", "El huerto", "#2C6E5D"], ["par", "Parto", "La guirnalda de la puerta", "#C2557A"], ["pos", "Posparto", "El tendedero", "#E7A1BD"], ["cri", "Crianza", "El árbol y el columpio", "#4F9A7C"], ["mia", "Lo que me pasa a mí", "El banco al sol", "#11667D"], ["reg", "Calmarme y cuidarme", "Las flores de la entrada", "#B9B20E"], ["rel", "Pareja y familia", "Las ventanas encendidas", "#E08A5B"], ["ter", "Para mi terapia", "El buzón", "#2A7387"]], LV = ["Por brotar", "Ha brotado", "Creciendo", "En flor", "Dando fruto", "En plenitud"], TH = [1, 3, 6, 10, 15];
 const read = () => { try { return JSON.parse(localStorage.getItem(K)) || {}; } catch (e) { return {}; } };
 const save = (s) => { try { localStorage.setItem(K, JSON.stringify(s)); } catch (e) {} };
 const level = (n) => TH.filter(t => n >= t).length;
+const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+const COLS = ['#C2557A', '#E08A5B', '#B9B20E', '#5F7BB0', '#E7A1BD', '#4F9A7C', '#E0A23A', '#8470B0', '#C2557A', '#E08A5B', '#5F7BB0', '#B9B20E'];
+const rnd = (i) => { const x = Math.sin(i * 12.9898 + 4.1) * 43758.5453; return x - Math.floor(x); };
+function tarro(n, big) {
+  let f = '';
+  for (let i = 0; i < Math.min(n, 31); i++) { const x = 22 + rnd(i) * 56, y = 108 - rnd(i + 50) * (20 + Math.min(n, 31) * 2.4); f += `<g class="${big ? 'ff' : ''}" style="animation-delay:${(rnd(i + 9) * 3).toFixed(2)}s"><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="6" fill="#F4DE8A" opacity=".35"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.6" fill="#F2C744"/></g>`; }
+  return `<svg viewBox="0 0 100 130" aria-hidden="true"><path d="M26 22 h48 v8 q12 6 12 22 v58 q0 14 -14 14 h-44 q-14 0 -14 -14 v-58 q0 -16 12 -22 z" fill="#E3EFF1" fill-opacity=".55" stroke="#0B4757" stroke-width="3"/>${f}<rect x="22" y="12" width="56" height="12" rx="4" fill="#C9A26A" stroke="#0B4757" stroke-width="2.5"/><path d="M30 46 q-4 20 0 50" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" opacity=".7" fill="none"/></svg>`;
+}
+function flor(n, col) {
+  const st = n >= 15 ? 5 : n >= 10 ? 4 : n >= 6 ? 3 : n >= 3 ? 2 : n >= 1 ? 1 : 0;
+  const h = [0, 22, 46, 62, 70, 74][st], top = 112 - h;
+  let g = `<path d="M18 112 h64 l-6 16 h-52 z" fill="#C9A26A"/><path d="M14 112 h72" stroke="#8B6A3E" stroke-width="4" stroke-linecap="round"/>`;
+  if (st === 0) return `<svg viewBox="0 0 100 130" aria-hidden="true">${g}<ellipse cx="50" cy="109" rx="5" ry="3" fill="#8B6A3E"/></svg>`;
+  g += `<path d="M50 112 V${top}" stroke="#2C6E5D" stroke-width="4" stroke-linecap="round"/>`;
+  if (st === 1) g += `<path d="M50 ${top + 2} q-12 -4 -12 -12 q12 0 12 12 M50 ${top + 2} q12 -4 12 -12 q-12 0 -12 12" fill="#4F9A7C"/>`;
+  if (st >= 2) g += `<path d="M50 96 q-18 -2 -20 -16 q18 2 20 16 M50 84 q18 -2 20 -16 q-18 2 -20 16" fill="#4F9A7C"/>`;
+  if (st === 2) g += `<path d="M50 ${top + 2} q-8 -4 -8 -10 q8 0 8 10 M50 ${top + 2} q8 -4 8 -10 q-8 0 -8 10" fill="#4F9A7C"/>`;
+  if (st === 3) g += `<ellipse cx="50" cy="${top - 4}" rx="7" ry="11" fill="${col}"/><path d="M43 ${top} q7 6 14 0" stroke="#2C6E5D" stroke-width="3" fill="none"/>`;
+  if (st >= 4) { const r = st === 5 ? 15 : 12, p = st === 5 ? 8 : 6; for (let i = 0; i < p; i++) { const a = i / p * Math.PI * 2; g += `<ellipse cx="${(50 + Math.cos(a) * r).toFixed(1)}" cy="${(top - 8 + Math.sin(a) * r).toFixed(1)}" rx="${r * .62}" ry="${r * .42}" transform="rotate(${(a * 180 / Math.PI).toFixed(0)} ${(50 + Math.cos(a) * r).toFixed(1)} ${(top - 8 + Math.sin(a) * r).toFixed(1)})" fill="${col}"/>`; } g += `<circle cx="50" cy="${top - 8}" r="${r * .55}" fill="#F4DE8A"/>`; }
+  if (st === 5) g += `<path d="M78 40 q-6 -8 0 -10 q4 2 0 10 q6 -8 10 -4 q-2 6 -10 4" fill="#5F7BB0" class="ff"/>`;
+  return `<svg viewBox="0 0 100 130" aria-hidden="true">${g}</svg>`;
+}
+function drawMes(s) {
+  const m = s.m || {}, d = new Date(), ym = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2), n = m[ym] || 0, mes = MESES[d.getMonth()];
+  const pic = (k, v) => APP === 'g' ? tarro(v, k === ym) : flor(v, COLS[+k.slice(5) - 1]);
+  document.getElementById('mesNow').innerHTML = pic(ym, n) + `<div><b>${mes[0].toUpperCase() + mes.slice(1)}</b><span>${n ? (APP === 'g' ? `Este mes has encendido ${n} ${n === 1 ? "día" : "días"}.` : (n === 1 ? 'Este mes ya te has cuidado un día, y la flor ha brotado.' : `Este mes te has cuidado ${n} días, y la flor ha crecido con cada uno.`)) : "La flor de este mes está esperando a brotar."}</span></div>`;
+  const prev = Object.keys(m).filter(k => k < ym && m[k] > 0).sort();
+  const sh = document.getElementById('shelf'); sh.hidden = !prev.length; if (!prev.length) { sh.innerHTML = ''; return; }
+  const years = [...new Set(prev.map(k => k.slice(0, 4)))];
+  sh.innerHTML = `<h3>El parterre</h3>` + years.map(y => `${years.length > 1 ? `<h3>${y}</h3>` : ''}<div class="row">${prev.filter(k => k.startsWith(y)).map(k => `<div class="it" title="${MESES[+k.slice(5) - 1]}: ${m[k]}">${pic(k, m[k])}<span>${MESES[+k.slice(5) - 1].slice(0, 3)}</span></div>`).join('')}</div>`).join('');
+}
+function season(d) {
+  const md = (d.getMonth() + 1) * 100 + d.getDate();
+  const w = (md >= 1221 || md < 320) ? 'inv' : md < 621 ? 'pri' : md < 922 ? 'ver' : 'oto';
+  const nav = md >= 1215 || md <= 106;
+  document.querySelectorAll('.sea').forEach(g => g.setAttribute('opacity', (g.dataset.season === w || (nav && g.dataset.season === 'nav')) ? 1 : 0));
+}
 function draw() {
   const s = read(), a = s.a || {}, tot = Object.values(a).reduce((x, y) => x + y, 0);
   document.querySelectorAll('[data-k]').forEach(el => {
@@ -131,6 +222,7 @@ function draw() {
     return `<li><span class="dot" style="background:${col}"></span><span><b>${name}</b><small>${room}</small></span><span><span class="pips" style="--pc:${col}" aria-hidden="true">${TH.map((t, i) => `<i class="${i < l ? 'on' : ''}"></i>`).join('')}</span><span class="st">${LV[l]}</span></span></li>`;
   }).join('');
   document.getElementById('show').checked = !s.off;
+  drawMes(s); season(window.__fecha || new Date());
 }
 document.getElementById('show').onchange = (e) => { const s = read(); s.off = !e.target.checked; s.seen = true; save(s); };
 document.getElementById('reset').onclick = () => { document.getElementById('ask').hidden = false; };

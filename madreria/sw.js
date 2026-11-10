@@ -3,7 +3,7 @@
 // Así, cuando Graciela sube cambios, se ven en cuanto hay conexión, sin tener que hacer nada.
 const CACHE = 'madreria-v5';
 const BASE = '/madreria/';
-const PRIMERO = [BASE, BASE + 'calma/', BASE + 'casa/', '/fuentes/fuentes.css', '/fuentes/nunito-sans.woff', '/fuentes/lora.woff'].concat([BASE + 'pleno/', BASE + 'primeras/', BASE + 'faltar/']);  // se guardan al instalar: el inicio, «Calmarme» y la casa (en La Madrería, también lo del día del parto)
+const PRIMERO = [BASE, BASE + 'calma/', BASE + 'casa/', '/fuentes/fuentes.css', '/fuentes/nunito-sans.woff', '/fuentes/lora.woff'].concat([BASE + 'pleno/', BASE + 'primeras/', BASE + 'faltar/', BASE + 'presente/']);  // se guardan al instalar: el inicio, «Calmarme» y la casa (en La Madrería, también lo del día del parto)
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => Promise.all(PRIMERO.map((u) =>
