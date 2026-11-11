@@ -15,7 +15,9 @@
 
 export const HOST_M = 'madreria.gracielasalvador.com';
 export const HOST_G = 'www.gracielasalvador.com';
-export const APPS = { m: { ruta: 'madreria', host: HOST_M, nombre: 'La Madrería' }, g: { ruta: 'bolsillo', host: HOST_G, nombre: 'Mi psicóloga en el bolsillo' } };
+export const APPS = { m: { ruta: 'madreria', host: HOST_M, nombre: 'Mi psicóloga en el bolsillo, edición La Madrería' }, g: { ruta: 'bolsillo', host: HOST_G, nombre: 'Mi psicóloga en el bolsillo' } };
+// Los nombres de las apps en los correos y avisos (primero la general, después la edición La Madrería)
+export const nombresApps = (apps) => ['g', 'm'].filter((a) => apps.includes(a)).map((a) => APPS[a].nombre).join(' y ');
 export const RUTA_APP = { madreria: 'm', bolsillo: 'g' };
 // Lo que se abre sin cuenta: el inicio, la casa, la página legal y dos herramientas en cada app
 export const GRATIS = { m: ['', 'calma', 'carga', 'casa', 'legal'], g: ['', 'calma', 'emociones', 'casa', 'legal'] };
@@ -112,20 +114,27 @@ export async function crearEnlace(email, app, minutos = 30) {
 export async function enviarCorreo(para, asunto, html) {
   const key = env('RESEND_API_KEY'), from = env('MAIL_FROM') || 'Graciela Salvador <hola@gracielasalvador.com>';
   if (!key) throw new Error('Falta RESEND_API_KEY en Vercel.');
-  const r = await fetch('https://api.resend.com/emails', { method: 'POST', headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ from, to: [para], subject: asunto, html }) });
+  const r = await fetch('https://api.resend.com/emails', { method: 'POST', headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ from, to: [para], subject: asunto, html, text: textoPlano(html) }) });
   if (!r.ok) throw new Error('No se pudo enviar el correo (' + r.status + ').');
 }
+// Los correos se escriben como un correo normal de persona a persona (texto sencillo, un enlace y versión en texto plano),
+// para que Gmail los deje en «Principal» y no en «Promociones»
 export function plantilla(app, titulo, parrafos, boton) {
-  const M = app === 'm', ac = M ? '#11667D' : '#166A7E', dp = M ? '#0B4757' : '#0F4C5C';
-  return `<!doctype html><html lang="es"><body style="margin:0;background:#F5F9F9;font-family:'Segoe UI',Helvetica,Arial,sans-serif;color:#17343B">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F5F9F9;padding:24px 12px"><tr><td align="center">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#FFFFFF;border:1px solid #D7E5E8;border-radius:20px;${M ? 'border-top:6px solid #B9B20E;' : ''}padding:28px 26px">
-<tr><td style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#5C747A;padding-bottom:12px"><b style="color:${dp}">Graciela Salvador</b> · ${M ? 'La Madrería' : 'Psicóloga'}</td></tr>
-<tr><td style="font-family:Georgia,serif;font-size:24px;color:${dp};padding-bottom:12px">${esc(titulo)}</td></tr>
-${parrafos.map((p) => `<tr><td style="font-size:16px;line-height:1.55;color:#33505A;padding-bottom:12px">${p}</td></tr>`).join('')}
-${boton ? `<tr><td style="padding:8px 0 16px"><a href="${esc(boton[1])}" style="display:inline-block;background:${ac};color:#FFFFFF;text-decoration:none;font-weight:700;font-size:16px;padding:13px 26px;border-radius:999px">${esc(boton[0])}</a></td></tr>` : ''}
-<tr><td style="font-size:13px;line-height:1.5;color:#5C747A;border-top:1px solid #D7E5E8;padding-top:14px">Mi psicóloga en el bolsillo${M ? ' · Edición La Madrería' : ''}. Lo que escribes en las herramientas se guarda solo en tu móvil; aquí solo sabemos tu correo y a qué tienes acceso.</td></tr>
-</table></td></tr></table></body></html>`;
+  const M = app === 'm', ac = M ? '#11667D' : '#166A7E';
+  const p = (t) => `<p style="margin:0 0 14px">${t}</p>`;
+  return `<!doctype html><html lang="es"><body style="margin:0;padding:16px;font-family:Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;color:#222">
+<div style="max-width:560px">
+${p('Hola:')}${parrafos.map(p).join('')}
+${boton ? p(`<a href="${esc(boton[1])}" style="color:${ac};font-weight:bold">${esc(boton[0])}</a>`) : ''}
+${p('Un abrazo,<br>Graciela')}
+<p style="margin:18px 0 0;font-size:12px;color:#777">Graciela Salvador · Psicóloga sanitaria. Lo que escribes en las herramientas se guarda solo en tu móvil; aquí solo sabemos tu correo y a qué tienes acceso.</p>
+</div></body></html>`;
+}
+// La versión en texto plano del mismo correo
+export function textoPlano(html) {
+  return html.replace(/<br\s*\/?>/gi, '\n').replace(/<a [^>]*href="([^"]+)"[^>]*>([^<]*)<\/a>/gi, (m, u, t) => `${t}: ${u.replace(/&amp;/g, '&')}`)
+    .replace(/<\/p>/gi, '\n\n').replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+    .replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
 }
 
 /* ---------- Páginas sencillas (formularios y mensajes) ---------- */

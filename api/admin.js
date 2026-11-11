@@ -1,13 +1,12 @@
 // /api/admin → lo que usa la página de pacientes de Graciela (www.gracielasalvador.com/graciela/).
 // Solo funciona con la contraseña ADMIN_PASSWORD de Vercel.
-import { gratisConfig, FIJAS, db, esAdmin, crearAdmin, limpiaCorreo, correoValido, leerPersona, guardarPersona, accesos, crearEnlace, enviarCorreo, plantilla, APPS, fecha, DIA, MARGEN_ALTA } from './_comun.js';
+import { nombresApps, gratisConfig, FIJAS, db, esAdmin, crearAdmin, limpiaCorreo, correoValido, leerPersona, guardarPersona, accesos, crearEnlace, enviarCorreo, plantilla, APPS, fecha, DIA, MARGEN_ALTA } from './_comun.js';
 export const config = { runtime: 'edge' };
 
 const json = (o, st = 200, cookies = []) => { const h = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }); for (const c of cookies) h.append('Set-Cookie', c); return new Response(JSON.stringify(o), { status: st, headers: h }); };
 const resumen = (email, p) => { const acc = accesos(p), t = Date.now();
   return { email, nombre: p?.pac?.nombre || '', pac: p?.pac || null, m: acc.m > t ? acc.m : 0, g: acc.g > t ? acc.g : 0,
     sub: p?.sub ? { activa: !!p.sub.activa, apps: p.sub.apps || [], plan: p.sub.plan || '', periodo: p.sub.periodo || 0, inicio: p.sub.inicio || 0, cancelada: p.sub.cancelada || 0 } : null, reg: (p?.reg || []).map((r) => ({ apps: r.apps, hasta: r.hasta, meses: r.meses })), mano: p?.mano || [] }; };
-const nombresApps = (apps) => apps.map((a) => APPS[a].nombre).join(' y ');
 
 export default async function handler(req) {
   let d = {}; try { d = req.method === 'POST' ? await req.json() : {}; } catch (e) {}
@@ -46,14 +45,14 @@ export default async function handler(req) {
       p.pac = { apps, nombre: String(d.nombre || '').slice(0, 60), desde: Date.now(), alta: null };
       await guardarPersona(email, p); await db('SADD', 'pacientes', email);
       const link = await crearEnlace(email, apps[0], 60 * 24 * 7);
-      await enviarCorreo(email, 'Graciela te ha dado acceso a tus herramientas', plantilla(apps[0], 'Ya tienes acceso', [`Graciela te ha dado acceso a ${nombresApps(apps)} mientras estés en terapia con ella.`, 'Toca el botón para entrar desde tu móvil. Más adelante podrás entrar siempre con este correo, sin contraseña.', 'Lo que escribas en las herramientas se guarda solo en tu móvil. Nadie más puede verlo, tampoco Graciela, salvo que tú decidas enseñárselo.'], ['Entrar en la app', link]));
+      await enviarCorreo(email, 'Ya tienes acceso a tus herramientas', plantilla(apps[0], 'Ya tienes acceso', [`Te he dado acceso a ${nombresApps(apps)} mientras estemos en terapia.`, 'Toca el enlace para entrar desde tu móvil. Más adelante podrás entrar siempre con este correo, sin contraseña.', 'Lo que escribas en las herramientas se guarda solo en tu móvil. Nadie más puede verlo, tampoco Graciela, salvo que tú decidas enseñárselo.'], ['Entrar en la app', link]));
       return json({ ok: true, persona: resumen(email, p) });
     }
     if (d.accion === 'enlace') {
       const acc = accesos(p), t = Date.now(), app = p.pac?.apps?.[0] || (acc.m > t ? 'm' : acc.g > t ? 'g' : null);
       if (!app) return json({ error: 'Esta persona no tiene acceso ahora mismo.' }, 400);
       const link = await crearEnlace(email, app, 60 * 24 * 7);
-      await enviarCorreo(email, 'Tu enlace para entrar', plantilla(app, 'Tu enlace para entrar', ['Toca el botón para entrar en la app desde tu móvil. No necesitas contraseña.'], ['Entrar', link]));
+      await enviarCorreo(email, 'Tu enlace para entrar', plantilla(app, 'Tu enlace para entrar', ['Toca el enlace para entrar en la app desde tu móvil. No necesitas contraseña.'], ['Entrar', link]));
       return json({ ok: true });
     }
     if (!p.pac) return json({ error: 'Este correo no está en tu lista de pacientes.' }, 404);
@@ -68,7 +67,7 @@ export default async function handler(req) {
     if (d.accion === 'reactivar') {
       p.pac.alta = null; if (apps.length) p.pac.apps = apps; await guardarPersona(email, p);
       const link = await crearEnlace(email, p.pac.apps[0], 60 * 24 * 7);
-      await enviarCorreo(email, 'Tu acceso vuelve a estar abierto', plantilla(p.pac.apps[0], 'Tu acceso vuelve a estar abierto', [`Graciela ha vuelto a abrir tu acceso a ${nombresApps(p.pac.apps)}.`], ['Entrar en la app', link]));
+      await enviarCorreo(email, 'Tu acceso vuelve a estar abierto', plantilla(p.pac.apps[0], 'Tu acceso vuelve a estar abierto', [`He vuelto a abrir tu acceso a ${nombresApps(p.pac.apps)}.`], ['Entrar en la app', link]));
       return json({ ok: true, persona: resumen(email, p) });
     }
     if (d.accion === 'apps') { if (!apps.length) return json({ error: 'Elige al menos una app.' }, 400); p.pac.apps = apps; await guardarPersona(email, p); return json({ ok: true, persona: resumen(email, p) }); }

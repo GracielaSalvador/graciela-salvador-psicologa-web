@@ -4,7 +4,7 @@
 //   «Madrería» → La Madrería · «General» o «Bolsillo» → la general · «Pack» o «las dos» → las dos
 //   «Anual» o «año» → periodo de un año; si no, mensual
 // Las tarjetas regalo no pasan por aquí: se canjean con su código en /api/regalo.
-import { leerPersona, guardarPersona, limpiaCorreo, crearEnlace, enviarCorreo, plantilla, APPS, fecha, accesos, DIA, db } from './_comun.js';
+import { nombresApps, leerPersona, guardarPersona, limpiaCorreo, crearEnlace, enviarCorreo, plantilla, APPS, fecha, accesos, DIA, db } from './_comun.js';
 export const config = { runtime: 'edge' };
 
 const sin = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
@@ -36,7 +36,7 @@ export default async function handler(req) {
         for (const a of prod.apps) p.sub[a] = Math.max(s[a] || 0, ahora + prod.periodo);
         await guardarPersona(email, p);
         const app = prod.apps[0], link = await crearEnlace(email, app, 60 * 24 * 3);
-        await enviarCorreo(email, 'Bienvenida a Mi psicóloga en el bolsillo', plantilla(app, 'Ya tienes acceso', [`Gracias por suscribirte a ${prod.apps.map((a) => APPS[a].nombre).join(' y ')}. Ya tienes abiertas todas las herramientas.`, 'Toca el botón para entrar desde tu móvil. Más adelante podrás entrar siempre con este correo, sin contraseña.', 'Puedes gestionar o cancelar tu suscripción cuando quieras desde tu cuenta de Payhip.'], ['Entrar en la app', link]));
+        await enviarCorreo(email, 'Te doy la bienvenida a Mi psicóloga en el bolsillo', plantilla(app, 'Ya tienes acceso', [`Gracias por suscribirte a ${nombresApps(prod.apps)}. Ya tienes abiertas todas las herramientas.`, 'Toca el enlace para entrar desde tu móvil. Más adelante podrás entrar siempre con este correo, sin contraseña.', 'Puedes gestionar o cancelar tu suscripción cuando quieras desde tu cuenta de Payhip.'], ['Entrar en la app', link]));
       } else {
         // Cancelada: se mantiene hasta el final del periodo pagado
         const base = (s.ultimo || s.inicio || ahora) + (s.periodo || prod.periodo);

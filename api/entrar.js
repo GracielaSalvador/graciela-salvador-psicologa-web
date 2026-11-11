@@ -46,7 +46,7 @@ export default async function handler(req) {
         if (tieneAlgo(acc)) {
           const destino = acc[ap] > Date.now() ? ap : acc.m > Date.now() ? 'm' : 'g';
           const link = await crearEnlace(email, destino);
-          await enviarCorreo(email, 'Tu enlace para entrar', plantilla(destino, 'Tu enlace para entrar', ['Toca el botón para entrar en la app desde este móvil. No necesitas contraseña.', 'El enlace sirve una sola vez durante 30 minutos. Si no lo has pedido tú, puedes ignorar este correo.'], ['Entrar', link]));
+          await enviarCorreo(email, 'Tu enlace para entrar', plantilla(destino, 'Tu enlace para entrar', ['Toca el enlace para entrar en la app desde este móvil. No necesitas contraseña.', 'El enlace sirve una sola vez durante 30 minutos. Si no lo has pedido tú, puedes ignorar este correo.'], ['Entrar', link]));
         } else {
           const L = enlacesPago(), pago = L[ap] || L.p;
           await enviarCorreo(email, 'Sobre tu acceso', plantilla(ap, 'Todavía no tienes acceso', ['Hemos recibido una petición para entrar con este correo, pero todavía no tiene acceso a las herramientas.',
