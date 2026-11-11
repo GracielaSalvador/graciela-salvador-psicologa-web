@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Mis pacientes · Graciela Salvador</title>
+<link rel="stylesheet" href="/fuentes/fuentes.css">
+<style>
+/* Página privada de Graciela: dar y quitar el acceso de sus pacientes a las apps. Una columna, tarjetas por paciente. */
+:root { --bg:#F5F9F9; --surface:#FFFFFF; --ink:#17343B; --muted:#5C747A; --line:#D7E5E8; --accent:#166A7E; --deep:#0F4C5C; --tint:#E4EFF1; --on:#FFFFFF; --m:#11667D; --mbg:#E3EFF1; --y:#B9B20E; --ybg:#F4F2CC; --err:#8E4E33; --errbg:#F4E3DA; --ok:#2C6E5D; --okbg:#E2F0EA; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0C1C21; --surface:#12282E; --ink:#E2EEF0; --muted:#9AB2B8; --line:#234046; --accent:#5FB2C3; --deep:#9AD3DE; --tint:#18343B; --on:#0C1C21; --m:#5DB4C6; --mbg:#183339; --y:#DCD56A; --ybg:#2E2C12; --err:#E8B39A; --errbg:#3A2A23; --ok:#8CCDB6; --okbg:#17332B; color-scheme: dark; } }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Nunito Sans", "Segoe UI", system-ui, sans-serif; line-height: 1.5; }
+.wrap { max-width: 640px; margin: 0 auto; padding: 20px 16px 60px; display: flex; flex-direction: column; gap: 16px; }
+.brand { font-size: .76rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); } .brand b { color: var(--deep); }
+h1 { font-family: Lora, Georgia, serif; font-weight: 500; color: var(--deep); font-size: 1.8rem; margin: 0; line-height: 1.2; }
+h2 { font-family: Lora, Georgia, serif; font-weight: 500; color: var(--deep); font-size: 1.25rem; margin: 6px 0 0; }
+p { margin: 0; color: var(--muted); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+label { font-weight: 700; font-size: .9rem; }
+input[type=email], input[type=text], input[type=password] { width: 100%; font: inherit; font-size: 1rem; padding: 12px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--bg); color: var(--ink); }
+.apps { display: flex; gap: 8px; flex-wrap: wrap; }
+.apps label { display: flex; align-items: center; gap: 8px; border: 1.5px solid var(--line); border-radius: 999px; padding: 8px 14px; font-weight: 700; cursor: pointer; }
+.apps input { width: 18px; height: 18px; accent-color: var(--accent); }
+button { font: inherit; font-weight: 800; font-size: .95rem; border: 0; border-radius: 999px; padding: 11px 16px; background: var(--accent); color: var(--on); cursor: pointer; min-height: 44px; }
+button.g { background: transparent; color: var(--accent); border: 1.5px solid var(--line); }
+button.w { background: transparent; color: var(--err); border: 1.5px solid var(--line); }
+button:disabled { opacity: .5; cursor: wait; }
+button:focus-visible, input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.msg { border-radius: 12px; padding: 10px 12px; font-size: .95rem; } .msg.e { background: var(--errbg); color: var(--err); } .msg.o { background: var(--okbg); color: var(--ok); }
+.p { display: flex; flex-direction: column; gap: 8px; }
+.p .top { display: flex; justify-content: space-between; gap: 8px; align-items: flex-start; }
+.p b { font-size: 1.05rem; } .p .mail { color: var(--muted); font-size: .9rem; word-break: break-all; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { font-size: .78rem; font-weight: 800; border-radius: 999px; padding: 3px 10px; background: var(--tint); color: var(--deep); }
+.chip.m { background: var(--ybg); color: var(--m); } .chip.ok { background: var(--okbg); color: var(--ok); } .chip.off { background: var(--errbg); color: var(--err); }
+.acts { display: flex; gap: 6px; flex-wrap: wrap; } .acts button { padding: 8px 12px; min-height: 40px; font-size: .88rem; }
+.tabs { display: flex; gap: 4px; background: var(--tint); border-radius: 999px; padding: 4px; } .tabs button { flex: 1; background: transparent; color: var(--deep); min-height: 40px; padding: 8px 10px; }
+.tabs button[aria-selected="true"] { background: var(--surface); box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+.sum { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; } .sum div { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 10px 12px; } .sum b { display: block; font-size: 1.6rem; color: var(--deep); line-height: 1.1; } .sum span { font-size: .84rem; color: var(--muted); }
+.grow { display: grid; grid-template-columns: 1fr auto; gap: 6px 10px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); }
+.grow:first-child { border-top: 0; } .grow label { display: flex; gap: 10px; align-items: center; font-size: .95rem; cursor: pointer; } .grow input[type=checkbox] { width: 20px; height: 20px; accent-color: var(--accent); flex: none; }
+.grow input[type=date] { min-height: 38px; padding: 4px 8px; font-size: .85rem; width: auto; } .grow .hd { display: flex; gap: 6px; align-items: center; font-size: .82rem; color: var(--muted); }
+.fil button { background: transparent; color: var(--deep); border: 1.5px solid var(--line); min-height: 36px; padding: 6px 12px; font-size: .85rem; } .fil button[aria-pressed="true"] { background: var(--accent); color: var(--on); border-color: var(--accent); }
+.empty { border: 1.5px dashed var(--line); border-radius: 16px; padding: 16px; text-align: center; color: var(--muted); }
+.top-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+small { color: var(--muted); font-size: .84rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top-row"><div class="brand"><b>Graciela Salvador</b> · Accesos</div><button class="g" id="out" hidden>Salir</button></div>
+
+  <section id="login" class="card" hidden>
+    <h1>Mis pacientes</h1>
+    <p>Esta página es solo para ti. Escribe tu contraseña para entrar.</p>
+    <form id="lf" class="p"><label for="lp">Contraseña</label><input id="lp" type="password" autocomplete="current-password" required><button type="submit">Entrar</button></form>
+    <div id="lm"></div>
+  </section>
+
+  <section id="app" hidden style="display:flex;flex-direction:column;gap:16px">
+    <div class="tabs" role="tablist"><button role="tab" data-t="pac" aria-selected="true">Mis pacientes</button><button role="tab" data-t="tod" aria-selected="false">Todas las personas</button><button role="tab" data-t="gra" aria-selected="false">Gratis</button></div>
+    <div id="v-gra" hidden style="display:none;flex-direction:column;gap:14px">
+      <h1>Herramientas gratis</h1>
+      <p>Lo que marques aquí se abre para todo el mundo, sin cuenta. Si pones una fecha, se abre solo hasta ese día (por ejemplo, para una promoción) y después se cierra sola. El inicio, la casita y la información legal son siempre gratis.</p>
+      <div class="card" style="gap:6px"><h2 style="margin:0">La Madrería</h2><div id="grM"></div></div>
+      <div class="card" style="gap:6px"><h2 style="margin:0">Mi psicóloga en el bolsillo</h2><div id="grG"></div></div>
+      <button id="grSave" style="align-self:flex-start">Guardar cambios</button><div class="m" id="grMsg"></div>
+      <small class="muted">Los cambios tardan como mucho un minuto en verse en las apps.</small>
+    </div>
+    <div id="v-tod" hidden style="display:none;flex-direction:column;gap:14px">
+      <h1>Todas las personas</h1>
+      <p>Quién tiene acceso ahora y por qué: porque está en terapia contigo, porque se ha suscrito o porque le han regalado una tarjeta. Las suscripciones y los regalos se abren y se cierran solos con Payhip.</p>
+      <div class="sum" id="sum"></div>
+      <input type="text" id="q" placeholder="Buscar por nombre o correo" autocomplete="off" aria-label="Buscar por nombre o correo">
+      <div class="chips fil" id="fil"></div>
+      <div id="tod" class="p"></div>
+    </div>
+    <div id="v-pac" style="display:flex;flex-direction:column;gap:16px">
+    <h1>Mis pacientes</h1>
+    <p>Aquí das acceso a las apps a quien está en terapia contigo. Al darle el alta, conserva el acceso <span id="mg">2 semanas</span> más y le llega un correo para que decida si quiere seguir.</p>
+
+    <form class="card" id="nf">
+      <h2>Dar acceso a una paciente</h2>
+      <label for="ne">Su correo</label><input id="ne" type="email" inputmode="email" autocomplete="off" required placeholder="nombre@correo.com">
+      <label for="nn">Un nombre para reconocerla <small>(opcional)</small></label><input id="nn" type="text" maxlength="60" autocomplete="off" placeholder="Por ejemplo: Laura M.">
+      <small>Solo el nombre o unas iniciales. Nada clínico.</small>
+      <span style="font-weight:700;font-size:.9rem">Apps</span>
+      <div class="apps"><label><input type="checkbox" name="a" value="m" checked> La Madrería</label><label><input type="checkbox" name="a" value="g"> La general</label></div>
+      <button type="submit">Dar acceso y enviarle el correo</button>
+      <div id="nm"></div>
+    </form>
+
+    <h2>En terapia</h2>
+    <div id="act" class="p"></div>
+    <h2>Con el alta</h2>
+    <div id="alt" class="p"></div>
+    </div>
+  </section>
+</div>
+<script>
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fecha = (t) => new Date(t).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+const NOM = { m: 'La Madrería', g: 'General' };
+async function api(o) { const r = await fetch('/api/admin', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(o), credentials: 'same-origin' }); const j = await r.json().catch(() => ({ error: 'Sin respuesta' })); if (r.status === 401 && j.error === 'entrar') { show(false); throw new Error('entrar'); } if (!r.ok) throw new Error(j.error || 'Algo ha fallado'); return j; }
+function show(dentro) { $('#login').hidden = dentro; $('#app').hidden = !dentro; $('#app').style.display = dentro ? 'flex' : 'none'; $('#out').hidden = !dentro; }
+const msg = (el, t, ok) => { el.innerHTML = t ? `<div class="msg ${ok ? 'o' : 'e'}" role="${ok ? 'status' : 'alert'}">${esc(t)}</div>` : ''; };
+
+function tarjeta(p) {
+  const t = Date.now(), alta = p.pac && p.pac.alta, hasta = Math.max(p.m, p.g);
+  const estado = !alta ? '<span class="chip ok">En terapia</span>' : hasta > t ? `<span class="chip">Acceso hasta el ${fecha(hasta)}</span>` : '<span class="chip off">Sin acceso</span>';
+  return `<div class="card" data-e="${esc(p.email)}"><div class="top"><div><b>${esc(p.nombre || p.email)}</b>${p.nombre ? `<div class="mail">${esc(p.email)}</div>` : ''}</div></div>
+    <div class="chips">${(p.pac?.apps || []).map((a) => `<span class="chip ${a === 'm' ? 'm' : ''}">${NOM[a]}</span>`).join('')}${estado}${p.sub && p.sub.activa ? '<span class="chip ok">Suscrita</span>' : ''}</div>
+    <small>Desde el ${fecha(p.pac.desde)}${alta ? ` · alta el ${fecha(alta)}` : ''}</small>
+    <div class="acts">${!alta ? `<button data-x="alta">Dar el alta</button><button class="g" data-x="enlace">Reenviar enlace</button><button class="g" data-x="apps">Cambiar apps</button>` : `<button class="g" data-x="reactivar">Volver a abrir</button>`}<button class="w" data-x="quitar">${alta ? 'Quitar de la lista' : 'Quitar acceso'}</button></div><div class="m"></div></div>`;
+}
+// ---------- Todas las personas ----------
+let TODOS = [], SIEMPRE = 8e15, FIL = 'act';
+const tipos = (p) => { const t = Date.now(), o = [];
+  if (p.pac) o.push(p.pac.alta ? 'alta' : 'pac');
+  if (p.sub && (p.sub.activa || Math.max(...(p.sub.apps || []).map((a) => p[a] || 0), 0) > t)) o.push('sub');
+  if ((p.reg || []).some((r) => r.hasta > t)) o.push('reg');
+  return o; };
+const activa = (p) => Math.max(p.m, p.g) > Date.now();
+const hastaTxt = (v) => v >= SIEMPRE ? 'sin fecha de fin' : 'hasta el ' + fecha(v);
+function tarjetaT(p) {
+  const t = Date.now(), ty = tipos(p), chips = [];
+  if (ty.includes('pac')) chips.push('<span class="chip ok">En terapia</span>');
+  if (ty.includes('alta')) chips.push('<span class="chip">Paciente con el alta</span>');
+  if (p.sub) chips.push(p.sub.activa ? `<span class="chip ok">Suscripción ${p.sub.periodo > 100 * 864e5 ? 'anual' : 'mensual'}</span>` : `<span class="chip off">Suscripción cancelada</span>`);
+  (p.reg || []).filter((r) => r.hasta > t).forEach((r) => chips.push(`<span class="chip">Regalo de ${r.meses} meses</span>`));
+  const acc = ['m', 'g'].filter((a) => p[a] > t).map((a) => `<span class="chip ${a === 'm' ? 'm' : ''}">${NOM[a]} · ${hastaTxt(p[a])}</span>`);
+  return `<div class="card" data-e="${esc(p.email)}"><div><b>${esc(p.nombre || p.email)}</b>${p.nombre ? `<div class="mail">${esc(p.email)}</div>` : ''}</div>
+    <div class="chips">${chips.join('')}</div><div class="chips">${acc.length ? acc.join('') : '<span class="chip off">Sin acceso ahora</span>'}</div>
+    <div class="acts">${activa(p) ? '<button class="g" data-y="enlace">Reenviar enlace</button>' : ''}${!p.pac ? '<button class="g" data-y="pac">Darle acceso como paciente</button>' : ''}</div><div class="m"></div></div>`;
+}
+function pintaTodos() {
+  const t = Date.now(), act = TODOS.filter(activa), n = (k) => act.filter((p) => tipos(p).includes(k)).length;
+  $('#sum').innerHTML = `<div><b>${act.length}</b><span>con acceso ahora</span></div><div><b>${n('pac') + n('alta')}</b><span>pacientes</span></div><div><b>${n('sub')}</b><span>con suscripción</span></div><div><b>${n('reg')}</b><span>con regalo</span></div>`;
+  const F = [['act', 'Con acceso'], ['pac', 'Pacientes'], ['sub', 'Suscripción'], ['reg', 'Regalo'], ['sin', 'Sin acceso'], ['all', 'Todas']];
+  $('#fil').innerHTML = F.map(([k, l]) => `<button data-f="${k}" aria-pressed="${FIL === k}">${l}</button>`).join('');
+  document.querySelectorAll('#fil button').forEach((b) => b.onclick = () => { FIL = b.dataset.f; pintaTodos(); });
+  const q = $('#q').value.trim().toLowerCase();
+  const L = TODOS.filter((p) => { const ty = tipos(p);
+    const ok = FIL === 'all' || (FIL === 'act' && activa(p)) || (FIL === 'sin' && !activa(p)) || (FIL === 'pac' && (ty.includes('pac') || ty.includes('alta'))) || (FIL === 'sub' && ty.includes('sub')) || (FIL === 'reg' && ty.includes('reg'));
+    return ok && (!q || p.email.includes(q) || (p.nombre || '').toLowerCase().includes(q)); });
+  $('#tod').innerHTML = L.length ? L.map(tarjetaT).join('') : '<div class="empty">No hay nadie con este filtro.</div>';
+  document.querySelectorAll('#tod [data-y]').forEach((b) => b.onclick = () => accionT(b));
+}
+async function accionT(b) {
+  const card = b.closest('[data-e]'), email = card.dataset.e, m = card.querySelector('.m'); let o = { accion: 'enlace', email };
+  if (b.dataset.y === 'pac') { const r = prompt('¿Qué apps? Escribe M para La Madrería, G para la general o MG para las dos.', 'M'); if (!r) return; const apps = [...new Set(r.toLowerCase().replace(/[^mg]/g, '').split(''))]; if (!apps.length) return;
+    const nombre = prompt('Un nombre para reconocerla (opcional, nada clínico):', '') || ''; o = { accion: 'nueva', email, nombre, apps }; }
+  b.disabled = true;
+  try { await api(o); msg(m, o.accion === 'enlace' ? 'Enlace enviado.' : 'Hecho. Ya está en tu lista de pacientes.', true); setTimeout(cargar, 1200); }
+  catch (e) { if (e.message !== 'entrar') msg(m, e.message); b.disabled = false; }
+}
+$('#q').oninput = () => pintaTodos();
+// ---------- Herramientas gratis ----------
+const HERR = {"m": [["faltar", "Lo que no puede faltar"], ["peques", "Ayudar a mi peque a calmarse"], ["duelo", "El duelo por mi bebé"], ["primeras", "Las primeras horas"], ["pleno", "En pleno parto"], ["limpeq", "Poner límites con cariño"], ["familia", "La familia que queremos ser"], ["limfam", "Poner límites a la familia"], ["suenopos", "Dormir en el posparto"], ["lactancia", "Lactancia y emociones"], ["cuerpopos", "Mi cuerpo en el posparto"], ["animo", "Cuidar mi ánimo en el posparto"], ["cuerpoemb", "Mi cuerpo en el embarazo"], ["vinculo", "Conectar con mi bebé"], ["ansiedad", "Calmar mi ansiedad en el embarazo"], ["salto", "Cuando salto"], ["origen", "Saber de dónde vengo"], ["ventanas", "Dos ventanas"], ["recordar", "Recordar mi parto"], ["parto", "Prepararme para el parto"], ["pareja", "Seguir siendo pareja"], ["soledad", "Sentirme menos sola"], ["nacer", "Nacer como madre"], ["carga", "Aligerar mi carga mental"], ["liston", "Ajustar el listón"], ["carino", "Tratarme con cariño"], ["calma", "Calmarme o volver a mí"], ["presente", "Volver al presente jugando"], ["emociones", "Entender lo que siento"], ["ahora", "Estar aquí y ahora"], ["energia", "Cuidar mi energía"], ["hablar", "Hablar sin pelear"], ["sesion", "Preparar mi sesión"]], "g": [["calma", "Calmarme o volver a mí"], ["emociones", "Entender lo que siento"], ["ahora", "Estar aquí y ahora"], ["presente", "Volver al presente jugando"], ["impulsos", "Frenar a tiempo"], ["enfado", "Gestionar mi enfado"], ["frustracion", "Ampliar mi ventana"], ["sueno", "Dormir mejor"], ["energia", "Cuidar mi energía"], ["ciclo", "Salir del círculo del miedo"], ["social", "Sentirme cómodo/a con los demás"], ["vueltas", "Darle menos vueltas"], ["incertidumbre", "Convivir con la incertidumbre"], ["pensamientos", "Revisar mis pensamientos"], ["quererme", "Quererme mejor"], ["cuerpo", "Hacer las paces con mi cuerpo"], ["carino", "Tratarme con cariño"], ["liston", "Ajustar el listón"], ["culpa", "Aliviar mi culpa"], ["verguenza", "Dejar de esconderme"], ["limites", "Poner un límite"], ["hablar", "Hablar sin pelear"], ["vinculos", "Vínculos sanos"], ["soledad", "Sentirme menos solo/a"], ["celos", "Calmar mis celos"], ["apego", "Mirar de dónde vengo"], ["activar", "Ponerme en marcha"], ["duelo", "Acompañar mi duelo"], ["cambios", "Atravesar un cambio"], ["rumbo", "Saber hacia dónde voy"], ["sesion", "Preparar mi sesión"]]};
+const dIso = (t) => { const d = new Date(t); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+function pintaGratis(cfg) {
+  for (const a of ['m', 'g']) {
+    const c = cfg[a] || {};
+    $(a === 'm' ? '#grM' : '#grG').innerHTML = HERR[a].map(([id, t]) => { const on = id in c, h = c[id] || 0, cad = h && h < Date.now();
+      return `<div class="grow" data-a="${a}" data-id="${id}"><label><input type="checkbox" ${on && !cad ? 'checked' : ''}> ${esc(t)}</label>
+        <span class="hd" ${on && !cad ? '' : 'hidden'}>hasta <input type="date" value="${h && !cad ? dIso(h) : ''}" aria-label="Gratis hasta (opcional)"></span></div>`; }).join('');
+  }
+  document.querySelectorAll('.grow input[type=checkbox]').forEach((c) => c.onchange = () => { c.closest('.grow').querySelector('.hd').hidden = !c.checked; });
+}
+async function cargaGratis() { try { pintaGratis((await api({ accion: 'gratis_ver' })).cfg); } catch (e) { if (e.message !== 'entrar') msg($('#grMsg'), e.message); } }
+$('#grSave').onclick = async () => {
+  const cfg = { m: {}, g: {} };
+  document.querySelectorAll('.grow').forEach((r) => { if (!r.querySelector('input[type=checkbox]').checked) return; const v = r.querySelector('input[type=date]').value;
+    cfg[r.dataset.a][r.dataset.id] = v ? new Date(v + 'T23:59:59').getTime() : 0; });
+  $('#grSave').disabled = true;
+  try { await api({ accion: 'gratis_guardar', cfg }); msg($('#grMsg'), 'Guardado. En un minuto se verá así en las apps.', true); } catch (e) { if (e.message !== 'entrar') msg($('#grMsg'), e.message); }
+  $('#grSave').disabled = false;
+};
+document.querySelectorAll('.tabs button').forEach((b) => b.onclick = () => { document.querySelectorAll('.tabs button').forEach((x) => x.setAttribute('aria-selected', x === b));
+  for (const v of ['pac', 'tod', 'gra']) { const on = b.dataset.t === v; $('#v-' + v).hidden = !on; $('#v-' + v).style.display = on ? 'flex' : 'none'; }
+  if (b.dataset.t === 'gra') cargaGratis(); });
+
+async function cargar() {
+  const r = await api({ accion: 'lista' }), margenDias = r.margenDias; TODOS = r.lista; SIEMPRE = r.siempre || SIEMPRE;
+  const lista = TODOS.filter((p) => p.pac);
+  show(true); $('#mg').textContent = margenDias === 14 ? '2 semanas' : margenDias + ' días';
+  pintaTodos();
+  const act = lista.filter((p) => !p.pac.alta), alt = lista.filter((p) => p.pac.alta);
+  $('#act').innerHTML = act.length ? act.map(tarjeta).join('') : '<div class="empty">Todavía no hay nadie. Da acceso a tu primera paciente con el formulario de arriba.</div>';
+  $('#alt').innerHTML = alt.length ? alt.map(tarjeta).join('') : '<div class="empty">Nadie con el alta de momento.</div>';
+  document.querySelectorAll('[data-x]').forEach((b) => b.onclick = () => accion(b));
+}
+async function accion(b) {
+  const card = b.closest('[data-e]'), email = card.dataset.e, x = b.dataset.x, m = card.querySelector('.m');
+  const nombre = card.querySelector('b').textContent;
+  if (x === 'alta' && !confirm(`¿Dar el alta a ${nombre}? Conservará el acceso 2 semanas y le llegará un correo.`)) return;
+  if (x === 'quitar' && !confirm(`¿Quitar el acceso a ${nombre} ahora mismo? No se borra nada de su móvil.`)) return;
+  let apps;
+  if (x === 'apps') { const r = prompt('¿Qué apps? Escribe M para La Madrería, G para la general o MG para las dos.', 'M'); if (!r) return; apps = [...new Set(r.toLowerCase().replace(/[^mg]/g, '').split(''))]; if (!apps.length) return; }
+  b.disabled = true;
+  try { await api({ accion: x, email, apps }); msg(m, x === 'enlace' ? 'Enlace enviado.' : 'Hecho.', true); setTimeout(cargar, x === 'enlace' ? 1500 : 500); }
+  catch (e) { if (e.message !== 'entrar') msg(m, e.message); b.disabled = false; }
+}
+$('#lf').onsubmit = async (ev) => { ev.preventDefault(); try { await api({ accion: 'entrar', clave: $('#lp').value }); $('#lp').value = ''; msg($('#lm'), ''); cargar(); } catch (e) { msg($('#lm'), e.message === 'entrar' ? 'La contraseña no es correcta.' : e.message); } };
+$('#nf').onsubmit = async (ev) => { ev.preventDefault(); const apps = [...document.querySelectorAll('#nf [name=a]:checked')].map((i) => i.value); const bt = ev.target.querySelector('button'); bt.disabled = true;
+  try { await api({ accion: 'nueva', email: $('#ne').value, nombre: $('#nn').value, apps }); msg($('#nm'), `Listo. Le hemos enviado el correo a ${$('#ne').value}.`, true); $('#ne').value = ''; $('#nn').value = ''; cargar(); } catch (e) { if (e.message !== 'entrar') msg($('#nm'), e.message); } bt.disabled = false; };
+$('#out').onclick = async () => { await api({ accion: 'salir' }).catch(() => {}); show(false); };
+cargar().catch(() => show(false));
+</script>
+</body>
+</html>

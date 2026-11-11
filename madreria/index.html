@@ -63,6 +63,9 @@ a.nocache::after { content: 'Necesita conexión'; position: absolute; right: 8px
 .doors.compact strong { font-size: .98rem; } .doors.compact .d { display: none; }
 .doors.compact .star { position: absolute; top: 4px; right: 4px; width: 36px; height: 36px; } .doors.compact .star svg { width: 18px; height: 18px; }
 .more { border: 1.5px dashed var(--line); background: transparent; border-radius: 16px; padding: 12px; font: inherit; font-weight: 800; color: var(--accent); cursor: pointer; grid-column: 1 / -1; }
+a.lkd { position: relative; }
+a.lkd::before { content: ''; position: absolute; top: 8px; right: 8px; width: 20px; height: 20px; border-radius: 50%; background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235C747A' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='11' width='14' height='10' rx='2.5'/%3E%3Cpath d='M8 11V8a4 4 0 0 1 8 0v3'/%3E%3C/svg%3E") center / 13px no-repeat; box-shadow: 0 0 0 1px var(--line); z-index: 1; }
+.acct .who { font-weight: 800; color: var(--deep); word-break: break-all; }
 .casaico { margin-left: auto; width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--line); background: var(--surface); color: var(--accent); display: grid; place-items: center; flex: none; text-decoration: none; }
 .casaico svg { width: 22px; height: 22px; }
 h1 { font-family: var(--display); font-weight: 500; color: var(--deep); font-size: 2.1rem; line-height: 1.12; margin: 6px 0 0; text-wrap: balance; }
@@ -257,6 +260,9 @@ footer p { margin: 0; }
       <ol class="steps" id="osSteps"></ol>
       <p class="hint"><b>Sin conexión.</b> La app guarda en este móvil las herramientas que vas abriendo, así que podrás volver a usarlas aunque no tengas cobertura. «Calmarme o volver a mí», «En pleno parto», «Las primeras horas» y «Lo que no puede faltar» están guardadas desde el principio, por si en el hospital no hay cobertura. Una herramienta que no hayas abierto nunca necesita conexión la primera vez.</p>
       <p class="hint" id="osNote">Si al abrirla desde el icono te pide otra vez la contraseña o no ves lo que habías escrito, es porque el iPhone la abre como una app aparte. Escribe la contraseña y, para traer lo anterior, usa la copia de seguridad.</p></div>
+    </details>
+    <details class="row" id="acct"><summary><span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span><span class="rt"><b>Mi cuenta</b><span id="acSub">Entrar con tu correo, regalos y suscripción</span></span><span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></summary>
+      <div class="rb acct" id="acBody"><p>Escribe tu correo y te llegará un enlace para entrar, sin contraseña.</p><div class="btnrow"><a class="bt" href="/api/entrar?app=m">Entrar con mi correo</a><a class="bt ghost" href="/api/regalo?app=m">Tengo una tarjeta regalo</a></div></div>
     </details>
     <details class="row" id="backup"><summary><span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7.5 10.5L12 15l4.5-4.5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span><span class="rt"><b>Copia de seguridad</b><span id="bkSub">Para no perder lo que escribes si cambias de móvil</span></span><span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></summary>
       <div class="rb"><p>Todo lo que escribes se guarda solo en este móvil. Guarda una copia de vez en cuando y recupérala si cambias de teléfono o borras el navegador.</p>
@@ -478,6 +484,29 @@ let instEv = null;
 window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); instEv = e; $('#instNow').hidden = false; });
 $('#instNow').onclick = async () => { if (!instEv) return; instEv.prompt(); try { await instEv.userChoice; } catch (e) {} instEv = null; $('#instNow').hidden = true; };
 window.addEventListener('appinstalled', () => { $('#install').hidden = true; });
+/* ---------- Acceso: candados en las herramientas de pago y «Mi cuenta» ---------- */
+const HUBAPP = location.pathname.startsWith('/madreria') ? 'm' : 'g';
+let FREE = ['calma', 'carga', 'casa', 'legal'];
+try { const f = JSON.parse(localStorage.getItem('hub.free.' + HUBAPP) || 'null'); if (Array.isArray(f)) FREE = f; } catch (e) {}
+let LOCK = (() => { try { return localStorage.getItem('hub.lock') === '1'; } catch (e) { return false; } })();
+function marcaCandados() { $$('a[data-go]').forEach(a => a.classList.toggle('lkd', LOCK && !FREE.includes(a.dataset.go))); }
+async function miraAcceso() {
+  if (!navigator.onLine) return marcaCandados();
+  try { const g = await (await fetch('/api/gratis', { credentials: 'same-origin' })).json(); if (Array.isArray(g[HUBAPP])) { FREE = g[HUBAPP].filter(Boolean); try { localStorage.setItem('hub.free.' + HUBAPP, JSON.stringify(FREE)); } catch (e) {} } } catch (e) {}
+  const t = TOOLS.find(t => !FREE.includes(t.id));
+  try { const r = await fetch(t.id + '/', { method: 'HEAD', cache: 'no-store', credentials: 'same-origin' }); if (r.status === 200 || r.status === 401) { LOCK = r.status === 401; try { localStorage.setItem('hub.lock', LOCK ? '1' : '0'); } catch (e) {} } } catch (e) {}
+  marcaCandados();
+  try { const y = await (await fetch('/api/yo', { cache: 'no-store', credentials: 'same-origin' })).json(); const A = 'm', pago = y.pago && (y.pago[A] || y.pago.p);
+    const fmt = (t) => new Date(t).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+    if (y.email) { const hasta = A === 'm' ? y.hastaM : y.hastaG, abierta = y[A];
+      $('#acSub').textContent = abierta ? 'Has entrado con tu correo' : 'Tu acceso a esta app ha terminado';
+      $('#acBody').innerHTML = `<p>Has entrado como <span class="who">${esc(y.email)}</span>.</p><p>${abierta ? (hasta > Date.now() + 3e11 ? 'Tienes abiertas todas las herramientas.' : 'Tienes abiertas todas las herramientas hasta el ' + fmt(hasta) + '.') : 'Lo que escribiste sigue en este móvil. Puedes volver cuando quieras.'}</p><div class="btnrow">${!abierta && pago ? `<a class="bt" href="${esc(pago)}">Suscribirme</a>` : ''}${!abierta ? `<a class="bt ghost" href="/api/regalo?app=${A}">Tengo una tarjeta regalo</a>` : ''}<a class="bt ghost" href="/api/salir">Salir de este móvil</a></div><p class="hint">Si te suscribiste en Payhip, puedes cambiar o cancelar la suscripción desde tu cuenta de Payhip.</p>`; }
+    else if (pago && LOCK) { $('#acBody').insertAdjacentHTML('beforeend', `<div class="btnrow"><a class="bt" href="${esc(pago)}">Suscribirme</a></div>`); }
+  } catch (e) {}
+}
+setTimeout(miraAcceso, 200);
+new MutationObserver(() => { clearTimeout(window._lkT); window._lkT = setTimeout(marcaCandados, 60); }).observe(document.body, { childList: true, subtree: true });
+
 /* ---------- Sin conexión: avisar y marcar qué herramientas están guardadas en este móvil ---------- */
 const offFrom = new URLSearchParams(location.search).has('sinconexion');
 async function offState() {

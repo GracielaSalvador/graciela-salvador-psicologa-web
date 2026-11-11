@@ -7,6 +7,11 @@
 // Va en la RAÍZ del proyecto (al lado de index.html principal).
 // La dirección antigua /herramientas (el «Área de pacientes» del pie de la web) lleva a /pacientes/, donde se elige entre las dos entradas.
 // Las contraseñas NO están aquí: se guardan en Vercel como variables de entorno.
+//
+// ACCESO CON CORREO (sistema nuevo): el inicio y las herramientas gratis se abren sin cuenta.
+// Las demás se abren si el móvil tiene una sesión (entró con el enlace de su correo) con acceso a esa app.
+// Mientras tanto, la contraseña de siempre sigue funcionando, para no dejar a nadie fuera.
+import { gratis, RUTA_APP, leerSesion, COOKIE, leerPersona, accesos, crearSesion, cookieSesion, cookieApps, REVISAR_CADA, enlacesPago } from './api/_comun.js';
 
 export const config = { matcher: ['/:path*'] };  // pasa por aquí todo, para poder llevar la dirección de Vercel a la principal
 
@@ -56,7 +61,7 @@ export default async function middleware(req) {
   if (host === VERCEL) return Response.redirect((primero === 'madreria' ? 'https://' + MADRERIA : 'https://www.gracielasalvador.com') + url.pathname + url.search, 308);
   if (host === MADRERIA) {
     // En el subdominio solo vive La Madrería: la portada lleva a ella y lo demás, a la web principal
-    if (primero !== 'madreria' && primero !== 'fuentes') return Response.redirect(url.pathname === '/' ? new URL('/madreria/' + url.search, url) : 'https://www.gracielasalvador.com' + url.pathname + url.search, 308);
+    if (primero !== 'madreria' && primero !== 'fuentes' && primero !== 'api' && primero !== 'regalo' && primero !== 'entrar') return Response.redirect(url.pathname === '/' ? new URL('/madreria/' + url.search, url) : 'https://www.gracielasalvador.com' + url.pathname + url.search, 308);
   } else if (primero === 'madreria' && /(^|\.)gracielasalvador\.com$|\.vercel\.app$/.test(host)) {
     // Dirección antigua de La Madrería → la nueva
     return Response.redirect('https://' + MADRERIA + url.pathname + url.search, 308);
@@ -65,19 +70,22 @@ export default async function middleware(req) {
   if (url.pathname === '/herramientas' || url.pathname === '/herramientas/') return Response.redirect(new URL('/pacientes/', url), 308);
   if (url.pathname.startsWith('/herramientas/')) return Response.redirect(new URL(url.pathname.replace(/^\/herramientas/, '/bolsillo') + url.search, url), 308);
 
+  // Direcciones cortas para las tarjetas regalo y para entrar
+  if (/^\/regalo\/?$/.test(url.pathname)) return Response.redirect(new URL('/api/regalo' + url.search, url), 307);
+  if (/^\/entrar\/?$/.test(url.pathname)) return Response.redirect(new URL('/api/entrar' + url.search, url), 307);
+
   const id = url.pathname.split('/')[1];
   const E = ESPACIOS[id];
   if (!E) return continuar();
   // Lo que necesita el móvil para instalar la app (sin datos de nadie): se sirve sin pedir contraseña
   if (/^\/(bolsillo|madreria)\/(manifest\.webmanifest|sw\.js|icono-[\w-]+\.png)$/.test(url.pathname)) return continuar();
-  const pass = process.env[E.variable];
-  if (!pass) return pantalla(E, id, 'Falta configurar la contraseña en Vercel.', 500);
-  const valida = await huella(E.semilla, pass);
+  const pass = process.env[E.variable];   // si algún día se borra en Vercel, la contraseña deja de funcionar y solo queda el acceso con correo
+  const valida = pass ? await huella(E.semilla, pass) : null;
 
   if (req.method === 'POST') {
     let escrita = '';
     try { escrita = String((await req.formData()).get('clave') || ''); } catch (e) {}
-    if (escrita.trim() === pass) {
+    if (pass && escrita.trim() === pass) {
       return new Response(null, { status: 303, headers: {
         'Location': `/${id}/`,
         'Set-Cookie': `${E.cookie}=${valida}; Path=/${id}; Max-Age=${DIAS * 86400}; HttpOnly; Secure; SameSite=Lax`,
@@ -87,8 +95,73 @@ export default async function middleware(req) {
   }
 
   if (url.pathname === `/${id}`) return Response.redirect(new URL(`/${id}/` + url.search, url), 308);
-  if (leerCookie(req, E.cookie) === valida) return continuar();
-  return pantalla(E, id, '', 401);
+  // El inicio y las herramientas gratis, para todo el mundo
+  const app = RUTA_APP[id], parte = url.pathname.split('/')[2] || '';
+  if ((await gratis())[app].includes(parte)) return continuar();
+  // La contraseña de siempre (mientras convivan los dos sistemas)
+  if (valida && leerCookie(req, E.cookie) === valida) return continuar();
+  // Sesión por correo
+  let s = null; try { s = await leerSesion(leerCookie(req, COOKIE)); } catch (e) {}
+  if (s) {
+    if (Date.now() - s.c > REVISAR_CADA) {
+      try {
+        const acc = accesos(await leerPersona(s.e));
+        const h = new Headers({ 'x-middleware-next': '1' }); h.append('Set-Cookie', cookieSesion(await crearSesion(s.e, acc))); h.append('Set-Cookie', cookieApps(acc));
+        if (acc[app] > Date.now()) return new Response(null, { headers: h });
+        s = { ...s, ...acc };
+      } catch (e) { if (s[app] > Date.now()) return continuar(); }
+    } else if (s[app] > Date.now()) return continuar();
+  }
+  return candado(E, id, app, s);
+}
+
+// Pantalla amable para las herramientas de pago cuando este móvil no tiene acceso
+function candado(E, id, app, s) {
+  let L = {}; try { L = enlacesPago(); } catch (e) {}
+  const pago = L[app] || L.p;
+  const fin = s && s[app] ? 'Tu acceso a esta app terminó. Puedes volver cuando quieras: lo que escribiste sigue en tu móvil.' : '';
+  const html = `<!doctype html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex"><meta name="theme-color" content="${E.tema}">
+<title>${E.titulo}${E.edicion ? ' · ' + E.edicion : ''}</title>
+<link rel="icon" type="image/png" href="data:image/png;base64,${E.logo}">
+<link rel="stylesheet" href="/fuentes/fuentes.css">
+<style>
+:root{${E.claro}}
+@media (prefers-color-scheme:dark){:root{${E.oscuro};color-scheme:dark}}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--ink);font-family:"Nunito Sans","Segoe UI",system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;padding:24px 16px}
+main{width:100%;max-width:400px;background:var(--surface);border:1px solid var(--line);border-radius:26px;padding:28px 22px;display:flex;flex-direction:column;align-items:stretch;gap:12px;text-align:center}
+main.edi{border-top:6px solid var(--edc)}
+.lock{width:60px;height:60px;border-radius:18px;background:var(--tint);display:grid;place-items:center;color:var(--accent);margin:0 auto}.lock svg{width:30px;height:30px}
+.brand{font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}.brand b{color:var(--deep)}
+h1{font-family:Lora,Georgia,serif;font-weight:500;color:var(--deep);font-size:1.5rem;margin:0;line-height:1.25}
+p{margin:0;color:var(--muted);line-height:1.55}
+a.b,button{display:block;font:inherit;font-weight:800;font-size:1rem;border:0;border-radius:999px;padding:13px;background:var(--accent);color:var(--on);cursor:pointer;text-decoration:none}
+a.b.g{background:transparent;color:var(--accent);border:1.5px solid var(--line)}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.note{background:var(--tint);border-radius:14px;padding:10px 12px;font-size:.92rem;color:var(--ink)}
+details{text-align:left;margin-top:4px}summary{cursor:pointer;color:var(--muted);font-size:.9rem;font-weight:700}
+form{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+input{width:100%;font:inherit;font-size:1rem;padding:12px;border-radius:14px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);text-align:center}
+small{color:var(--muted);font-size:.84rem;line-height:1.45}
+</style></head><body><main${E.edicion ? ' class="edi"' : ''}>
+<div class="lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+<div class="brand">${E.marca}</div>
+<h1>Esta herramienta forma parte de la suscripción</h1>
+<p>Con la suscripción tienes abiertas todas las herramientas de la app, y cada mes llegan otras nuevas. «Calmarme o volver a mí» y ${app === 'm' ? '«Aligerar mi carga mental»' : '«Entender lo que siento»'} están abiertas para todo el mundo.</p>
+${fin ? `<div class="note">${fin}</div>` : ''}
+${pago ? `<a class="b" href="${pago}">Suscribirme</a>` : ''}
+<a class="b g" href="/api/entrar?app=${app}">Ya tengo acceso: entrar con mi correo</a>
+<a class="b g" href="/api/regalo?app=${app}">Tengo una tarjeta regalo</a>
+<a class="b g" href="/${id}/">Volver al inicio</a>
+<details><summary>¿Tienes una contraseña que te dio Graciela?</summary>
+<form method="post" action="/${id}/"><label for="clave" style="position:absolute;left:-9999px">Contraseña</label>
+<input id="clave" name="clave" type="password" autocomplete="current-password" placeholder="Contraseña" required>
+<button type="submit">Entrar con contraseña</button></form></details>
+<small>Si estás en terapia con Graciela, ella puede darte acceso con tu correo.</small>
+</main></body></html>`;
+  return new Response(html, { status: 401, headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' } });
 }
 
 function pantalla(E, id, error, status) {
