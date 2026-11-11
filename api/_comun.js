@@ -18,6 +18,10 @@ export const HOST_G = 'www.gracielasalvador.com';
 export const APPS = { m: { ruta: 'madreria', host: HOST_M, nombre: 'Mi psicóloga en el bolsillo, edición La Madrería' }, g: { ruta: 'bolsillo', host: HOST_G, nombre: 'Mi psicóloga en el bolsillo' } };
 // Los nombres de las apps en los correos y avisos (primero la general, después la edición La Madrería)
 export const nombresApps = (apps) => ['g', 'm'].filter((a) => apps.includes(a)).map((a) => APPS[a].nombre).join(' y ');
+// Frases que se repiten en varios correos
+export const T_CONSEJO = 'Un consejo: cuando estés dentro, añádela a la pantalla de inicio del móvil. Así la tendrás siempre a mano y funcionará también sin conexión.';
+export const T_PRIVADO = 'Lo que escribas en las herramientas se guarda solo en tu móvil. Nadie más puede verlo, tampoco yo.';
+export const T_HERR = 'Son herramientas que he preparado para acompañarte en el día a día: para los momentos difíciles, para entender lo que sientes y para cuidarte un poco más.';
 export const RUTA_APP = { madreria: 'm', bolsillo: 'g' };
 // Lo que se abre sin cuenta: el inicio, la casa, la página legal y dos herramientas en cada app
 export const GRATIS = { m: ['', 'calma', 'carga', 'casa', 'legal'], g: ['', 'calma', 'emociones', 'casa', 'legal'] };
@@ -124,10 +128,9 @@ export function plantilla(app, titulo, parrafos, boton) {
   const p = (t) => `<p style="margin:0 0 14px">${t}</p>`;
   return `<!doctype html><html lang="es"><body style="margin:0;padding:16px;font-family:Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;color:#222">
 <div style="max-width:560px">
-${p('Hola:')}${parrafos.map(p).join('')}
-${boton ? p(`<a href="${esc(boton[1])}" style="color:${ac};font-weight:bold">${esc(boton[0])}</a>`) : ''}
-${p('Un abrazo,<br>Graciela')}
-<p style="margin:18px 0 0;font-size:12px;color:#777">Graciela Salvador · Psicóloga sanitaria. Lo que escribes en las herramientas se guarda solo en tu móvil; aquí solo sabemos tu correo y a qué tienes acceso.</p>
+${p('Hola:')}${[...parrafos, ...(boton ? [{ enlace: boton }] : [])].map((b) => typeof b === 'string' ? p(b) : p(`<a href="${esc(b.enlace[1])}" style="color:${ac};font-weight:bold">${esc(b.enlace[0])}</a>`)).join('')}
+${p('Un abrazo,<br>Graciela.')}
+<p style="margin:18px 0 0;font-size:12px;color:#777">Graciela Salvador · Psicóloga sanitaria</p>
 </div></body></html>`;
 }
 // La versión en texto plano del mismo correo

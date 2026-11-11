@@ -5,7 +5,7 @@
 // En Vercel, PAYHIP_REGALOS guarda las claves secretas de esos productos así (una por producto, separadas por comas):
 //   m3=CLAVE,m6=CLAVE,m12=CLAVE,g3=CLAVE,g6=CLAVE,g12=CLAVE,p3=CLAVE,p6=CLAVE,p12=CLAVE
 //   (m = La Madrería, g = la general, p = las dos; el número son los meses)
-import { nombresApps, db, APPS, appDeHost, pagina, formulario, limpiaCorreo, correoValido, leerPersona, guardarPersona, accesos, crearEnlace, enviarCorreo, plantilla, fecha, esc, DIA } from './_comun.js';
+import { T_CONSEJO, T_PRIVADO, T_HERR, nombresApps, db, APPS, appDeHost, pagina, formulario, limpiaCorreo, correoValido, leerPersona, guardarPersona, accesos, crearEnlace, enviarCorreo, plantilla, fecha, esc, DIA } from './_comun.js';
 export const config = { runtime: 'edge' };
 
 const form = (app, msg = '', correo = '', codigo = '') => pagina(app, 'Canjear un regalo', `
@@ -60,7 +60,8 @@ export default async function handler(req) {
     await fetch('https://payhip.com/api/v2/license/usage', { method: 'PUT', headers: { 'product-secret-key': v.sec, 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'license_key=' + encodeURIComponent(codigo) });
     const destino = v.apps.includes(app) ? app : v.apps[0], link = await crearEnlace(email, destino, 60 * 24 * 3);
     const nombres = nombresApps(v.apps);
-    await enviarCorreo(email, 'Tu regalo ya está activo', plantilla(destino, 'Tu regalo ya está activo', [`Alguien que te quiere te ha regalado ${v.meses} meses de ${esc(nombres)}. Tienes acceso hasta el <b>${fecha(hasta)}</b>.`, 'Toca el enlace para entrar desde este móvil. Más adelante podrás entrar siempre con tu correo, sin contraseña.'], ['Entrar en la app', link]));
+    await enviarCorreo(email, 'Tu regalo ya está activo', plantilla(destino, 'Tu regalo ya está activo', [`Alguien que te quiere te ha regalado ${v.meses} meses de ${esc(nombres)}. Ya está activo, y tienes acceso hasta el ${fecha(hasta)}.`, T_HERR,
+      'Para entrar, toca este enlace desde tu móvil:', { enlace: ['Entrar en la app', link] }, T_CONSEJO, T_PRIVADO, 'Si tienes cualquier duda, respóndeme a este correo.']));
     return pagina(destino, 'Regalo activado', `<h1>¡Tu regalo ya está activo!</h1><div class="ok">Tienes acceso a ${esc(nombres)} hasta el ${fecha(hasta)}.</div><p>Te hemos enviado a <b>${esc(email)}</b> un enlace para entrar desde este móvil.</p><a class="btn" href="/api/entrar?app=${destino}">Entrar ahora con mi correo</a>`);
   } catch (err) {
     return pagina(app, 'Algo ha fallado', `<h1>Algo ha fallado</h1><p>No hemos podido canjear el código. Vuelve a intentarlo en un rato; el código sigue siendo válido.</p><small>${esc(err.message)}</small>`, 500);

@@ -4,7 +4,7 @@
 //   «Madrería» → La Madrería · «General» o «Bolsillo» → la general · «Pack» o «las dos» → las dos
 //   «Anual» o «año» → periodo de un año; si no, mensual
 // Las tarjetas regalo no pasan por aquí: se canjean con su código en /api/regalo.
-import { nombresApps, leerPersona, guardarPersona, limpiaCorreo, crearEnlace, enviarCorreo, plantilla, APPS, fecha, accesos, DIA, db } from './_comun.js';
+import { T_CONSEJO, T_PRIVADO, nombresApps, leerPersona, guardarPersona, limpiaCorreo, crearEnlace, enviarCorreo, plantilla, APPS, fecha, accesos, DIA, db } from './_comun.js';
 export const config = { runtime: 'edge' };
 
 const sin = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
@@ -36,7 +36,10 @@ export default async function handler(req) {
         for (const a of prod.apps) p.sub[a] = Math.max(s[a] || 0, ahora + prod.periodo);
         await guardarPersona(email, p);
         const app = prod.apps[0], link = await crearEnlace(email, app, 60 * 24 * 3);
-        await enviarCorreo(email, 'Te doy la bienvenida a Mi psicóloga en el bolsillo', plantilla(app, 'Ya tienes acceso', [`Gracias por suscribirte a ${nombresApps(prod.apps)}. Ya tienes abiertas todas las herramientas.`, 'Toca el enlace para entrar desde tu móvil. Más adelante podrás entrar siempre con este correo, sin contraseña.', 'Puedes gestionar o cancelar tu suscripción cuando quieras desde tu cuenta de Payhip.'], ['Entrar en la app', link]));
+        await enviarCorreo(email, 'Te doy la bienvenida', plantilla(app, 'Te doy la bienvenida', [`Gracias por suscribirte a ${nombresApps(prod.apps)}. Ya tienes abiertas todas las herramientas.`,
+          'Las he preparado para acompañarte en el día a día: para los momentos difíciles, para entender lo que sientes y para cuidarte un poco más. Úsalas a tu ritmo, cuando las necesites.',
+          'Para entrar, toca este enlace desde tu móvil:', { enlace: ['Entrar en la app', link] }, T_CONSEJO, T_PRIVADO,
+          'Puedes cancelar tu suscripción cuando quieras con el enlace que viene en tu recibo de Payhip. Si no lo encuentras, o tienes cualquier duda, respóndeme a este correo y te ayudo.']));
       } else {
         // Cancelada: se mantiene hasta el final del periodo pagado
         const base = (s.ultimo || s.inicio || ahora) + (s.periodo || prod.periodo);
@@ -44,7 +47,7 @@ export default async function handler(req) {
         for (const a of s.apps || prod.apps) p.sub[a] = Math.max(base, ahora + 3 * DIA);
         await guardarPersona(email, p);
         const app = (s.apps || prod.apps)[0], hasta = accesos(p)[app];
-        await enviarCorreo(email, 'Tu suscripción se ha cancelado', plantilla(app, 'Tu suscripción se ha cancelado', [`Seguirás teniendo acceso hasta el <b>${fecha(hasta)}</b>.`, 'Lo que has escrito sigue guardado en tu móvil. Si quieres conservarlo, en el inicio de la app, en «Copia de seguridad», puedes guardar una copia.', 'Si algún día quieres volver, lo encontrarás todo como lo dejaste.']));
+        await enviarCorreo(email, 'Tu suscripción se ha cancelado', plantilla(app, 'Tu suscripción se ha cancelado', [`Te confirmo que tu suscripción se ha cancelado. Seguirás teniendo acceso hasta el ${fecha(hasta)}.`, 'Lo que has escrito sigue guardado en tu móvil. Si quieres conservarlo, en el inicio de la app, en «Copia de seguridad», puedes guardar una copia.', 'Gracias por haberme dejado acompañarte este tiempo. Si algún día quieres volver, lo encontrarás todo como lo dejaste.']));
       }
     } else if (d.type === 'paid' || d.type === 'refunded') {
       const email = limpiaCorreo(d.email);

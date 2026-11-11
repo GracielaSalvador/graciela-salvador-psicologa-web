@@ -46,12 +46,14 @@ export default async function handler(req) {
         if (tieneAlgo(acc)) {
           const destino = acc[ap] > Date.now() ? ap : acc.m > Date.now() ? 'm' : 'g';
           const link = await crearEnlace(email, destino);
-          await enviarCorreo(email, 'Tu enlace para entrar', plantilla(destino, 'Tu enlace para entrar', ['Toca el enlace para entrar en la app desde este móvil. No necesitas contraseña.', 'El enlace sirve una sola vez durante 30 minutos. Si no lo has pedido tú, puedes ignorar este correo.'], ['Entrar', link]));
+          await enviarCorreo(email, 'Tu enlace para entrar', plantilla(destino, 'Tu enlace para entrar', ['Aquí tienes tu enlace para entrar en la app. Tócalo desde el móvil en el que quieras usarla; no necesitas contraseña.', { enlace: ['Entrar en la app', link] },
+            'El enlace solo sirve una vez y caduca en 30 minutos. Si no lo has pedido tú, puedes ignorar este correo: sin el enlace, nadie puede entrar.']));
         } else {
           const L = enlacesPago(), pago = L[ap] || L.p;
-          await enviarCorreo(email, 'Sobre tu acceso', plantilla(ap, 'Todavía no tienes acceso', ['Hemos recibido una petición para entrar con este correo, pero todavía no tiene acceso a las herramientas.',
-            `${pago ? `Puedes <a href="${esc(pago)}">suscribirte aquí</a> o` : 'Puedes'} canjear una tarjeta regalo en <a href="https://${APPS[ap].host}/api/regalo">esta página</a>. Si estás en terapia con Graciela, pídele que te dé de alta con este correo.`,
-            'Si no lo has pedido tú, puedes ignorar este correo.']));
+          await enviarCorreo(email, 'Sobre tu acceso', plantilla(ap, 'Todavía no tienes acceso', ['Alguien ha pedido entrar en la app con este correo, pero todavía no tiene acceso a las herramientas.',
+            ...(pago ? ['Si quieres usarlas, puedes suscribirte aquí:', { enlace: ['Suscribirme', pago] }] : []),
+            'Si tienes una tarjeta regalo, puedes canjearla aquí:', { enlace: ['Canjear mi regalo', `https://${APPS[ap].host}/api/regalo`] },
+            'Y si estás en terapia conmigo, dímelo y te doy acceso con este correo.', 'Si no lo has pedido tú, puedes ignorar este mensaje.']));
         }
       }
       return pagina(ap, 'Revisa tu correo', `<h1>Revisa tu correo</h1><p>Si <b>${esc(email)}</b> tiene acceso, te acabamos de enviar un enlace para entrar. Puede tardar un par de minutos; mira también en la carpeta de correo no deseado.</p><a class="btn ghost" href="/api/entrar?app=${ap}">Probar con otro correo</a>`);
