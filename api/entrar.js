@@ -16,6 +16,13 @@ ${msg}
 <a class="btn ghost" href="/api/regalo">Tengo una tarjeta regalo</a>
 <small>El móvil recordará la sesión durante meses. Lo que escribes en las herramientas sigue guardado solo en tu móvil.</small>`);
 
+// «Revisa tu correo», con el hueco para escribir el código de 6 números
+const revisa = (ap, email, msg) => pagina(ap, 'Revisa tu correo', `<h1>Revisa tu correo</h1><p>Si <b>${esc(email)}</b> tiene acceso, te acabamos de enviar un enlace y un código para entrar. Puede tardar un par de minutos; mira también en Promociones o en Spam.</p>
+${msg}<form method="post" action="/api/entrar"><label for="pin">¿Usas la app instalada en un iPhone? Escribe aquí el código del correo</label>
+<input id="pin" name="pin" inputmode="numeric" autocomplete="one-time-code" maxlength="7" placeholder="123 456" required style="letter-spacing:.2em;font-size:1.3rem;text-align:center">
+<input type="hidden" name="email" value="${esc(email)}"><input type="hidden" name="app" value="${ap}"><button type="submit">Entrar con el código</button></form>
+<div class="sep"></div><a class="btn ghost" href="/api/entrar?app=${ap}">Probar con otro correo</a>`);
+
 export default async function handler(req) {
   const url = new URL(req.url), app = url.searchParams.get('app') === 'g' || appDeHost(req) === 'g' ? 'g' : 'm';
   try {
@@ -38,6 +45,23 @@ export default async function handler(req) {
     }
     if (req.method === 'POST') {
       const f = await formulario(req), email = limpiaCorreo(f.email), ap = f.app === 'g' ? 'g' : f.app === 'm' ? 'm' : app;
+      // Entrar con el código de 6 números (para la app instalada en iPhone, que no comparte la sesión con Safari)
+      if (f.pin !== undefined) {
+        const pin = String(f.pin || '').replace(/\D/g, ''), k = 'pin:' + email, v = correoValido(email) ? await db('GET', k) : null;
+        if (!v) return revisa(ap, email, '<div class="err" role="alert">El código ha caducado o no es válido. Pide uno nuevo.</div>');
+        const P = JSON.parse(v);
+        if (P.c !== pin) {
+          P.n = (P.n || 0) + 1;
+          if (P.n >= 5) { await db('DEL', k); return revisa(ap, email, '<div class="err" role="alert">Demasiados intentos. Pide un código nuevo.</div>'); }
+          await db('SET', k, JSON.stringify(P), 'KEEPTTL');
+          return revisa(ap, email, '<div class="err" role="alert">Ese código no es correcto. Revísalo, por favor.</div>');
+        }
+        await db('DEL', k);
+        const p = await leerPersona(email), acc = accesos(p), A = APPS[acc[ap] > Date.now() ? ap : P.a] || APPS[ap];
+        const host = new URL(req.url).hostname, h = new Headers({ Location: host === A.host ? `/${A.ruta}/` : `https://${A.host}/${A.ruta}/`, 'Cache-Control': 'no-store' });
+        h.append('Set-Cookie', cookieSesion(await crearSesion(email, acc))); h.append('Set-Cookie', cookieApps(acc));
+        return new Response(null, { status: 303, headers: h });
+      }
       if (!correoValido(email)) return form(ap, '<div class="err" role="alert">Ese correo no parece completo. Revísalo, por favor.</div>', f.email);
       // Como mucho un correo por minuto a la misma dirección
       const libre = await db('SET', 'freno:' + email, '1', 'NX', 'EX', '60');
@@ -45,9 +69,11 @@ export default async function handler(req) {
         const p = await leerPersona(email), acc = accesos(p);
         if (tieneAlgo(acc)) {
           const destino = acc[ap] > Date.now() ? ap : acc.m > Date.now() ? 'm' : 'g';
-          const link = await crearEnlace(email, destino);
+          const link = await crearEnlace(email, destino), pin = String(crypto.getRandomValues(new Uint32Array(1))[0] % 1000000).padStart(6, '0');
+          await db('SET', 'pin:' + email, JSON.stringify({ c: pin, a: destino, n: 0 }), 'EX', '1800');
           await enviarCorreo(email, 'Tu enlace para entrar', plantilla(destino, 'Tu enlace para entrar', ['Aquí tienes tu enlace para entrar en la app. Tócalo desde el móvil en el que quieras usarla; no necesitas contraseña.', { enlace: ['Entrar en la app', link] },
-            'El enlace solo sirve una vez y caduca en 30 minutos. Si no lo has pedido tú, puedes ignorar este correo: sin el enlace, nadie puede entrar.']));
+            `Si usas la app instalada en un iPhone, o el enlace no te funciona, escribe este código en la app: <b>${pin.slice(0, 3)} ${pin.slice(3)}</b>`,
+            'El enlace y el código solo sirven una vez y caducan en 30 minutos. Si no lo has pedido tú, puedes ignorar este correo: sin ellos, nadie puede entrar.']));
         } else {
           const L = enlacesPago(), pago = L[ap] || L.p;
           await enviarCorreo(email, 'Sobre tu acceso', plantilla(ap, 'Todavía no tienes acceso', ['Alguien ha pedido entrar en la app con este correo, pero todavía no tiene acceso a las herramientas.',
@@ -56,7 +82,7 @@ export default async function handler(req) {
             'Y si estás en terapia conmigo, dímelo y te doy acceso con este correo.', 'Si no lo has pedido tú, puedes ignorar este mensaje.']));
         }
       }
-      return pagina(ap, 'Revisa tu correo', `<h1>Revisa tu correo</h1><p>Si <b>${esc(email)}</b> tiene acceso, te acabamos de enviar un enlace para entrar. Puede tardar un par de minutos; mira también en la carpeta de correo no deseado.</p><a class="btn ghost" href="/api/entrar?app=${ap}">Probar con otro correo</a>`);
+      return revisa(ap, email, '');
     }
     return form(app);
   } catch (err) {

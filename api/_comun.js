@@ -96,15 +96,23 @@ export async function leerSesion(valor) {
   const [cuerpo, f] = valor.split('.');
   try { if ((await firma(cuerpo)) !== f) return null; return JSON.parse(deB64u(cuerpo)); } catch (e) { return null; }
 }
+export function leerCookies(req, nombre) {
+  const c = req.headers.get('cookie') || '', out = [];
+  for (const m of c.matchAll(new RegExp('(?:^|;\\s*)' + nombre + '=([^;]+)', 'g'))) { try { out.push(decodeURIComponent(m[1])); } catch (e) {} }
+  return out;
+}
 export function leerCookie(req, nombre) {
   const c = req.headers.get('cookie') || '';
   const m = c.match(new RegExp('(?:^|;\\s*)' + nombre + '=([^;]+)'));
   return m ? decodeURIComponent(m[1]) : null;
 }
 export const COOKIE = 'gs_ses';
-export const cookieSesion = (v) => `${COOKIE}=${encodeURIComponent(v)}; Path=/; Max-Age=${SESION_DIAS * 86400}; HttpOnly; Secure; SameSite=Lax`;
-export const cookieApps = (acc) => `gs_apps=${['m', 'g'].filter((a) => acc[a] > ahora()).join('-') || 'ninguna'}; Path=/; Max-Age=${SESION_DIAS * 86400}; Secure; SameSite=Lax`;
-export const borrarCookies = [`${COOKIE}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax`, 'gs_apps=; Path=/; Max-Age=0; Secure; SameSite=Lax'];
+// La sesión se comparte entre www.gracielasalvador.com y madreria.gracielasalvador.com: con entrar una vez se abren las dos apps
+const DOM = '; Domain=gracielasalvador.com';
+export const cookieSesion = (v) => `${COOKIE}=${encodeURIComponent(v)}; Path=/; Max-Age=${SESION_DIAS * 86400}; HttpOnly; Secure; SameSite=Lax${DOM}`;
+export const cookieApps = (acc) => `gs_apps=${['m', 'g'].filter((a) => acc[a] > ahora()).join('-') || 'ninguna'}; Path=/; Max-Age=${SESION_DIAS * 86400}; Secure; SameSite=Lax${DOM}`;
+export const borrarCookies = [`${COOKIE}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax${DOM}`, `gs_apps=; Path=/; Max-Age=0; Secure; SameSite=Lax${DOM}`,
+  `${COOKIE}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax`, 'gs_apps=; Path=/; Max-Age=0; Secure; SameSite=Lax'];
 
 /* Enlaces de un solo uso para entrar sin contraseña */
 export async function crearEnlace(email, app, minutos = 30) {
