@@ -1,26 +1,26 @@
 // Entrar con el correo, sin contraseña.
 //   GET  /api/entrar            → formulario para escribir el correo
-//   POST /api/entrar            → si ese correo tiene acceso, le llega un enlace para entrar
+//   POST /api/entrar            → si ese correo tiene acceso, le llega un código de 6 números para entrar
 //   GET  /api/entrar?t=...      → el enlace del correo: abre la sesión en este móvil y lleva a la app
 import { db, APPS, appDeHost, pagina, formulario, limpiaCorreo, correoValido, leerPersona, accesos, tieneAlgo, crearSesion, cookieSesion, cookieApps, crearEnlace, enviarCorreo, plantilla, enlacesPago, esc } from './_comun.js';
 export const config = { runtime: 'edge' };
 
 const form = (app, msg = '', correo = '') => pagina(app, 'Entrar', `
 <h1>Entrar con tu correo</h1>
-<p>Escribe el correo con el que te suscribiste, canjeaste un regalo o te dio de alta Graciela. Te llegará un enlace para entrar, sin contraseña.</p>
+<p>Escribe el correo con el que te suscribiste, canjeaste un regalo o te dio de alta Graciela. Te llegará un código de 6 números para entrar, sin contraseña.</p>
 ${msg}
 <form method="post" action="/api/entrar"><label for="e">Tu correo</label>
 <input id="e" name="email" type="email" autocomplete="email" inputmode="email" required value="${esc(correo)}" placeholder="nombre@correo.com">
-<input type="hidden" name="app" value="${app}"><button type="submit">Enviarme el enlace</button></form>
+<input type="hidden" name="app" value="${app}"><button type="submit">Enviarme el código</button></form>
 <div class="sep"></div>
 <a class="btn ghost" href="/api/regalo">Tengo una tarjeta regalo</a>
 <small>El móvil recordará la sesión durante meses. Lo que escribes en las herramientas sigue guardado solo en tu móvil.</small>`);
 
 // «Revisa tu correo», con el hueco para escribir el código de 6 números
-const revisa = (ap, email, msg) => pagina(ap, 'Revisa tu correo', `<h1>Revisa tu correo</h1><p>Si <b>${esc(email)}</b> tiene acceso, te acabamos de enviar un enlace y un código para entrar. Puede tardar un par de minutos; mira también en Promociones o en Spam.</p>
-${msg}<form method="post" action="/api/entrar"><label for="pin">¿Usas la app instalada en un iPhone? Escribe aquí el código del correo</label>
+const revisa = (ap, email, msg) => pagina(ap, 'Revisa tu correo', `<h1>Revisa tu correo</h1><p>Si <b>${esc(email)}</b> tiene acceso, te acabamos de enviar un correo con un código de 6 números. Escríbelo aquí para entrar.</p><p class="hint">Puede tardar un par de minutos; mira también en Promociones o en Spam.</p>
+${msg}<form method="post" action="/api/entrar"><label for="pin">Código del correo</label>
 <input id="pin" name="pin" inputmode="numeric" autocomplete="one-time-code" maxlength="7" placeholder="123 456" required style="letter-spacing:.2em;font-size:1.3rem;text-align:center">
-<input type="hidden" name="email" value="${esc(email)}"><input type="hidden" name="app" value="${ap}"><button type="submit">Entrar con el código</button></form>
+<input type="hidden" name="email" value="${esc(email)}"><input type="hidden" name="app" value="${ap}"><button type="submit">Entrar</button></form>
 <div class="sep"></div><a class="btn ghost" href="/api/entrar?app=${ap}">Probar con otro correo</a>`);
 
 export default async function handler(req) {
@@ -69,11 +69,12 @@ export default async function handler(req) {
         const p = await leerPersona(email), acc = accesos(p);
         if (tieneAlgo(acc)) {
           const destino = acc[ap] > Date.now() ? ap : acc.m > Date.now() ? 'm' : 'g';
-          const link = await crearEnlace(email, destino), pin = String(crypto.getRandomValues(new Uint32Array(1))[0] % 1000000).padStart(6, '0');
+          // Para entrar se usa solo un código: así la persona no sale de la app (en iPhone, la app instalada no comparte nada con Safari)
+          const pin = String(crypto.getRandomValues(new Uint32Array(1))[0] % 1000000).padStart(6, '0');
           await db('SET', 'pin:' + email, JSON.stringify({ c: pin, a: destino, n: 0 }), 'EX', '1800');
-          await enviarCorreo(email, 'Tu enlace para entrar', plantilla(destino, 'Tu enlace para entrar', ['Aquí tienes tu enlace para entrar en la app. Tócalo desde el móvil en el que quieras usarla; no necesitas contraseña.', { enlace: ['Entrar en la app', link] },
-            `Si usas la app instalada en un iPhone, o el enlace no te funciona, escribe este código en la app: <b>${pin.slice(0, 3)} ${pin.slice(3)}</b>`,
-            'El enlace y el código solo sirven una vez y caducan en 30 minutos. Si no lo has pedido tú, puedes ignorar este correo: sin ellos, nadie puede entrar.']));
+          await enviarCorreo(email, `Tu código para entrar: ${pin}`, plantilla(destino, 'Tu código para entrar', [`Tu código para entrar en la app es: <b>${pin.slice(0, 3)} ${pin.slice(3)}</b>`,
+            'Escríbelo en la pantalla de la app que te lo ha pedido. Solo sirve una vez y caduca en 30 minutos.',
+            'Si no lo has pedido tú, puedes ignorar este correo: sin el código, nadie puede entrar.']));
         } else {
           const L = enlacesPago(), pago = L[ap] || L.p;
           await enviarCorreo(email, 'Sobre tu acceso', plantilla(ap, 'Todavía no tienes acceso', ['Alguien ha pedido entrar en la app con este correo, pero todavía no tiene acceso a las herramientas.',

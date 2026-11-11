@@ -128,6 +128,9 @@ a.door:hover { transform: translateY(-2px); }
 .empty { text-align: center; padding: 20px; border: 1.5px dashed var(--line); border-radius: 18px; color: var(--muted); font-size: .93rem; }
 .hint { font-size: .86rem; color: var(--muted); margin: 0; }
 .clear { border: 0; background: transparent; color: var(--accent); font-weight: 700; font-size: .88rem; padding: 4px 0; }
+.ioswarn { background: var(--surface); border: 2px solid var(--accent); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+.ioswarn > b { font-family: var(--display); font-weight: 500; font-size: 1.15rem; color: var(--deep); } .ioswarn p { margin: 0; line-height: 1.5; }
+.ioswarn ol { margin: 4px 0; padding-left: 1.3em; display: flex; flex-direction: column; gap: 6px; line-height: 1.45; } .ioswarn .k svg { width: 18px; height: 18px; vertical-align: -3px; }
 .tipbar { display: flex; align-items: center; gap: 10px; background: var(--tint); border-radius: 16px; padding: 10px 12px; font-size: .9rem; color: var(--deep); }
 .tipbar svg { width: 22px; height: 22px; flex: none; color: var(--accent); }
 .tipbar span { flex: 1; } .tipbar button { border: 0; background: transparent; font-weight: 800; color: var(--accent); font-size: .86rem; padding: 4px 2px; }
@@ -215,6 +218,12 @@ footer p { margin: 0; }
   <div class="offline" id="offBox" role="status" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8.8a15 15 0 0 1 4.2-2.7M22 8.8A15 15 0 0 0 10.7 5M5 12.6a10 10 0 0 1 3.5-2.3M19 12.6a10 10 0 0 0-2.7-1.9M8.5 16.4a5 5 0 0 1 7 0M12 20h.01M3 3l18 18"/></svg><div id="offTxt"></div></div>
   <div><p class="eyebrow">Mi psicóloga en el bolsillo</p><h1>¿Qué necesitas <em>hoy</em>?</h1></div>
   <p class="lead" id="saludo"></p>
+  <section class="ioswarn" id="iosWarn" role="note" hidden>
+    <b>Antes de empezar, si usas iPhone</b>
+    <p>Pon la app en tu pantalla de inicio y úsala siempre desde su icono. En iPhone, lo que escribas aquí, en Safari, no pasa a la app del icono, y al revés.</p>
+    <ol id="iosSteps"></ol>
+    <div class="btnrow"><button class="bt" id="iosOk">Ya la tengo en el icono</button><button class="bt ghost" id="iosNo">Prefiero usarla en Safari</button></div>
+  </section>
   <a class="casabar" id="casaBar" href="casa/" hidden><span class="pic"><svg viewBox="30 20 120 90" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="200" height="120" fill="#E6F0F2"/><path d="M0 92 Q 60 84 100 88 T 200 86 V120 H0 Z" fill="#D7E6C8"/><path d="M70 56 L100 32 L130 56 Z" fill="#11667D"/><rect x="74" y="56" width="52" height="38" fill="#fff" stroke="#0E3D4A" stroke-width="2"/><rect x="94" y="74" width="12" height="20" fill="#B9B20E"/><path d="M42 92 q-2 -12 4 -16" stroke="#2C6E5D" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="46" cy="74" r="6" fill="#C2557A"/></svg></span><span class="t"><b id="casaBarT">Nuestro hogar</b><span id="casaBarS"></span></span><span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></a>
   <div class="casatip" id="casaTip" role="status" hidden><p><b>Aquí está vuestro hogar.</b> A su alrededor brota una planta o un detalle nuevo cada vez que completas algo en una herramienta. Es una forma de ver todo lo que vas haciendo por ti.</p><button type="button" id="casaTipOk">Entendido</button></div>
   <div class="tipbar" id="tipbar" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2M12 7v6M9.5 10.5L12 13l2.5-2.5"/></svg><span>Ponla en tu pantalla de inicio para tenerla siempre a mano.</span><button id="tipHow">Cómo</button><button id="tipX" aria-label="Cerrar aviso">✕</button></div>
@@ -259,10 +268,10 @@ footer p { margin: 0; }
       <button class="bt" id="instNow" hidden>Instalar ahora</button>
       <ol class="steps" id="osSteps"></ol>
       <p class="hint"><b>Sin conexión.</b> La app guarda en este móvil las herramientas que vas abriendo, así que podrás volver a usarlas aunque no tengas cobertura. «Calmarme o volver a mí», «En pleno parto», «Las primeras horas» y «Lo que no puede faltar» están guardadas desde el principio, por si en el hospital no hay cobertura. Una herramienta que no hayas abierto nunca necesita conexión la primera vez.</p>
-      <p class="hint" id="osNote">Si al abrirla desde el icono te pide otra vez la contraseña o no ves lo que habías escrito, es porque el iPhone la abre como una app aparte. Escribe la contraseña y, para traer lo anterior, usa la copia de seguridad.</p></div>
+      <p class="hint" id="osNote">En iPhone, la app del icono va aparte de Safari: la primera vez que la abras te pedirá entrar. Escribe tu correo y el código que te llegará, y listo. Lo mejor es instalarla antes de empezar a escribir; si ya habías escrito algo en Safari, puedes traerlo con la copia de seguridad.</p></div>
     </details>
     <details class="row" id="acct"><summary><span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span><span class="rt"><b>Mi cuenta</b><span id="acSub">Entrar con tu correo, regalos y suscripción</span></span><span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></summary>
-      <div class="rb acct" id="acBody"><p>Escribe tu correo y te llegará un enlace para entrar, sin contraseña.</p><div class="btnrow"><a class="bt" href="/api/entrar?app=m">Entrar con mi correo</a><a class="bt ghost" href="/api/regalo?app=m">Tengo una tarjeta regalo</a></div></div>
+      <div class="rb acct" id="acBody"><p>Escribe tu correo y te llegará un código para entrar, sin contraseña.</p><div class="btnrow"><a class="bt" href="/api/entrar?app=m">Entrar con mi correo</a><a class="bt ghost" href="/api/regalo?app=m">Tengo una tarjeta regalo</a></div></div>
     </details>
     <details class="row" id="backup"><summary><span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7.5 10.5L12 15l4.5-4.5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span><span class="rt"><b>Copia de seguridad</b><span id="bkSub">Para no perder lo que escribes si cambias de móvil</span></span><span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></summary>
       <div class="rb"><p>Todo lo que escribes se guarda solo en este móvil. Guarda una copia de vez en cuando y recupérala si cambias de teléfono o borras el navegador.</p>
@@ -472,6 +481,14 @@ const OS = {
 let os = /iphone|ipad|ipod|macintosh/i.test(navigator.userAgent) && 'ontouchend' in document ? 'ios' : /android/i.test(navigator.userAgent) ? 'and' : 'ios';
 function renderOS() { $$('[data-os]').forEach(b => b.setAttribute('aria-pressed', b.dataset.os === os)); $('#osSteps').innerHTML = OS[os].map(t => `<li><span>${t}</span></li>`).join(''); $('#osNote').hidden = os !== 'ios'; }
 $$('[data-os]').forEach(b => b.onclick = () => { os = b.dataset.os; renderOS(); }); renderOS();
+// Aviso grande para iPhone en Safari: que instale la app antes de escribir nada (en iPhone, Safari y la app del icono guardan cosas distintas)
+setTimeout(() => { if (os === 'ios' && /iphone|ipad|ipod|macintosh/i.test(navigator.userAgent) && 'ontouchend' in document && !standalone && !store.get('iosWarnDone', false)) {
+  $('#iosSteps').innerHTML = [`Toca el botón de compartir ${IC.share} (abajo en el centro).`, `Baja y toca <b>«Añadir a pantalla de inicio»</b> ${IC.plus} y después <b>«Añadir»</b>.`,
+    'Abre la app desde el icono nuevo. La primera vez te pedirá tu correo y te llegará un código para entrar.'].map(t => `<li>${t}</li>`).join('');
+  $('#iosWarn').hidden = false; $('#tipbar').hidden = true;
+  const fin = () => { store.set('iosWarnDone', true); $('#iosWarn').hidden = true; };
+  $('#iosOk').onclick = fin; $('#iosNo').onclick = fin;
+} }, 0);
 /* ---------- Ver la app a mi manera: tamaño de letra y modo de color ---------- */
 (() => { const d = document.documentElement, get = (k) => { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } }, set = (k, v) => { try { v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch (e) {} };
   const paint = () => { const t = get('pref.text'), m = get('pref.theme'); $$('#prefText button').forEach(b => b.setAttribute('aria-pressed', b.dataset.pt === t)); $$('#prefTheme button').forEach(b => b.setAttribute('aria-pressed', b.dataset.pm === m)); };
