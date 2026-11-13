@@ -363,6 +363,14 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
       <p class="small muted">La primera vez que lo escuchas con conexión se guarda en el móvil, y después funciona también sin internet.</p>
     </div>
     <div class="card">
+      <span class="eyebrow">Escuchar · con la voz de Graciela</span>
+      <b style="font-family:var(--display);font-weight:500;font-size:1.2rem;line-height:1.25">La toma de la noche</b>
+      <p class="small">Unos 4 minutos casi en silencio, para acompañarte mientras das de comer a tu bebé de madrugada, sea como sea que le alimentes. Con el volumen bajito.</p>
+      <audio controls preload="none" src="../audio/toma-de-la-noche.mp3" style="width:100%"></audio>
+      <p class="small muted">La primera vez que lo escuchas con conexión se guarda en el móvil, y después funciona también sin internet.</p>
+      <p class="small muted">Todos los audios están juntos en <a href="../escuchar/">«Para escuchar»</a>.</p>
+    </div>
+    <div class="card">
       <span class="eyebrow">¿Cómo he descansado?</span>
       <p class="small">Vuelve por las mañanas de vez en cuando. Ver cómo cambia con las semanas te ayuda a darte cuenta de si mejora o de si necesitas más ayuda.</p>
       <div class="scale-row"><span class="lbl">Esta noche he descansado…</span><input type="range" min="0" max="10" id="des" style="accent-color:var(--li)" aria-label="Cómo he descansado"><span class="big-num" id="desV" style="--c:var(--li)"></span><span class="ends"><span>nada</span><span>muy bien</span></span></div>
@@ -1250,7 +1258,7 @@ const PDFKIT = (() => {
 </script>
 <!-- /PDFCFG -->
 
-<script>window.CASA = {"app": "m", "area": "pos", "id": "suenopos"};</script>
+<script>window.CASA = {"app": "m", "area": "pos", "id": "suenopos", "room": "El tendedero", "lv": ["Por brotar", "Ha brotado", "Creciendo", "En flor", "Dando fruto", "En plenitud"], "th": [1, 3, 6, 10, 15]};</script>
 <script>/* «La casa que crece»: cuenta, una vez al día por herramienta, cuando la persona completa algo
    (escribe o guarda algo, o hace una práctica con calma). Sin rachas ni avisos.
    La configuración llega en window.CASA = { app: 'g' | 'm', area, id }. */
@@ -1268,7 +1276,10 @@ const PDFKIT = (() => {
     var s = read(), hoy = day(); s.a = s.a || {}; s.d = s.d || {};
     if (s.d[C.id] === hoy) return;
     s.d[C.id] = hoy; s.a[C.area] = (s.a[C.area] || 0) + 1; s.n = (s.n || 0) + 1;
-    if (s.ld !== hoy) { var f = new Date(), ym = f.getFullYear() + '-' + ('0' + (f.getMonth() + 1)).slice(-2); s.m = s.m || {}; s.m[ym] = (s.m[ym] || 0) + 1; s.ld = hoy; }  // días de cada mes en los que se ha completado algo (tarros / flores)
+    var na = s.a[C.area], TH = C.th || [1, 3, 6, 10, 15], li = TH.indexOf(na);
+    // Noticia para el inicio: solo cuando aparece algo nuevo (sube de nivel una estancia o empieza el tarro/la flor del mes)
+    if (s.seen && li >= 0 && C.room) s.nuevo = { k: 'lv', room: C.room, lv: (C.lv || [])[li + 1] || '', t: Date.now() };
+    if (s.ld !== hoy) { var f = new Date(), ym = f.getFullYear() + '-' + ('0' + (f.getMonth() + 1)).slice(-2); s.m = s.m || {}; s.m[ym] = (s.m[ym] || 0) + 1; s.ld = hoy; if (s.seen && s.m[ym] === 1 && !(s.nuevo && s.nuevo.k === 'lv' && Date.now() - s.nuevo.t < 5000)) s.nuevo = { k: 'mes', t: Date.now() }; }  // días de cada mes en los que se ha completado algo (tarros / flores)
     var first = !s.seen; s.seen = true;
     try { setI.call(ls, K, JSON.stringify(s)); } catch (e) { return; }
     if (first && !s.off) setTimeout(invite, 900);

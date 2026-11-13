@@ -239,6 +239,12 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 .brain button em { display: block; margin-top: 4px; font-size: .86rem; color: var(--tc); font-style: italic; }
 .brain button[aria-pressed="true"] { border-color: var(--tc); background: color-mix(in srgb, var(--tc) 7%, var(--surface)); }
 .brain button[aria-pressed="true"] i { background: var(--tc); color: var(--onc); }
+/* El camino del parto */
+.cam { width: 100%; max-width: 360px; display: block; margin: 0 auto; }
+.cam .sg { cursor: pointer; } .cam .sg:focus { outline: none; } .cam .sg:focus-visible rect { stroke: var(--ink); stroke-width: 2.5; }
+.cam text { font-family: var(--body); font-weight: 800; font-size: 10.5px; fill: var(--deep); }
+.cam .lb text { font-weight: 700; fill: var(--muted); font-size: 10px; paint-order: stroke; stroke: color-mix(in srgb, var(--gr) 12%, var(--surface)); stroke-width: 4px; stroke-linejoin: round; }
+.hq { display: flex; flex-direction: column; gap: 6px; } .hq li { font-size: .9rem; line-height: 1.45; }
 @media (max-width: 370px) { .zones { grid-template-columns: 1fr; } .roles button { font-size: .7rem; } }
 </style>
 
@@ -272,6 +278,13 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
     </div>
 
     <div class="card">
+      <span class="eyebrow">Si el parto cambia de camino</span>
+      <p class="small">Un parto puede ir desviándose poco a poco: se induce, se intenta acelerar, hace falta ayuda para que salga el bebé o se termina en cesárea. Y después, tu bebé puede quedarse contigo o necesitar cuidados en neonatos. El camino recto es el de un parto sin desvíos, y todos los caminos terminan en el mismo sitio: tú con tu bebé. Toca cada cartel del camino para ver qué es y qué te gustaría pedir si tu parto pasa por ahí. Lo que elijas pasa a tu plan de parto.</p>
+      <svg class="cam" id="cam" viewBox="0 0 320 496" role="img" aria-label="El camino del parto, con sus desvíos"></svg>
+      <div id="camTxt"></div>
+    </div>
+
+    <div class="card">
       <span class="eyebrow">Lo que depende de mí y lo que no</span>
       <p class="small">Informarse ayuda mucho, pero también conviene tener claro qué está en tus manos y qué no. Poner la energía en lo que depende de ti te da seguridad, y soltar lo que no depende de ti te quita un peso de encima. Arrastra cada tarjeta a su caja, o tócala y después toca la caja.</p>
       <div id="ctl"></div>
@@ -295,6 +308,14 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
   <section class="view" id="view-mie" hidden>
     <h1>Mi miedo</h1>
     <p class="muted">Sentir miedo ante el parto es muy habitual, sobre todo la primera vez o cuando un parto anterior fue difícil. El miedo no significa que no estés preparada ni que algo vaya a salir mal. Es una emoción que intenta protegerte, y se puede aprender a acompañarla para que no sea ella quien decida por ti.</p>
+    <div class="card">
+      <span class="eyebrow">Escuchar · con la voz de Graciela</span>
+      <b style="font-family:var(--display);font-weight:500;font-size:1.2rem;line-height:1.25">Mi ola</b>
+      <p class="small">Unos 4 minutos para practicar en casa, en las últimas semanas: una ola que viene y se va, y una frase que se queda contigo para el día del parto.</p>
+      <audio controls preload="none" src="../audio/mi-ola.mp3" style="width:100%"></audio>
+      <p class="small muted">La primera vez que lo escuchas con conexión se guarda en el móvil, y después funciona también sin internet.</p>
+      <p class="small muted">Todos los audios están juntos en <a href="../escuchar/">«Para escuchar»</a>.</p>
+    </div>
     <div class="card">
       <span class="eyebrow">Mi termómetro del miedo</span>
       <div class="thermo"><svg id="thermo" viewBox="0 0 70 200" role="img" aria-label="Termómetro del miedo al parto"></svg>
@@ -381,6 +402,17 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
       <div class="stack" id="prefs" style="gap:16px"></div>
     </div>
     <div class="card">
+      <span class="eyebrow">Mi hospital y la unidad neonatal</span>
+      <p class="small">No todos los hospitales tienen unidad de neonatos, ni todas cuidan a los mismos bebés. Saberlo antes te ayuda a decidir dónde dar a luz y a pedir lo que es importante para ti si tu bebé necesita cuidados especiales.</p>
+      <div class="slot"><span class="lbl">Mi hospital</span><input type="text" id="hosp" placeholder="Nombre del hospital"></div>
+      <span class="lbl" style="font-weight:800;font-size:.92rem;color:var(--deep)">¿Tiene unidad de neonatos?</span>
+      <div class="seg" id="hneo"></div>
+      <div id="hneoTxt"></div>
+      <div class="info" style="--c:var(--gr)"><h3>Preguntas para la visita al hospital o para tu matrona</h3><ul class="hq" id="hq"></ul></div>
+      <span class="lbl" style="font-weight:800;font-size:.92rem;color:var(--deep)">Si mi bebé tiene que ser trasladado a otro hospital</span>
+      <div class="chips" id="htras"></div>
+    </div>
+    <div class="card">
       <span class="eyebrow">Mi plan, listo para compartir</span>
       <div class="stack" style="gap:8px"><div class="slot"><span class="lbl">Me llamo</span><input type="text" id="nom" placeholder="Tu nombre"></div></div>
       <div class="plan" id="plan"></div>
@@ -424,6 +456,11 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
       <p class="small">Si os proponen una intervención y no es urgente, tenéis derecho a recibir información y a decidir. Imagina, por ejemplo, que os proponen romper la bolsa para que el parto avance más rápido. Toca cada pregunta.</p>
       <div class="brain" id="brain"></div>
       <div id="brainTxt"></div>
+    </div>
+    <div class="card">
+      <span class="eyebrow">Qué puedo hacer en cada desvío</span>
+      <p class="small">Si el parto cambia de camino, quien acompaña puede sentirse perdido justo cuando más falta hace. Esto es lo que puedes hacer en cada desvío. Toca cada uno.</p>
+      <div class="brain" id="acoDes"></div>
     </div>
     <div class="card">
       <span class="eyebrow">Quien acompaña también necesita cuidarse</span>
@@ -594,6 +631,30 @@ const PREFS = [
   ['ces', 'Si es una cesárea, programada o no', 0, ['Que mi acompañante esté conmigo en el quirófano', 'Que me expliquen lo que van haciendo', 'Ver nacer a mi bebé, bajando la sábana si es posible', 'Piel con piel en el quirófano', 'Música que yo elija', 'Que mi acompañante haga piel con piel si yo no puedo', 'Que no nos separen en la recuperación', 'La primera toma en cuanto se pueda, si doy el pecho']],
   ['alim', 'Cómo quiero alimentar a mi bebé', 1, ['Lactancia materna', 'Lactancia artificial', 'Lactancia mixta', 'Todavía no lo he decidido']],
 ];
+// El camino del parto: cada cartel es un desvío, con lo que se puede pedir en él (la cesárea usa las preferencias de cesárea del plan)
+const CAM = {
+  ind: ['Si hay que inducir el parto', 'var(--li)', 'La inducción se propone cuando hay motivos para que el bebé nazca ya. Puede hacerse con medicación o con otros métodos, y suele llevar su tiempo: a veces, horas o incluso días.',
+    ['Que me expliquen por qué y qué opciones hay', 'Saber cuánto puede durar', 'Poder moverme y caminar mientras tanto', 'Mantener la luz tenue y la intimidad', 'Que mi acompañante pueda quedarse conmigo', 'Tener tiempo para decidir, si no es urgente']],
+  ace: ['Si proponen acelerar el parto', 'var(--bl)', 'A veces se propone romper la bolsa o poner oxitocina para que las contracciones sean más eficaces. Si no es urgente, tienes derecho a que te lo expliquen y a pensarlo.',
+    ['Que me expliquen el motivo y las alternativas', 'Unos minutos para pensarlo con mi acompañante, si no es urgente', 'Probar antes a moverme o cambiar de postura, si es posible', 'Que me ofrezcan analgesia si las contracciones se vuelven más intensas', 'Que me cuenten cómo va avanzando']],
+  ins: ['Si hace falta ayuda para que salga el bebé', 'var(--sun)', 'A veces hace falta ventosa, espátulas o fórceps para que el bebé termine de salir. Suele decidirse en el momento, y saber que existe hace que, si llega, asuste menos.',
+    ['Que me expliquen qué van a hacer y por qué', 'Que mi acompañante se quede a mi lado', 'Tener la analgesia adecuada', 'Piel con piel en cuanto se pueda', 'Que después me cuenten cómo ha ido y cómo cuidarme']],
+  ces: ['Si termina en cesárea', 'var(--rose)', 'Una cesárea también es un parto, y tu bebé también nace. Puede estar programada o decidirse durante el parto. Muchas cosas de tu plan se pueden mantener.', null],
+  neo: ['Si mi bebé necesita ir a neonatos', 'var(--gr)', 'Algunos bebés necesitan cuidados especiales al nacer: vigilancia, ayuda para respirar o para comer, calor… Aun así, puedes estar cerca de tu bebé, tocarle y hablarle en cuanto sea posible.',
+    ['Que mi acompañante vaya con el bebé', 'Que me informen a menudo de cómo está', 'Ir a verle en cuanto pueda', 'Piel con piel (método canguro) en cuanto se pueda', 'Que me ayuden a extraerme leche, si quiero dar el pecho', 'Fotos o un vídeo de mi bebé mientras no puedo estar con él']],
+  tras: ['Si hay que trasladar a mi bebé a otro hospital', 'var(--me)', 'Si tu hospital no tiene la unidad de neonatos que tu bebé necesita, puede que le trasladen a otro. Es una de las situaciones más duras, y por eso ayuda dejar escritos tus deseos.',
+    ['Estar en el mismo centro que mi bebé', 'Que me trasladen a mí también en cuanto sea posible', 'Que mi acompañante vaya con el bebé en el traslado', 'Que me den el nombre y el teléfono de la unidad']],
+};
+const HNEO = [['si', 'Sí'], ['no', 'No'], ['nose', 'No lo sé']];
+const HQ = ['¿Tiene unidad de neonatos? ¿Qué tipo de cuidados puede dar?', 'Si mi bebé necesitara un traslado, ¿a qué hospital iría?', '¿Podrían trasladarme a mí también, al mismo centro que mi bebé?', '¿Puede entrar mi acompañante en neonatos? ¿A qué horas?', '¿Se hace piel con piel en el quirófano, si hay cesárea?', '¿Puede estar mi acompañante en una cesárea?'];
+const ACODES = [
+  ['Inducción', 'Puede ser larga. Llevad cosas para entreteneros y turnaos para descansar. Ayúdala a moverse y a llevar la espera con calma.'],
+  ['Si proponen acelerar el parto', 'Pregunta en su nombre: el motivo, las alternativas y si hay tiempo para pensarlo. Recuérdale lo que dice su plan.'],
+  ['Ayuda instrumental', 'Quédate a su lado, a la altura de su cabeza. Háblale con calma, dale la mano y ayúdala a respirar.'],
+  ['Cesárea', 'Si puedes entrar, siéntate junto a su cabeza y cuéntale lo que ves. Si ella no puede hacer piel con piel, pregunta si puedes hacerlo tú.'],
+  ['Neonatos', 'Si ella lo ha pedido, ve con el bebé. Pregunta, haz fotos y ve contándole todo: eres su puente de información.'],
+  ['Traslado a otro hospital', 'Acompaña al bebé, apunta el nombre de la unidad y el teléfono, y pide que trasladen a la madre en cuanto se pueda.'],
+];
 const ACW = ['Mi pareja', 'Mi madre', 'Una amiga', 'Mi hermana', 'Una doula'];
 const ROLES = [
   ['Guardián de sus deseos', 'var(--tc)', '<path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/>', 'Conoce el plan de parto tan bien como ella. Cuando ella esté concentrada en dar a luz, pregunta, habla por ella si hace falta y recuerda al equipo lo que es importante para vosotros.', ['Llevar el plan de parto y conocerlo bien', 'Hacer preguntas antes de cada decisión', 'Pedir unos minutos para pensar, si no es urgente', 'Cuidar el ambiente: la luz, el ruido y quién entra']],
@@ -604,7 +665,7 @@ const NEC = ['Que estés a mi lado todo el tiempo', 'Que me recuerdes respirar d
 const FRASES = [['Tranquila, no es para tanto', 'Sé que es muy intenso. Estoy aquí contigo.'], ['Aguanta, que ya queda poco', 'Esta ola ya está bajando. Respira conmigo.'], ['¿Seguro que no quieres la epidural?', 'Lo que decidas estará bien. ¿Qué necesitas ahora?'], ['No llores', 'Puedes llorar. No me voy a ningún sitio.'], ['Tú haz caso a lo que te digan', 'Vamos a preguntar juntos para que puedas decidir.']];
 const BRAIN = [['Beneficios', '¿Para qué sirve y qué se espera conseguir?', '«¿Qué esperáis que mejore si rompemos la bolsa?»'], ['Riesgos', '¿Qué inconvenientes puede tener?', '«¿Tiene algún riesgo para ella o para el bebé?»'], ['Alternativas', '¿Hay otras opciones?', '«¿Podemos probar antes otra cosa, como caminar o cambiar de postura?»'], ['¿Y si esperamos?', '¿Qué pasa si no se hace ahora?', '«¿Es urgente, o podemos esperar un poco y ver cómo avanza?»'], ['Lo que ella siente', 'La madre siempre tiene la última palabra.', '«¿Cómo lo ves tú? ¿Qué te apetece hacer?»'], ['Unos minutos', 'Pedir tiempo para decidir con calma.', '«¿Nos dejáis unos minutos para hablarlo?»']];
 
-let S = Object.assign({ prev: '', imag: [], imagOwn: '', ramo: {}, rsel: 'c', ctl: {}, src: null, miedo: 5, temo: [], cyc: false, ola: 15, esc: [], tho: [], own: {}, sentir: [], ayu: [], pref: {}, nom: '', acn: '', acw: '', role: 0, nec: [], necOwn: [], brain: [] }, store.get('mio', {}) || {});
+let S = Object.assign({ prev: '', imag: [], imagOwn: '', ramo: {}, rsel: 'c', ctl: {}, src: null, miedo: 5, temo: [], cyc: false, ola: 15, esc: [], tho: [], own: {}, sentir: [], ayu: [], pref: {}, nom: '', acn: '', acw: '', role: 0, nec: [], necOwn: [], brain: [], cam: {}, csel: '', hosp: '', hneo: '', ades: 0 }, store.get('mio', {}) || {});
 const saveS = () => store.set('mio', S);
 let CONF = store.get('conf', []);
 const kbd = (sel, go) => $$(sel).forEach(n => { n.onclick = () => go(n); n.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(n); } }; });
@@ -666,7 +727,49 @@ function ramoTxt() {
   const n = ALT.filter((_, i) => fOpen(i)).length;
   $('#ramoTxt').innerHTML = n === ALT.length ? `<div class="ok small pop">Tu ramo está completo. Tu deseo sigue siendo tu flor principal, pero ahora tienes muchas más. Si el parto toma otro camino, no te quedarás con las manos vacías: ninguna flor es peor que otra, y todas forman parte de tu ramo.</div>` : n >= 3 ? `<div class="ok small pop">Tu ramo ya tiene ${n} flores abiertas. Cuantas más alternativas pienses con calma, más fácil te resultará adaptarte si el parto cambia de rumbo.</div>` : n ? `<div class="note small pop">Pensar en las alternativas puede remover un poco, y es normal. No hace falta abrirlas todas hoy: puedes volver cuando quieras.</div>` : '';
 }
-function renderRamo() { drawRamo(); renderFed(); renderList(); ramoTxt(); }
+function renderRamo() { drawRamo(); renderFed(); renderList(); ramoTxt(); renderCam(); }
+const camSel = (k) => k === 'ces' ? (S.pref.ces || []) : ((S.cam[k] || {}).c || []);
+const camOwn = (k) => ((S.cam[k] || {}).t || '').trim();
+function drawCam() {
+  const road = (d, dash) => `<path d="${d}" fill="none" stroke="#C9B48A" stroke-width="${dash ? 10 : 18}" stroke-linecap="round"/><path d="${d}" fill="none" stroke="#EADCBC" stroke-width="${dash ? 6 : 13}" stroke-linecap="round"/>${dash ? '' : `<path d="${d}" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-dasharray="6 7" opacity=".9"/>`}`;
+  let g = `<rect width="320" height="496" rx="18" fill="color-mix(in srgb, var(--gr) 12%, var(--surface))"/>`;
+  g += `<path d="M0 120 Q80 96 160 112 T320 104 V496 H0 Z" fill="color-mix(in srgb, var(--gr) 8%, transparent)"/><path d="M0 300 Q100 280 200 296 T320 290 V496 H0 Z" fill="color-mix(in srgb, var(--gr) 10%, transparent)"/>`;
+  [[30, 40], [292, 28], [26, 112], [298, 190], [30, 400], [300, 330]].forEach(([x, y]) => { g += `<circle cx="${x}" cy="${y}" r="12" fill="color-mix(in srgb, var(--gr) 45%, transparent)"/><circle cx="${x + 6}" cy="${y - 5}" r="8" fill="color-mix(in srgb, var(--gr) 60%, transparent)"/><rect x="${x - 1.5}" y="${y + 8}" width="3" height="8" fill="#8B6A3E"/>`; });
+  // El camino recto del centro es el parto sin desvíos: de principio a fin, sin carteles. Los desvíos salen a los lados y vuelven a él.
+  g += road('M120 34 C120 56 236 50 236 84 C236 118 120 112 120 140');
+  g += road('M120 150 C120 168 50 164 50 184 C50 204 120 200 120 218');
+  g += road('M120 228 C120 252 246 246 246 280 C246 314 120 310 120 334');
+  g += road('M120 238 C120 256 50 252 50 270 C50 288 120 284 120 302');
+  g += road('M236 392 C270 380 292 392 291 408 C290 426 252 422 228 414', true);
+  g += road('M120 362 C120 380 226 374 226 396 V404 C226 428 120 424 120 442');
+  g += road('M120 26 V452');
+  // destinos: casa (con mi bebé), unidad de neonatos y otro hospital
+  g += `<path d="M104 452 L120 438 L136 452 Z" fill="var(--rose)"/><rect x="107" y="452" width="26" height="18" fill="var(--surface)" stroke="var(--deep)" stroke-width="1.5"/><path d="M120 458 c-2.4 -3.5 -7 0 0 6 c7 -6 2.4 -9.5 0 -6z" fill="var(--rose)"/>`;
+  g += `<rect x="212" y="388" width="28" height="22" rx="3" fill="var(--surface)" stroke="var(--deep)" stroke-width="1.5"/><path d="M226 392 v10 M221 397 h10" stroke="var(--gr)" stroke-width="3" stroke-linecap="round"/>`;
+  g += `<rect x="278" y="398" width="26" height="20" rx="3" fill="var(--surface)" stroke="var(--deep)" stroke-width="1.5" stroke-dasharray="3 2"/><path d="M291 402.5 v11 M285.5 408 h11" stroke="var(--me)" stroke-width="2.6" stroke-linecap="round"/>`;
+  // etiquetas sin toque
+  const lb = (x, y, t, a = 'middle') => `<g class="lb"><text x="${x}" y="${y}" text-anchor="${a}">${t}</text></g>`;
+  g += lb(120, 16, 'Empieza el parto') + lb(110, 88, 'Empieza solo', 'end') + lb(110, 328, 'Parto vaginal', 'end') + lb(132, 352, 'Nace tu bebé', 'start') + lb(120, 486, 'Con mi bebé');
+  // carteles que se pueden tocar
+  const SG = { ind: [236, 84, 'Inducción'], ace: [58, 184, 'Acelerar'], ins: [62, 270, 'Instrumental'], ces: [246, 280, 'Cesárea'], neo: [226, 372, 'Neonatos'], tras: [280, 444, 'Traslado'] };
+  Object.entries(SG).forEach(([k, [x, y, t]]) => { const w = t.length * 5.9 + 26, c = CAM[k][1], on = S.csel === k, n = camSel(k).length + (camOwn(k) ? 1 : 0);
+    g += `<g class="sg" data-cs="${k}" tabindex="0" role="button" aria-pressed="${on}" aria-label="${esc(CAM[k][0])}${n ? ', ' + n + ' elegidas' : ''}"><rect x="${x - 1.5}" y="${y + 6}" width="3" height="10" fill="#8B6A3E"/><rect x="${x - w / 2}" y="${y - 10}" width="${w}" height="20" rx="7" fill="${on ? c : 'var(--surface)'}" stroke="${c}" stroke-width="2"/>`
+      + `<text x="${x + (n ? -6 : 0)}" y="${y + 3.5}" text-anchor="middle" style="fill:${on ? 'var(--onc)' : 'var(--deep)'}">${t}</text>${n ? `<circle cx="${x + w / 2 - 11}" cy="${y}" r="6.5" fill="${on ? 'var(--onc)' : c}"/><text x="${x + w / 2 - 11}" y="${y + 3.4}" text-anchor="middle" style="font-size:9px;fill:${on ? c : 'var(--onc)'}">${n}</text>` : ''}</g>`; });
+  $('#cam').innerHTML = g;
+  kbd('#cam .sg', (n) => { S.csel = S.csel === n.dataset.cs ? '' : n.dataset.cs; saveS(); keep(renderCam); if (S.csel) $('#camTxt').scrollIntoView({ block: 'nearest', behavior: reduce ? 'auto' : 'smooth' }); });
+}
+function renderCam() {
+  drawCam(); const k = S.csel;
+  if (!k) { $('#camTxt').innerHTML = ''; return; }
+  const [t, c, txt, items] = CAM[k], opts = items || PREFS.find(p => p[0] === 'ces')[3], sel = camSel(k);
+  $('#camTxt').innerHTML = `<div class="fed pop" style="--c:${c}"><h3>${esc(t)}</h3><p class="small" style="margin:0">${txt}</p><span class="lbl" style="font-weight:800;font-size:.88rem;color:var(--deep)">Me gustaría…</span>
+    <div class="chips">${opts.map(o => `<button class="chip" style="--c:${c}" data-cc="${esc(o)}" aria-pressed="${sel.includes(o)}">${esc(o)}</button>`).join('')}</div>
+    ${items ? `<input type="text" id="camOwn" placeholder="Otra cosa que me gustaría" value="${esc(camOwn(k))}" aria-label="Otra cosa que me gustaría">` : '<p class="small muted" style="margin:0">Son las mismas preferencias de cesárea de tu plan: si las cambias aquí, cambian allí.</p>'}</div>`;
+  $$('[data-cc]').forEach(b => b.onclick = () => { const v = b.dataset.cc;
+    if (k === 'ces') S.pref.ces = toggle(S.pref.ces || [], v); else { S.cam[k] = S.cam[k] || {}; S.cam[k].c = toggle(S.cam[k].c || [], v); }
+    saveS(); keep(renderCam); });
+  if ($('#camOwn')) $('#camOwn').oninput = (e) => { S.cam[k] = S.cam[k] || {}; S.cam[k].t = e.target.value; saveS(); drawCam(); };
+}
 
 let armed = null;
 function renderCtl() {
@@ -801,6 +904,10 @@ function planData() {
   PREFS.forEach(([k, t, single]) => { const v = pv(k); P.push([t, single ? (v ? v + '.' : '') : (v.length ? joinY(v.map((x, i) => i ? lc(x) : x)) + '.' : ''), 'var(--li)']); });
   const alts = ALT.map((a, i) => [a, i]).filter(([, i]) => fOpen(i)).map(([[t], i]) => { const r = S.ramo[i], all = [...(r.c || []), ...((r.t || '').trim() ? [r.t.trim()] : [])]; return `${t}, me ayudaría ${joinY(all.map(lc))}.`; });
   P.push(['Si las cosas cambian', alts.join(' '), 'var(--bl)']);
+  const cam = ['ind', 'ace', 'ins', 'neo', 'tras'].map(k => { const all = [...camSel(k), ...(camOwn(k) ? [camOwn(k)] : [])]; return all.length ? `${CAM[k][0]}, me gustaría ${joinY(all.map(lc))}.` : ''; }).filter(Boolean);
+  P.push(['Si el parto cambia de camino', cam.join(' '), 'var(--tc)']);
+  const hn = { si: 'tiene unidad de neonatos', no: 'no tiene unidad de neonatos', nose: 'todavía no sé si tiene unidad de neonatos' }[S.hneo] || '';
+  P.push(['Mi hospital', (S.hosp || '').trim() || hn ? `${(S.hosp || '').trim() ? esc(S.hosp.trim()) : 'Mi hospital'}${hn ? ' ' + hn : ''}.` : '', 'var(--gr)']);
   const nec = [...S.nec, ...S.necOwn];
   P.push(['Lo que le he pedido a mi acompañante', nec.length ? '«' + joinY(nec.map((x, i) => i ? lc(x) : x)) + '».' : '', 'var(--me)']);
   return P;
@@ -826,8 +933,23 @@ function renderPrev() {
   $$('[data-pv]').forEach(b => b.onclick = () => { S.prev = S.prev === b.dataset.pv ? '' : b.dataset.pv; saveS(); keep(renderPrev); });
   $('#prevTxt').innerHTML = S.prev ? `<div class="info pop" style="--c:var(--li)"><p class="small" style="margin:0">${PREVT[S.prev]}</p></div>` : '';
 }
+function renderHosp() {
+  $('#hosp').value = S.hosp || ''; $('#hosp').oninput = (e) => { S.hosp = e.target.value; saveS(); renderPlan(); };
+  $('#hneo').innerHTML = HNEO.map(([k, n]) => `<button data-hn="${k}" aria-pressed="${S.hneo === k}">${n}</button>`).join('');
+  $$('[data-hn]').forEach(b => b.onclick = () => { S.hneo = S.hneo === b.dataset.hn ? '' : b.dataset.hn; saveS(); keep(renderHosp); renderPlan(); });
+  $('#hneoTxt').innerHTML = S.hneo === 'no' ? `<div class="info pop" style="--c:var(--me)"><p class="small" style="margin:0">Si tu bebé necesitara cuidados especiales, podrían trasladarle a otro hospital. No pasa en la mayoría de los partos, pero conviene saber a cuál iría y dejar escrito lo que deseas.</p></div>`
+    : S.hneo === 'nose' ? `<div class="info pop" style="--c:var(--li)"><p class="small" style="margin:0">Puedes preguntarlo en la visita al hospital o a tu matrona. Abajo tienes algunas preguntas que te pueden servir.</p></div>` : '';
+  $('#hq').innerHTML = HQ.map(q => `<li>${q}</li>`).join('');
+  const sel = camSel('tras'), c = CAM.tras[1];
+  $('#htras').innerHTML = CAM.tras[3].map(o => `<button class="chip" style="--c:${c}" data-ht="${esc(o)}" aria-pressed="${sel.includes(o)}">${esc(o)}</button>`).join('');
+  $$('[data-ht]').forEach(b => b.onclick = () => { S.cam.tras = S.cam.tras || {}; S.cam.tras.c = toggle(S.cam.tras.c || [], b.dataset.ht); saveS(); keep(renderHosp); renderPlan(); });
+}
+function renderAcoDes() {
+  $('#acoDes').innerHTML = ACODES.map(([t, d], i) => `<button data-ad="${i}" aria-pressed="${S.ades === i}"><i>${i + 1}</i><span><b>${t}</b>${S.ades === i ? `<em>${d}</em>` : ''}</span></button>`).join('');
+  $$('[data-ad]').forEach(b => b.onclick = () => { S.ades = +b.dataset.ad; saveS(); keep(renderAcoDes); });
+}
 function renderPla() {
-  renderPrev();
+  renderPrev(); renderHosp();
   $('#sentir').innerHTML = SENTIR.map(([t, ic], i) => `<button style="--c:${['var(--rose)', 'var(--tc)', 'var(--bl)', 'var(--li)', 'var(--gr)', 'var(--me)'][i % 6]}" data-se="${esc(t)}" aria-pressed="${S.sentir.includes(t)}"><span class="ic">${SI(ic)}</span>${esc(t)}</button>`).join('');
   $$('[data-se]').forEach(b => b.onclick = () => { const t = b.dataset.se; if (!S.sentir.includes(t) && S.sentir.length >= 5) { toast('Elige como mucho cinco'); return; } S.sentir = toggle(S.sentir, t); saveS(); keep(renderPla); });
   listEditor({ box: '#ayu', ideas: AYU, get: () => S.ayu, set: (a) => { S.ayu = a; saveS(); }, color: 'var(--gr)', ph: 'Añadir algo que me ayude', after: renderPlan });
@@ -850,6 +972,7 @@ function drawRole() {
   $('#roleFig').innerHTML = g;
 }
 function renderAco() {
+  renderAcoDes();
   $('#acn').value = S.acn;
   $('#acw').innerHTML = ACW.map(w => `<button class="chip" data-aw="${esc(w)}" aria-pressed="${S.acw === w}" style="--c:var(--tc)">${esc(w)}</button>`).join('');
   $$('[data-aw]').forEach(b => b.onclick = () => { S.acw = S.acw === b.dataset.aw ? '' : b.dataset.aw; saveS(); keep(renderAco); });
@@ -1248,7 +1371,7 @@ const PDFKIT = (() => {
 </script>
 <!-- /PDFCFG -->
 
-<script>window.CASA = {"app": "m", "area": "par", "id": "parto"};</script>
+<script>window.CASA = {"app": "m", "area": "par", "id": "parto", "room": "La guirnalda de la puerta", "lv": ["Por brotar", "Ha brotado", "Creciendo", "En flor", "Dando fruto", "En plenitud"], "th": [1, 3, 6, 10, 15]};</script>
 <script>/* «La casa que crece»: cuenta, una vez al día por herramienta, cuando la persona completa algo
    (escribe o guarda algo, o hace una práctica con calma). Sin rachas ni avisos.
    La configuración llega en window.CASA = { app: 'g' | 'm', area, id }. */
@@ -1266,7 +1389,10 @@ const PDFKIT = (() => {
     var s = read(), hoy = day(); s.a = s.a || {}; s.d = s.d || {};
     if (s.d[C.id] === hoy) return;
     s.d[C.id] = hoy; s.a[C.area] = (s.a[C.area] || 0) + 1; s.n = (s.n || 0) + 1;
-    if (s.ld !== hoy) { var f = new Date(), ym = f.getFullYear() + '-' + ('0' + (f.getMonth() + 1)).slice(-2); s.m = s.m || {}; s.m[ym] = (s.m[ym] || 0) + 1; s.ld = hoy; }  // días de cada mes en los que se ha completado algo (tarros / flores)
+    var na = s.a[C.area], TH = C.th || [1, 3, 6, 10, 15], li = TH.indexOf(na);
+    // Noticia para el inicio: solo cuando aparece algo nuevo (sube de nivel una estancia o empieza el tarro/la flor del mes)
+    if (s.seen && li >= 0 && C.room) s.nuevo = { k: 'lv', room: C.room, lv: (C.lv || [])[li + 1] || '', t: Date.now() };
+    if (s.ld !== hoy) { var f = new Date(), ym = f.getFullYear() + '-' + ('0' + (f.getMonth() + 1)).slice(-2); s.m = s.m || {}; s.m[ym] = (s.m[ym] || 0) + 1; s.ld = hoy; if (s.seen && s.m[ym] === 1 && !(s.nuevo && s.nuevo.k === 'lv' && Date.now() - s.nuevo.t < 5000)) s.nuevo = { k: 'mes', t: Date.now() }; }  // días de cada mes en los que se ha completado algo (tarros / flores)
     var first = !s.seen; s.seen = true;
     try { setI.call(ls, K, JSON.stringify(s)); } catch (e) { return; }
     if (first && !s.off) setTimeout(invite, 900);

@@ -18,7 +18,7 @@
 :root {
   --bg: #FDFDFB; --surface: #FFFFFF; --ink: #16343B; --muted: #5E6F72; --line: #DCE6E8;
   --accent: #11667D; --deep: #0B4757; --tint: #E3EFF1; --on-accent: #FFFFFF;
-  --e-alegria: #D9A23A; --e-tristeza: #5F84B8; --e-miedo: #8470B0; --e-rabia: #C45F45; --e-asco: #6F9A5C; --e-sorpresa: #3E9C9E;
+  --e-alegria: #D9A23A; --e-tristeza: #5F84B8; --e-miedo: #8470B0; --e-rabia: #C45F45; --e-asco: #6F9A5C; --e-sorpresa: #3E9C9E; --e-calma: #7FA39B;
   --warn: #F4E3DA; --warn-ink: #8E4E33; --onc: #FFFFFF; --ok: #E2EFEA; --ok-ink: #2C6E5D;
   --display: "Lora", Georgia, "Times New Roman", serif;
   --body: "Nunito Sans", "Segoe UI", system-ui, sans-serif;
@@ -26,12 +26,12 @@
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #0D1B1F; --surface: #142629; --ink: #E4EEEF; --muted: #9DB1B5; --line: #26393D;
   --accent: #5DB4C6; --deep: #A0D5E0; --tint: #183339; --on-accent: #0D1B1F;
-  --e-alegria: #E7B95A; --e-tristeza: #86A6D6; --e-miedo: #A794D2; --e-rabia: #DE8466; --e-asco: #93BC80; --e-sorpresa: #67BFC0;
+  --e-alegria: #E7B95A; --e-tristeza: #86A6D6; --e-miedo: #A794D2; --e-rabia: #DE8466; --e-asco: #93BC80; --e-sorpresa: #67BFC0; --e-calma: #8FC2B6;
   --warn: #3A2A23; --warn-ink: #E8B39A; --onc: #0D1B1F; --ok: #183530; --ok-ink: #8CCDB6; color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #0D1B1F; --surface: #142629; --ink: #E4EEEF; --muted: #9DB1B5; --line: #26393D;
   --accent: #5DB4C6; --deep: #A0D5E0; --tint: #183339; --on-accent: #0D1B1F;
-  --e-alegria: #E7B95A; --e-tristeza: #86A6D6; --e-miedo: #A794D2; --e-rabia: #DE8466; --e-asco: #93BC80; --e-sorpresa: #67BFC0;
+  --e-alegria: #E7B95A; --e-tristeza: #86A6D6; --e-miedo: #A794D2; --e-rabia: #DE8466; --e-asco: #93BC80; --e-sorpresa: #67BFC0; --e-calma: #8FC2B6;
   --warn: #3A2A23; --warn-ink: #E8B39A; --onc: #0D1B1F; --ok: #183530; --ok-ink: #8CCDB6; color-scheme: dark }
 
 * { box-sizing: border-box; }
@@ -84,6 +84,28 @@ label.lbl, .lbl { font-weight: 700; font-size: .95rem; color: var(--deep); }
 .wheel .hubt { fill: var(--deep); font-family: var(--display); font-weight: 500; font-size: 14px; }
 
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+/* Mi mes en colores: una casilla por día, coloreada con la emoción que más ha acompañado */
+.mesnav { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.mesnav b { font-family: var(--display); font-weight: 500; font-size: 1.1rem; text-transform: capitalize; }
+.mesnav button { border: 1.5px solid var(--line); background: var(--surface); border-radius: 12px; min-width: 44px; min-height: 44px; font-size: 1.1rem; color: var(--deep); }
+.mes { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
+.mes .wd { font-size: .72rem; color: var(--muted); text-align: center; font-weight: 700; }
+.mes .dia { aspect-ratio: 1; min-height: 38px; border-radius: 11px; border: 1.5px dashed var(--line); background: var(--surface); font-size: .8rem; color: var(--muted); padding: 0; font-weight: 700; }
+.mes .dia.on { background: var(--c); border: 1.5px solid var(--c); color: #16262A; }
+.mes .dia.hoy { outline: 2px solid var(--deep); outline-offset: 1px; }
+.mes .dia[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--surface), 0 0 0 5px var(--deep); }
+.mes .dia:disabled { opacity: .3; }
+.pixchips .chip { display: inline-flex; align-items: center; gap: 8px; }
+.pixchips .chip i { width: 14px; height: 14px; border-radius: 50%; background: var(--c); flex: none; }
+.pixchips .chip[aria-pressed="true"] { border-color: var(--c); background: color-mix(in srgb, var(--c) 22%, var(--surface)); color: var(--ink, var(--deep)); font-weight: 700; }
+.anio { display: grid; grid-template-columns: 28px repeat(31, minmax(0, 1fr)); gap: 2px; align-items: center; }
+.anio span { font-size: .66rem; color: var(--muted); font-weight: 700; }
+.anio i { aspect-ratio: 1; border-radius: 2px; background: var(--line); opacity: .45; }
+.anio i.on { background: var(--c); opacity: 1; }
+.anio i.no { visibility: hidden; }
+.leyenda { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.leyenda span { display: inline-flex; align-items: center; gap: 6px; font-size: .84rem; }
+.leyenda i { width: 12px; height: 12px; border-radius: 4px; background: var(--c); }
 .chip { border: 1.5px solid var(--line); background: var(--surface); padding: 8px 14px; border-radius: 999px; font-size: .92rem; }
 .chip[aria-pressed="true"] { border-color: var(--accent); background: var(--accent); color: var(--on-accent); }
 .chip.emo[aria-pressed="true"] { border-color: var(--c); background: var(--c); color: #fff; }
@@ -296,7 +318,17 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 
   <section class="view" id="view-diario" hidden>
     <h1>Mi diario emocional</h1>
-    <p class="muted">Cada vez que exploras una emoción queda aquí. Con el tiempo verás tus patrones.</p>
+    <p class="muted">Tu mes en colores y cada emoción que exploras. Con el tiempo verás tus patrones.</p>
+    <div class="card">
+      <span class="eyebrow">Mi mes en colores</span>
+      <p class="small">Cada día, elige el color de la emoción que más te ha acompañado. Si un día se te olvida, puedes rellenarlo después o dejarlo en blanco.</p>
+      <div class="mesnav"><button id="mesPrev" aria-label="Mes anterior">‹</button><b id="mesTit"></b><button id="mesNext" aria-label="Mes siguiente">›</button></div>
+      <div id="mesGrid"></div>
+      <div id="mesSel" class="stack" style="gap:10px"></div>
+      <div id="mesLey"></div>
+      <button class="btn ghost small" id="anioBtn" style="align-self:flex-start">Ver el año entero</button>
+      <div id="anioBox" hidden></div>
+    </div>
     <div class="stack"><span class="eyebrow">Lo que más sientes</span><div id="pattern"></div></div>
     <div class="stack"><span class="eyebrow">Dónde lo notas más</span><div id="zonesPat"></div></div>
     <div class="stack"><span class="eyebrow">Últimas veces</span><div id="entries" class="stack"></div></div>
@@ -743,7 +775,45 @@ $('#guideList').innerHTML = ORDER.map(k => `<div class="card emo-card" style="--
   <p class="small"><b>Te puede ayudar:</b> ${EMO[k].strat.map(s => s[0].toLowerCase()).join(', ')}.</p></div>`).join('');
 
 // ----- Diario -----
+// Mi mes en colores
+const PIX = [['alegria', 'Alegría'], ['calma', 'Calma'], ['tristeza', 'Tristeza'], ['miedo', 'Miedo o nervios'], ['rabia', 'Rabia'], ['sorpresa', 'Sorpresa'], ['asco', 'Rechazo']];
+let dias = store.get('dias', {}) || {};
+const kDia = (dt) => dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0') + '-' + String(dt.getDate()).padStart(2, '0');
+const HOY = kDia(new Date());
+let mesV = new Date(); mesV.setDate(1); let selDia = HOY;
+const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+function renderMes() {
+  const y = mesV.getFullYear(), m = mesV.getMonth(), n = new Date(y, m + 1, 0).getDate(), off = (new Date(y, m, 1).getDay() + 6) % 7;
+  $('#mesTit').textContent = MESES[m] + ' ' + y;
+  const ahora = new Date(); $('#mesNext').disabled = y > ahora.getFullYear() || (y === ahora.getFullYear() && m >= ahora.getMonth());
+  let g = ['L', 'M', 'X', 'J', 'V', 'S', 'D'].map(w => `<span class="wd" aria-hidden="true">${w}</span>`).join('') + '<span></span>'.repeat(off);
+  for (let d = 1; d <= n; d++) { const k = kDia(new Date(y, m, d)), v = dias[k], fut = k > HOY, nm = v ? PIX.find(p => p[0] === v.e) : null;
+    g += `<button class="dia${v ? ' on' : ''}${k === HOY ? ' hoy' : ''}" data-dia="${k}" aria-pressed="${k === selDia}" ${fut ? 'disabled' : ''} style="${v ? `--c:var(--e-${v.e})` : ''}" aria-label="${d} de ${MESES[m]}${nm ? ', ' + nm[1] : ''}">${d}</button>`; }
+  $('#mesGrid').innerHTML = `<div class="mes">${g}</div>`;
+  PQ('[data-dia]').forEach(b => b.onclick = () => { selDia = b.dataset.dia; renderMes(); });
+  const sv = dias[selDia], sd = new Date(selDia + 'T12:00:00');
+  $('#mesSel').innerHTML = `<span class="lbl" style="font-weight:800">${selDia === HOY ? 'Hoy' : sd.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}, ¿qué emoción te ha acompañado más?</span>
+    <div class="chips pixchips">${PIX.map(([k, t]) => `<button class="chip" data-pix="${k}" style="--c:var(--e-${k})" aria-pressed="${!!sv && sv.e === k}"><i></i>${t}</button>`).join('')}</div>
+    ${sv ? `<input type="text" id="pixNota" placeholder="Una nota, si quieres (qué ha pasado, cómo estabas)" value="${esc(sv.n || '')}" aria-label="Nota del día"><button class="btn link small" id="pixQuitar" style="align-self:flex-start">Quitar el color de este día</button>` : ''}`;
+  PQ('[data-pix]').forEach(b => b.onclick = () => { dias[selDia] = Object.assign({}, dias[selDia], { e: b.dataset.pix }); store.set('dias', dias); renderMes(); });
+  if ($('#pixNota')) $('#pixNota').oninput = (e) => { dias[selDia].n = e.target.value; store.set('dias', dias); };
+  if ($('#pixQuitar')) $('#pixQuitar').onclick = () => { delete dias[selDia]; store.set('dias', dias); renderMes(); };
+  const pre = y + '-' + String(m + 1).padStart(2, '0'), cnt = {};
+  Object.entries(dias).forEach(([k, v]) => { if (k.startsWith(pre)) cnt[v.e] = (cnt[v.e] || 0) + 1; });
+  $('#mesLey').innerHTML = Object.keys(cnt).length ? `<div class="leyenda">${PIX.filter(p => cnt[p[0]]).map(([k, t]) => `<span style="--c:var(--e-${k})"><i></i>${t}: ${cnt[k]} ${cnt[k] === 1 ? 'día' : 'días'}</span>`).join('')}</div>` : '';
+  if (!$('#anioBox').hidden) renderAnio();
+}
+function renderAnio() {
+  const y = mesV.getFullYear(); let g = '';
+  for (let m = 0; m < 12; m++) { const n = new Date(y, m + 1, 0).getDate(); g += `<span>${MESES[m].slice(0, 3)}</span>`;
+    for (let d = 1; d <= 31; d++) { const v = d <= n ? dias[kDia(new Date(y, m, d))] : null; g += `<i class="${d > n ? 'no' : v ? 'on' : ''}" style="${v ? `--c:var(--e-${v.e})` : ''}"></i>`; } }
+  $('#anioBox').innerHTML = `<span class="lbl" style="font-weight:800">${y}</span><div class="anio" role="img" aria-label="Los días de ${y} en colores">${g}</div>`;
+}
+$('#mesPrev').onclick = () => { mesV.setMonth(mesV.getMonth() - 1); renderMes(); };
+$('#mesNext').onclick = () => { mesV.setMonth(mesV.getMonth() + 1); renderMes(); };
+$('#anioBtn').onclick = () => { const b = $('#anioBox'); b.hidden = !b.hidden; $('#anioBtn').textContent = b.hidden ? 'Ver el año entero' : 'Ocultar el año'; if (!b.hidden) renderAnio(); };
 function renderDiary() {
+  renderMes();
   if (!diary.length) {
     $('#pattern').innerHTML = '<div class="empty">Cuando explores tu primera emoción, aquí verás cuáles aparecen más.</div>';
     $('#zonesPat').innerHTML = ''; $('#entries').innerHTML = ''; return;
@@ -763,8 +833,10 @@ function renderDiary() {
       <span class="muted small">${dt.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })} · intensidad ${e.int} → ${e.after}${e.zones.length ? ' · ' + esc(e.zones.join(', ').toLowerCase()) : ''}</span></div>`; }).join('');
 }
 function summary() {
-  if (!diary.length) return 'Todavía no he registrado ninguna emoción.';
+  const ks = Object.keys(dias).sort().slice(-31);
+  if (!diary.length && !ks.length) return 'Todavía no he registrado ninguna emoción.';
   const L = ['Mi diario emocional: resumen', ''];
+  if (ks.length) { L.push('Mis días en colores (último mes):'); ks.forEach(k => { const v = dias[k]; L.push(`- ${new Date(k + 'T12:00:00').toLocaleDateString('es-ES')}: ${PIX.find(p => p[0] === v.e)[1]}${v.n ? ' (' + v.n + ')' : ''}`); }); L.push(''); }
   diary.slice(-15).forEach(e => L.push(`- ${new Date(e.t).toLocaleDateString('es-ES')}: ${(e.subs.length ? e.subs : e.emos.map(k => EMO[k].name)).join(', ')} (${e.val || '—'}), intensidad ${e.int}→${e.after}${e.zones.length ? '; cuerpo: ' + e.zones.join(', ') : ''}${e.needs.length ? '; necesitaba: ' + e.needs.join(', ') : ''}${e.strat.length ? '; me ayudó: ' + e.strat.join(', ') : ''}`));
   return L.join('\n');
 }
@@ -772,13 +844,14 @@ $('#copyBtn').onclick = () => { const txt = summary(); const fb = () => { const 
   try { navigator.clipboard.writeText(txt).then(() => toast('Resumen copiado. Pégalo en un mensaje.'), fb); } catch (e) { fb(); } };
 $('#clearBtn').onclick = () => $('#clearConfirm').hidden = false;
 $('#clearNo').onclick = () => $('#clearConfirm').hidden = true;
-$('#clearYes').onclick = () => { diary = []; store.set('diary', []); $('#clearConfirm').hidden = true; renderDiary(); toast('Diario borrado'); };
+$('#clearYes').onclick = () => { diary = []; store.set('diary', []); dias = {}; store.set('dias', {}); $('#clearConfirm').hidden = true; renderDiary(); toast('Diario borrado'); };
 
 function switchTab(v) { document.querySelectorAll('nav.tabs button').forEach(x => x.setAttribute('aria-selected', x.dataset.view === v));
   document.querySelectorAll('section.view').forEach(s => s.hidden = s.id !== 'view-' + v); if (v === 'diario') renderDiary(); if (v === 'entender') renderEnt(); if (v === 'guia') drawEmoScene(); window.scrollTo({ top: 0 }); }
 document.querySelectorAll('nav.tabs button').forEach(b => b.onclick = () => switchTab(b.dataset.view));
 if (scr >= SCREENS.length) scr = 0;
 render(); renderDiary();
+if (location.hash === '#diario') switchTab('diario');
 </script>
 
 <script>window.REGPFX = 'emociones.';</script>
@@ -1127,7 +1200,7 @@ const PDFKIT = (() => {
 </script>
 <!-- /PDFCFG -->
 
-<script>window.CASA = {"app": "m", "area": "reg", "id": "emociones"};</script>
+<script>window.CASA = {"app": "m", "area": "reg", "id": "emociones", "room": "Las flores de la entrada", "lv": ["Por brotar", "Ha brotado", "Creciendo", "En flor", "Dando fruto", "En plenitud"], "th": [1, 3, 6, 10, 15]};</script>
 <script>/* «La casa que crece»: cuenta, una vez al día por herramienta, cuando la persona completa algo
    (escribe o guarda algo, o hace una práctica con calma). Sin rachas ni avisos.
    La configuración llega en window.CASA = { app: 'g' | 'm', area, id }. */
@@ -1145,7 +1218,10 @@ const PDFKIT = (() => {
     var s = read(), hoy = day(); s.a = s.a || {}; s.d = s.d || {};
     if (s.d[C.id] === hoy) return;
     s.d[C.id] = hoy; s.a[C.area] = (s.a[C.area] || 0) + 1; s.n = (s.n || 0) + 1;
-    if (s.ld !== hoy) { var f = new Date(), ym = f.getFullYear() + '-' + ('0' + (f.getMonth() + 1)).slice(-2); s.m = s.m || {}; s.m[ym] = (s.m[ym] || 0) + 1; s.ld = hoy; }  // días de cada mes en los que se ha completado algo (tarros / flores)
+    var na = s.a[C.area], TH = C.th || [1, 3, 6, 10, 15], li = TH.indexOf(na);
+    // Noticia para el inicio: solo cuando aparece algo nuevo (sube de nivel una estancia o empieza el tarro/la flor del mes)
+    if (s.seen && li >= 0 && C.room) s.nuevo = { k: 'lv', room: C.room, lv: (C.lv || [])[li + 1] || '', t: Date.now() };
+    if (s.ld !== hoy) { var f = new Date(), ym = f.getFullYear() + '-' + ('0' + (f.getMonth() + 1)).slice(-2); s.m = s.m || {}; s.m[ym] = (s.m[ym] || 0) + 1; s.ld = hoy; if (s.seen && s.m[ym] === 1 && !(s.nuevo && s.nuevo.k === 'lv' && Date.now() - s.nuevo.t < 5000)) s.nuevo = { k: 'mes', t: Date.now() }; }  // días de cada mes en los que se ha completado algo (tarros / flores)
     var first = !s.seen; s.seen = true;
     try { setI.call(ls, K, JSON.stringify(s)); } catch (e) { return; }
     if (first && !s.off) setTimeout(invite, 900);
