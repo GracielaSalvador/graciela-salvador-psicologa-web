@@ -151,6 +151,12 @@ body[data-p] .inicio { display: none !important; }
 .pta.urg { background: color-mix(in srgb, #8CC5BA 24%, var(--surface)); border-color: color-mix(in srgb, #5E9E8F 50%, var(--line)); }
 .pta .hoja { transform-box: fill-box; transform-origin: left center; transition: transform .4s cubic-bezier(.3,.7,.3,1); }
 .pta.abre .hoja { transform: scaleX(.16) skewY(10deg); }
+.entra { position: fixed; inset: 0; z-index: 999; pointer-events: none; background: transparent; transition: background .45s, opacity .3s; overflow: hidden; }
+.entra.on { background: color-mix(in srgb, var(--bg) 85%, transparent); }
+.entra::after { content: ''; position: absolute; inset: 0; background: color-mix(in srgb, #FFE9A8 60%, var(--bg)); opacity: 0; transition: opacity .4s ease; }
+.entra.luz::after { opacity: 1; }
+.entra .hoja { transform-box: fill-box; transform-origin: left center; transition: transform .5s cubic-bezier(.3,.7,.3,1); }
+.entra svg.abre .hoja { transform: scaleX(.06) skewY(6deg); }
 .pta .respira { transform-box: fill-box; transform-origin: center bottom; animation: respira 4.5s ease-in-out infinite; }
 @keyframes respira { 50% { transform: scale(1.14); } }
 .phead { display: flex; flex-direction: column; gap: 4px; }
@@ -365,7 +371,7 @@ footer p { margin: 0; }
 // Para añadir una herramienta: crea su carpeta dentro de /bolsillo y añade una línea aquí con su id (= nombre de la carpeta), su área y sus palabras clave.
 const AREAS = [
   ['emb', 'Embarazo', 22], ['par', 'Parto', 23], ['pos', 'Posparto', 27], ['cri', 'Crianza', 9], ['mia', 'Lo que me pasa a mí', 31],
-  ['reg', 'Calmarme y cuidarme', 1], ['rel', 'Pareja y familia', 26], ['ter', 'Para mi terapia', 5],
+  ['reg', 'Calmarme y cuidarme', 1], ['esc', 'Para escuchar', 14], ['rel', 'Pareja y familia', 26], ['ter', 'Para mi terapia', 5],
 ];
 const PRONTO = ['emb', 'par', 'pos', 'cri'];  // áreas que aún no tienen herramientas: se muestran con «Muy pronto»
 const TOOLS = [
@@ -422,7 +428,7 @@ const TOOLS = [
     ico: '<path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/><path d="M9 12c1 1.5 5 1.5 6 0"/>' },
   { id: 'calma', titulo: 'Calmarme o volver a mí', desc: 'Estrategias guiadas para cuando estás desbordada o desconectada.', c: 1, area: 'reg', nueva: false, kw: 'calma ansiedad nervios respirar respiracion panico crisis desbordada desbordado bloqueo disociacion desconectada desconectado relajar',
     ico: '<circle cx="12" cy="12" r="9"/><path d="M7 13c1.5-2 3.5 2 5 0s3.5 2 5 0"/>' },
-  { id: 'escuchar', titulo: 'Para escuchar', desc: 'Audios cortos con la voz de Graciela para calmarte, dormir o frenar a tiempo, para cuando leer una pantalla no ayuda.', c: 61, area: 'reg', nueva: true, kw: 'audio audios escuchar voz relajacion meditacion guiada respirar respiracion dormir calma lugar tranquilo impulsos espacio ola toma noche',
+  { id: 'escuchar', titulo: 'Para escuchar', desc: 'Audios cortos con la voz de Graciela para calmarte, dormir o frenar a tiempo, para cuando leer una pantalla no ayuda.', c: 61, area: 'esc', nueva: true, kw: 'audio audios escuchar voz relajacion meditacion guiada respirar respiracion dormir calma lugar tranquilo impulsos espacio ola toma noche',
     ico: '<path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/>' },
   { id: 'impulsos', titulo: 'Frenar a tiempo', desc: 'Para los impulsos: entender la ola de las ganas, pillarla a tiempo y elegir qué hacer.', c: 14, area: 'reg', nueva: false, kw: 'impulsos impulsividad movil redes compras mensajes decisiones arrepentimiento control',
     ico: '<path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V11M11 10V4.5a1.5 1.5 0 0 1 3 0V11M14 10.5V6a1.5 1.5 0 0 1 3 0v7.5c0 4-2.8 7-6.3 7-2.4 0-4.2-1.4-5.3-3.5l-1.9-3.8a1.5 1.5 0 0 1 2.6-1.5L8 13"/>' },
@@ -448,7 +454,7 @@ const NEEDS = [
   ['nolle', 'Siento que no llego a todo', '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/>', ['carga', 'liston', 'carino']],
   ['exi', 'Me exijo demasiado como madre o padre', '<path d="M5 21V8M19 21V8"/><path d="M3 12h18"/>', ['liston', 'carino', 'carga']],
   ['lejos', 'Me siento lejos de mi pareja', '<circle cx="6" cy="12" r="3"/><circle cx="18" cy="12" r="3"/><path d="M9 12h6" stroke-dasharray="2 2"/>', ['pareja', 'hablar', 'carga']],
-  ['pare', 'Discutimos más desde que llegó el bebé', '<path d="M3 5h11v7H7l-4 3z"/><path d="M10 15v1h7l4 3V9h-4"/>', ['hablar', 'carga']],
+  ['pare', 'Discutimos más desde que llegó el bebé', '<path d="M3 5h11v7H7l-4 3z"/><path d="M10 15v1h7l4 3V9h-4"/>', ['hablar', 'impulsos', 'carga']],
   ['nose', 'No sé muy bien qué me pasa', '<path d="M3 12V4h8l10 10-8 8L3 12z"/><circle cx="7.5" cy="8" r="1.5"/>', ['emociones', 'ahora', 'calma']],
   ['trato', 'Me trato mal', '<path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/>', ['carino', 'liston']],
   ['parto', 'Me da miedo el parto', '<path d="M12 21v-7"/><circle cx="12" cy="8" r="3"/><path d="M9 8H6M18 8h-3M12 5V2"/>', ['parto', 'calma', 'nacer']],
@@ -458,7 +464,8 @@ const NEEDS = [
   ['mipar', 'Mi parto no fue como esperaba', '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>', ['recordar', 'emociones', 'carino']],
   ['rabi', 'Me cuesta acompañar sus rabietas', '<rect x="3" y="5" width="8" height="14" rx="1"/><rect x="14" y="9" width="7" height="10" rx="1"/>', ['ventanas', 'peques', 'calma']],
   ['repito', 'Me sale lo que no quería repetir', '<circle cx="6" cy="8" r="2.5"/><circle cx="16" cy="10" r="2"/><path d="M9 9h4"/>', ['origen', 'ventanas', 'carino']],
-  ['grito', 'Grito más de lo que quisiera', '<path d="M12 3c2 3 5 5 5 9a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3-1-5 1-7.5z"/>', ['salto', 'ventanas', 'carino']],
+  ['grito', 'Grito más de lo que quisiera', '<path d="M12 3c2 3 5 5 5 9a5 5 0 0 1-10 0c0-2 1-3.5 2-4.5 0 2 1 3 2 3 0-3-1-5 1-7.5z"/>', ['salto', 'impulsos', 'ventanas', 'carino']],
+  ['arrep', 'Hago cosas de las que luego me arrepiento', '<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>', ['impulsos', 'calma', 'emociones']],
   ['ansemb', 'Tengo miedo a que algo vaya mal en el embarazo', '<circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/>', ['ansiedad', 'calma', 'nacer']],
   ['vinc', 'Quiero conectar con mi bebé', '<circle cx="12" cy="13" r="8"/><path d="M10 14c.5 1 1.2 1.5 2 1.5s1.5-.5 2-1.5"/>', ['vinculo', 'nacer', 'ansiedad']],
   ['cuemb', 'Me cuesta mi cuerpo en el embarazo', '<circle cx="12" cy="4.5" r="2"/><path d="M11 7c-2 1-3 4-3 7s1 5 2 6M11 7c3 0 6 3 6 6s-3 4-6 4"/>', ['cuerpoemb', 'carino', 'nacer']],
@@ -512,7 +519,7 @@ function renderList() {
     $('#clearNeed').onclick = () => { need = null; renderNeeds(); renderList(); }; bind(); return; }
   $('#areas').hidden = true;
   box.innerHTML = `<p class="eyebrow" style="margin:0">Todas las herramientas, por áreas</p>` + AREAS.map(([k, n, c]) => { const ts = TOOLS.filter(t => t.area === k || (t.tambien || []).includes(k)); if (!ts.length) return PRONTO.includes(k) ? `<div class="acc"><div class="soon" style="--dot:var(--c${c}i)"><span class="dot"></span><span class="an"><b>${n}</b><small>Estamos preparando herramientas para esta etapa.</small></span><span class="pill">Muy pronto</span></div></div>` : ''; const op = openAreas.includes(k);
-    return `<div class="acc"><button data-acc="${k}" aria-expanded="${op}" style="--dot:var(--c${c}i)"><span class="an"><b><span class="dot"></span>${n}</b><small>${ts.length} ${ts.length === 1 ? 'herramienta' : 'herramientas'}</small>${op ? '' : `<span class="mini">${ts.map(t => `<i style="background:var(--c${t.c});color:var(--c${t.c}i)">${svg(t.ico, 2)}</i>`).join('')}</span>`}</span><span class="chev">${svg('<path d="M9 6l6 6-6 6"/>', 2.2)}</span></button>${op ? `<div class="doors compact">${(ts.length > 6 && allArea !== k ? ts.slice(0, 6) : ts).map(door).join('')}${ts.length > 6 && allArea !== k ? `<button class="more" data-more="${k}">Ver las ${ts.length}</button>` : ''}</div>` : ''}</div>`; }).join('');
+    return `<div class="acc"><button data-acc="${k}" aria-expanded="${op}" style="--dot:var(--c${c}i)"><span class="an"><b><span class="dot"></span>${n}</b><small>${k === 'esc' ? 'Todos los audios en un sitio' : `${ts.length} ${ts.length === 1 ? 'herramienta' : 'herramientas'}`}</small>${op ? '' : `<span class="mini">${ts.map(t => `<i style="background:var(--c${t.c});color:var(--c${t.c}i)">${svg(t.ico, 2)}</i>`).join('')}</span>`}</span><span class="chev">${svg('<path d="M9 6l6 6-6 6"/>', 2.2)}</span></button>${op ? `<div class="doors compact">${(ts.length > 6 && allArea !== k ? ts.slice(0, 6) : ts).map(door).join('')}${ts.length > 6 && allArea !== k ? `<button class="more" data-more="${k}">Ver las ${ts.length}</button>` : ''}</div>` : ''}</div>`; }).join('');
   $$('[data-acc]').forEach(b => b.onclick = () => { const k = b.dataset.acc, abre = !openAreas.includes(k); openAreas = abre ? [k] : []; allArea = null; store.set('openAreas', openAreas); renderList(); if (abre) { const el = document.querySelector(`[data-acc="${k}"]`); if (el) el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); } });
   $$('[data-more]').forEach(b => b.onclick = () => { allArea = b.dataset.more; renderList(); });
   bind();
@@ -639,7 +646,8 @@ new MutationObserver(() => { if (!navigator.onLine) { clearTimeout(window._offT)
 if (offFrom && navigator.onLine) history.replaceState(null, '', location.pathname);
 /* ---------- La casa que crece: la casita aparece cuando ya se ha completado algo ---------- */
 (() => { const CASA = 'casa.m'; let c = {}; try { c = JSON.parse(localStorage.getItem(CASA)) || {}; } catch (e) {}
-  if (!c.n && !c.seen) return; if (c.off) { $('#casaRow').hidden = false; return; }
+  if (!c.n && !c.seen) { $('#casaBarS').textContent = CASA === 'casa.m' ? 'Brotará la primera planta en cuanto completes algo en una herramienta' : 'Se encenderá la primera luz en cuanto completes algo en una herramienta'; $('#casaBar').hidden = false; return; }
+  if (c.off) { $('#casaRow').hidden = false; return; }
   const n = c.n || 1, M = CASA === 'casa.m';
   $('#casaBarS').textContent = M ? (n === 1 ? 'Ha brotado la primera planta' : `Ya han brotado ${n} cosas a su alrededor`) : (n === 1 ? 'Ya has encendido la primera luz' : `Ya tiene ${n} detalles que has ido sumando`);
   $('#casaBar').hidden = false;
@@ -699,12 +707,24 @@ const PUERTAS = [
 const puerta = ([href, t, sub, d, f, ic, go], i) => `<a class="pta${i === 0 ? ' urg' : ''}" href="${href}"${go ? ` data-go="${go}"` : ''}><svg viewBox="0 0 120 170" aria-hidden="true"><ellipse cx="60" cy="166" rx="54" ry="4" fill="#16343B" opacity=".08"/><path d="M10 166 V62 A50 50 0 0 1 110 62 V166 Z" fill="${f}"/><path d="M20 166 V64 A40 40 0 0 1 100 64 V166 Z" fill="#FFF1C9"/><g class="hoja"><path d="M20 166 V64 A40 40 0 0 1 100 64 V166 Z" fill="${d}"/><path d="M34 78 A26 26 0 0 1 86 78 Z" fill="#FFFFFF" opacity=".8"/><rect x="32" y="92" width="56" height="30" rx="5" fill="none" stroke="#16343B" stroke-opacity=".14" stroke-width="2.5"/><rect x="32" y="128" width="56" height="30" rx="5" fill="none" stroke="#16343B" stroke-opacity=".14" stroke-width="2.5"/><circle cx="89" cy="115" r="4.5" fill="#FFFFFF"/>${ic}</g><rect x="4" y="162" width="112" height="6" rx="3" fill="${f}"/></svg><b>${t}</b><small>${sub}</small></a>`;
 $('#puertas').innerHTML = PUERTAS.map(puerta).join('');
 const SUAVE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Al tocar una puerta, se acerca hasta llenar la pantalla, se abre y entra la luz
 $$('.pta').forEach(a => a.addEventListener('click', (e) => {
-  if (SUAVE || a.classList.contains('lkd')) return;
-  e.preventDefault(); a.classList.add('abre'); const h = a.getAttribute('href');
-  setTimeout(() => { if (h.startsWith('#')) { location.hash = h; a.classList.remove('abre'); } else location.href = h; }, 420);
+  if (SUAVE || a.classList.contains('lkd') || document.querySelector('.entra')) return;
+  e.preventDefault(); const h = a.getAttribute('href'), sv = a.querySelector('svg'), r = sv.getBoundingClientRect();
+  const ov = document.createElement('div'); ov.className = 'entra'; const c = sv.cloneNode(true);
+  const ox = r.width * .5, oy = r.height * 92 / 170;
+  c.style.cssText = `position:absolute;left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px;transform-origin:${ox}px ${oy}px;transition:transform .55s cubic-bezier(.5,0,.25,1)`;
+  ov.appendChild(c); document.body.appendChild(ov);
+  const sc = Math.max(innerHeight * .96 / (r.height * 156 / 170), innerWidth * .9 / (r.width * .667)), dx = innerWidth / 2 - (r.left + ox), dy = innerHeight / 2 - (r.top + oy);
+  requestAnimationFrame(() => requestAnimationFrame(() => { ov.classList.add('on'); c.style.transform = `translate(${dx}px,${dy}px) scale(${sc})`; }));
+  setTimeout(() => c.classList.add('abre'), 500);
+  setTimeout(() => ov.classList.add('luz'), 720);
+  setTimeout(() => {
+    if (h.startsWith('#')) { location.hash = h; ov.style.opacity = '0'; setTimeout(() => ov.remove(), 320); }
+    else location.href = h;
+  }, 1080);
 }));
-window.addEventListener('pageshow', () => $$('.pta.abre').forEach(a => a.classList.remove('abre')));
+window.addEventListener('pageshow', () => $$('.entra').forEach(o => o.remove()));
 const PANELES = { buscar: ['p-herr', 'Buscar lo que necesito'], todas: ['p-herr', 'Todas las herramientas'], espacio: ['p-espacio', 'Mi espacio'], ajustes: ['p-ajustes', 'Contacto y ajustes'] };
 function ruta() {
   const k = location.hash.slice(1), p = PANELES[k];
