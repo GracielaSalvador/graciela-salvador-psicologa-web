@@ -131,6 +131,31 @@ a.door:hover { transform: translateY(-2px); }
 .ioswarn { background: var(--surface); border: 2px solid var(--accent); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
 .ioswarn > b { font-family: var(--display); font-weight: 500; font-size: 1.15rem; color: var(--deep); } .ioswarn p { margin: 0; line-height: 1.5; }
 .ioswarn ol { margin: 4px 0; padding-left: 1.3em; display: flex; flex-direction: column; gap: 6px; line-height: 1.45; } .ioswarn .k svg { width: 18px; height: 18px; vertical-align: -3px; }
+/* El color de mi día: la emoción que más me acompaña hoy, con un toque; enlaza con el mes y el año en «Entender lo que siento» */
+:root { --e-alegria: #D9A23A; --e-tristeza: #5F84B8; --e-miedo: #8470B0; --e-rabia: #C45F45; --e-asco: #6F9A5C; --e-sorpresa: #3E9C9E; --e-calma: #7FA39B; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --e-alegria: #E7B95A; --e-tristeza: #86A6D6; --e-miedo: #A794D2; --e-rabia: #DE8466; --e-asco: #93BC80; --e-sorpresa: #67BFC0; --e-calma: #8FC2B6; } }
+:root[data-theme="dark"] { --e-alegria: #E7B95A; --e-tristeza: #86A6D6; --e-miedo: #A794D2; --e-rabia: #DE8466; --e-asco: #93BC80; --e-sorpresa: #67BFC0; --e-calma: #8FC2B6; }
+.daycol { background: var(--surface); border: 1.5px solid var(--line); border-radius: 18px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+.daycol b { font-family: var(--display); font-weight: 500; font-size: 1.08rem; color: var(--deep); }
+.daycol .sub { margin: 0; font-size: .88rem; color: var(--muted); }
+.dcs { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; }
+.dcs button { display: flex; flex-direction: column; align-items: center; gap: 4px; background: none; border: 0; padding: 4px 0; min-height: 56px; font: inherit; font-size: .64rem; letter-spacing: -.01em; font-weight: 700; color: var(--muted); cursor: pointer; }
+.dcs button i { width: 30px; height: 30px; border-radius: 50%; background: var(--c); transition: transform .15s; }
+.dcs button:hover i, .dcs button:focus-visible i { transform: scale(1.12); }
+.dch { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.dch .dot { width: 22px; height: 22px; border-radius: 50%; background: var(--c); flex: none; }
+.dch .lnk { margin-left: auto; border: 0; background: transparent; color: var(--accent); font: inherit; font-weight: 700; font-size: .86rem; text-decoration: underline; min-height: 44px; cursor: pointer; }
+.mini { display: grid; grid-template-columns: repeat(31, minmax(0, 1fr)); gap: 2px; }
+.mini i { aspect-ratio: 1; border-radius: 2px; background: var(--line); }
+.mini i.on { background: var(--c); }
+.mini i.hoy { outline: 1.5px solid var(--deep); outline-offset: 1px; }
+.daycol .ver { font-size: .88rem; font-weight: 700; color: var(--accent); text-decoration: none; align-self: flex-start; }
+.casanews { position: relative; background: var(--surface); border: 1.5px solid var(--line); border-left: 5px solid var(--accent); border-radius: 18px; padding: 12px 40px 12px 14px; display: flex; flex-direction: column; gap: 4px; animation: cnIn .45s ease-out; }
+.casanews b { font-family: var(--display); font-weight: 500; font-size: 1.08rem; color: var(--deep); } .casanews p { margin: 0; font-size: .92rem; color: var(--muted); line-height: 1.45; }
+.casanews .r { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 4px; } .casanews .bt { min-height: 38px; padding: 6px 14px; font-size: .88rem; }
+.casanews .lnk { border: 0; background: transparent; color: var(--muted); font-size: .84rem; text-decoration: underline; padding: 4px 0; cursor: pointer; }
+.casanews .x { position: absolute; top: 6px; right: 6px; border: 0; background: transparent; color: var(--muted); font-size: 1rem; width: 32px; height: 32px; cursor: pointer; }
+@keyframes cnIn { from { transform: translateY(-8px); opacity: 0; } to { transform: none; opacity: 1; } } @media (prefers-reduced-motion: reduce) { .casanews { animation: none; } }
 .tipbar { display: flex; align-items: center; gap: 10px; background: var(--tint); border-radius: 16px; padding: 10px 12px; font-size: .9rem; color: var(--deep); }
 .tipbar svg { width: 22px; height: 22px; flex: none; color: var(--accent); }
 .tipbar span { flex: 1; } .tipbar button { border: 0; background: transparent; font-weight: 800; color: var(--accent); font-size: .86rem; padding: 4px 2px; }
@@ -220,6 +245,8 @@ footer p { margin: 0; }
   </section>
   <a class="casabar" id="casaBar" href="casa/" hidden><span class="pic"><svg viewBox="28 10 144 104" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect x="0" y="0" width="200" height="120" fill="#E4EFF1"/><path d="M50 52 L100 18 L150 52 Z" fill="#fff" stroke="#0F4C5C" stroke-width="2.5" stroke-linejoin="round"/><rect x="56" y="52" width="88" height="56" fill="#fff" stroke="#0F4C5C" stroke-width="2.5"/><path d="M100 52 V108" stroke="#0F4C5C" stroke-width="2"/><rect x="104" y="56" width="38" height="50" fill="#FBE9C6"/><circle cx="123" cy="70" r="16" fill="#E0A23A" opacity=".35"/><rect x="116" y="64" width="14" height="14" rx="2" fill="#F4DE8A" stroke="#0F4C5C" stroke-width="1.5"/></svg></span><span class="t"><b id="casaBarT">Mi casa</b><span id="casaBarS"></span></span><span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></a>
   <div class="casatip" id="casaTip" role="status" hidden><p><b>Aquí está tu casa.</b> Crece un poco cada vez que completas algo en una herramienta. Es una forma de ver todo lo que vas haciendo por ti.</p><button type="button" id="casaTipOk">Entendido</button></div>
+  <div class="casanews" id="casaNews" role="status" hidden><button class="x" id="cnX" aria-label="Cerrar aviso">✕</button><b id="cnT"></b><p id="cnP"></p><div class="r"><a class="bt" href="casa/" id="cnVer">Ver mi casa</a><button class="lnk" id="cnOff">No mostrar estos avisos</button></div></div>
+  <section class="daycol" id="dayCol" aria-label="El color de tu día"></section>
   <div class="tipbar" id="tipbar" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2M12 7v6M9.5 10.5L12 13l2.5-2.5"/></svg><span>Ponla en tu pantalla de inicio para tenerla siempre a mano.</span><button id="tipHow">Cómo</button><button id="tipX" aria-label="Cerrar aviso">✕</button></div>
 
   <div class="welcome" id="welcome" hidden>
@@ -252,6 +279,7 @@ footer p { margin: 0; }
   <div class="more">
     <a class="row" id="welRow" href="#"><span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/></svg></span><span class="rt"><b>Un mensaje de Graciela</b><span>Para leer cuando lo necesites</span></span><span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></a>
     <a class="row" id="waBtn" target="_blank" rel="noopener"><span class="ri wa"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5a9.5 9.5 0 0 0-8.2 14.3L2.5 21.5l4.8-1.3A9.5 9.5 0 1 0 12 2.5zm0 17.3c-1.5 0-2.9-.4-4.1-1.1l-.3-.2-2.8.8.8-2.7-.2-.3A7.8 7.8 0 1 1 12 19.8zm4.3-5.8c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.4 6.4 0 0 1-3.2-2.8c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.7-1.7c-.2-.5-.4-.4-.5-.4h-.5a.9.9 0 0 0-.7.3 2.8 2.8 0 0 0-.9 2.1 4.9 4.9 0 0 0 1 2.6 11.2 11.2 0 0 0 4.3 3.8c1.6.7 2.2.7 3 .6.5-.1 1.4-.6 1.6-1.1.2-.6.2-1 .1-1.1-.1-.1-.2-.2-.4-.3z"/></svg></span><span class="rt"><b>Hablar con Graciela</b><span>Pedir cita o escribirme por WhatsApp</span></span><span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></a>
+    <a class="row" id="canalBtn" href="https://whatsapp.com/channel/0029Vb9oA1FFHWpwyt1k4r2g" target="_blank" rel="noopener"><span class="ri wa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10v4h3l5 4V6L7 10z"/><path d="M15.5 9.5a3.5 3.5 0 0 1 0 5M18 7a7 7 0 0 1 0 10"/></svg></span><span class="rt"><b>Novedades en WhatsApp</b><span>Sigue el canal: ideas, recursos y herramientas nuevas. Nadie ve tu número.</span></span><span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></a>
     <a class="row" id="casaRow" href="casa/" hidden><span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><rect x="10" y="14" width="4" height="6"/></svg></span><span class="rt"><b id="casaRowT">Mi casa</b><span>La tienes oculta en el inicio</span></span><span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></a>
     <details class="row" id="prefs"><summary><span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l5-14h2l5 14M6.5 14h7"/><path d="M18 4a3 3 0 1 0 3 3"/></svg></span><span class="rt"><b>Ver la app a mi manera</b><span>Tamaño de letra y modo claro u oscuro</span></span><span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></span></summary>
       <div class="rb"><p><b>Tamaño de la letra</b></p><div class="os" id="prefText"><button data-pt="" aria-pressed="false"><span style="font-size:.85rem">Aa</span> Normal</button><button data-pt="l" aria-pressed="false"><span style="font-size:1rem">Aa</span> Grande</button><button data-pt="xl" aria-pressed="false"><span style="font-size:1.15rem">Aa</span> Muy grande</button></div>
@@ -297,6 +325,8 @@ const TOOLS = [
     ico: '<circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="7" stroke-dasharray="2 3"/><circle cx="12" cy="12" r="10.5" opacity=".5"/>' },
   { id: 'presente', titulo: 'Volver al presente jugando', desc: 'Juegos cortos de atención plena para cuando te estás acelerando: buscar en una escena tranquila, seguir una luz y volver a lo que tienes alrededor.', c: 60, area: 'reg', nueva: true, kw: 'juego juegos jugar atencion plena ansiedad nervios activacion acelerado acelerada presente calma estanque buscar sentidos anclar volver',
     ico: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path d="M12 2v1.5M5 4l1 1.2M19 4l-1 1.2"/>' },
+  { id: 'escuchar', titulo: 'Para escuchar', desc: 'Audios cortos con la voz de Graciela para calmarte, dormir o frenar a tiempo, para cuando leer una pantalla no ayuda.', c: 61, area: 'reg', nueva: true, kw: 'audio audios escuchar voz relajacion meditacion guiada respirar respiracion dormir calma lugar tranquilo impulsos espacio ola toma noche',
+    ico: '<path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/>' },
   { id: 'impulsos', titulo: 'Frenar a tiempo', desc: 'Para los impulsos: entender la ola de las ganas, pillarla a tiempo y elegir qué hacer.', c: 14, area: 'reg', nueva: false, kw: 'impulsos impulsividad movil redes compras mensajes decisiones arrepentimiento control',
     ico: '<path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V11M11 10V4.5a1.5 1.5 0 0 1 3 0V11M14 10.5V6a1.5 1.5 0 0 1 3 0v7.5c0 4-2.8 7-6.3 7-2.4 0-4.2-1.4-5.3-3.5l-1.9-3.8a1.5 1.5 0 0 1 2.6-1.5L8 13"/>' },
   { id: 'enfado', titulo: 'Gestionar mi enfado', desc: 'Entender qué hay debajo del enfado, soltar la energía y elegir qué hacer con él.', c: 20, area: 'reg', nueva: false, kw: 'enfado ira rabia enfadada enfadado gritar explotar discutir mal genio irritable',
@@ -481,6 +511,27 @@ let instEv = null;
 window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); instEv = e; $('#instNow').hidden = false; });
 $('#instNow').onclick = async () => { if (!instEv) return; instEv.prompt(); try { await instEv.userChoice; } catch (e) {} instEv = null; $('#instNow').hidden = true; };
 window.addEventListener('appinstalled', () => { $('#install').hidden = true; });
+/* ---------- El color de mi día (se guarda en el mismo sitio que «Mi mes en colores») ---------- */
+(() => {
+  const DC = [['alegria', 'Alegría'], ['calma', 'Calma'], ['tristeza', 'Tristeza'], ['miedo', 'Miedo'], ['rabia', 'Rabia'], ['sorpresa', 'Sorpresa'], ['asco', 'Rechazo']];
+  const get = () => { try { return JSON.parse(localStorage.getItem('emociones.dias') || '{}') || {}; } catch (e) { return {}; } };
+  const put = (v) => { try { localStorage.setItem('emociones.dias', JSON.stringify(v)); } catch (e) {} };
+  const kd = (d) => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  let cambiar = false;
+  function pinta() {
+    const box = $('#dayCol'); if (!box) return;
+    const dias = get(), now = new Date(), hoy = kd(now), v = dias[hoy], n = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+    let mini = ''; for (let d = 1; d <= n; d++) { const k = kd(new Date(now.getFullYear(), now.getMonth(), d)), x = dias[k]; mini += `<i class="${x ? 'on' : ''}${k === hoy ? ' hoy' : ''}" style="${x ? `--c:var(--e-${x.e})` : ''}"></i>`; }
+    const strip = `<div class="mini" role="img" aria-label="Este mes en colores">${mini}</div><a class="ver" href="emociones/#diario">Ver mi mes y mi año →</a>`;
+    if (v && !cambiar) { const nm = (DC.find(c => c[0] === v.e) || [, ''])[1];
+      box.innerHTML = `<div class="dch"><span class="dot" style="--c:var(--e-${v.e})"></span><span><b>Hoy, ${nm.toLowerCase()}</b></span><button class="lnk" id="dcCambiar">Cambiar</button></div>${strip}`;
+      $('#dcCambiar').onclick = () => { cambiar = true; pinta(); }; return; }
+    box.innerHTML = `<b>¿De qué color es tu día?</b><p class="sub">Toca la emoción que más te está acompañando hoy.</p>
+      <div class="dcs">${DC.map(([k, t]) => `<button data-dc="${k}" style="--c:var(--e-${k})" aria-pressed="${!!v && v.e === k}"><i></i>${t}</button>`).join('')}</div>${strip}`;
+    $$('[data-dc]').forEach(b => b.onclick = () => { const d = get(); d[hoy] = Object.assign({}, d[hoy], { e: b.dataset.dc }); put(d); cambiar = false; pinta(); });
+  }
+  pinta(); window.addEventListener('pageshow', pinta); document.addEventListener('visibilitychange', () => { if (!document.hidden) pinta(); });
+})();
 /* ---------- Acceso: candados en las herramientas de pago y «Mi cuenta» ---------- */
 const HUBAPP = location.pathname.startsWith('/madreria') ? 'm' : 'g';
 let FREE = ['calma', 'emociones', 'casa', 'legal'];
@@ -525,7 +576,20 @@ if (offFrom && navigator.onLine) history.replaceState(null, '', location.pathnam
   $('#casaBarS').textContent = M ? (n === 1 ? 'Ha brotado la primera planta' : `Ya han brotado ${n} cosas a su alrededor`) : (n === 1 ? 'Ya has encendido la primera luz' : `Ya tiene ${n} detalles que has ido sumando`);
   $('#casaBar').hidden = false;
   let tip = false; try { tip = !localStorage.getItem('hub.casaTip'); } catch (e) {}
-  if (tip) { $('#casaTip').hidden = false; $('#casaTipOk').onclick = () => { $('#casaTip').hidden = true; try { localStorage.setItem('hub.casaTip', '1'); } catch (e) {} }; } })();
+  if (tip) { $('#casaTip').hidden = false; $('#casaTipOk').onclick = () => { $('#casaTip').hidden = true; try { localStorage.setItem('hub.casaTip', '1'); } catch (e) {} }; }
+  // Noticia de la casa: algo nuevo ha aparecido al completar una herramienta (una vez, y se puede desactivar)
+  const N = c.nuevo; if (!N) return;
+  const guarda = (f) => { let s = {}; try { s = JSON.parse(localStorage.getItem(CASA)) || {}; } catch (e) {} f(s); try { localStorage.setItem(CASA, JSON.stringify(s)); } catch (e) {} };
+  guarda((s) => { delete s.nuevo; });
+  if (c.avisosOff || tip || Date.now() - N.t > 864e5 * 3) return;
+  const rm = (N.room || '').replace(/^El /, 'el ').replace(/^La /, 'la ').replace(/^Las /, 'las ').replace(/^Mi /, 'mi ');
+  const T = M ? (N.k === 'lv' ? [`Ha brotado algo nuevo en ${rm}`, `Lo que has hecho ha dado fruto: nuevo nivel en ${rm}, «${N.lv}».`] : ['Ha empezado a brotar la flor de este mes', 'Cada día que completes algo, crecerá un poco más.'])
+    : (N.k === 'lv' ? [`Algo nuevo en ${rm}`, `Lo que has hecho ha encendido algo más: nuevo nivel en ${rm}, «${N.lv}».`] : ['Ya brilla el tarro de este mes', 'Has encendido su primera luciérnaga. Cada día que completes algo, se encenderá otra.']);
+  $('#cnT').textContent = T[0]; $('#cnP').textContent = T[1]; $('#cnVer').textContent = M ? 'Ver nuestro hogar' : 'Ver mi casa';
+  $('#casaNews').hidden = false;
+  const cierra = () => { $('#casaNews').hidden = true; };
+  $('#cnX').onclick = cierra; setTimeout(cierra, 15000);
+  $('#cnOff').onclick = () => { guarda((s) => { s.avisosOff = true; }); cierra(); }; })();
 const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
 if (standalone) $('#install').hidden = true;
 else if (!store.get('tipDone', false) && $('#welcome').hidden) $('#tipbar').hidden = false;

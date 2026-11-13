@@ -311,6 +311,17 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 
   <!-- FRENAR -->
   <section class="view" id="view-fre" hidden>
+    <div class="card">
+      <span class="eyebrow">Escuchar · con la voz de Graciela</span>
+      <b style="font-family:var(--display);font-weight:500;font-size:1.2rem;line-height:1.25">El espacio antes de responder</b>
+      <p class="small">Para el momento: cuando el cuerpo se dispara y estás a punto de actuar. Minuto y medio.</p>
+      <audio controls preload="none" src="../audio/espacio-momento.mp3" style="width:100%"></audio>
+      <b style="font-family:var(--display);font-weight:500;font-size:1.2rem;line-height:1.25">El espacio antes de responder, para practicar</b>
+      <p class="small">Unos 5 minutos para escuchar en un momento tranquilo. Lo que practicas en calma sale más fácil en el momento difícil.</p>
+      <audio controls preload="none" src="../audio/espacio-practicar.mp3" style="width:100%"></audio>
+      <p class="small muted">La primera vez que lo escuchas con conexión se guarda en el móvil, y después funciona también sin internet.</p>
+      <p class="small muted">Todos los audios están juntos en <a href="../escuchar/">«Para escuchar»</a>.</p>
+    </div>
     <div id="fBox" class="stack" style="gap:16px"></div>
   </section>
 
@@ -474,14 +485,14 @@ document.addEventListener('keydown', (e) => { if (!$('#view-ent').hidden && $('#
 renderDeck();
 
 /* ================= MIS IMPULSOS ================= */
-const KINDS = [['cal', 'Responder en caliente', '<path d="M4 5h16v11H9l-5 4V5z"/><path d="M12 8v3M12 13.5v.5"/>'], ['msg', 'Mensajes que luego lamento', '<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M10 8h4M10 11h4"/>'],
+const KINDS = /*G+*/[['cal', 'Responder en caliente', '<path d="M4 5h16v11H9l-5 4V5z"/><path d="M12 8v3M12 13.5v.5"/>'], ['msg', 'Mensajes que luego lamento', '<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M10 8h4M10 11h4"/>'],
   ['red', 'Móvil y redes', '<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/><path d="M3 8c1-2 1-4 0-6M21 8c-1-2-1-4 0-6"/>'], ['com', 'Compras', '<path d="M5 7h14l-1.5 11a2 2 0 0 1-2 1.7h-7a2 2 0 0 1-2-1.7z"/><path d="M9 7a3 3 0 0 1 6 0"/>'],
   ['dec', 'Decisiones importantes en caliente', '<path d="M12 3v18M5 7h14M7 7l-3 6a3 3 0 0 0 6 0L7 7M17 7l-3 6a3 3 0 0 0 6 0l-3-6"/>'], ['dis', 'Discutir, gritar, dar portazos', '<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>'],
-  ['aba', 'Dejar a medias lo que hacía', '<circle cx="12" cy="12" r="9"/><path d="M12 7v5"/><path d="M12 12l3 2" stroke-dasharray="1 3"/>'], ['otr', 'Otro', '<circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/>']];
+  ['aba', 'Dejar a medias lo que hacía', '<circle cx="12" cy="12" r="9"/><path d="M12 7v5"/><path d="M12 12l3 2" stroke-dasharray="1 3"/>'], ['otr', 'Otro', '<circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/>']]/*G-*/;
 const TRIG = [['Cansancio', '<path d="M3 12h3l2-4 3 8 2-4h8"/>'], ['Aburrimiento', '<circle cx="12" cy="12" r="9"/><path d="M8.5 15h7M9 10h.01M15 10h.01"/>'], ['Soledad', '<circle cx="12" cy="8" r="3.5"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/>'],
   ['Enfado', '<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>'], ['Ansiedad o nervios', '<path d="M3 10c2.5-3 5 3 7.5 0s5 3 7.5 0M3 15c2.5-3 5 3 7.5 0s5 3 7.5 0"/>'], ['Tristeza', '<path d="M12 3s6 7 6 11.2A6 6 0 0 1 6 14.2C6 10 12 3 12 3z"/>'],
   ['Sentirme criticado/a', '<path d="M4 5h16v11H9l-5 4V5z"/><path d="M9 9l6 4M15 9l-6 4"/>'], ['Una discusión', '<path d="M3 6h10v7H7l-4 3zM21 10h-6v6h4l2 2z"/>'], ['De noche', '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>'],
-  ['Notificaciones', '<path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/>'], ['Estrés o prisas', '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/>'], ['Celebrar o estar eufórico/a', '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>']];
+  ['Notificaciones', '<path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/>'], ['Estrés o prisas', '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/>'], ['Celebrar o estar eufórico/a', '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>'], ['Casa desordenada', '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M8 17l2-2M14 15l2 2M11 19h3"/>']];
 const BINS = [['mucho', 'Me pasa mucho', 'var(--imp)'], ['aveces', 'A veces', 'var(--amb)'], ['no', 'Casi nunca', 'var(--calm)']];
 const LIGHTS = [['v', 'Verde · todavía puedo elegir', 'var(--calm)', ['Noto un poco de tensión', 'Empiezo a pensar en ello', 'Me cuesta concentrarme']],
   ['a', 'Ámbar · las ganas suben', 'var(--amb)', ['Corazón más rápido', 'Calor en la cara', 'Me muevo inquieto/a', 'Pienso «solo una vez»', 'Agarro el móvil']],
@@ -1075,7 +1086,7 @@ const PDFKIT = (() => {
 </script>
 <!-- /PDFCFG -->
 
-<script>window.CASA = {"app": "g", "area": "reg", "id": "impulsos"};</script>
+<script>window.CASA = {"app": "g", "area": "reg", "id": "impulsos", "room": "El salón", "lv": ["Por estrenar", "Con luz", "Cogiendo vida", "Acogedora", "Llena de detalles", "Hecha a tu medida"], "th": [1, 3, 6, 10, 15]};</script>
 <script>/* «La casa que crece»: cuenta, una vez al día por herramienta, cuando la persona completa algo
    (escribe o guarda algo, o hace una práctica con calma). Sin rachas ni avisos.
    La configuración llega en window.CASA = { app: 'g' | 'm', area, id }. */
@@ -1093,7 +1104,10 @@ const PDFKIT = (() => {
     var s = read(), hoy = day(); s.a = s.a || {}; s.d = s.d || {};
     if (s.d[C.id] === hoy) return;
     s.d[C.id] = hoy; s.a[C.area] = (s.a[C.area] || 0) + 1; s.n = (s.n || 0) + 1;
-    if (s.ld !== hoy) { var f = new Date(), ym = f.getFullYear() + '-' + ('0' + (f.getMonth() + 1)).slice(-2); s.m = s.m || {}; s.m[ym] = (s.m[ym] || 0) + 1; s.ld = hoy; }  // días de cada mes en los que se ha completado algo (tarros / flores)
+    var na = s.a[C.area], TH = C.th || [1, 3, 6, 10, 15], li = TH.indexOf(na);
+    // Noticia para el inicio: solo cuando aparece algo nuevo (sube de nivel una estancia o empieza el tarro/la flor del mes)
+    if (s.seen && li >= 0 && C.room) s.nuevo = { k: 'lv', room: C.room, lv: (C.lv || [])[li + 1] || '', t: Date.now() };
+    if (s.ld !== hoy) { var f = new Date(), ym = f.getFullYear() + '-' + ('0' + (f.getMonth() + 1)).slice(-2); s.m = s.m || {}; s.m[ym] = (s.m[ym] || 0) + 1; s.ld = hoy; if (s.seen && s.m[ym] === 1 && !(s.nuevo && s.nuevo.k === 'lv' && Date.now() - s.nuevo.t < 5000)) s.nuevo = { k: 'mes', t: Date.now() }; }  // días de cada mes en los que se ha completado algo (tarros / flores)
     var first = !s.seen; s.seen = true;
     try { setI.call(ls, K, JSON.stringify(s)); } catch (e) { return; }
     if (first && !s.off) setTimeout(invite, 900);
