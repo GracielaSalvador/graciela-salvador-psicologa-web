@@ -779,8 +779,8 @@ $('#guideList').innerHTML = ORDER.map(k => `<div class="card emo-card" style="--
 const PIX = [['alegria', 'Alegría'], ['calma', 'Calma'], ['tristeza', 'Tristeza'], ['miedo', 'Miedo o nervios'], ['rabia', 'Rabia'], ['sorpresa', 'Sorpresa'], ['asco', 'Rechazo']];
 let dias = store.get('dias', {}) || {};
 const kDia = (dt) => dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0') + '-' + String(dt.getDate()).padStart(2, '0');
-const HOY = kDia(new Date());
-let mesV = new Date(); mesV.setDate(1); let selDia = HOY;
+const HOY = kDia(new Date(Date.now() - 5 * 36e5));  // el día cambia a las 5 de la mañana: lo de madrugada cuenta como el día anterior
+let mesV = new Date(Date.now() - 5 * 36e5); mesV.setDate(1); let selDia = HOY;
 const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
 function renderMes() {
   const y = mesV.getFullYear(), m = mesV.getMonth(), n = new Date(y, m + 1, 0).getDate(), off = (new Date(y, m, 1).getDay() + 6) % 7;

@@ -276,7 +276,7 @@ footer p { margin: 0; }
   </header>
   <div class="offline" id="offBox" role="status" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8.8a15 15 0 0 1 4.2-2.7M22 8.8A15 15 0 0 0 10.7 5M5 12.6a10 10 0 0 1 3.5-2.3M19 12.6a10 10 0 0 0-2.7-1.9M8.5 16.4a5 5 0 0 1 7 0M12 20h.01M3 3l18 18"/></svg><div id="offTxt"></div></div>
   <p class="lead inicio" id="saludo"></p>
-  <h1 class="inicio">¿Qué necesitas hoy?</h1>
+  <h1 class="inicio">¿Qué necesitas <em>hoy</em>?</h1>
   <section class="inicio ioswarn" id="iosWarn" role="note" hidden>
     <b>Antes de empezar, si usas iPhone</b>
     <p>Pon la app en tu pantalla de inicio y úsala siempre desde su icono. En iPhone, lo que escribas aquí, en Safari, no pasa a la app del icono, y al revés.</p>
@@ -594,7 +594,7 @@ window.addEventListener('appinstalled', () => { $('#install').hidden = true; });
   const botones = (v, attr) => `<div class="dcs">${DC.map(([k, t]) => `<button ${attr}="${k}" data-dc="${k}" style="--c:var(--e-${k})" aria-pressed="${!!v && v.e === k}"><i></i>${t}</button>`).join('')}</div>`;
   function pinta() {
     const box = $('#dayCol'); if (!box) return;
-    const dias = get(), now = new Date(), hoy = kd(now), v = dias[hoy], n = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+    const dias = get(), now = new Date(Date.now() - 5 * 36e5), hoy = kd(now), v = dias[hoy], n = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
     let mini = ''; for (let d = 1; d <= n; d++) { const k = kd(new Date(now.getFullYear(), now.getMonth(), d)), x = dias[k]; mini += `<i class="${x ? 'on' : ''}${k === hoy ? ' hoy' : ''}" style="${x ? `--c:var(--e-${x.e})` : ''}"></i>`; }
     const nm = v ? (DC.find(c => c[0] === v.e) || [, ''])[1] : '';
     // «Mi espacio»: el color de hoy (con «Cambiar»), la tira del mes y el enlace al mes y el año
