@@ -1,7 +1,7 @@
 // POST /api/payhip → avisos automáticos de Payhip (webhooks).
 // En Payhip: Settings → Developer → Webhook URL: https://www.gracielasalvador.com/api/payhip
 // Qué app abre cada producto se deduce de su nombre en Payhip:
-//   «Madrería» → La Madrería · «General» o «Bolsillo» → la general · «Pack» o «las dos» → las dos
+//   «Pack» o «las dos» → las dos · si no, «Madrería» → La Madrería · si no, la general · «Pack» o «las dos» → las dos
 //   «Anual» o «año» → periodo de un año; si no, mensual
 // Las tarjetas regalo no pasan por aquí: se canjean con su código en /api/regalo.
 import { T_CONSEJO, T_PRIVADO, nombresApps, leerPersona, guardarPersona, limpiaCorreo, crearEnlace, enviarCorreo, plantilla, APPS, fecha, accesos, DIA, db } from './_comun.js';
@@ -11,7 +11,7 @@ const sin = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-�
 export function leerProducto(nombre) {
   const n = sin(nombre);
   if (/regalo|tarjeta/.test(n)) return null;
-  const apps = /pack|las dos|ambas/.test(n) || (/madreria/.test(n) && /general|bolsillo/.test(n)) ? ['m', 'g'] : /madreria/.test(n) ? ['m'] : ['g'];
+  const apps = /pack|las dos|ambas/.test(n) ? ['m', 'g'] : /madreria/.test(n) ? ['m'] : ['g'];
   const periodo = /anual|ano\b|year|12 meses/.test(n) ? 372 * DIA : 35 * DIA;
   return { apps, periodo };
 }
@@ -38,8 +38,11 @@ export default async function handler(req) {
         const app = prod.apps[0], link = await crearEnlace(email, app, 60 * 24 * 3);
         await enviarCorreo(email, 'Te doy la bienvenida', plantilla(app, 'Te doy la bienvenida', [`Gracias por suscribirte a ${nombresApps(prod.apps)}. Ya tienes abiertas todas las herramientas.`,
           'Las he preparado para acompañarte en el día a día: para los momentos difíciles, para entender lo que sientes y para cuidarte un poco más. Úsalas a tu ritmo, cuando las necesites.',
-          'Para entrar, toca este enlace desde tu móvil:', { enlace: ['Entrar en la app', link] }, T_CONSEJO, T_PRIVADO,
+          'Para entrar, toca este enlace desde tu móvil:', { enlace: ['Entrar en la app', link] }, ...(/acompa|asesor/.test(sin(`${d.product_name || ''} ${d.plan_name || ''}`)) ? ['Tu plan incluye una asesoría conmigo cada mes. Para reservar la primera, escríbeme cuando quieras a hola@gracielasalvador.com o por WhatsApp al 698 98 20 95, y buscamos juntas un hueco.'] : []), T_CONSEJO, T_PRIVADO,
           'Puedes cancelar tu suscripción cuando quieras con el enlace que viene en tu recibo de Payhip. Si no lo encuentras, o tienes cualquier duda, respóndeme a este correo y te ayudo.']));
+      } else if (s.id && d.subscription_id && s.id !== d.subscription_id && s.activa) {
+        // Cancela una suscripción antigua pero ya tiene otra activa (p. ej., cambio de plan): se mantiene la nueva
+        return new Response('ok');
       } else {
         // Cancelada: se mantiene hasta el final del periodo pagado
         const base = (s.ultimo || s.inicio || ahora) + (s.periodo || prod.periodo);
