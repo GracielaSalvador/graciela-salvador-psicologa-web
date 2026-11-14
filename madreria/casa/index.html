@@ -161,7 +161,7 @@ button:focus-visible, input:focus-visible, summary:focus-visible, a:focus-visibl
     <p>Además, cada mes tiene lo suyo, que crece con los días en los que completas algo. Y la casa cambia con las estaciones del año.</p>
     <p>No hay rachas ni nada que se pierda: si pasas días sin entrar, nada se marchita. Te espera tal y como la dejaste. Todo se guarda solo en este dispositivo y entra en tu copia de seguridad.</p></details>
   <div class="opts">
-    <label class="sw"><span>Mostrar la casita en el inicio</span><input type="checkbox" id="show"></label>
+    <label class="sw"><span>Avisarme en el inicio cuando aparezca algo nuevo</span><input type="checkbox" id="show"></label>
     <button class="reset" id="reset">Empezar de cero</button>
     <div class="ask" id="ask" hidden><p>¿Quieres empezar de cero? El jardín vuelve a estar por brotar. Lo que has escrito en las herramientas no se borra.</p><div class="r"><button class="n" id="askNo">Mejor no</button><button class="y" id="askYes">Empezar de cero</button></div></div>
   </div>
@@ -221,13 +221,13 @@ function draw() {
     const l = level(a[k] || 0);
     return `<li><span class="dot" style="background:${col}"></span><span><b>${name}</b><small>${room}</small></span><span><span class="pips" style="--pc:${col}" aria-hidden="true">${TH.map((t, i) => `<i class="${i < l ? 'on' : ''}"></i>`).join('')}</span><span class="st">${LV[l]}</span></span></li>`;
   }).join('');
-  document.getElementById('show').checked = !s.off;
+  document.getElementById('show').checked = !s.avisosOff;
   drawMes(s); season(window.__fecha || new Date());
 }
-document.getElementById('show').onchange = (e) => { const s = read(); s.off = !e.target.checked; s.seen = true; save(s); };
+document.getElementById('show').onchange = (e) => { const s = read(); s.avisosOff = !e.target.checked; save(s); };
 document.getElementById('reset').onclick = () => { document.getElementById('ask').hidden = false; };
 document.getElementById('askNo').onclick = () => { document.getElementById('ask').hidden = true; };
-document.getElementById('askYes').onclick = () => { const s = read(); save({ seen: true, off: !!s.off }); document.getElementById('ask').hidden = true; draw(); };
+document.getElementById('askYes').onclick = () => { const s = read(); save({ seen: true, avisosOff: !!s.avisosOff }); document.getElementById('ask').hidden = true; draw(); };
 draw();
 </script>
 </body>
