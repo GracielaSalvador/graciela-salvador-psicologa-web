@@ -10,7 +10,8 @@ export default async function handler(req) {
     if (Date.now() - s.c > REVISAR_CADA) {
       try { acc = accesos(await leerPersona(s.e)); h.append('Set-Cookie', cookieSesion(await crearSesion(s.e, acc))); h.append('Set-Cookie', cookieApps(acc)); } catch (e) {}
     }
-    out = { ...out, email: s.e, m: acc.m > Date.now(), g: acc.g > Date.now(), hastaM: acc.m, hastaG: acc.g };
+    let sus = false; try { const per = await leerPersona(s.e); sus = !!(per && per.sub && per.sub.activa); } catch (e) {}
+    out = { ...out, email: s.e, m: acc.m > Date.now(), g: acc.g > Date.now(), hastaM: acc.m, hastaG: acc.g, sus };
   }
   return new Response(JSON.stringify(out), { headers: h });
 }
