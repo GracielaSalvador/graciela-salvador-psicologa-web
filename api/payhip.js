@@ -17,6 +17,13 @@ export function leerProducto(nombre) {
 }
 async function hex(txt) { const h = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(txt)); return [...new Uint8Array(h)].map((b) => b.toString(16).padStart(2, '0')).join(''); }
 
+async function bienvenida(email, prod, nombre) {
+  const app = prod.apps[0], link = await crearEnlace(email, app, 60 * 24 * 3);
+        await enviarCorreo(email, 'Te doy la bienvenida', plantilla(app, 'Te doy la bienvenida', [`Gracias por suscribirte a ${nombresApps(prod.apps)}. Ya tienes abiertas todas las herramientas.`,
+          'Las he preparado para acompañarte en el día a día: para los momentos difíciles, para entender lo que sientes y para cuidarte un poco más. Úsalas a tu ritmo, cuando las necesites.',
+          'Para entrar, toca este enlace desde tu móvil:', { enlace: ['Entrar en la app', link] }, ...(/acompa|asesor/.test(sin(`${nombre}`)) ? ['Tu plan incluye una asesoría conmigo cada mes. Para reservar la primera, escríbeme cuando quieras a hola@gracielasalvador.com o por WhatsApp al 698 98 20 95, y buscamos juntas un hueco.'] : []), T_CONSEJO, T_PRIVADO,
+          'Puedes cancelar tu suscripción cuando quieras con el enlace que viene en tu recibo de Payhip. Si no lo encuentras, o tienes cualquier duda, respóndeme a este correo y te ayudo.']));
+}
 export default async function handler(req) {
   if (req.method !== 'POST') return new Response('ok');
   let d = null; try { d = await req.json(); } catch (e) { const f = await req.formData().catch(() => null); d = f ? Object.fromEntries(f.entries()) : null; }
@@ -35,11 +42,7 @@ export default async function handler(req) {
         p.sub = { ...s, apps: prod.apps, activa: true, id: d.subscription_id, plan: d.plan_name || d.product_name, inicio: ahora, ultimo: ahora, periodo: prod.periodo };
         for (const a of prod.apps) p.sub[a] = Math.max(s[a] || 0, ahora + prod.periodo);
         await guardarPersona(email, p);
-        const app = prod.apps[0], link = await crearEnlace(email, app, 60 * 24 * 3);
-        await enviarCorreo(email, 'Te doy la bienvenida', plantilla(app, 'Te doy la bienvenida', [`Gracias por suscribirte a ${nombresApps(prod.apps)}. Ya tienes abiertas todas las herramientas.`,
-          'Las he preparado para acompañarte en el día a día: para los momentos difíciles, para entender lo que sientes y para cuidarte un poco más. Úsalas a tu ritmo, cuando las necesites.',
-          'Para entrar, toca este enlace desde tu móvil:', { enlace: ['Entrar en la app', link] }, ...(/acompa|asesor/.test(sin(`${d.product_name || ''} ${d.plan_name || ''}`)) ? ['Tu plan incluye una asesoría conmigo cada mes. Para reservar la primera, escríbeme cuando quieras a hola@gracielasalvador.com o por WhatsApp al 698 98 20 95, y buscamos juntas un hueco.'] : []), T_CONSEJO, T_PRIVADO,
-          'Puedes cancelar tu suscripción cuando quieras con el enlace que viene en tu recibo de Payhip. Si no lo encuentras, o tienes cualquier duda, respóndeme a este correo y te ayudo.']));
+        if (!s.bienv) { p.sub.bienv = ahora; await guardarPersona(email, p); await bienvenida(email, prod, `${d.product_name || ''} ${d.plan_name || ''}`); }
       } else if (s.id && d.subscription_id && s.id !== d.subscription_id && s.activa) {
         // Cancela una suscripción antigua pero ya tiene otra activa (p. ej., cambio de plan): se mantiene la nueva
         return new Response('ok');
@@ -66,7 +69,9 @@ export default async function handler(req) {
         for (const pr of prods) for (const a of pr.apps) s[a] = ahora;
         s.activa = false;
       }
+      const nuevo = d.type === 'paid' && !s.bienv; if (nuevo) s.bienv = ahora;
       p.sub = s; await guardarPersona(email, p);
+      if (nuevo) await bienvenida(email, prods[0], (d.items || []).map((i) => i.product_name).join(' '));
     }
     return new Response('ok');
   } catch (err) {
