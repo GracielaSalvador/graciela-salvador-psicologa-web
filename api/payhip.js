@@ -56,9 +56,12 @@ export default async function handler(req) {
       const email = limpiaCorreo(d.email);
       const prods = (d.items || []).map((i) => leerProducto(i.product_name)).filter(Boolean);
       if (!email || !prods.length) return new Response('ok');
+      // Payhip manda «paid» y «subscription.created» casi a la vez: esperamos un poco y releemos para no pisar el alta
+      if (d.type === 'paid') await new Promise((r) => setTimeout(r, 2500));
       const p = (await leerPersona(email)) || { creado: ahora }, s = p.sub || {};
       if (d.type === 'paid') {
         for (const pr of prods) { for (const a of pr.apps) s[a] = Math.max(s[a] || 0, ahora + pr.periodo); s.ultimo = ahora; s.periodo = pr.periodo; s.apps = [...new Set([...(s.apps || []), ...pr.apps])]; }
+        if (!s.cancelada || s.cancelada < ahora - 60000) s.activa = true;
       } else if (+d.amount_refunded >= +d.price) {
         for (const pr of prods) for (const a of pr.apps) s[a] = ahora;
         s.activa = false;
