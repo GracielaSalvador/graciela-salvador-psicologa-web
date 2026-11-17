@@ -106,7 +106,11 @@
   .bh-gift{ display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; }
   .bh-table{ width:100%; border-collapse:collapse; background:#fff; border-radius:18px; overflow:hidden; border:1px solid var(--line); font-size:15px; }
   .bh-table th,.bh-table td{ padding:13px 16px; text-align:left; border-bottom:1px solid var(--line); }
-  .bh-table th{ font-weight:600; background:var(--paper-dim); }
+  .bh-table th{ font-weight:600; background:var(--paper-dim); font-size:14px; }
+  .bh-gl{ display:inline-block; font-weight:600; color:var(--teal-deep); background:var(--teal-tint); padding:7px 12px; border-radius:999px; text-decoration:none; white-space:nowrap; }
+  .bh-short{ display:none; }
+  .bh-gift > div{ min-width:0; }
+  .bh-gl:hover{ background:var(--teal); color:#fff; }
   .bh-table tr:last-child td{ border-bottom:0; }
   .bh-faq details{ border-bottom:1px solid var(--line); padding:18px 0; }
   .bh-faq summary{ cursor:pointer; font-family:'Fraunces',serif; font-size:20px; list-style:none; display:flex; justify-content:space-between; gap:16px; }
@@ -147,6 +151,12 @@
     .bh-phones{ grid-template-columns:repeat(2,1fr); gap:20px; }
     .bh-fund2{ grid-template-columns:1fr; gap:18px; padding:34px 22px 26px; }
     .bh-code b{ min-width:0; width:100%; }
+  }
+  @media (max-width:600px){
+    .bh-long{ display:none; } .bh-short{ display:inline; }
+    .bh-table th,.bh-table td{ padding:10px 6px; font-size:13px; }
+    .bh-table td:first-child{ white-space:nowrap; }
+    .bh-gl{ padding:6px 9px; font-size:13px; }
   }
   @media (max-width:900px){
     #profesionales{ grid-template-columns:1fr !important; }
@@ -334,12 +344,12 @@
       </div>
       <div>
         <table class="bh-table">
-          <tr><th></th><th>Una edición</th><th>Las dos</th></tr>
-          <tr><td>3 meses</td><td>15,90 €</td><td>21,90 €</td></tr>
-          <tr><td>6 meses</td><td>29,90 €</td><td>39,90 €</td></tr>
-          <tr><td>12 meses</td><td>49 €</td><td>65 €</td></tr>
+          <tr><th></th><th>La Madrería</th><th><span class="bh-long">Mi psicóloga en el bolsillo</span><span class="bh-short">Bolsillo</span></th><th>Las dos</th></tr>
+          <tr><td>3 meses</td><td><a href="https://payhip.com/b/UvgtA" class="bh-gl">15,90 €</a></td><td><a href="https://payhip.com/b/V1tdu" class="bh-gl">15,90 €</a></td><td><a href="https://payhip.com/b/EHQUC" class="bh-gl">21,90 €</a></td></tr>
+          <tr><td>6 meses</td><td><a href="https://payhip.com/b/MkmWN" class="bh-gl">29,90 €</a></td><td><a href="https://payhip.com/b/bjNmQ" class="bh-gl">29,90 €</a></td><td><a href="https://payhip.com/b/gJ9tn" class="bh-gl">39,90 €</a></td></tr>
+          <tr><td>12 meses</td><td><a href="https://payhip.com/b/OegcP" class="bh-gl">49 €</a></td><td><a href="https://payhip.com/b/MCca6" class="bh-gl">49 €</a></td><td><a href="https://payhip.com/b/PcWFw" class="bh-gl">65 €</a></td></tr>
         </table>
-        <p style="margin-top:20px"><a href="#PENDIENTE-tienda-regalos" class="btn btn-teal">Elegir una tarjeta regalo</a></p>
+        <p class="bh-small" style="margin-top:14px">Toca el precio de la tarjeta que quieras regalar.</p>
       </div>
     </div>
   </section>
