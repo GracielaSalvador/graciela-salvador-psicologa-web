@@ -61,7 +61,7 @@ small { color: var(--muted); font-size: .84rem; }
   </section>
 
   <section id="app" hidden style="display:flex;flex-direction:column;gap:16px">
-    <div class="tabs" role="tablist"><button role="tab" data-t="pac" aria-selected="true">Mis pacientes</button><button role="tab" data-t="tod" aria-selected="false">Todas las personas</button><button role="tab" data-t="gra" aria-selected="false">Gratis</button></div>
+    <div class="tabs" role="tablist"><button role="tab" data-t="pac" aria-selected="true">Mis pacientes</button><button role="tab" data-t="tod" aria-selected="false">Todas las personas</button><button role="tab" data-t="gra" aria-selected="false">Gratis</button><button role="tab" data-t="nov" aria-selected="false">Novedades</button></div>
     <div id="v-gra" hidden style="display:none;flex-direction:column;gap:14px">
       <h1>Herramientas gratis</h1>
       <p>Lo que marques aquí se abre para todo el mundo, sin cuenta. Si pones una fecha, se abre solo hasta ese día (por ejemplo, para una promoción) y después se cierra sola. El inicio, la casita y la información legal son siempre gratis.</p>
@@ -69,6 +69,19 @@ small { color: var(--muted); font-size: .84rem; }
       <div class="card" style="gap:6px"><h2 style="margin:0">Mi psicóloga en el bolsillo</h2><div id="grG"></div></div>
       <button id="grSave" style="align-self:flex-start">Guardar cambios</button><div class="m" id="grMsg"></div>
       <small class="muted">Los cambios tardan como mucho un minuto en verse en las apps.</small>
+    </div>
+    <div id="v-nov" hidden style="display:none;flex-direction:column;gap:14px">
+      <h1>Avisar de novedades</h1>
+      <p>Cuando subas algo nuevo, escríbelo aquí y le llegará un correo a quien tenga acceso a esa app (suscripción, regalo o paciente). Quien no quiera recibirlos puede darse de baja con un enlace al pie del correo.</p>
+      <form class="card" id="novf">
+        <label for="nva">¿A quién?</label>
+        <select id="nva" style="font:inherit;min-height:48px;padding:10px 14px;border-radius:14px;border:1px solid var(--line);background:var(--tint);color:var(--ink)"><option value="m">Quien tiene La Madrería</option><option value="g">Quien tiene Mi psicóloga en el bolsillo</option><option value="ambas">Las dos</option></select>
+        <label for="nvs">Asunto</label><input id="nvs" type="text" maxlength="120" required placeholder="Por ejemplo: Nueva herramienta para las noches difíciles">
+        <label for="nvt">Texto <small>(deja una línea en blanco entre párrafos; el «Hola:» y la despedida se ponen solos)</small></label>
+        <textarea id="nvt" rows="8" required style="font:inherit;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:var(--tint);color:var(--ink)"></textarea>
+        <div style="display:flex;gap:10px;flex-wrap:wrap"><button type="button" class="g" id="nvp">Enviarme una prueba</button><button type="submit" id="nve">Enviar a todas</button></div>
+        <div class="m" id="nvm"></div>
+      </form>
     </div>
     <div id="v-tod" hidden style="display:none;flex-direction:column;gap:14px">
       <h1>Todas las personas</h1>
@@ -160,7 +173,7 @@ async function accionT(b) {
 }
 $('#q').oninput = () => pintaTodos();
 // ---------- Herramientas gratis ----------
-const HERR = {"m": [["faltar", "Lo que no puede faltar"], ["peques", "Ayudar a mi peque a calmarse"], ["duelo", "El duelo por mi bebé"], ["primeras", "Las primeras horas"], ["pleno", "En pleno parto"], ["limpeq", "Poner límites con cariño"], ["familia", "La familia que queremos ser"], ["limfam", "Poner límites a la familia"], ["suenopos", "Dormir en el posparto"], ["lactancia", "Lactancia y emociones"], ["cuerpopos", "Mi cuerpo en el posparto"], ["animo", "Cuidar mi ánimo en el posparto"], ["cuerpoemb", "Mi cuerpo en el embarazo"], ["vinculo", "Conectar con mi bebé"], ["ansiedad", "Calmar mi ansiedad en el embarazo"], ["salto", "Cuando salto"], ["origen", "Saber de dónde vengo"], ["ventanas", "Dos ventanas"], ["recordar", "Recordar mi parto"], ["parto", "Prepararme para el parto"], ["pareja", "Seguir siendo pareja"], ["soledad", "Sentirme menos sola"], ["nacer", "Nacer como madre"], ["carga", "Aligerar mi carga mental"], ["liston", "Ajustar el listón"], ["carino", "Tratarme con cariño"], ["calma", "Calmarme o volver a mí"], ["presente", "Volver al presente jugando"], ["emociones", "Entender lo que siento"], ["ahora", "Estar aquí y ahora"], ["energia", "Cuidar mi energía"], ["hablar", "Hablar sin pelear"], ["sesion", "Preparar mi sesión"]], "g": [["calma", "Calmarme o volver a mí"], ["emociones", "Entender lo que siento"], ["ahora", "Estar aquí y ahora"], ["presente", "Volver al presente jugando"], ["impulsos", "Frenar a tiempo"], ["enfado", "Gestionar mi enfado"], ["frustracion", "Ampliar mi ventana"], ["sueno", "Dormir mejor"], ["energia", "Cuidar mi energía"], ["ciclo", "Salir del círculo del miedo"], ["social", "Sentirme cómodo/a con los demás"], ["vueltas", "Darle menos vueltas"], ["incertidumbre", "Convivir con la incertidumbre"], ["pensamientos", "Revisar mis pensamientos"], ["quererme", "Quererme mejor"], ["cuerpo", "Hacer las paces con mi cuerpo"], ["carino", "Tratarme con cariño"], ["liston", "Ajustar el listón"], ["culpa", "Aliviar mi culpa"], ["verguenza", "Dejar de esconderme"], ["limites", "Poner un límite"], ["hablar", "Hablar sin pelear"], ["vinculos", "Vínculos sanos"], ["soledad", "Sentirme menos solo/a"], ["celos", "Calmar mis celos"], ["apego", "Mirar de dónde vengo"], ["activar", "Ponerme en marcha"], ["duelo", "Acompañar mi duelo"], ["cambios", "Atravesar un cambio"], ["rumbo", "Saber hacia dónde voy"], ["sesion", "Preparar mi sesión"]]};
+const HERR = {"m": [["faltar", "Lo que no puede faltar"], ["peques", "Ayudar a mi peque a calmarse"], ["duelo", "El duelo por mi bebé"], ["primeras", "Las primeras horas"], ["pleno", "En pleno parto"], ["limpeq", "Poner límites con cariño"], ["familia", "La familia que queremos ser"], ["limfam", "Poner límites a la familia"], ["suenopos", "Dormir en el posparto"], ["lactancia", "Lactancia y emociones"], ["cuerpopos", "Mi cuerpo en el posparto"], ["animo", "Cuidar mi ánimo en el posparto"], ["cuerpoemb", "Mi cuerpo en el embarazo"], ["vinculo", "Conectar con mi bebé"], ["ansiedad", "Calmar mi ansiedad en el embarazo"], ["salto", "Cuando salto"], ["origen", "Saber de dónde vengo"], ["ventanas", "Dos ventanas"], ["recordar", "Recordar mi parto"], ["parto", "Prepararme para el parto"], ["pareja", "Seguir siendo pareja"], ["soledad", "Sentirme menos sola"], ["nacer", "Nacer como madre"], ["carga", "Aligerar mi carga mental"], ["liston", "Ajustar el listón"], ["carino", "Tratarme con cariño"], ["calma", "Calmarme o volver a mí"], ["escuchar", "Para escuchar"], ["impulsos", "Frenar a tiempo"], ["presente", "Volver al presente jugando"], ["emociones", "Entender lo que siento"], ["ahora", "Estar aquí y ahora"], ["energia", "Cuidar mi energía"], ["hablar", "Hablar sin pelear"], ["sesion", "Preparar mi sesión"]], "g": [["calma", "Calmarme o volver a mí"], ["emociones", "Entender lo que siento"], ["ahora", "Estar aquí y ahora"], ["presente", "Volver al presente jugando"], ["escuchar", "Para escuchar"], ["impulsos", "Frenar a tiempo"], ["enfado", "Gestionar mi enfado"], ["frustracion", "Ampliar mi ventana"], ["sueno", "Dormir mejor"], ["energia", "Cuidar mi energía"], ["ciclo", "Salir del círculo del miedo"], ["social", "Sentirme cómodo/a con los demás"], ["vueltas", "Darle menos vueltas"], ["incertidumbre", "Convivir con la incertidumbre"], ["pensamientos", "Revisar mis pensamientos"], ["quererme", "Quererme mejor"], ["cuerpo", "Hacer las paces con mi cuerpo"], ["carino", "Tratarme con cariño"], ["liston", "Ajustar el listón"], ["culpa", "Aliviar mi culpa"], ["verguenza", "Dejar de esconderme"], ["limites", "Poner un límite"], ["hablar", "Hablar sin pelear"], ["vinculos", "Vínculos sanos"], ["soledad", "Sentirme menos solo/a"], ["celos", "Calmar mis celos"], ["apego", "Mirar de dónde vengo"], ["activar", "Ponerme en marcha"], ["duelo", "Acompañar mi duelo"], ["cambios", "Atravesar un cambio"], ["rumbo", "Saber hacia dónde voy"], ["sesion", "Preparar mi sesión"]]};
 const dIso = (t) => { const d = new Date(t); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
 function pintaGratis(cfg) {
   for (const a of ['m', 'g']) {
@@ -181,7 +194,7 @@ $('#grSave').onclick = async () => {
   $('#grSave').disabled = false;
 };
 document.querySelectorAll('.tabs button').forEach((b) => b.onclick = () => { document.querySelectorAll('.tabs button').forEach((x) => x.setAttribute('aria-selected', x === b));
-  for (const v of ['pac', 'tod', 'gra']) { const on = b.dataset.t === v; $('#v-' + v).hidden = !on; $('#v-' + v).style.display = on ? 'flex' : 'none'; }
+  for (const v of ['pac', 'tod', 'gra', 'nov']) { const on = b.dataset.t === v; $('#v-' + v).hidden = !on; $('#v-' + v).style.display = on ? 'flex' : 'none'; }
   if (b.dataset.t === 'gra') cargaGratis(); });
 
 async function cargar() {
@@ -208,6 +221,15 @@ async function accion(b) {
 $('#lf').onsubmit = async (ev) => { ev.preventDefault(); try { await api({ accion: 'entrar', clave: $('#lp').value }); $('#lp').value = ''; msg($('#lm'), ''); cargar(); } catch (e) { msg($('#lm'), e.message === 'entrar' ? 'La contraseña no es correcta.' : e.message); } };
 $('#nf').onsubmit = async (ev) => { ev.preventDefault(); const apps = [...document.querySelectorAll('#nf [name=a]:checked')].map((i) => i.value); const bt = ev.target.querySelector('button'); bt.disabled = true;
   try { await api({ accion: 'nueva', email: $('#ne').value, nombre: $('#nn').value, apps }); msg($('#nm'), `Listo. Le hemos enviado el correo a ${$('#ne').value}.`, true); $('#ne').value = ''; $('#nn').value = ''; cargar(); } catch (e) { if (e.message !== 'entrar') msg($('#nm'), e.message); } bt.disabled = false; };
+const nvDatos = () => ({ app: $('#nva').value, asunto: $('#nvs').value.trim(), texto: $('#nvt').value.trim() });
+$('#nvp').onclick = async () => { const d = nvDatos(); if (!d.asunto || !d.texto) return msg($('#nvm'), 'Escribe el asunto y el texto.');
+  try { await api({ accion: 'novedades_prueba', ...d }); msg($('#nvm'), 'Te he enviado una prueba a tu correo. Revísala antes de enviarlo a todas.', true); } catch (e) { if (e.message !== 'entrar') msg($('#nvm'), e.message); } };
+$('#novf').onsubmit = async (ev) => { ev.preventDefault(); const d = nvDatos(), bt = $('#nve');
+  if (!confirm('¿Enviar este correo a todas las personas con acceso? No se puede deshacer.')) return;
+  bt.disabled = true; const id = Math.random().toString(36).slice(2, 12); let total = 0, fallos = 0;
+  try { for (;;) { const r = await api({ accion: 'novedades_envio', id, ...d }); total += r.enviados; fallos += r.fallos; msg($('#nvm'), `Enviando… ${total} enviados${r.quedan ? `, quedan ${r.quedan}` : ''}.`, true); if (!r.quedan) break; }
+    msg($('#nvm'), `Hecho: ${total} correos enviados${fallos ? ` (${fallos} no se pudieron enviar)` : ''}.`, true); $('#nvs').value = ''; $('#nvt').value = ''; }
+  catch (e) { if (e.message !== 'entrar') msg($('#nvm'), e.message + ` Se habían enviado ${total}.`); } bt.disabled = false; };
 $('#out').onclick = async () => { await api({ accion: 'salir' }).catch(() => {}); show(false); };
 cargar().catch(() => show(false));
 </script>

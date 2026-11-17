@@ -1,6 +1,6 @@
 // /api/admin → lo que usa la página de pacientes de Graciela (www.gracielasalvador.com/graciela/).
 // Solo funciona con la contraseña ADMIN_PASSWORD de Vercel.
-import { T_CONSEJO, enlacesPago, nombresApps, gratisConfig, FIJAS, db, esAdmin, crearAdmin, limpiaCorreo, correoValido, leerPersona, guardarPersona, accesos, crearEnlace, enviarCorreo, plantilla, APPS, fecha, DIA, MARGEN_ALTA } from './_comun.js';
+import { T_CONSEJO, enlacesPago, nombresApps, gratisConfig, FIJAS, db, esAdmin, crearAdmin, limpiaCorreo, correoValido, leerPersona, guardarPersona, accesos, crearEnlace, enviarCorreo, plantilla, APPS, fecha, DIA, MARGEN_ALTA, enlaceBaja, esc } from './_comun.js';
 export const config = { runtime: 'edge' };
 
 const json = (o, st = 200, cookies = []) => { const h = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }); for (const c of cookies) h.append('Set-Cookie', c); return new Response(JSON.stringify(o), { status: st, headers: h }); };
@@ -26,6 +26,29 @@ export default async function handler(req) {
       const c = d.cfg || {}, out = {};
       for (const a of ['m', 'g']) { out[a] = {}; for (const [k, h] of Object.entries(c[a] || {})) if (/^[a-z0-9]{1,30}$/.test(k) && !FIJAS.includes(k)) out[a][k] = +h > 0 ? +h : 0; }
       await db('SET', 'gratis', JSON.stringify(out)); return json({ ok: true });
+    }
+    if (d.accion === 'novedades_prueba' || d.accion === 'novedades_envio') {
+      const app = ['m', 'g', 'ambas'].includes(d.app) ? d.app : '', asunto = String(d.asunto || '').trim().slice(0, 120), texto = String(d.texto || '').trim().slice(0, 4000);
+      if (!app || !asunto || !texto) return json({ error: 'Faltan el asunto, el texto o la app.' }, 400);
+      const parrafos = texto.split(/\n\s*\n/).map((x) => esc(x.trim()).replace(/\n/g, '<br>')).filter(Boolean);
+      const destApps = app === 'ambas' ? ['m', 'g'] : [app];
+      const correo = async (email) => enviarCorreo(email, asunto, plantilla(destApps[0], asunto, [...parrafos,
+        { enlace: ['Abrir la app', `https://${APPS[destApps[0]].host}/${APPS[destApps[0]].ruta}/`] },
+        `<span style="font-size:12px;color:#777">Te escribo porque tienes acceso a ${nombresApps(destApps)}. Si prefieres no recibir estos avisos de novedades, <a href="${esc(await enlaceBaja(email))}" style="color:#777">pulsa aquí</a></span>`]));
+      if (d.accion === 'novedades_prueba') { await correo((process.env.MAIL_FROM || 'hola@gracielasalvador.com').replace(/^.*</, '').replace(/>.*$/, '')); return json({ ok: true }); }
+      // Envío por tandas: cada llamada manda unos pocos y dice cuántos quedan
+      const id = String(d.id || ''), clave = 'nov:' + id;
+      if (!/^[a-z0-9]{6,20}$/.test(id)) return json({ error: 'Envío no válido.' }, 400);
+      let pend = await db('GET', clave);
+      if (pend === null) {
+        const t = Date.now(), emails = [...new Set([...((await db('SMEMBERS', 'pacientes')) || []), ...((await db('SMEMBERS', 'personas')) || [])])], lista = [];
+        for (const e of emails) { const p = await leerPersona(e); if (!p || p.noNov) continue; const acc = accesos(p); if (destApps.some((a) => acc[a] > t)) lista.push(e); }
+        pend = JSON.stringify(lista); await db('SET', clave, pend, 'EX', '86400');
+      }
+      const lista = JSON.parse(pend), tanda = lista.splice(0, 8); let fallos = 0;
+      for (const e of tanda) { try { await correo(e); } catch (err) { fallos++; } await new Promise((r) => setTimeout(r, 600)); }
+      await db('SET', clave, JSON.stringify(lista), 'EX', '86400');
+      return json({ enviados: tanda.length - fallos, fallos, quedan: lista.length });
     }
     if (!d.accion || d.accion === 'lista') {
       // Todas las personas que han tenido algo alguna vez (pacientes, suscripciones, regalos)

@@ -193,6 +193,9 @@ export const enlacesPago = () => ({ m: env('PAYHIP_LINK_M') || '', g: env('PAYHI
 
 /* ---------- Acceso de Graciela a su página de pacientes ---------- */
 export async function crearAdmin() { const cuerpo = b64uTxt(JSON.stringify({ adm: 1, x: ahora() + 30 * DIA })); return cuerpo + '.' + (await firma('admin:' + cuerpo)); }
+/* Enlace para dejar de recibir los avisos de novedades (firmado, no caduca) */
+export async function enlaceBaja(email) { const c = b64uTxt(email); return `https://${HOST_G}/api/novedades?b=${c}.${await firma('baja:' + c)}`; }
+export async function leerBaja(tok) { if (!tok || tok.indexOf('.') < 0) return null; const [c, f] = tok.split('.'); try { if ((await firma('baja:' + c)) !== f) return null; return deB64u(c); } catch (e) { return null; } }
 export async function esAdmin(req) {
   const v = leerCookie(req, 'gs_admin'); if (!v || v.indexOf('.') < 0) return false;
   const [cuerpo, f] = v.split('.');
