@@ -149,6 +149,7 @@
     .bh-code b{ min-width:0; width:100%; }
   }
   @media (max-width:900px){
+    #profesionales{ grid-template-columns:1fr !important; }
     .bh-grid,.bh-two,.bh-is,.bh-steps,.bh-prices,.bh-gift,.bh-fund{ grid-template-columns:1fr; }
     .bh-hero{ padding:36px 0 56px; }
     .bh-video{ max-width:300px; }
@@ -266,13 +267,13 @@
       <h2>Todas las herramientas, mes a mes o por un año</h2>
       <div class="bh-fund2">
         <span class="bh-badge">Plazas limitadas</span>
-        <div class="bh-bigprice"><s>5,90 €</s><div>3,89 €</div><small>al mes, para siempre</small></div>
+        <div class="bh-bigprice"><small style="display:block;font-weight:600;color:var(--teal-deep);margin-bottom:4px">Una edición</small><s>5,90 €</s><div>3,89 €</div><small>al mes, para siempre</small><div style="font-family:'Inter',sans-serif;font-size:15px;line-height:1.4;color:var(--ink-soft);margin-top:14px;border-top:1px solid #E3C55A;padding-top:12px"><b style="color:var(--teal-deep)">Pack:</b> <s style="font-size:15px">7,90 €</s> <b style="color:var(--teal-deep)">5,21 €</b> al mes</div></div>
         <div>
           <h3>Precio de fundadora</h3>
           <p>Para las primeras personas que se suscriban al plan mensual, mientras queden plazas. Escribe el código al pagar y mantienes este precio mientras sigas suscrita.</p>
           <div class="bh-code"><b>Mi psicóloga en el bolsillo</b><button type="button" data-c="FUNDADORABOLSILLO">FUNDADORABOLSILLO</button></div>
           <div class="bh-code"><b>Edición La Madrería</b><button type="button" data-c="FUNDADORAMADRERIA">FUNDADORAMADRERIA</button></div>
-          <div class="bh-code"><b>Pack (5,21 € al mes)</b><button type="button" data-c="FUNDADORAPACK">FUNDADORAPACK</button></div>
+          <div class="bh-code"><b>Pack: las dos ediciones</b><button type="button" data-c="FUNDADORAPACK">FUNDADORAPACK</button></div>
         </div>
       </div>
       <script>
@@ -307,7 +308,18 @@
       </script>
       <p class="bh-small"><b>Todo incluido, también lo que vaya llegando:</b> cada mes subo contenido nuevo. IVA incluido. Al tocar «Suscribirme» eliges en Payhip el plan mensual o el anual. Cancelas cuando quieras desde tu cuenta, sin permanencia: no se te vuelve a cobrar y mantienes el acceso hasta el final del periodo que ya has pagado.</p>
       <p class="bh-small"><b>¿Vienes a consulta conmigo?</b> Mientras estés en terapia tienes las dos ediciones incluidas. Pídemelo en sesión. · <b>¿Ya tienes acceso?</b> <a href="/api/entrar?app=g" style="color:var(--teal);text-decoration:underline">Entrar con mi correo</a></p>
-      <p class="bh-small">* ¿Eres psicóloga o terapeuta y te gustaría ofrecerlo a tus pacientes? <a href="mailto:hola@gracielasalvador.com?subject=Mi%20psic%C3%B3loga%20en%20el%20bolsillo%20para%20mis%20pacientes" style="color:var(--teal);text-decoration:underline">Escríbeme</a> y lo hablamos.</p>
+    </div>
+  </section>
+
+  <!-- PROFESIONALES -->
+  <section style="background:var(--teal-deep);color:#fff;padding:64px 0">
+    <div class="wrap" style="display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center" id="profesionales">
+      <div>
+        <p class="eyebrow" style="color:#B9D9D2">Para profesionales</p>
+        <h2 style="color:#fff">¿Eres psicóloga o terapeuta?</h2>
+        <p style="color:rgba(255,255,255,.86);margin:14px 0 0;max-width:620px">Ofrece <b><i>Mi psicóloga en el bolsillo</i></b> a tus pacientes para que practiquen entre sesiones. Tendrás tu propio panel para darles acceso, con plazas que rotan cuando terminan la terapia.</p>
+      </div>
+      <a href="mailto:hola@gracielasalvador.com?subject=Mi%20psic%C3%B3loga%20en%20el%20bolsillo%20para%20mis%20pacientes" class="btn" style="background:#fff;color:var(--teal-deep);white-space:nowrap">Escríbeme y lo hablamos</a>
     </div>
   </section>
 
@@ -357,6 +369,11 @@
       <div class="bh-ctas" style="justify-content:center">
         <a href="/bolsillo/" class="btn btn-teal">Mi psicóloga en el bolsillo</a>
         <a href="/madreria/" class="btn btn-ghost">Edición La Madrería</a>
+      </div>
+      <div style="margin:44px auto 0;max-width:560px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:24px 26px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;justify-content:center;text-align:left">
+        <svg width="40" height="40" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink:0"><circle cx="12" cy="12" r="12" fill="#25D366"/><path d="M17.2 14.4c-.3-.1-1.6-.8-1.8-.9-.2-.1-.4-.1-.6.1-.2.3-.7.9-.8 1-.2.2-.3.2-.6.1-.3-.1-1.1-.4-2.1-1.3-.8-.7-1.3-1.5-1.4-1.8-.2-.3 0-.4.1-.6l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2 0 1.3.9 2.5 1 2.7.1.2 1.8 2.8 4.4 3.9.6.3 1.1.4 1.5.5.6.2 1.2.2 1.6.1.5-.1 1.6-.6 1.8-1.3.2-.6.2-1.2.2-1.3-.1-.1-.3-.2-.5-.3z" fill="#fff"/></svg>
+        <div style="flex:1;min-width:220px"><b style="display:block;font-size:16px">Novedades en WhatsApp</b><span style="font-size:14.5px;color:var(--ink-soft)">Sigue el canal y te aviso de cada novedad.</span></div>
+        <a href="https://whatsapp.com/channel/0029Vb9oA1FFHWpwyt1k4r2g" target="_blank" rel="noopener" class="btn btn-teal" style="white-space:nowrap">Seguir el canal</a>
       </div>
     </div>
   </section>
