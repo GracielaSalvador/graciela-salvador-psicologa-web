@@ -489,7 +489,7 @@ const STAR = '<path d="M12 3.5l2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8
 const norm = (s) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 function door(t) {
-  const style = `background:var(--c${t.c});color:var(--c${t.c}i)`, fav = favs.includes(t.id), isNew = t.nueva && !seen.includes(t.id);
+  const style = `background:var(--c${t.c});color:var(--c${t.c}i)`, fav = favs.includes(t.id), isNew = typeof t.nueva === 'string' && Date.now() - Date.parse(t.nueva) < 15 * 864e5 && !seen.includes(t.id);
   return `<div class="door" style="${style}"><a href="${t.id}/" data-go="${t.id}" style="display:flex;align-items:center;gap:14px;flex:1;min-width:0;color:inherit;text-decoration:none">
     <span class="ico">${svg(t.ico)}</span><span class="txt">${isNew ? '<span class="new">Nueva</span>' : ''}<strong>${t.titulo}</strong><span class="d">${t.desc}</span></span></a>
     <button class="star" data-fav="${t.id}" aria-pressed="${fav}" aria-label="${fav ? 'Quitar de favoritas' : 'Añadir a favoritas'}: ${t.titulo}">${svg(STAR, 1.8)}</button></div>`;
@@ -664,10 +664,15 @@ if (offFrom && navigator.onLine) history.replaceState(null, '', location.pathnam
   const N = c.nuevo; if (!N) return;
   const guarda = (f) => { let s = {}; try { s = JSON.parse(localStorage.getItem(CASA)) || {}; } catch (e) {} f(s); try { localStorage.setItem(CASA, JSON.stringify(s)); } catch (e) {} };
   guarda((s) => { delete s.nuevo; });
-  if (c.avisosOff || tip || Date.now() - N.t > 864e5 * 3) return;
+  let primera = false; try { primera = !localStorage.getItem('hub.casaNews1'); } catch (e) {}
+  if (c.avisosOff || (tip && !primera) || Date.now() - N.t > 864e5 * 3) return;
+  if (tip) { $('#casaTip').hidden = true; try { localStorage.setItem('hub.casaTip', '1'); } catch (e) {} }
+  try { localStorage.setItem('hub.casaNews1', '1'); } catch (e) {}
   const rm = (N.room || '').replace(/^El /, 'el ').replace(/^La /, 'la ').replace(/^Las /, 'las ').replace(/^Mi /, 'mi ');
   const T = M ? (N.k === 'lv' ? [`Ha brotado algo nuevo en ${rm}`, `Lo que has hecho ha dado fruto: nuevo nivel en ${rm}, «${N.lv}».`] : ['Ha empezado a brotar la flor de este mes', 'Cada día que completes algo, crecerá un poco más.'])
     : (N.k === 'lv' ? [`Algo nuevo en ${rm}`, `Lo que has hecho ha encendido algo más: nuevo nivel en ${rm}, «${N.lv}».`] : ['Ya brilla el tarro de este mes', 'Has encendido su primera luciérnaga. Cada día que completes algo, se encenderá otra.']);
+  if (primera) { T[0] = M ? 'Nuestro hogar ha empezado a florecer' : 'Tu casa ha empezado a encenderse';
+    T[1] = (M ? 'Cada vez que completas algo en una herramienta, en nuestro hogar brota algo nuevo. ' : 'Cada vez que completas algo en una herramienta, tu casa se ilumina un poco más. ') + 'Es una forma de ver todo lo que vas haciendo por ti. ' + (M ? 'Lo' : 'La') + ' tienes siempre en «Mi espacio».'; }
   $('#cnT').textContent = T[0]; $('#cnP').textContent = T[1]; $('#cnVer').textContent = M ? 'Ver nuestro hogar' : 'Ver mi casa';
   $('#casaNews').hidden = false;
   const cierra = () => { $('#casaNews').hidden = true; };
