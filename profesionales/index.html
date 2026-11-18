@@ -56,7 +56,7 @@ small { color: var(--muted); font-size: .84rem; }
     <form id="lf1" class="p"><label for="le">Tu correo</label><input id="le" type="email" inputmode="email" autocomplete="email" required placeholder="nombre@consulta.com"><button type="submit">Enviarme el código</button></form>
     <form id="lf2" class="p" hidden><label for="lp">Código del correo</label><input id="lp" inputmode="numeric" autocomplete="one-time-code" maxlength="7" required placeholder="123 456" style="letter-spacing:.2em;font-size:1.3rem;text-align:center"><button type="submit">Entrar</button><button type="button" class="g" id="otro">Usar otro correo</button></form>
     <div id="lm"></div>
-    <small>¿Todavía no tienes plan? Escribe a <a href="mailto:hola@gracielasalvador.com" style="color:var(--accent)">hola@gracielasalvador.com</a>.</small>
+    <small>¿Todavía no tienes plan? Elige <a href="https://payhip.com/b/y7Ic4" target="_blank" rel="noopener" style="color:var(--accent);font-weight:800">Consulta</a> (hasta 10 pacientes, 29 €/mes) o <a href="https://payhip.com/b/6efH0" target="_blank" rel="noopener" style="color:var(--accent);font-weight:800">Consulta+</a> (hasta 25 pacientes, 59 €/mes). Para centros, escribe a <a href="mailto:hola@gracielasalvador.com" style="color:var(--accent)">hola@gracielasalvador.com</a>.</small>
   </section>
 
   <section id="app" hidden style="display:flex;flex-direction:column;gap:16px">
@@ -137,7 +137,7 @@ function pinta(s) {
   $('#barra').style.width = (s.plazas ? Math.min(100, 100 * s.usadas / s.plazas) : 0) + '%';
   $('#plan').textContent = s.activa ? (s.cancelada || s.hasta ? 'Activo hasta el ' + fmt(s.hasta) : 'Plan activo') : 'Plan inactivo';
   $('#plan').className = 'chip ' + (s.activa ? 'ok' : 'off');
-  $('#aviso').innerHTML = !s.activa ? `<div class="msg e">Tu plan no está activo${s.suspendida ? '' : ''}. Tus pacientes conservan el acceso unas semanas; para mantenerlo y dar nuevos accesos, renueva tu suscripción.</div>`
+  $('#aviso').innerHTML = !s.activa ? `<div class="msg e">Tu plan no está activo${s.suspendida ? '' : ''}. Tus pacientes conservan el acceso unas semanas; para mantenerlo y dar nuevos accesos, renueva tu suscripción: <a href="https://payhip.com/b/y7Ic4" target="_blank" rel="noopener">Consulta</a> o <a href="https://payhip.com/b/6efH0" target="_blank" rel="noopener">Consulta+</a>.</div>`
     : (s.cancelada && s.hasta ? `<div class="msg e">Has cancelado tu plan. Sigue activo hasta el ${fmt(s.hasta)}; después, tus pacientes tendrán 2 semanas más de acceso.</div>` : '');
   $('#nb').disabled = !s.activa;
   if (!$('#cn').matches(':focus')) $('#cn').value = s.nombre || '';
