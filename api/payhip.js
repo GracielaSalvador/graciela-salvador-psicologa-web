@@ -3,14 +3,18 @@
 // Qué app abre cada producto se deduce de su nombre en Payhip:
 //   «Pack» o «las dos» → las dos · si no, «Madrería» → La Madrería · si no, la general · «Pack» o «las dos» → las dos
 //   «Anual» o «año» → periodo de un año; si no, mensual
+//   «Profesionales» → plan para psicólogas: «Consulta+» da 25 plazas; si no, 10
 // Las tarjetas regalo no pasan por aquí: se canjean con su código en /api/regalo.
-import { T_CONSEJO, T_PRIVADO, nombresApps, leerPersona, guardarPersona, limpiaCorreo, crearEnlace, enviarCorreo, plantilla, APPS, fecha, accesos, DIA, db } from './_comun.js';
+import { T_CONSEJO, T_PRIVADO, nombresApps, leerPersona, guardarPersona, limpiaCorreo, crearEnlace, enviarCorreo, plantilla, APPS, fecha, accesos, DIA, db, leerPro, guardarPro, abrirPro, cerrarPro, cuentaPropia, FIRMA_PRO, MARGEN_PRO } from './_comun.js';
 export const config = { runtime: 'edge' };
 
 const sin = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 export function leerProducto(nombre) {
   const n = sin(nombre);
   if (/regalo|tarjeta/.test(n)) return null;
+  const periodoP = /anual|ano\b|year|12 meses/.test(n) ? 372 * DIA : 35 * DIA;
+  // Planes para profesionales: «Profesionales: Consulta» (10 plazas) y «Profesionales: Consulta+» (25 plazas)
+  if (/profesional/.test(n)) return { pro: true, plazas: /consulta\s*\+|consulta plus|\b25\b/.test(n) ? 25 : 10, periodo: periodoP };
   const apps = /pack|las dos|ambas/.test(n) ? ['m', 'g'] : /madreria/.test(n) ? ['m'] : ['g'];
   const periodo = /anual|ano\b|year|12 meses/.test(n) ? 372 * DIA : 35 * DIA;
   return { apps, periodo };
@@ -23,6 +27,36 @@ async function bienvenida(email, prod, nombre) {
           'Las he preparado para acompañarte en el día a día: para los momentos difíciles, para entender lo que sientes y para cuidarte un poco más. Úsalas a tu ritmo, cuando las necesites.',
           'Para entrar, toca este enlace desde tu móvil:', { enlace: ['Entrar en la app', link] }, ...(/acompa|asesor/.test(sin(`${nombre}`)) ? ['Tu plan incluye una asesoría conmigo cada mes. Para reservar la primera, escríbeme cuando quieras a hola@gracielasalvador.com o por WhatsApp al 698 98 20 95, y buscamos juntas un hueco.'] : []), T_CONSEJO, T_PRIVADO,
           'Puedes cancelar tu suscripción cuando quieras con el enlace que viene en tu recibo de Payhip. Si no lo encuentras, o tienes cualquier duda, respóndeme a este correo y te ayudo.']));
+}
+const PANEL = 'https://www.gracielasalvador.com/profesionales/';
+async function bienvenidaPro(email, pr) {
+  await enviarCorreo(email, 'Tu panel de profesional ya está listo', plantilla('g', 'Tu panel de profesional ya está listo', [
+    `Gracias por confiar en Mi psicóloga en el bolsillo para acompañar a tus pacientes. Tu plan incluye ${pr.plazas} plazas.`,
+    'Desde tu panel puedes dar acceso a tus pacientes con su correo, darles el alta y ver todas las herramientas con su enlace para mandárselas. Entras con este mismo correo y un código, sin contraseñas.',
+    { enlace: ['Entrar en mi panel', PANEL] },
+    'Antes de nada, en «Mi cuenta» escribe el nombre de tu consulta: tus pacientes lo verán en la app («Te lo ofrece…») y en sus correos.',
+    'Tu cuenta incluye también las dos ediciones para ti, sin ocupar plaza. Desde «Mi cuenta» te puedes enviar el enlace para entrar.',
+    'Si tienes cualquier duda, responde a este correo.']));
+}
+async function suscripcionPro(d, email, prod, ahora) {
+  const pr = (await leerPro(email)) || { email, creado: ahora }, s = pr.sub || {};
+  if (d.type === 'subscription.created' || d.type === 'paid') {
+    if (d.type === 'paid') { s.ultimo = ahora; s.periodo = prod.periodo; if (!s.cancelada || s.cancelada < ahora - 60000) s.activa = true; }
+    else Object.assign(s, { activa: true, id: d.subscription_id, plan: d.plan_name || d.product_name, inicio: ahora, ultimo: ahora, periodo: prod.periodo, cancelada: 0, hasta: 0 });
+    pr.sub = s; pr.plazas = prod.plazas; await guardarPro(email, pr);
+    if (pr.cerrada) await abrirPro(email, pr);
+    await cuentaPropia(email);
+    if (!pr.bienv) { pr.bienv = ahora; await guardarPro(email, pr); await bienvenidaPro(email, pr); }
+  } else if (d.type === 'subscription.deleted') {
+    if (s.id && d.subscription_id && s.id !== d.subscription_id && s.activa) return;   // cambio de plan: sigue la nueva
+    s.activa = false; s.cancelada = ahora; s.hasta = Math.max((s.ultimo || s.inicio || ahora) + (s.periodo || prod.periodo), ahora + 3 * DIA);
+    pr.sub = s; await guardarPro(email, pr);
+    await enviarCorreo(email, 'Tu plan de profesional se ha cancelado', plantilla('g', 'Tu plan de profesional se ha cancelado', [
+      `Te confirmo que tu plan se ha cancelado. Seguirá activo hasta el ${fecha(s.hasta)}. Después, tus pacientes conservarán el acceso ${MARGEN_PRO / DIA} días más y les llegará un aviso.`,
+      'Si quieres volver, puedes suscribirte de nuevo cuando quieras: tus pacientes recuperarán el acceso sin perder nada.']));
+  } else if (d.type === 'refunded' && +d.amount_refunded >= +d.price) {
+    s.activa = false; s.hasta = ahora; pr.sub = s; await guardarPro(email, pr); await cerrarPro(email, pr, ahora);
+  }
 }
 export default async function handler(req) {
   if (req.method !== 'POST') return new Response('ok');
@@ -37,6 +71,7 @@ export default async function handler(req) {
     if (d.type === 'subscription.created' || d.type === 'subscription.deleted') {
       const email = limpiaCorreo(d.customer_email), prod = leerProducto(`${d.product_name || ''} ${d.plan_name || ''}`);
       if (!email || !prod) return new Response('ok');
+      if (prod.pro) { await suscripcionPro(d, email, prod, ahora); return new Response('ok'); }
       const p = (await leerPersona(email)) || { creado: ahora }, s = p.sub || {};
       if (d.type === 'subscription.created') {
         p.sub = { ...s, apps: prod.apps, activa: true, id: d.subscription_id, plan: d.plan_name || d.product_name, inicio: ahora, ultimo: ahora, periodo: prod.periodo };
@@ -57,7 +92,8 @@ export default async function handler(req) {
       }
     } else if (d.type === 'paid' || d.type === 'refunded') {
       const email = limpiaCorreo(d.email);
-      const prods = (d.items || []).map((i) => leerProducto(i.product_name)).filter(Boolean);
+      const todos = (d.items || []).map((i) => leerProducto(i.product_name)).filter(Boolean), prods = todos.filter((x) => !x.pro);
+      if (email && todos.some((x) => x.pro)) { if (d.type === 'paid') await new Promise((r) => setTimeout(r, 2500)); await suscripcionPro(d, email, todos.find((x) => x.pro), ahora); }
       if (!email || !prods.length) return new Response('ok');
       // Payhip manda «paid» y «subscription.created» casi a la vez: esperamos un poco y releemos para no pisar el alta
       if (d.type === 'paid') await new Promise((r) => setTimeout(r, 2500));

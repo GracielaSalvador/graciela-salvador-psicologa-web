@@ -1,5 +1,5 @@
 // GET /api/yo → qué apps tiene abiertas este móvil (para poner los candados en el inicio). No devuelve nada privado salvo el propio correo.
-import { leerCookie, leerSesion, COOKIE, leerPersona, accesos, crearSesion, cookieSesion, cookieApps, REVISAR_CADA, enlacesPago } from './_comun.js';
+import { leerCookie, leerSesion, COOKIE, leerPersona, accesos, crearSesion, cookieSesion, cookieApps, REVISAR_CADA, enlacesPago, leerPro } from './_comun.js';
 export const config = { runtime: 'edge' };
 export default async function handler(req) {
   const h = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
@@ -10,8 +10,10 @@ export default async function handler(req) {
     if (Date.now() - s.c > REVISAR_CADA) {
       try { acc = accesos(await leerPersona(s.e)); h.append('Set-Cookie', cookieSesion(await crearSesion(s.e, acc))); h.append('Set-Cookie', cookieApps(acc)); } catch (e) {}
     }
-    let sus = false; try { const per = await leerPersona(s.e); sus = !!(per && per.sub && per.sub.activa); } catch (e) {}
-    out = { ...out, email: s.e, m: acc.m > Date.now(), g: acc.g > Date.now(), hastaM: acc.m, hastaG: acc.g, sus };
+    let sus = false, ofrece = ''; try { const per = await leerPersona(s.e); sus = !!(per && per.sub && per.sub.activa);
+      // «Te lo ofrece…»: si tiene acceso gracias a una profesional, el nombre de su consulta
+      if (per && per.pp && !per.pp.propia && !per.pp.alta && (!per.pp.fin || per.pp.fin > Date.now())) { const pr = await leerPro(per.pp.de); ofrece = (pr && pr.nombre) || 'tu psicóloga'; } } catch (e) {}
+    out = { ...out, email: s.e, m: acc.m > Date.now(), g: acc.g > Date.now(), hastaM: acc.m, hastaG: acc.g, sus, ofrece };
   }
   return new Response(JSON.stringify(out), { headers: h });
 }

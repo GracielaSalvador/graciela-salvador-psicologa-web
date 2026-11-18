@@ -1,6 +1,6 @@
 // /api/admin → lo que usa la página de pacientes de Graciela (www.gracielasalvador.com/graciela/).
 // Solo funciona con la contraseña ADMIN_PASSWORD de Vercel.
-import { T_CONSEJO, enlacesPago, nombresApps, gratisConfig, FIJAS, db, esAdmin, crearAdmin, limpiaCorreo, correoValido, leerPersona, guardarPersona, accesos, crearEnlace, enviarCorreo, plantilla, APPS, fecha, DIA, MARGEN_ALTA, enlaceBaja, esc } from './_comun.js';
+import { T_CONSEJO, enlacesPago, nombresApps, gratisConfig, FIJAS, db, esAdmin, crearAdmin, limpiaCorreo, correoValido, leerPersona, guardarPersona, accesos, crearEnlace, enviarCorreo, plantilla, APPS, fecha, DIA, MARGEN_ALTA, enlaceBaja, esc, leerPro, guardarPro, proActiva, plazaOcupada, cerrarPro, abrirPro, cuentaPropia } from './_comun.js';
 export const config = { runtime: 'edge' };
 
 const json = (o, st = 200, cookies = []) => { const h = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }); for (const c of cookies) h.append('Set-Cookie', c); return new Response(JSON.stringify(o), { status: st, headers: h }); };
@@ -49,6 +49,40 @@ export default async function handler(req) {
       for (const e of tanda) { try { await correo(e); } catch (err) { fallos++; } await new Promise((r) => setTimeout(r, 600)); }
       await db('SET', clave, JSON.stringify(lista), 'EX', '86400');
       return json({ enviados: tanda.length - fallos, fallos, quedan: lista.length });
+    }
+    // ---------- Profesionales ----------
+    if (d.accion === 'pros_lista') {
+      const t = Date.now(), out = [];
+      for (const pe of (await db('SMEMBERS', 'pros')) || []) {
+        const pr = await leerPro(pe); if (!pr) continue; let usadas = 0;
+        for (const e of (await db('SMEMBERS', 'propac:' + pe)) || []) { if (plazaOcupada(await leerPersona(e), pe, t)) usadas++; }
+        const sub = pr.sub || {};
+        out.push({ email: pe, nombre: pr.nombre || '', plazas: pr.plazas || 0, usadas, activa: proActiva(pr, t), suspendida: !!pr.suspendida, manual: !!pr.manual,
+          hasta: pr.manual ? pr.manualHasta || 0 : (sub.activa ? 0 : sub.hasta || 0), plan: pr.manual ? 'A mano' : sub.plan || '', creado: pr.creado || 0 });
+      }
+      out.sort((a, b) => (b.activa - a.activa) || (a.nombre || a.email).localeCompare(b.nombre || b.email));
+      return json({ pros: out });
+    }
+    if (/^pro_/.test(d.accion || '')) {
+      const pe = limpiaCorreo(d.email); if (!correoValido(pe)) return json({ error: 'Ese correo no parece completo.' }, 400);
+      let pr = await leerPro(pe);
+      if (d.accion === 'pro_crear') {
+        // Alta a mano (por ejemplo, un centro con plazas a medida que paga con factura)
+        const nuevo = !pr; pr = pr || { email: pe, creado: Date.now() };
+        pr.manual = true; pr.plazas = Math.max(1, Math.min(500, +d.plazas || 10)); pr.manualHasta = +d.hasta > 0 ? +d.hasta : 0; if (d.nombre) pr.nombre = String(d.nombre).slice(0, 60);
+        await guardarPro(pe, pr); if (pr.cerrada && proActiva(pr)) await abrirPro(pe, pr); await cuentaPropia(pe);
+        if (nuevo) await enviarCorreo(pe, 'Tu panel de profesional ya está listo', plantilla('g', 'Tu panel de profesional ya está listo', [
+          `Te he dado de alta en Mi psicóloga en el bolsillo para profesionales, con ${pr.plazas} plazas.`,
+          'Desde tu panel puedes dar acceso a tus pacientes con su correo, darles el alta y ver todas las herramientas con su enlace para mandárselas. Entras con este mismo correo y un código, sin contraseñas.',
+          { enlace: ['Entrar en mi panel', 'https://www.gracielasalvador.com/profesionales/'] },
+          'Antes de nada, en «Mi cuenta» escribe el nombre de tu consulta: tus pacientes lo verán en la app y en sus correos.']));
+        return json({ ok: true });
+      }
+      if (!pr) return json({ error: 'No hay ninguna profesional con ese correo.' }, 404);
+      if (d.accion === 'pro_plazas') { pr.plazas = Math.max(1, Math.min(500, +d.plazas || pr.plazas)); await guardarPro(pe, pr); return json({ ok: true }); }
+      if (d.accion === 'pro_suspender') { pr.suspendida = true; await guardarPro(pe, pr); if (!pr.cerrada) await cerrarPro(pe, pr); return json({ ok: true }); }
+      if (d.accion === 'pro_reactivar') { pr.suspendida = false; await guardarPro(pe, pr); if (pr.cerrada && proActiva(pr)) await abrirPro(pe, pr); return json({ ok: true }); }
+      return json({ error: 'Acción desconocida.' }, 400);
     }
     if (!d.accion || d.accion === 'lista') {
       // Todas las personas que han tenido algo alguna vez (pacientes, suscripciones, regalos)

@@ -71,6 +71,8 @@ export function accesos(p) {
   const sube = (app, t) => { if (t > out[app]) out[app] = t; };
   if (p.sub) { for (const a of ['m', 'g']) if (p.sub[a]) sube(a, p.sub[a]); if (p.sub.activa) for (const a of p.sub.apps || []) sube(a, SIEMPRE); }
   if (p.pac && p.pac.apps) for (const a of p.pac.apps) sube(a, p.pac.alta ? p.pac.alta + MARGEN_ALTA : SIEMPRE);
+  // Paciente (o la propia cuenta) de una profesional: las dos apps mientras su profesional siga activa y no le haya dado el alta
+  if (p.pp) { const h = Math.min(p.pp.fin || SIEMPRE, p.pp.alta ? p.pp.alta + MARGEN_ALTA : SIEMPRE); for (const a of ['m', 'g']) sube(a, h); }
   for (const r of p.reg || []) for (const a of r.apps) sube(a, r.hasta);
   for (const m of p.mano || []) for (const a of m.apps) sube(a, m.hasta);
   return out;
@@ -131,14 +133,14 @@ export async function enviarCorreo(para, asunto, html) {
 }
 // Los correos se escriben como un correo normal de persona a persona (texto sencillo, un enlace y versión en texto plano),
 // para que Gmail los deje en «Principal» y no en «Promociones»
-export function plantilla(app, titulo, parrafos, boton) {
+export function plantilla(app, titulo, parrafos, boton, firma) {
   const M = app === 'm', ac = M ? '#11667D' : '#166A7E';
   const p = (t) => `<p style="margin:0 0 14px">${t}</p>`;
   return `<!doctype html><html lang="es"><body style="margin:0;padding:16px;font-family:Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;color:#222">
 <div style="max-width:560px">
 ${p('Hola:')}${[...parrafos, ...(boton ? [{ enlace: boton }] : [])].map((b) => typeof b === 'string' ? p(b) : p(`<a href="${esc(b.enlace[1])}" style="color:${ac};font-weight:bold">${esc(b.enlace[0])}</a>`)).join('')}
-${p('Un abrazo,<br>Graciela.')}
-<p style="margin:18px 0 0;font-size:12px;color:#777">Graciela Salvador · Psicóloga sanitaria</p>
+${p(firma || 'Un abrazo,<br>Graciela.')}
+<p style="margin:18px 0 0;font-size:12px;color:#777">${firma ? 'Mi psicóloga en el bolsillo · herramientas creadas por Graciela Salvador, psicóloga sanitaria' : 'Graciela Salvador · Psicóloga sanitaria'}</p>
 </div></body></html>`;
 }
 // La versión en texto plano del mismo correo
@@ -196,6 +198,59 @@ export async function crearAdmin() { const cuerpo = b64uTxt(JSON.stringify({ adm
 /* Enlace para dejar de recibir los avisos de novedades (firmado, no caduca) */
 export async function enlaceBaja(email) { const c = b64uTxt(email); return `https://${HOST_G}/api/novedades?b=${c}.${await firma('baja:' + c)}`; }
 export async function leerBaja(tok) { if (!tok || tok.indexOf('.') < 0) return null; const [c, f] = tok.split('.'); try { if ((await firma('baja:' + c)) !== f) return null; return deB64u(c); } catch (e) { return null; } }
+/* ---------- Profesionales (psicólogas que ofrecen las apps a sus pacientes) ----------
+   Ficha en «pro:<correo>» y lista en «pros»; sus pacientes, en «propac:<correo>».
+   Cada paciente lleva en su ficha p.pp = { de, alias, desde, alta, fin, propia }:
+     de = correo de la profesional · alta = cuándo le dio el alta · fin = hasta cuándo, si la profesional dejó de estar activa
+     propia = true en la cuenta de la propia profesional (no ocupa plaza) */
+export const MARGEN_PRO = 14 * DIA;            // margen de las pacientes si su profesional deja de pagar
+export async function leerPro(email) { const v = await db('GET', 'pro:' + email); return v ? JSON.parse(v) : null; }
+export async function guardarPro(email, pr) { await db('SET', 'pro:' + email, JSON.stringify(pr)); await db('SADD', 'pros', email); }
+export function proActiva(pr, t = ahora()) {
+  if (!pr || pr.suspendida) return false;
+  if (pr.manual) return !pr.manualHasta || pr.manualHasta > t;
+  return !!pr.sub && (pr.sub.activa || (pr.sub.hasta || 0) > t);
+}
+export const plazaOcupada = (p, pro, t = ahora()) => !!(p && p.pp && p.pp.de === pro && !p.pp.propia && !p.pp.alta && (!p.pp.fin || p.pp.fin > t));
+// Cuando la profesional deja de estar activa: sus pacientes conservan el acceso MARGEN_PRO más
+export async function cerrarPro(email, pr, t = ahora()) {
+  pr.cerrada = t; await guardarPro(email, pr);
+  for (const e of (await db('SMEMBERS', 'propac:' + email)) || []) {
+    const p = await leerPersona(e); if (!p || !p.pp || p.pp.de !== email || p.pp.fin) continue;
+    p.pp.fin = t + MARGEN_PRO; await guardarPersona(e, p);
+  }
+}
+// Cuando vuelve a estar activa: se quita la fecha de fin a sus pacientes
+export async function abrirPro(email, pr) {
+  pr.cerrada = null; await guardarPro(email, pr);
+  for (const e of (await db('SMEMBERS', 'propac:' + email)) || []) {
+    const p = await leerPersona(e); if (!p || !p.pp || p.pp.de !== email || !p.pp.fin) continue;
+    p.pp.fin = null; await guardarPersona(e, p);
+  }
+}
+// Quita a una paciente de una profesional; si no le queda nada más (ni suscripción, ni regalos, ni acceso a mano), se borra su correo por completo
+export async function soltarPaciente(pro, email, p) {
+  if (p && p.pp && p.pp.de === pro) delete p.pp;
+  await db('SREM', 'propac:' + pro, email);
+  if (!p) return;
+  const vacio = !p.sub && !p.pac && !p.pp && !(p.reg || []).length && !(p.mano || []).length;
+  if (vacio) { await db('DEL', 'u:' + email); await db('SREM', 'personas', email); await db('SREM', 'pacientes', email); }
+  else await guardarPersona(email, p);
+}
+export const PURGA_PRO = 30 * DIA; // días tras el fin del acceso para borrar los datos (contrato de encargo)
+// La profesional tiene también las dos apps, para conocer lo que ofrece (no ocupa plaza)
+export async function cuentaPropia(email) {
+  const p = (await leerPersona(email)) || { creado: ahora() };
+  if (!p.pp || p.pp.de !== email) { p.pp = { de: email, propia: true, desde: ahora(), alta: null, fin: null }; await guardarPersona(email, p); await db('SADD', 'propac:' + email, email); }
+}
+export async function crearSesionPro(email) { const cuerpo = b64uTxt(JSON.stringify({ e: email, x: ahora() + 30 * DIA })); return cuerpo + '.' + (await firma('pro:' + cuerpo)); }
+export async function leerSesionPro(req) {
+  const v = leerCookie(req, 'gs_pro'); if (!v || v.indexOf('.') < 0) return null;
+  const [cuerpo, f] = v.split('.');
+  try { if ((await firma('pro:' + cuerpo)) !== f) return null; const o = JSON.parse(deB64u(cuerpo)); return o.x > ahora() ? o.e : null; } catch (e) { return null; }
+}
+export const FIRMA_PRO = 'Un abrazo,<br>Mi psicóloga en el bolsillo.';
+
 export async function esAdmin(req) {
   const v = leerCookie(req, 'gs_admin'); if (!v || v.indexOf('.') < 0) return false;
   const [cuerpo, f] = v.split('.');

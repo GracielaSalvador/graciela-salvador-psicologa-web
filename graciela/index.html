@@ -37,7 +37,7 @@ button:focus-visible, input:focus-visible { outline: 3px solid var(--accent); ou
 .chip { font-size: .78rem; font-weight: 800; border-radius: 999px; padding: 3px 10px; background: var(--tint); color: var(--deep); }
 .chip.m { background: var(--ybg); color: var(--m); } .chip.ok { background: var(--okbg); color: var(--ok); } .chip.off { background: var(--errbg); color: var(--err); }
 .acts { display: flex; gap: 6px; flex-wrap: wrap; } .acts button { padding: 8px 12px; min-height: 40px; font-size: .88rem; }
-.tabs { display: flex; gap: 4px; background: var(--tint); border-radius: 999px; padding: 4px; } .tabs button { flex: 1; background: transparent; color: var(--deep); min-height: 40px; padding: 8px 10px; }
+.tabs { display: flex; flex-wrap: wrap; gap: 4px; background: var(--tint); border-radius: 22px; padding: 4px; } .tabs button { flex: 1 1 auto; background: transparent; color: var(--deep); min-height: 40px; padding: 8px 10px; }
 .tabs button[aria-selected="true"] { background: var(--surface); box-shadow: 0 1px 4px rgba(0,0,0,.08); }
 .sum { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; } .sum div { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 10px 12px; } .sum b { display: block; font-size: 1.6rem; color: var(--deep); line-height: 1.1; } .sum span { font-size: .84rem; color: var(--muted); }
 .grow { display: grid; grid-template-columns: 1fr auto; gap: 6px 10px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line); }
@@ -61,7 +61,7 @@ small { color: var(--muted); font-size: .84rem; }
   </section>
 
   <section id="app" hidden style="display:flex;flex-direction:column;gap:16px">
-    <div class="tabs" role="tablist"><button role="tab" data-t="pac" aria-selected="true">Mis pacientes</button><button role="tab" data-t="tod" aria-selected="false">Todas las personas</button><button role="tab" data-t="gra" aria-selected="false">Gratis</button><button role="tab" data-t="nov" aria-selected="false">Novedades</button></div>
+    <div class="tabs" role="tablist"><button role="tab" data-t="pac" aria-selected="true">Mis pacientes</button><button role="tab" data-t="tod" aria-selected="false">Todas las personas</button><button role="tab" data-t="gra" aria-selected="false">Gratis</button><button role="tab" data-t="nov" aria-selected="false">Novedades</button><button role="tab" data-t="pro" aria-selected="false">Profesionales</button></div>
     <div id="v-gra" hidden style="display:none;flex-direction:column;gap:14px">
       <h1>Herramientas gratis</h1>
       <p>Lo que marques aquí se abre para todo el mundo, sin cuenta. Si pones una fecha, se abre solo hasta ese día (por ejemplo, para una promoción) y después se cierra sola. El inicio, la casita y la información legal son siempre gratis.</p>
@@ -69,6 +69,20 @@ small { color: var(--muted); font-size: .84rem; }
       <div class="card" style="gap:6px"><h2 style="margin:0">Mi psicóloga en el bolsillo</h2><div id="grG"></div></div>
       <button id="grSave" style="align-self:flex-start">Guardar cambios</button><div class="m" id="grMsg"></div>
       <small class="muted">Los cambios tardan como mucho un minuto en verse en las apps.</small>
+    </div>
+    <div id="v-pro" hidden style="display:none;flex-direction:column;gap:14px">
+      <h1>Profesionales</h1>
+      <p>Psicólogas que ofrecen las apps a sus pacientes. Las que se suscriben en Payhip aparecen solas. Aquí puedes ver sus plazas, suspender una cuenta o dar de alta a mano a un centro con plazas a medida.</p>
+      <div id="prl" class="p"></div>
+      <form class="card" id="prf">
+        <h2>Dar de alta a mano</h2>
+        <p style="font-size:.9rem">Para un centro o una profesional que te paga con factura. Le llegará un correo con el enlace a su panel.</p>
+        <label for="pre">Su correo</label><input id="pre" type="email" required placeholder="nombre@consulta.com">
+        <label for="prn">Nombre de la consulta <small>(opcional)</small></label><input id="prn" type="text" maxlength="60">
+        <label for="prp">Plazas</label><input id="prp" type="text" inputmode="numeric" value="10">
+        <label for="prh">Hasta <small>(vacío = sin fecha de fin)</small></label><input id="prh" type="date">
+        <button type="submit">Dar de alta</button><div class="m" id="prm"></div>
+      </form>
     </div>
     <div id="v-nov" hidden style="display:none;flex-direction:column;gap:14px">
       <h1>Avisar de novedades</h1>
@@ -194,8 +208,8 @@ $('#grSave').onclick = async () => {
   $('#grSave').disabled = false;
 };
 document.querySelectorAll('.tabs button').forEach((b) => b.onclick = () => { document.querySelectorAll('.tabs button').forEach((x) => x.setAttribute('aria-selected', x === b));
-  for (const v of ['pac', 'tod', 'gra', 'nov']) { const on = b.dataset.t === v; $('#v-' + v).hidden = !on; $('#v-' + v).style.display = on ? 'flex' : 'none'; }
-  if (b.dataset.t === 'gra') cargaGratis(); });
+  for (const v of ['pac', 'tod', 'gra', 'nov', 'pro']) { const on = b.dataset.t === v; $('#v-' + v).hidden = !on; $('#v-' + v).style.display = on ? 'flex' : 'none'; }
+  if (b.dataset.t === 'gra') cargaGratis(); if (b.dataset.t === 'pro') cargaPros(); });
 
 async function cargar() {
   const r = await api({ accion: 'lista' }), margenDias = r.margenDias; TODOS = r.lista; SIEMPRE = r.siempre || SIEMPRE;
@@ -230,6 +244,21 @@ $('#novf').onsubmit = async (ev) => { ev.preventDefault(); const d = nvDatos(), 
   try { for (;;) { const r = await api({ accion: 'novedades_envio', id, ...d }); total += r.enviados; fallos += r.fallos; msg($('#nvm'), `Enviando… ${total} enviados${r.quedan ? `, quedan ${r.quedan}` : ''}.`, true); if (!r.quedan) break; }
     msg($('#nvm'), `Hecho: ${total} correos enviados${fallos ? ` (${fallos} no se pudieron enviar)` : ''}.`, true); $('#nvs').value = ''; $('#nvt').value = ''; }
   catch (e) { if (e.message !== 'entrar') msg($('#nvm'), e.message + ` Se habían enviado ${total}.`); } bt.disabled = false; };
+async function cargaPros() {
+  try { const r = await api({ accion: 'pros_lista' }), f = (t) => new Date(t).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+    $('#prl').innerHTML = r.pros.length ? r.pros.map((p) => `<div class="card p" data-pe="${esc(p.email)}"><div class="top"><div><b>${esc(p.nombre || p.email)}</b>${p.nombre ? `<div class="mail">${esc(p.email)}</div>` : ''}</div>
+      <span class="chip ${p.activa ? 'ok' : 'off'}">${p.suspendida ? 'Suspendida' : p.activa ? (p.hasta ? 'Activa hasta el ' + f(p.hasta) : 'Activa') : 'Inactiva'}</span></div>
+      <div class="chips"><span class="chip">${p.usadas} de ${p.plazas} plazas</span><span class="chip">${esc(p.plan || 'Payhip')}</span></div>
+      <div class="acts"><button class="g" data-y="pro_plazas">Cambiar plazas</button>${p.suspendida ? '<button class="g" data-y="pro_reactivar">Reactivar</button>' : '<button class="w" data-y="pro_suspender">Suspender</button>'}</div><div class="m"></div></div>`).join('')
+      : '<div class="empty">Todavía no hay ninguna profesional.</div>';
+    document.querySelectorAll('#prl [data-y]').forEach((b) => b.onclick = async () => {
+      const c = b.closest('[data-pe]'), email = c.dataset.pe, x = b.dataset.y, o = { accion: x, email };
+      if (x === 'pro_plazas') { const n = prompt('¿Cuántas plazas?', ''); if (!n) return; o.plazas = +n; }
+      if (x === 'pro_suspender' && !confirm('¿Suspender esta cuenta? Sus pacientes conservarán el acceso 2 semanas y le dejará de funcionar el panel para dar nuevos accesos.')) return;
+      try { await api(o); cargaPros(); } catch (e) { if (e.message !== 'entrar') msg(c.querySelector('.m'), e.message); } });
+  } catch (e) { if (e.message !== 'entrar') msg($('#prl'), e.message); } }
+$('#prf').onsubmit = async (ev) => { ev.preventDefault(); const h = $('#prh').value ? new Date($('#prh').value + 'T23:59:00').getTime() : 0;
+  try { await api({ accion: 'pro_crear', email: $('#pre').value, nombre: $('#prn').value, plazas: +$('#prp').value, hasta: h }); msg($('#prm'), 'Hecho. Le hemos enviado el correo con su panel.', true); $('#pre').value = ''; $('#prn').value = ''; cargaPros(); } catch (e) { if (e.message !== 'entrar') msg($('#prm'), e.message); } };
 $('#out').onclick = async () => { await api({ accion: 'salir' }).catch(() => {}); show(false); };
 cargar().catch(() => show(false));
 </script>

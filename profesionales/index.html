@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Panel de profesionales · Mi psicóloga en el bolsillo</title>
+<link rel="stylesheet" href="/fuentes/fuentes.css">
+<style>
+/* Panel de las profesionales: dar acceso a sus pacientes y ver el catálogo de herramientas. */
+:root { --bg:#F5F9F9; --surface:#FFFFFF; --ink:#17343B; --muted:#5C747A; --line:#D7E5E8; --accent:#166A7E; --deep:#0F4C5C; --tint:#E4EFF1; --on:#FFFFFF; --y:#8A7A08; --ybg:#F4F2CC; --err:#8E4E33; --errbg:#F4E3DA; --ok:#2C6E5D; --okbg:#E2F0EA; }
+@media (prefers-color-scheme: dark) { :root { --bg:#0C1C21; --surface:#12282E; --ink:#E2EEF0; --muted:#9AB2B8; --line:#234046; --accent:#5FB2C3; --deep:#9AD3DE; --tint:#18343B; --on:#0C1C21; --y:#DCD56A; --ybg:#2E2C12; --err:#E8B39A; --errbg:#3A2A23; --ok:#8CCDB6; --okbg:#17332B; color-scheme: dark; } }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Nunito Sans", "Segoe UI", system-ui, sans-serif; line-height: 1.5; }
+.wrap { max-width: 720px; margin: 0 auto; padding: 20px 16px 60px; display: flex; flex-direction: column; gap: 16px; }
+.brand { font-size: .76rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); } .brand b { color: var(--deep); }
+h1 { font-family: Lora, Georgia, serif; font-weight: 500; color: var(--deep); font-size: 1.8rem; margin: 0; line-height: 1.2; }
+h2 { font-family: Lora, Georgia, serif; font-weight: 500; color: var(--deep); font-size: 1.25rem; margin: 6px 0 0; }
+h3 { font-size: 1rem; margin: 10px 0 0; color: var(--deep); }
+p { margin: 0; color: var(--muted); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+label { font-weight: 700; font-size: .9rem; }
+input[type=email], input[type=text], input[inputmode=numeric] { width: 100%; font: inherit; font-size: 1rem; padding: 12px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--bg); color: var(--ink); }
+button { font: inherit; font-weight: 800; font-size: .95rem; border: 0; border-radius: 999px; padding: 11px 16px; background: var(--accent); color: var(--on); cursor: pointer; min-height: 44px; }
+button.g { background: transparent; color: var(--accent); border: 1.5px solid var(--line); }
+button.w { background: transparent; color: var(--err); border: 1.5px solid var(--line); }
+button:disabled { opacity: .5; cursor: wait; }
+button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.msg { border-radius: 12px; padding: 10px 12px; font-size: .95rem; } .msg.e { background: var(--errbg); color: var(--err); } .msg.o { background: var(--okbg); color: var(--ok); }
+.p { display: flex; flex-direction: column; gap: 8px; }
+.p .top { display: flex; justify-content: space-between; gap: 8px; align-items: flex-start; }
+.p b { font-size: 1.05rem; } .mail { color: var(--muted); font-size: .9rem; word-break: break-all; }
+.chip { font-size: .78rem; font-weight: 800; border-radius: 999px; padding: 3px 10px; background: var(--tint); color: var(--deep); white-space: nowrap; }
+.chip.ok { background: var(--okbg); color: var(--ok); } .chip.off { background: var(--errbg); color: var(--err); } .chip.m { background: var(--ybg); color: var(--y); }
+.acts { display: flex; gap: 6px; flex-wrap: wrap; } .acts button { padding: 8px 12px; min-height: 40px; font-size: .88rem; }
+.tabs { display: flex; gap: 4px; background: var(--tint); border-radius: 999px; padding: 4px; } .tabs button { flex: 1; background: transparent; color: var(--deep); min-height: 40px; padding: 8px 10px; }
+.tabs button[aria-selected="true"] { background: var(--surface); box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+.bar { height: 10px; background: var(--tint); border-radius: 99px; overflow: hidden; } .bar i { display: block; height: 100%; background: var(--accent); border-radius: 99px; }
+.top-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.empty { border: 1.5px dashed var(--line); border-radius: 16px; padding: 16px; text-align: center; color: var(--muted); }
+.ed { display: flex; gap: 4px; background: var(--tint); border-radius: 999px; padding: 4px; } .ed button { flex: 1; background: transparent; color: var(--deep); min-height: 40px; padding: 8px 10px; } .ed button[aria-pressed="true"] { background: var(--surface); box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+.tool { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; padding: 12px 0; border-top: 1px solid var(--line); }
+.tool:first-of-type { border-top: 0; } .tool b { font-size: 1rem; } .tool p { grid-column: 1; font-size: .9rem; } .tool .acts { grid-row: 1 / span 2; grid-column: 2; }
+.tool a { color: var(--accent); font-weight: 700; font-size: .88rem; }
+small { color: var(--muted); font-size: .84rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top-row"><div class="brand"><b>Mi psicóloga en el bolsillo</b> · Profesionales</div><button class="g" id="out" hidden>Salir</button></div>
+
+  <section id="login" class="card" hidden>
+    <h1>Panel de profesionales</h1>
+    <p>Entra con el correo con el que contrataste tu plan. Te enviaremos un código de 6 números, sin contraseñas.</p>
+    <form id="lf1" class="p"><label for="le">Tu correo</label><input id="le" type="email" inputmode="email" autocomplete="email" required placeholder="nombre@consulta.com"><button type="submit">Enviarme el código</button></form>
+    <form id="lf2" class="p" hidden><label for="lp">Código del correo</label><input id="lp" inputmode="numeric" autocomplete="one-time-code" maxlength="7" required placeholder="123 456" style="letter-spacing:.2em;font-size:1.3rem;text-align:center"><button type="submit">Entrar</button><button type="button" class="g" id="otro">Usar otro correo</button></form>
+    <div id="lm"></div>
+    <small>¿Todavía no tienes plan? Escribe a <a href="mailto:hola@gracielasalvador.com" style="color:var(--accent)">hola@gracielasalvador.com</a>.</small>
+  </section>
+
+  <section id="app" hidden style="display:flex;flex-direction:column;gap:16px">
+    <div class="tabs" role="tablist"><button role="tab" data-t="pac" aria-selected="true">Mis pacientes</button><button role="tab" data-t="cat" aria-selected="false">Herramientas</button><button role="tab" data-t="cta" aria-selected="false">Mi cuenta</button></div>
+
+    <div id="v-pac" style="display:flex;flex-direction:column;gap:16px">
+      <h1>Mis pacientes</h1>
+      <div id="aviso"></div>
+      <div class="card">
+        <div class="top-row"><b id="plz">0 de 0 plazas</b><span class="chip" id="plan"></span></div>
+        <div class="bar" aria-hidden="true"><i id="barra" style="width:0"></i></div>
+        <small>Cada plaza es una paciente con acceso a la vez. Al darle el alta, conserva el acceso <span class="mg">2 semanas</span> más y la plaza queda libre al momento.</small>
+      </div>
+      <form class="card" id="nf">
+        <h2>Dar acceso a una paciente</h2>
+        <label for="ne">Su correo</label><input id="ne" type="email" inputmode="email" autocomplete="off" required placeholder="nombre@correo.com">
+        <label for="na">Un alias para reconocerla <small>(opcional, nada clínico)</small></label><input id="na" type="text" maxlength="40" autocomplete="off" placeholder="Por ejemplo: Laura M.">
+        <p style="font-size:.9rem">Le llegará un correo con el enlace para entrar en las dos ediciones. Lo que escriba en las herramientas se queda en su móvil: no lo ves tú ni nadie más.</p>
+        <button type="submit" id="nb">Dar acceso</button>
+        <div id="nm"></div>
+      </form>
+      <h2>Con acceso</h2>
+      <div id="act" class="p"></div>
+      <h2>Con el alta</h2>
+      <div id="alt" class="p"></div>
+    </div>
+
+    <div id="v-cat" hidden style="display:none;flex-direction:column;gap:14px">
+      <h1>Herramientas</h1>
+      <p>Todas las herramientas de las dos ediciones. Copia el enlace de una y mándaselo a tu paciente: al abrirlo, irá directa a esa herramienta. Si aún no ha entrado en su móvil, le pedirá su correo primero.</p>
+      <div class="ed" role="group" aria-label="Edición"><button type="button" data-e="g" aria-pressed="true">Mi psicóloga en el bolsillo</button><button type="button" data-e="m" aria-pressed="false">La Madrería</button></div>
+      <input type="text" id="q" placeholder="Buscar una herramienta" autocomplete="off" aria-label="Buscar una herramienta">
+      <div id="cat" class="card"></div>
+    </div>
+
+    <div id="v-cta" hidden style="display:none;flex-direction:column;gap:14px">
+      <h1>Mi cuenta</h1>
+      <form class="card" id="cf">
+        <h2>Nombre de tu consulta</h2>
+        <p>Tus pacientes verán en la app «Te lo ofrece» con este nombre, y aparecerá en los correos que les lleguen.</p>
+        <label for="cn">Nombre</label><input id="cn" type="text" maxlength="60" placeholder="Por ejemplo: Laura Pérez, psicóloga">
+        <button type="submit">Guardar</button><div id="cm"></div>
+      </form>
+      <div class="card">
+        <h2>Conoce las apps</h2>
+        <p>Tu cuenta incluye las dos ediciones para ti, sin ocupar ninguna plaza, para que conozcas lo que ofreces.</p>
+        <button type="button" id="mia">Enviarme el enlace para entrar</button><div id="mm"></div>
+      </div>
+      <div class="card">
+        <h2>Texto para tus pacientes</h2>
+        <p>Para informar a tus pacientes de que les das acceso y de qué datos se usan. Puedes pegarlo en tu consentimiento informado o enviarlo por correo.</p>
+        <textarea id="txp" readonly rows="9" style="width:100%;box-sizing:border-box;font:inherit;font-size:14px;line-height:1.5;padding:12px;border:1px solid var(--line,#dde5e7);border-radius:12px;background:#fff;resize:vertical"></textarea>
+        <button type="button" id="cpx">Copiar texto</button>
+      </div>
+      <div class="card">
+        <h2>Tu plan</h2>
+        <p id="planTxt"></p>
+        <p>Para cambiar de plan, cambiar la tarjeta o cancelar, entra en tu cuenta de Payhip con este mismo correo.</p>
+        <a href="https://payhip.com/GracielaSalvadorPsico/b-account/settings?tab=subscriptions" target="_blank" rel="noopener" style="color:var(--accent);font-weight:800">Gestionar mi suscripción en Payhip</a>
+        <a href="https://www.gracielasalvador.com/condiciones-profesionales.html" target="_blank" rel="noopener" style="color:var(--accent);font-weight:800">Condiciones y contrato de encargo del tratamiento</a>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+const CAT = {"g": {"areas": [["reg", "Calmarme y regularme"], ["esc", "Para escuchar"], ["ans", "Ansiedad y preocupación"], ["pen", "Lo que pienso de mí"], ["rel", "Mis relaciones"], ["ani", "Ánimo y pérdidas"], ["rum", "Mi rumbo"], ["ter", "Para mi terapia"]], "tools": [{"id": "calma", "titulo": "Calmarme o volver a mí", "desc": "Estrategias guiadas para cuando estás desbordado/a o desconectado/a.", "area": "reg"}, {"id": "emociones", "titulo": "Entender lo que siento", "desc": "Ponerle nombre a la emoción y ver qué te está diciendo.", "area": "reg"}, {"id": "ahora", "titulo": "Estar aquí y ahora", "desc": "Para salir del piloto automático: prácticas cortas y guiadas de atención plena (respirar, los sentidos, el cuerpo, dejar pasar los pensamientos).", "area": "reg"}, {"id": "presente", "titulo": "Volver al presente jugando", "desc": "Juegos cortos de atención plena para cuando te estás acelerando: buscar en una escena tranquila, seguir una luz y volver a lo que tienes alrededor.", "area": "reg"}, {"id": "escuchar", "titulo": "Para escuchar", "desc": "Audios cortos con la voz de Graciela para calmarte, dormir o frenar a tiempo, para cuando leer una pantalla no ayuda.", "area": "esc"}, {"id": "impulsos", "titulo": "Frenar a tiempo", "desc": "Para los impulsos: entender la ola de las ganas, pillarla a tiempo y elegir qué hacer.", "area": "reg"}, {"id": "enfado", "titulo": "Gestionar mi enfado", "desc": "Entender qué hay debajo del enfado, soltar la energía y elegir qué hacer con él.", "area": "reg"}, {"id": "frustracion", "titulo": "Ampliar mi ventana", "desc": "Para cuando las cosas no salen como esperabas: entender la frustración y aprender a tolerarla.", "area": "reg"}, {"id": "sueno", "titulo": "Dormir mejor", "desc": "Para el insomnio y el mal descanso: entender tu sueño, tu diario de noches y qué hacer cuando no te duermes.", "area": "reg"}, {"id": "energia", "titulo": "Cuidar mi energía", "desc": "Para el estrés y el agotamiento: cómo está tu batería, qué tipo de cansancio tienes y qué descanso lo repone.", "area": "reg"}, {"id": "ciclo", "titulo": "Salir del círculo del miedo", "desc": "Ver cómo se mantiene la ansiedad y cómo romper el círculo poco a poco.", "area": "ans"}, {"id": "social", "titulo": "Sentirme cómodo/a con los demás", "desc": "Para la ansiedad social: poner el foco fuera, soltar los «flotadores», ponerte a prueba con pequeños retos y cortar los repasos de después.", "area": "ans"}, {"id": "vueltas", "titulo": "Darle menos vueltas", "desc": "Para la preocupación y las decisiones: qué depende de mí, cómo decidir y dónde aparcar lo demás.", "area": "ans"}, {"id": "incertidumbre", "titulo": "Convivir con la incertidumbre", "desc": "Avanzar sin tenerlo todo claro: la trampa de la certeza y pequeños experimentos.", "area": "ans"}, {"id": "pensamientos", "titulo": "Revisar mis pensamientos", "desc": "Descubrir tus espejos de feria y tomar distancia de lo que piensas.", "area": "pen"}, {"id": "quererme", "titulo": "Quererme mejor", "desc": "Subir peldaño a peldaño la escalera de la autoestima.", "area": "pen"}, {"id": "cuerpo", "titulo": "Hacer las paces con mi cuerpo", "desc": "Para la imagen corporal: mirar sin lupa, salir de las trampas de comprobar y evitar, valorar lo que tu cuerpo hace por ti y cuidarlo desde el cariño.", "area": "pen"}, {"id": "carino", "titulo": "Tratarme con cariño", "desc": "Para cuando la voz crítica aprieta: entender por qué nos cuesta tratarnos bien, practicar una voz amable y cuidarte en los momentos difíciles.", "area": "pen"}, {"id": "liston", "titulo": "Ajustar el listón", "desc": "Para el perfeccionismo y la autoexigencia: ver dónde te exiges de más, dejar de aplazar y practicar el «suficientemente bien».", "area": "pen"}, {"id": "culpa", "titulo": "Aliviar mi culpa", "desc": "Distinguir la culpa que ayuda de la que no te toca, ver qué parte es tuya y soltar o reparar.", "area": "pen"}, {"id": "verguenza", "titulo": "Dejar de esconderme", "desc": "Para la vergüenza: entender qué la hace crecer, revisar el molde con el que te mides y dar pasos para mostrarte.", "area": "pen"}, {"id": "limites", "titulo": "Poner un límite", "desc": "Paso a paso para saber qué necesitas y cómo decirlo.", "area": "rel"}, {"id": "hablar", "titulo": "Hablar sin pelear", "desc": "Para discutir sin hacer daño en pareja o en familia: los cuatro jinetes y sus antídotos, pedir sin reprochar, escuchar, hacer pausas y reparar.", "area": "rel"}, {"id": "vinculos", "titulo": "Vínculos sanos", "desc": "Empezar una relación sin dejar de escucharte: señales, citas y tu ruta de los tres meses.", "area": "rel"}, {"id": "soledad", "titulo": "Sentirme menos solo/a", "desc": "Entender la soledad, mirar tus vínculos y dar pasos pequeños hacia los demás y hacia ti.", "area": "rel"}, {"id": "celos", "titulo": "Calmar mis celos", "desc": "Entender qué hay debajo de los celos, dejar de comprobar y hablarlo sin acusar.", "area": "rel"}, {"id": "apego", "titulo": "Mirar de dónde vengo", "desc": "Entender cómo aprendí a querer y cuidar al niño o la niña que fui.", "area": "rel"}, {"id": "activar", "titulo": "Ponerme en marcha", "desc": "Para cuando el ánimo está bajo: pequeñas acciones que poco a poco lo levantan.", "area": "ani"}, {"id": "duelo", "titulo": "Acompañar mi duelo", "desc": "Para cuando has perdido algo o a alguien: las fases, tus recuerdos y cómo cuidarte mientras duele.", "area": "ani"}, {"id": "cambios", "titulo": "Atravesar un cambio", "desc": "Para mudanzas, trabajos nuevos, separaciones, jubilaciones o cualquier etapa nueva: despedirte de lo que dejas y hacer tuyo lo que llega.", "area": "ani"}, {"id": "rumbo", "titulo": "Saber hacia dónde voy", "desc": "Mirar qué te importa en cada área de tu vida y convertirlo en objetivos y pasos concretos.", "area": "rum"}, {"id": "sesion", "titulo": "Preparar mi sesión", "desc": "Anotar lo que ha pasado esta semana para traerlo a terapia.", "area": "ter"}]}, "m": {"areas": [["emb", "Embarazo"], ["par", "Parto"], ["pos", "Posparto"], ["cri", "Crianza"], ["mia", "Lo que me pasa a mí"], ["reg", "Calmarme y cuidarme"], ["esc", "Para escuchar"], ["rel", "Pareja y familia"], ["ter", "Para mi terapia"]], "tools": [{"id": "faltar", "titulo": "Lo que no puede faltar", "desc": "Para preparar lo práctico del parto y las primeras semanas: la bolsa del hospital, la casa para la vuelta, la ayuda que vais a pedir y los papeles, para llegar con más espacio para lo importante.", "area": "par"}, {"id": "peques", "titulo": "Ayudar a mi peque a calmarse", "desc": "Para enseñar a tus peques a calmarse fuera de la tormenta: entender qué les carga, juegos para respirar y moverse, ponerle nombre a lo que sienten y vuestro propio plan de calma.", "area": "cri"}, {"id": "duelo", "titulo": "El duelo por mi bebé", "desc": "Para cuando tu bebé ha muerto, durante el embarazo, en el parto o después de nacer: entender tu duelo, despedirte a tu manera, guardar su recuerdo y sentirte acompañada.", "area": "mia"}, {"id": "primeras", "titulo": "Las primeras horas", "desc": "Para las primeras horas con tu bebé: conoceros sin prisa, el piel con piel, proteger vuestra burbuja, qué hacer si no fue como esperabas o si tu bebé ingresa, y cómo seguir tejiendo el vínculo.", "area": "par"}, {"id": "pleno", "titulo": "En pleno parto", "desc": "Para tener a mano el día del parto: anclas sencillas para cada momento, un contador de contracciones, tarjetas para pedir lo que necesitas sin hablar y qué hacer si cambia el plan.", "area": "par"}, {"id": "limpeq", "titulo": "Poner límites con cariño", "desc": "Para poner límites a tus peques con firmeza y afecto: entender para qué sirven, elegir los que importan, decirlos sin gritar y sostenerlos cuando llega el enfado.", "area": "cri"}, {"id": "familia", "titulo": "La familia que queremos ser", "desc": "Para pensar, sola, en pareja o con los peques, qué valores queréis transmitir, qué conservar y qué cambiar de vuestras familias y qué rituales os unen.", "area": "rel"}, {"id": "limfam", "titulo": "Poner límites a la familia", "desc": "Para proteger vuestro espacio como familia, desde el embarazo y durante toda la crianza: saber qué necesitas, decirlo con claridad y cariño, y sostenerlo sin culpa.", "area": "rel"}, {"id": "suenopos", "titulo": "Dormir en el posparto", "desc": "Para las noches de los primeros meses: entender cómo duerme tu bebé, acompañar su ritmo con ventanas de sueño y rutinas, y cuidar tu descanso y tu cabeza.", "area": "pos"}, {"id": "lactancia", "titulo": "Lactancia y emociones", "desc": "Para todas las formas de alimentar a tu bebé: lo que la lactancia mueve por dentro, la culpa y la presión de los demás, el destete y dónde encontrar apoyo.", "area": "pos"}, {"id": "cuerpopos", "titulo": "Mi cuerpo en el posparto", "desc": "Para la recuperación de tu cuerpo después del parto: entender lo que pasa en cada etapa, saber qué es normal y qué se consulta, hacer las paces con tus marcas y cuidarlo sin prisa.", "area": "pos"}, {"id": "animo", "titulo": "Cuidar mi ánimo en el posparto", "desc": "Para la tristeza después del parto: distinguir la tristeza de los primeros días de la depresión o la ansiedad posparto, cuidarte y saber cuándo y a quién pedir ayuda.", "area": "pos"}, {"id": "cuerpoemb", "titulo": "Mi cuerpo en el embarazo", "desc": "Para llevarte mejor con tu cuerpo mientras cambia: entender lo que hace por dentro, responder a los comentarios y mirarlo con más amabilidad.", "area": "emb"}, {"id": "vinculo", "titulo": "Conectar con mi bebé", "desc": "Para cuidar el vínculo con tu bebé durante el embarazo: lo que ya percibe, imaginarle, pequeños rituales y qué hacer si el vínculo tarda en llegar.", "area": "emb"}, {"id": "ansiedad", "titulo": "Calmar mi ansiedad en el embarazo", "desc": "Para el miedo a que algo vaya mal, los nervios antes de cada prueba y la preocupación que no se apaga: entenderla, calmarla y prepararte para las esperas.", "area": "emb"}, {"id": "salto", "titulo": "Cuando salto", "desc": "Tu enfado en la crianza: lo que hay debajo, tus momentos calientes, cómo parar a tiempo y qué hacer con la culpa de después.", "area": "cri"}, {"id": "origen", "titulo": "Saber de dónde vengo", "desc": "La crianza que recibiste y la que quieres dar: las nubes y los rayos de sol de tu infancia, lo que quieres conservar, transformar o dejar atrás, y la madre que quieres ser.", "area": "cri"}, {"id": "ventanas", "titulo": "Dos ventanas", "desc": "Tu ventana de tolerancia y la de tu peque: cuidar la tuya, prestarle tu calma en plena rabieta y reparar cuando te sales.", "area": "cri"}, {"id": "recordar", "titulo": "Recordar mi parto", "desc": "Para después del parto: contar a tu ritmo cómo lo viviste, guardar lo bonito, dar espacio a lo que sientes y al duelo por el parto que no tuviste, y saber cuándo pedir ayuda.", "area": "par"}, {"id": "parto", "titulo": "Prepararme para el parto", "desc": "Para llegar al parto con más recursos: ajustar expectativas con tu ramo de alternativas, acompañar el miedo, preparar tu plan de parto y el papel de tu acompañante.", "area": "par"}, {"id": "pareja", "titulo": "Seguir siendo pareja", "desc": "Para cuidar la conexión con tu pareja desde que llegó el bebé: los pequeños gestos, rituales, una conversación de 15 minutos y la intimidad a vuestro ritmo.", "area": "rel"}, {"id": "soledad", "titulo": "Sentirme menos sola", "desc": "Para la soledad de la maternidad: entender por qué aparece aunque nunca estés sola, mirar tu red de apoyos y dar pasos pequeños hacia los demás.", "area": "mia"}, {"id": "nacer", "titulo": "Nacer como madre", "desc": "Cuando nace un bebé, también nace una madre: entender tu metamorfosis, lo que dejas, lo que llega y lo que sigues siendo.", "area": "pos"}, {"id": "carga", "titulo": "Aligerar mi carga mental", "desc": "Para cuando tu cabeza no descansa nunca: ver todo lo invisible que llevas, vaciar la cabeza y repartir tareas enteras, de principio a fin.", "area": "mia"}, {"id": "liston", "titulo": "Ajustar el listón", "desc": "Para el perfeccionismo y la autoexigencia: ver dónde te exiges de más, dejar de aplazar y practicar el «suficientemente bien».", "area": "mia"}, {"id": "carino", "titulo": "Tratarme con cariño", "desc": "Para cuando la voz crítica aprieta: entender por qué nos cuesta tratarnos bien, practicar una voz amable y cuidarte en los momentos difíciles.", "area": "mia"}, {"id": "calma", "titulo": "Calmarme o volver a mí", "desc": "Estrategias guiadas para cuando estás desbordado/a o desconectado/a.", "area": "reg"}, {"id": "escuchar", "titulo": "Para escuchar", "desc": "Audios cortos con la voz de Graciela para calmarte, dormir o frenar a tiempo, para cuando leer una pantalla no ayuda.", "area": "esc"}, {"id": "impulsos", "titulo": "Frenar a tiempo", "desc": "Para los impulsos: entender la ola de las ganas, pillarla a tiempo y elegir qué hacer.", "area": "reg"}, {"id": "presente", "titulo": "Volver al presente jugando", "desc": "Juegos cortos de atención plena para cuando te estás acelerando: buscar en una escena tranquila, seguir una luz y volver a lo que tienes alrededor.", "area": "reg"}, {"id": "emociones", "titulo": "Entender lo que siento", "desc": "Ponerle nombre a la emoción y ver qué te está diciendo.", "area": "reg"}, {"id": "ahora", "titulo": "Estar aquí y ahora", "desc": "Para salir del piloto automático: prácticas cortas y guiadas de atención plena (respirar, los sentidos, el cuerpo, dejar pasar los pensamientos).", "area": "reg"}, {"id": "energia", "titulo": "Cuidar mi energía", "desc": "Para el estrés y el agotamiento: cómo está tu batería, qué tipo de cansancio tienes y qué descanso lo repone.", "area": "reg"}, {"id": "hablar", "titulo": "Hablar sin pelear", "desc": "Para discutir sin hacer daño en pareja o en familia: los cuatro jinetes y sus antídotos, pedir sin reprochar, escuchar, hacer pausas y reparar.", "area": "rel"}, {"id": "sesion", "titulo": "Preparar mi sesión", "desc": "Anotar lo que ha pasado esta semana para traerlo a terapia.", "area": "ter"}]}};
+const $ = (s) => document.querySelector(s), esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fmt = (t) => new Date(t).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' });
+const msg = (el, t, ok) => { el.innerHTML = t ? `<div class="msg ${ok ? 'o' : 'e'}" role="status">${esc(t)}</div>` : ''; };
+let E = null, ED = 'g';
+async function api(o) { const r = await fetch('/api/pro', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(o) }); const j = await r.json().catch(() => ({})); if (r.status === 401) { show(false); throw new Error('entrar'); } if (!r.ok) throw new Error(j.error || 'Algo ha fallado.'); return j; }
+function show(on) { $('#login').hidden = on; $('#app').hidden = !on; $('#app').style.display = on ? 'flex' : 'none'; $('#out').hidden = !on; }
+
+function pinta(s) {
+  E = s; show(true);
+  document.querySelectorAll('.mg').forEach((x) => x.textContent = s.margenDias === 14 ? '2 semanas' : s.margenDias + ' días');
+  $('#plz').textContent = `${s.usadas} de ${s.plazas} plazas`;
+  $('#barra').style.width = (s.plazas ? Math.min(100, 100 * s.usadas / s.plazas) : 0) + '%';
+  $('#plan').textContent = s.activa ? (s.cancelada || s.hasta ? 'Activo hasta el ' + fmt(s.hasta) : 'Plan activo') : 'Plan inactivo';
+  $('#plan').className = 'chip ' + (s.activa ? 'ok' : 'off');
+  $('#aviso').innerHTML = !s.activa ? `<div class="msg e">Tu plan no está activo${s.suspendida ? '' : ''}. Tus pacientes conservan el acceso unas semanas; para mantenerlo y dar nuevos accesos, renueva tu suscripción.</div>`
+    : (s.cancelada && s.hasta ? `<div class="msg e">Has cancelado tu plan. Sigue activo hasta el ${fmt(s.hasta)}; después, tus pacientes tendrán 2 semanas más de acceso.</div>` : '');
+  $('#nb').disabled = !s.activa;
+  if (!$('#cn').matches(':focus')) $('#cn').value = s.nombre || '';
+  $('#txp').value = textoPac(s);
+  $('#planTxt').textContent = `${s.plazas} plazas · ${s.activa ? 'activo' : 'inactivo'}${s.hasta ? ' hasta el ' + fmt(s.hasta) : ''}.`;
+  const card = (p) => `<div class="card p" data-e="${esc(p.email)}"><div class="top"><div><b>${esc(p.alias || p.email)}</b>${p.alias ? `<div class="mail">${esc(p.email)}</div>` : ''}</div>
+    <span class="chip ${p.ocupa ? 'ok' : p.hasta ? 'm' : 'off'}">${p.ocupa ? 'Con acceso' : p.hasta ? 'Hasta el ' + fmt(p.hasta) : 'Sin acceso'}</span></div>
+    <div class="acts">${p.ocupa ? `<button class="g" data-x="enlace">Reenviar enlace</button><button class="g" data-x="alta">Dar el alta</button>` : `<button class="g" data-x="reabrir">Volver a dar acceso</button>`}<button class="w" data-x="quitar">Quitar</button></div><div class="m"></div></div>`;
+  const act = s.lista.filter((p) => p.ocupa), alt = s.lista.filter((p) => !p.ocupa);
+  $('#act').innerHTML = act.length ? act.map(card).join('') : '<div class="empty">Todavía no has dado acceso a ninguna paciente.</div>';
+  $('#alt').innerHTML = alt.length ? alt.map(card).join('') : '<div class="empty">Aquí aparecerán las pacientes a las que des el alta.</div>';
+  document.querySelectorAll('[data-x]').forEach((b) => b.onclick = () => accion(b));
+}
+function textoPac(s) {
+  return 'Como parte de nuestro trabajo, te doy acceso a Mi psicóloga en el bolsillo, unas herramientas creadas por Graciela Salvador, psicóloga sanitaria. Para darte acceso, apunto tu correo electrónico en la plataforma, que te envía automáticamente el enlace de entrada y los avisos sobre tu acceso. Tu correo no se usa para nada más.\n\n'
+    + 'Lo que escribas en las herramientas se queda en tu móvil: no lo veo yo ni nadie más. Las herramientas acompañan nuestras sesiones y no sustituyen a un proceso de terapia.\n\n'
+    + 'Cuando terminemos, mantendrás el acceso 2 semanas. Puedes pedirme en cualquier momento que retire tu acceso y se borre tu correo.\n\n'
+    + `Responsable del tratamiento: ${s.nombre || '[nombre de tu consulta]'}, ${s.email || '[tu correo]'}. Encargada del tratamiento: Graciela Salvador. Más información en gracielasalvador.com/privacidad.html.`;
+}
+async function accion(b) {
+  const c = b.closest('[data-e]'), email = c.dataset.e, x = b.dataset.x, m = c.querySelector('.m'), nombre = c.querySelector('b').textContent;
+  if (x === 'alta' && !confirm(`¿Dar el alta a ${nombre}? Conservará el acceso 2 semanas y la plaza quedará libre ahora.`)) return;
+  if (x === 'quitar' && !confirm(`¿Quitar el acceso a ${nombre} ahora mismo? Úsalo si te equivocaste de correo. No se borra nada de su móvil.`)) return;
+  b.disabled = true;
+  try { const r = await api({ accion: x, email }); if (x === 'enlace') { msg(m, 'Enlace enviado.', true); b.disabled = false; } else pinta(r); }
+  catch (e) { if (e.message !== 'entrar') msg(m, e.message); b.disabled = false; }
+}
+function pintaCat() {
+  const q = $('#q').value.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''), C = CAT[ED];
+  const host = ED === 'm' ? 'https://madreria.gracielasalvador.com/madreria/' : 'https://www.gracielasalvador.com/bolsillo/';
+  const norm = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  let html = '';
+  for (const [area, nombre] of C.areas) {
+    const ts = C.tools.filter((t) => t.area === area && (!q || norm(t.titulo + ' ' + t.desc).includes(q)));
+    if (!ts.length) continue;
+    html += `<h3>${esc(nombre)}</h3>` + ts.map((t) => `<div class="tool"><b>${esc(t.titulo)}</b><p>${esc(t.desc)}</p><div class="acts"><button class="g" data-u="${esc(host + t.id + '/')}">Copiar enlace</button></div></div>`).join('');
+  }
+  $('#cat').innerHTML = html || '<div class="empty">No hay ninguna herramienta con esas palabras.</div>';
+  document.querySelectorAll('[data-u]').forEach((b) => b.onclick = async () => { try { await navigator.clipboard.writeText(b.dataset.u); b.textContent = '¡Copiado!'; } catch (e) { prompt('Copia este enlace:', b.dataset.u); } setTimeout(() => b.textContent = 'Copiar enlace', 1800); });
+}
+document.querySelectorAll('.tabs button').forEach((b) => b.onclick = () => { document.querySelectorAll('.tabs button').forEach((x) => x.setAttribute('aria-selected', x === b));
+  for (const v of ['pac', 'cat', 'cta']) { const on = b.dataset.t === v; $('#v-' + v).hidden = !on; $('#v-' + v).style.display = on ? 'flex' : 'none'; } if (b.dataset.t === 'cat') pintaCat(); });
+document.querySelectorAll('.ed button').forEach((b) => b.onclick = () => { ED = b.dataset.e; document.querySelectorAll('.ed button').forEach((x) => x.setAttribute('aria-pressed', x === b)); pintaCat(); });
+$('#q').oninput = pintaCat;
+
+$('#lf1').onsubmit = async (ev) => { ev.preventDefault(); try { await api({ accion: 'codigo', email: $('#le').value }); $('#lf1').hidden = true; $('#lf2').hidden = false; msg($('#lm'), 'Si ese correo tiene un plan de profesional, te acabamos de enviar un código. Puede tardar un minuto; mira también en spam.', true); $('#lp').focus(); } catch (e) { msg($('#lm'), e.message); } };
+$('#lf2').onsubmit = async (ev) => { ev.preventDefault(); try { await api({ accion: 'entrar', email: $('#le').value, pin: $('#lp').value }); msg($('#lm'), ''); cargar(); } catch (e) { msg($('#lm'), e.message === 'entrar' ? 'No se ha podido entrar.' : e.message); } };
+$('#otro').onclick = () => { $('#lf2').hidden = true; $('#lf1').hidden = false; msg($('#lm'), ''); };
+$('#nf').onsubmit = async (ev) => { ev.preventDefault(); const bt = $('#nb'); bt.disabled = true;
+  try { const r = await api({ accion: 'nueva', email: $('#ne').value, alias: $('#na').value }); msg($('#nm'), `Listo. Le hemos enviado el correo a ${$('#ne').value}.`, true); $('#ne').value = ''; $('#na').value = ''; pinta(r); } catch (e) { if (e.message !== 'entrar') msg($('#nm'), e.message); }
+  bt.disabled = !(E && E.activa); };
+$('#cf').onsubmit = async (ev) => { ev.preventDefault(); try { pinta(await api({ accion: 'nombre', nombre: $('#cn').value })); msg($('#cm'), 'Guardado.', true); } catch (e) { if (e.message !== 'entrar') msg($('#cm'), e.message); } };
+$('#mia').onclick = async () => { try { await api({ accion: 'mi_acceso' }); msg($('#mm'), 'Te hemos enviado el enlace a tu correo.', true); } catch (e) { if (e.message !== 'entrar') msg($('#mm'), e.message); } };
+$('#out').onclick = async () => { await api({ accion: 'salir' }).catch(() => {}); show(false); };
+async function cargar() { try { pinta(await api({ accion: 'estado' })); } catch (e) { if (e.message !== 'entrar') { show(false); msg($('#lm'), e.message); } } }
+cargar();
+$('#cpx').onclick = async () => { const b = $('#cpx'); try { await navigator.clipboard.writeText($('#txp').value); b.textContent = '¡Copiado!'; } catch (e) { $('#txp').select(); b.textContent = 'Selecciónalo y cópialo'; } setTimeout(() => b.textContent = 'Copiar texto', 1800); };
+</script>
+</body>
+</html>
