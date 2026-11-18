@@ -96,7 +96,7 @@ export default async function handler(req) {
       await enviarCorreo(email, 'Tu acceso a las herramientas', plantilla('g', 'Tu acceso a las herramientas', [
         `Tu psicóloga ha cerrado tu acceso a ${nombresApps(['g', 'm'])}. Sigue abierto hasta el ${fecha(hasta)}.`,
         ...(L.p ? ['Si quieres seguir usando las herramientas después, puedes suscribirte por tu cuenta aquí:', { enlace: ['Seguir con las herramientas', L.p] }] : []),
-        'Lo que has escrito sigue guardado en tu móvil. Si quieres conservar una copia, en la app, en «Contacto y ajustes», puedes guardar una copia de seguridad.'], null, FIRMA_PRO));
+        'Lo que has escrito se guarda solo en tu móvil. <b>Antes de que termine tu acceso, guarda una copia de seguridad</b> desde la app, en «Contacto y ajustes» → «Copia de seguridad». Así, si vuelves más adelante, aunque sea desde otro móvil, podrás recuperarlo todo.'], null, FIRMA_PRO));
       return json(await estado(yo, pr));
     }
     if (d.accion === 'quitar') {

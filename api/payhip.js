@@ -88,7 +88,7 @@ export default async function handler(req) {
         for (const a of s.apps || prod.apps) p.sub[a] = Math.max(base, ahora + 3 * DIA);
         await guardarPersona(email, p);
         const app = (s.apps || prod.apps)[0], hasta = accesos(p)[app];
-        await enviarCorreo(email, 'Tu suscripción se ha cancelado', plantilla(app, 'Tu suscripción se ha cancelado', [`Te confirmo que tu suscripción se ha cancelado. Seguirás teniendo acceso hasta el ${fecha(hasta)}.`, 'Lo que has escrito sigue guardado en tu móvil. Si quieres conservarlo, en el inicio de la app, en «Copia de seguridad», puedes guardar una copia.', 'Gracias por haberme dejado acompañarte este tiempo. Si algún día quieres volver, lo encontrarás todo como lo dejaste.']));
+        await enviarCorreo(email, 'Tu suscripción se ha cancelado', plantilla(app, 'Tu suscripción se ha cancelado', [`Te confirmo que tu suscripción se ha cancelado. Seguirás teniendo acceso hasta el ${fecha(hasta)}.`, 'Lo que has escrito se guarda solo en tu móvil. <b>Antes de que termine tu acceso, guarda una copia de seguridad</b> desde la app, en «Contacto y ajustes» → «Copia de seguridad». Así, si vuelves más adelante, aunque sea desde otro móvil, podrás recuperarlo todo.', 'Gracias por haberme dejado acompañarte este tiempo. Si algún día quieres volver, lo encontrarás todo como lo dejaste.']));
       }
     } else if (d.type === 'paid' || d.type === 'refunded') {
       const email = limpiaCorreo(d.email);

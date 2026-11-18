@@ -125,7 +125,7 @@ export default async function handler(req) {
         'Ha sido un placer acompañarte en este proceso. Gracias por tu confianza y por todo lo que has puesto de tu parte.',
         ...(pago ? [`Tu acceso a ${nombresApps(p.pac.apps)} sigue abierto hasta el ${fecha(hasta)}. Si quieres seguir usando las herramientas después, puedes suscribirte aquí:`, { enlace: ['Seguir con las herramientas', pago] }]
           : [`Tu acceso a ${nombresApps(p.pac.apps)} sigue abierto hasta el ${fecha(hasta)}. Si quieres seguir usando las herramientas después, podrás suscribirte desde la propia app.`]),
-        'Lo que has escrito sigue guardado en tu móvil. Si quieres conservar una copia, en el inicio de la app, en «Copia de seguridad», puedes guardarla.',
+        'Lo que has escrito se guarda solo en tu móvil. <b>Antes de que termine tu acceso, guarda una copia de seguridad</b> desde la app, en «Contacto y ajustes» → «Copia de seguridad». Así, si vuelves más adelante, aunque sea desde otro móvil, podrás recuperarlo todo.',
         'Y si en algún momento necesitas volver, ya sabes dónde estoy.']));
       return json({ ok: true, persona: resumen(email, p) });
     }

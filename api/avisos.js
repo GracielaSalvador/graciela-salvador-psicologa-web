@@ -42,7 +42,7 @@ export default async function handler(req) {
       await enviarCorreo(email, 'Tu acceso termina pronto', plantilla(apps[0], 'Tu acceso termina pronto', [
         `Te escribo para recordarte que tu acceso a ${nombresApps(apps)} termina el ${fecha(hasta)}.`,
         dePro ? 'El plan con el que tu psicóloga te daba acceso ha terminado.' : regalo ? 'Espero que este regalo te haya acompañado en estos meses.' : 'Espero que las herramientas te hayan acompañado este tiempo.',
-        'Lo que has escrito sigue guardado en tu móvil. Si quieres conservarlo, en la app, en «Contacto y ajustes», puedes guardar una copia de seguridad.',
+        'Lo que has escrito se guarda solo en tu móvil. <b>Antes de que termine tu acceso, guarda una copia de seguridad</b> desde la app, en «Contacto y ajustes» → «Copia de seguridad». Así, si vuelves más adelante, aunque sea desde otro móvil, podrás recuperarlo todo.',
         ...(pago ? ['Si quieres seguir usándolas, puedes suscribirte aquí:', { enlace: ['Seguir con las herramientas', pago] }] : ['Si quieres seguir usándolas, podrás suscribirte desde la propia app.']),
         'Y si no, no tienes que hacer nada: no se te cobrará nada.'], null, dePro || (p.pp && !p.pp.propia) ? FIRMA_PRO : undefined));
       for (const a of apps) avisos[a] = acc[a]; p.avisos = avisos; await guardarPersona(email, p); enviados++;
