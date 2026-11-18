@@ -117,6 +117,11 @@ export default async function handler(req) {
         'El enlace solo sirve una vez. Si no lo has pedido tú, puedes ignorar este correo: sin el enlace, nadie puede entrar.']));
       return json({ ok: true });
     }
+    // Borrar a una persona por completo (por ejemplo, correos de prueba). Si tenía suscripción, hay que cancelarla también en Payhip.
+    if (d.accion === 'borrar') {
+      if (p.pp && !p.pp.propia) await db('SREM', 'propac:' + p.pp.de, email);
+      await db('DEL', 'u:' + email); await db('SREM', 'personas', email); await db('SREM', 'pacientes', email);
+      return json({ ok: true }); }
     if (!p.pac) return json({ error: 'Este correo no está en tu lista de pacientes.' }, 404);
     if (d.accion === 'alta') {
       p.pac.alta = Date.now(); await guardarPersona(email, p);
@@ -137,7 +142,10 @@ export default async function handler(req) {
       return json({ ok: true, persona: resumen(email, p) });
     }
     if (d.accion === 'apps') { if (!apps.length) return json({ error: 'Elige al menos una app.' }, 400); p.pac.apps = apps; await guardarPersona(email, p); return json({ ok: true, persona: resumen(email, p) }); }
-    if (d.accion === 'quitar') { delete p.pac; await guardarPersona(email, p); await db('SREM', 'pacientes', email); return json({ ok: true }); }
+    if (d.accion === 'quitar') { delete p.pac; await db('SREM', 'pacientes', email);
+      if (!p.sub && !p.pp && !(p.reg || []).length && !(p.mano || []).length) { await db('DEL', 'u:' + email); await db('SREM', 'personas', email); }
+      else await guardarPersona(email, p);
+      return json({ ok: true }); }
     return json({ error: 'Acción desconocida.' }, 400);
   } catch (err) { return json({ error: err.message }, 500); }
 }

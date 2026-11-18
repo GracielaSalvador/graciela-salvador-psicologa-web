@@ -162,7 +162,7 @@ function tarjetaT(p) {
   const acc = ['m', 'g'].filter((a) => p[a] > t).map((a) => `<span class="chip ${a === 'm' ? 'm' : ''}">${NOM[a]} · ${hastaTxt(p[a])}</span>`);
   return `<div class="card" data-e="${esc(p.email)}"><div><b>${esc(p.nombre || p.email)}</b>${p.nombre ? `<div class="mail">${esc(p.email)}</div>` : ''}</div>
     <div class="chips">${chips.join('')}</div><div class="chips">${acc.length ? acc.join('') : '<span class="chip off">Sin acceso ahora</span>'}</div>
-    <div class="acts">${activa(p) ? '<button class="g" data-y="enlace">Reenviar enlace</button>' : ''}${!p.pac ? '<button class="g" data-y="pac">Darle acceso como paciente</button>' : ''}</div><div class="m"></div></div>`;
+    <div class="acts">${activa(p) ? '<button class="g" data-y="enlace">Reenviar enlace</button>' : ''}${!p.pac ? '<button class="g" data-y="pac">Darle acceso como paciente</button>' : ''}<button class="g" data-y="borrar">Borrar</button></div><div class="m"></div></div>`;
 }
 function pintaTodos() {
   const t = Date.now(), act = TODOS.filter(activa), n = (k) => act.filter((p) => tipos(p).includes(k)).length;
@@ -181,8 +181,11 @@ async function accionT(b) {
   const card = b.closest('[data-e]'), email = card.dataset.e, m = card.querySelector('.m'); let o = { accion: 'enlace', email };
   if (b.dataset.y === 'pac') { const r = prompt('¿Qué apps? Escribe M para La Madrería, G para la general o MG para las dos.', 'M'); if (!r) return; const apps = [...new Set(r.toLowerCase().replace(/[^mg]/g, '').split(''))]; if (!apps.length) return;
     const nombre = prompt('Un nombre para reconocerla (opcional, nada clínico):', '') || ''; o = { accion: 'nueva', email, nombre, apps }; }
+  if (b.dataset.y === 'borrar') { const p = TODOS.find((x) => x.email === email) || {};
+    if (!confirm(`¿Borrar a ${email} por completo? Perderá el acceso y se borrarán sus datos de la lista.` + (p.sub && p.sub.activa ? '\n\nTiene una suscripción activa: cancélala también en Payhip, o se le volverá a cobrar.' : ''))) return;
+    o = { accion: 'borrar', email }; }
   b.disabled = true;
-  try { await api(o); msg(m, o.accion === 'enlace' ? 'Enlace enviado.' : 'Hecho. Ya está en tu lista de pacientes.', true); setTimeout(cargar, 1200); }
+  try { await api(o); msg(m, o.accion === 'enlace' ? 'Enlace enviado.' : o.accion === 'borrar' ? 'Borrada.' : 'Hecho. Ya está en tu lista de pacientes.', true); setTimeout(cargar, 1200); }
   catch (e) { if (e.message !== 'entrar') msg(m, e.message); b.disabled = false; }
 }
 $('#q').oninput = () => pintaTodos();

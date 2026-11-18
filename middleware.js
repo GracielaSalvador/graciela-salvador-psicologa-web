@@ -155,10 +155,6 @@ ${pago ? `<a class="b" href="${pago}">Suscribirme</a>` : ''}
 <a class="b g" href="/api/entrar?app=${app}">Ya tengo acceso: entrar con mi correo</a>
 <a class="b g" href="/api/regalo?app=${app}">Tengo una tarjeta regalo</a>
 <a class="b g" href="/${id}/">Volver al inicio</a>
-<details><summary>¿Tienes una contraseña que te dio Graciela?</summary>
-<form method="post" action="/${id}/"><label for="clave" style="position:absolute;left:-9999px">Contraseña</label>
-<input id="clave" name="clave" type="password" autocomplete="current-password" placeholder="Contraseña" required>
-<button type="submit">Entrar con contraseña</button></form></details>
 <small>Si estás en terapia con Graciela, ella puede darte acceso con tu correo.</small>
 </main></body></html>`;
   return new Response(html, { status: 401, headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' } });
