@@ -1,5 +1,5 @@
 // GET /api/yo → qué apps tiene abiertas este móvil (para poner los candados en el inicio). No devuelve nada privado salvo el propio correo.
-import { leerCookie, leerSesion, COOKIE, leerPersona, accesos, crearSesion, cookieSesion, cookieApps, REVISAR_CADA, enlacesPago, leerPro } from './_comun.js';
+import { leerCookie, leerSesion, COOKIE, leerPersona, accesos, crearSesion, cookieSesion, cookieApps, REVISAR_CADA, enlacesPago, leerPro, revisarDispositivo, borrarCookies } from './_comun.js';
 export const config = { runtime: 'edge' };
 export default async function handler(req) {
   const h = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-store' });
@@ -8,7 +8,11 @@ export default async function handler(req) {
   if (s) {
     let acc = { m: s.m, g: s.g };
     if (Date.now() - s.c > REVISAR_CADA) {
-      try { acc = accesos(await leerPersona(s.e)); h.append('Set-Cookie', cookieSesion(await crearSesion(s.e, acc))); h.append('Set-Cookie', cookieApps(acc)); } catch (e) {}
+      try {
+        const d = await revisarDispositivo(s.e, s.d);
+        if (!d) { for (const c of borrarCookies) h.append('Set-Cookie', c); return new Response(JSON.stringify({ ...out, cerrada: true }), { headers: h }); }
+        acc = accesos(await leerPersona(s.e)); h.append('Set-Cookie', cookieSesion(await crearSesion(s.e, acc, d))); h.append('Set-Cookie', cookieApps(acc));
+      } catch (e) {}
     }
     let sus = false, ofrece = ''; try { const per = await leerPersona(s.e); sus = !!(per && per.sub && per.sub.activa);
       // «Te lo ofrece…»: si tiene acceso gracias a una profesional, el nombre de su consulta

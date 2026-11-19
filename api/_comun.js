@@ -89,8 +89,8 @@ async function firma(txt) {
   const k = await crypto.subtle.importKey('raw', new TextEncoder().encode(sec), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
   return b64u(await crypto.subtle.sign('HMAC', k, new TextEncoder().encode(txt)));
 }
-export async function crearSesion(email, acc) {
-  const cuerpo = b64uTxt(JSON.stringify({ e: email, m: acc.m, g: acc.g, c: ahora() }));
+export async function crearSesion(email, acc, d) {
+  const cuerpo = b64uTxt(JSON.stringify({ e: email, m: acc.m, g: acc.g, c: ahora(), d: d || undefined }));
   return cuerpo + '.' + (await firma(cuerpo));
 }
 export async function leerSesion(valor) {
@@ -109,6 +109,26 @@ export function leerCookie(req, nombre) {
   return m ? decodeURIComponent(m[1]) : null;
 }
 export const COOKIE = 'gs_ses';
+/* Dispositivos: cada cuenta puede tener la sesión abierta en MAX_DISP dispositivos a la vez.
+   Al entrar en uno nuevo se cierra el que lleva más tiempo sin usarse (se nota en la siguiente revisión, como mucho REVISAR_CADA). */
+export const MAX_DISP = 4;
+export async function nuevoDispositivo(email) {
+  const b = new Uint8Array(8); crypto.getRandomValues(b);
+  const d = Array.from(b, (x) => x.toString(16).padStart(2, '0')).join('');
+  await db('ZADD', 'dev:' + email, ahora(), d);
+  await db('ZREMRANGEBYRANK', 'dev:' + email, 0, -(MAX_DISP + 1));
+  return d;
+}
+// Devuelve el id del dispositivo si sigue vivo (y apunta que se ha usado), o null si se cerró por entrar en otro
+export async function revisarDispositivo(email, d) {
+  if (!d) return nuevoDispositivo(email); // sesiones de antes del límite: se registran sin cerrarlas
+  const sc = await db('ZSCORE', 'dev:' + email, d);
+  if (sc === null || sc === undefined) return null;
+  await db('ZADD', 'dev:' + email, ahora(), d);
+  return d;
+}
+export async function cuantosDispositivos(email) { return Number(await db('ZCARD', 'dev:' + email)) || 0; }
+export async function cerrarDispositivos(email) { await db('DEL', 'dev:' + email); }
 // La sesión se comparte entre www.gracielasalvador.com y madreria.gracielasalvador.com: con entrar una vez se abren las dos apps
 const DOM = '; Domain=gracielasalvador.com';
 export const cookieSesion = (v) => `${COOKIE}=${encodeURIComponent(v)}; Path=/; Max-Age=${SESION_DIAS * 86400}; HttpOnly; Secure; SameSite=Lax${DOM}`;
@@ -234,7 +254,7 @@ export async function soltarPaciente(pro, email, p) {
   await db('SREM', 'propac:' + pro, email);
   if (!p) return;
   const vacio = !p.sub && !p.pac && !p.pp && !(p.reg || []).length && !(p.mano || []).length;
-  if (vacio) { await db('DEL', 'u:' + email); await db('SREM', 'personas', email); await db('SREM', 'pacientes', email); }
+  if (vacio) { await db('DEL', 'dev:' + email); await db('DEL', 'u:' + email); await db('SREM', 'personas', email); await db('SREM', 'pacientes', email); }
   else await guardarPersona(email, p);
 }
 export const PURGA_PRO = 30 * DIA; // días tras el fin del acceso para borrar los datos (contrato de encargo)

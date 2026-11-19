@@ -11,7 +11,7 @@
 // ACCESO CON CORREO (sistema nuevo): el inicio y las herramientas gratis se abren sin cuenta.
 // Las demás se abren si el móvil tiene una sesión (entró con el enlace de su correo) con acceso a esa app.
 // Mientras tanto, la contraseña de siempre sigue funcionando, para no dejar a nadie fuera.
-import { gratis, RUTA_APP, leerSesion, COOKIE, leerPersona, accesos, crearSesion, cookieSesion, cookieApps, REVISAR_CADA, enlacesPago } from './api/_comun.js';
+import { gratis, RUTA_APP, leerSesion, COOKIE, leerPersona, accesos, crearSesion, cookieSesion, cookieApps, REVISAR_CADA, enlacesPago, revisarDispositivo, borrarCookies } from './api/_comun.js';
 
 export const config = { matcher: ['/:path*'] };  // pasa por aquí todo, para poder llevar la dirección de Vercel a la principal
 
@@ -102,24 +102,32 @@ export default async function middleware(req) {
   if (valida && leerCookie(req, E.cookie) === valida) return continuar();
   // Sesión por correo
   let s = null; try { s = await leerSesion(leerCookie(req, COOKIE)); } catch (e) {}
+  let cerrada = false;
   if (s) {
     if (Date.now() - s.c > REVISAR_CADA) {
       try {
-        const acc = accesos(await leerPersona(s.e));
-        const h = new Headers({ 'x-middleware-next': '1' }); h.append('Set-Cookie', cookieSesion(await crearSesion(s.e, acc))); h.append('Set-Cookie', cookieApps(acc));
-        if (acc[app] > Date.now()) return new Response(null, { headers: h });
-        s = { ...s, ...acc };
-      } catch (e) { if (s[app] > Date.now()) return continuar(); }
+        const d = await revisarDispositivo(s.e, s.d);
+        if (!d) { cerrada = true; s = null; }
+        else {
+          const acc = accesos(await leerPersona(s.e));
+          const h = new Headers({ 'x-middleware-next': '1' }); h.append('Set-Cookie', cookieSesion(await crearSesion(s.e, acc, d))); h.append('Set-Cookie', cookieApps(acc));
+          if (acc[app] > Date.now()) return new Response(null, { headers: h });
+          s = { ...s, ...acc };
+        }
+      } catch (e) { if (s && s[app] > Date.now()) return continuar(); }
     } else if (s[app] > Date.now()) return continuar();
   }
-  return candado(E, id, app, s);
+  const r = candado(E, id, app, s, cerrada);
+  if (cerrada) for (const c of borrarCookies) r.headers.append('Set-Cookie', c);
+  return r;
 }
 
 // Pantalla amable para las herramientas de pago cuando este móvil no tiene acceso
-function candado(E, id, app, s) {
+function candado(E, id, app, s, cerrada) {
   let L = {}; try { L = enlacesPago(); } catch (e) {}
   const pago = L[app] || L.p;
-  const fin = s && s[app] ? 'Tu acceso a esta app terminó. Puedes volver cuando quieras: lo que escribiste sigue en tu móvil.' : '';
+  const fin = cerrada ? 'Has entrado con tu cuenta en otro dispositivo y hemos cerrado la sesión en este, el que llevaba más tiempo sin usarse. Si quieres seguir aquí, vuelve a entrar con tu correo: lo que escribiste sigue en este móvil.'
+    : s && s[app] ? 'Tu acceso a esta app terminó. Puedes volver cuando quieras: lo que escribiste sigue en tu móvil.' : '';
   const html = `<!doctype html><html lang="es"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex"><meta name="theme-color" content="${E.tema}">

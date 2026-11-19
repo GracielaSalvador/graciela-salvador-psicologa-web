@@ -2,7 +2,7 @@
 //   GET  /api/entrar            → formulario para escribir el correo
 //   POST /api/entrar            → si ese correo tiene acceso, le llega un código de 6 números para entrar
 //   GET  /api/entrar?t=...      → el enlace del correo: abre la sesión en este móvil y lleva a la app
-import { db, APPS, appDeHost, pagina, formulario, limpiaCorreo, correoValido, leerPersona, accesos, tieneAlgo, crearSesion, cookieSesion, cookieApps, crearEnlace, enviarCorreo, plantilla, enlacesPago, esc } from './_comun.js';
+import { db, APPS, appDeHost, pagina, formulario, limpiaCorreo, correoValido, leerPersona, accesos, tieneAlgo, crearSesion, nuevoDispositivo, cookieSesion, cookieApps, crearEnlace, enviarCorreo, plantilla, enlacesPago, esc } from './_comun.js';
 export const config = { runtime: 'edge' };
 
 const form = (app, msg = '', correo = '') => pagina(app, 'Entrar', `
@@ -40,7 +40,7 @@ export default async function handler(req) {
         return Response.redirect(nuevo, 303);
       }
       const h = new Headers({ Location: `/${A.ruta}/`, 'Cache-Control': 'no-store' });
-      h.append('Set-Cookie', cookieSesion(await crearSesion(e, acc))); h.append('Set-Cookie', cookieApps(acc));
+      h.append('Set-Cookie', cookieSesion(await crearSesion(e, acc, await nuevoDispositivo(e)))); h.append('Set-Cookie', cookieApps(acc));
       return new Response(null, { status: 303, headers: h });
     }
     if (req.method === 'POST') {
@@ -59,7 +59,7 @@ export default async function handler(req) {
         await db('DEL', k);
         const p = await leerPersona(email), acc = accesos(p), A = APPS[acc[ap] > Date.now() ? ap : P.a] || APPS[ap];
         const host = new URL(req.url).hostname, h = new Headers({ Location: host === A.host ? `/${A.ruta}/` : `https://${A.host}/${A.ruta}/`, 'Cache-Control': 'no-store' });
-        h.append('Set-Cookie', cookieSesion(await crearSesion(email, acc))); h.append('Set-Cookie', cookieApps(acc));
+        h.append('Set-Cookie', cookieSesion(await crearSesion(email, acc, await nuevoDispositivo(email)))); h.append('Set-Cookie', cookieApps(acc));
         return new Response(null, { status: 303, headers: h });
       }
       if (!correoValido(email)) return form(ap, '<div class="err" role="alert">Ese correo no parece completo. Revísalo, por favor.</div>', f.email);

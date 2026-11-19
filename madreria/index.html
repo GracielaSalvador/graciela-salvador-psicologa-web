@@ -628,6 +628,7 @@ async function miraAcceso() {
   marcaCandados();
   try { const y = await (await fetch('/api/yo', { cache: 'no-store', credentials: 'same-origin' })).json(); const A = 'm', pago = y.pago && (y.pago[A] || y.pago.p);
     const fmt = (t) => new Date(t).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+    if (y.cerrada) $('#acBody').insertAdjacentHTML('afterbegin', '<p>Has entrado con tu cuenta en otro dispositivo y hemos cerrado la sesión en este. Para seguir aquí, vuelve a entrar con tu correo: lo que escribiste sigue en este móvil.</p>');
     if (y.email) { const hasta = A === 'm' ? y.hastaM : y.hastaG, abierta = y[A];
       $('#acSub').textContent = abierta ? (y.ofrece ? 'Te lo ofrece ' + y.ofrece : 'Has entrado con tu correo') : 'Tu acceso a esta app ha terminado';
       const of = document.getElementById('ofrece'); if (of) { of.hidden = !(abierta && y.ofrece); if (y.ofrece) of.querySelector('b').textContent = y.ofrece; }

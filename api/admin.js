@@ -1,6 +1,6 @@
 // /api/admin → lo que usa la página de pacientes de Graciela (www.gracielasalvador.com/graciela/).
 // Solo funciona con la contraseña ADMIN_PASSWORD de Vercel.
-import { T_CONSEJO, enlacesPago, nombresApps, gratisConfig, FIJAS, db, esAdmin, crearAdmin, limpiaCorreo, correoValido, leerPersona, guardarPersona, accesos, crearEnlace, enviarCorreo, plantilla, APPS, fecha, DIA, MARGEN_ALTA, enlaceBaja, esc, leerPro, guardarPro, proActiva, plazaOcupada, cerrarPro, abrirPro, cuentaPropia } from './_comun.js';
+import { cuantosDispositivos, cerrarDispositivos, T_CONSEJO, enlacesPago, nombresApps, gratisConfig, FIJAS, db, esAdmin, crearAdmin, limpiaCorreo, correoValido, leerPersona, guardarPersona, accesos, crearEnlace, enviarCorreo, plantilla, APPS, fecha, DIA, MARGEN_ALTA, enlaceBaja, esc, leerPro, guardarPro, proActiva, plazaOcupada, cerrarPro, abrirPro, cuentaPropia } from './_comun.js';
 export const config = { runtime: 'edge' };
 
 const json = (o, st = 200, cookies = []) => { const h = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }); for (const c of cookies) h.append('Set-Cookie', c); return new Response(JSON.stringify(o), { status: st, headers: h }); };
@@ -88,7 +88,7 @@ export default async function handler(req) {
       // Todas las personas que han tenido algo alguna vez (pacientes, suscripciones, regalos)
       const emails = [...new Set([...((await db('SMEMBERS', 'pacientes')) || []), ...((await db('SMEMBERS', 'personas')) || [])])];
       const lista = [];
-      for (const e of emails) { const p = await leerPersona(e); if (p) lista.push(resumen(e, p)); }
+      for (const e of emails) { const p = await leerPersona(e); if (p) { const r = resumen(e, p); try { r.disp = await cuantosDispositivos(e); } catch (x) {} lista.push(r); } }
       lista.sort((a, b) => (a.pac?.alta ? 1 : 0) - (b.pac?.alta ? 1 : 0) || (a.nombre || a.email).localeCompare(b.nombre || b.email));
       return json({ lista, margenDias: MARGEN_ALTA / DIA, siempre: 8e15 });
     }
@@ -120,8 +120,10 @@ export default async function handler(req) {
     // Borrar a una persona por completo (por ejemplo, correos de prueba). Si tenía suscripción, hay que cancelarla también en Payhip.
     if (d.accion === 'borrar') {
       if (p.pp && !p.pp.propia) await db('SREM', 'propac:' + p.pp.de, email);
-      await db('DEL', 'u:' + email); await db('SREM', 'personas', email); await db('SREM', 'pacientes', email);
+      await db('DEL', 'u:' + email); await db('DEL', 'dev:' + email); await db('SREM', 'personas', email); await db('SREM', 'pacientes', email);
       return json({ ok: true }); }
+    // Cerrar la sesión en todos sus dispositivos (tendrá que volver a entrar con su correo)
+    if (d.accion === 'cerrar_sesiones') { await cerrarDispositivos(email); return json({ ok: true }); }
     if (!p.pac) return json({ error: 'Este correo no está en tu lista de pacientes.' }, 404);
     if (d.accion === 'alta') {
       p.pac.alta = Date.now(); await guardarPersona(email, p);
