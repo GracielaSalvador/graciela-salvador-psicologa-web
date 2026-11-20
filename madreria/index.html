@@ -220,6 +220,9 @@ body[data-p] .inicio { display: none !important; }
 .more .row { border-top: 1px solid var(--line); } .more > .row:first-child { border-top: 0; }
 .more a.row, .more summary { display: flex; align-items: center; gap: 12px; padding: 12px 14px; text-decoration: none; color: inherit; cursor: pointer; list-style: none; }
 .more summary::-webkit-details-marker { display: none; }
+.more, .more a.row, .more summary { -webkit-tap-highlight-color: transparent; }
+.more a.row:active, .more summary:active { background: var(--tint); }
+.more a.row, .more summary { transition: background .15s; }
 .more .ri { width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center; background: var(--tint); color: var(--accent); flex: none; }
 .more .ri svg { width: 20px; height: 20px; } .more .ri.wa { background: #1F8F5A; color: #fff; }
 .more .rt { flex: 1; min-width: 0; display: flex; flex-direction: column; } .more .rt b { color: var(--deep); font-size: .95rem; } .more .rt span { font-size: .84rem; color: var(--muted); }
