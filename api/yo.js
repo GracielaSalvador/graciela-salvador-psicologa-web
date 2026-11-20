@@ -14,10 +14,12 @@ export default async function handler(req) {
         acc = accesos(await leerPersona(s.e)); h.append('Set-Cookie', cookieSesion(await crearSesion(s.e, acc, d))); h.append('Set-Cookie', cookieApps(acc));
       } catch (e) {}
     }
-    let sus = false, ofrece = ''; try { const per = await leerPersona(s.e); sus = !!(per && per.sub && per.sub.activa);
+    let sus = false, reg = false, ofrece = ''; try { const per = await leerPersona(s.e); sus = !!(per && per.sub && per.sub.activa);
+      // Tarjeta regalo en vigor: también ve la asesoría (salvo si es paciente de otra profesional, ver abajo)
+      reg = !!(per && (per.reg || []).some(r => r.hasta > Date.now()));
       // «Te lo ofrece…»: si tiene acceso gracias a una profesional, el nombre de su consulta
       if (per && per.pp && !per.pp.propia && !per.pp.alta && (!per.pp.fin || per.pp.fin > Date.now())) { const pr = await leerPro(per.pp.de); ofrece = (pr && pr.nombre) || 'tu psicóloga'; } } catch (e) {}
-    out = { ...out, email: s.e, m: acc.m > Date.now(), g: acc.g > Date.now(), hastaM: acc.m, hastaG: acc.g, sus, ofrece };
+    out = { ...out, email: s.e, m: acc.m > Date.now(), g: acc.g > Date.now(), hastaM: acc.m, hastaG: acc.g, sus, reg: reg && !ofrece, ofrece };
   }
   return new Response(JSON.stringify(out), { headers: h });
 }
