@@ -1,6 +1,6 @@
 // /api/pro → lo que usa el panel de las profesionales (www.gracielasalvador.com/profesionales/).
 // Entran con su correo y un código de 6 números. Cada una solo ve y gestiona a sus propias pacientes.
-import { soltarPaciente, db, limpiaCorreo, correoValido, leerPersona, guardarPersona, accesos, crearEnlace, enviarCorreo, plantilla, nombresApps, fecha, DIA, MARGEN_ALTA, enlacesPago, T_CONSEJO,
+import { soltarPaciente, db, limpiaCorreo, correoValido, leerPersona, guardarPersona, accesos, crearEnlace, enlacesEntrar, enviarCorreo, plantilla, nombresApps, fecha, DIA, MARGEN_ALTA, enlacesPago, T_CONSEJO,
   leerPro, guardarPro, proActiva, plazaOcupada, crearSesionPro, leerSesionPro, FIRMA_PRO, cuentaPropia } from './_comun.js';
 export const config = { runtime: 'edge' };
 
@@ -56,8 +56,8 @@ export default async function handler(req) {
     if (!pr) return json({ error: 'entrar' }, 401, [COOKIE('', 0)]);
     if (!d.accion || d.accion === 'estado') return json(await estado(yo, pr));
     if (d.accion === 'nombre') { pr.nombre = String(d.nombre || '').trim().slice(0, 60); await guardarPro(yo, pr); return json(await estado(yo, pr)); }
-    if (d.accion === 'mi_acceso') { await cuentaPropia(yo); const link = await crearEnlace(yo, 'g', 60 * 24);
-      await enviarCorreo(yo, 'Tu enlace para entrar en las apps', plantilla('g', 'Tu enlace para entrar en las apps', ['Aquí tienes tu enlace para entrar en las dos apps, para que conozcas lo que ofreces a tus pacientes.', { enlace: ['Entrar en la app', link] }, T_CONSEJO], null, FIRMA_PRO));
+    if (d.accion === 'mi_acceso') { await cuentaPropia(yo); 
+      await enviarCorreo(yo, 'Tu enlace para entrar en las apps', plantilla('g', 'Tu enlace para entrar en las apps', ['Aquí tienes tus enlaces para entrar en las dos apps, para que conozcas lo que ofreces a tus pacientes.', ...(await enlacesEntrar(yo, ['m', 'g'], 60 * 24)), T_CONSEJO], null, FIRMA_PRO));
       return json({ ok: true }); }
 
     const email = limpiaCorreo(d.email), t = Date.now();
@@ -74,10 +74,10 @@ export default async function handler(req) {
       const alias = d.accion === 'nueva' ? String(d.alias || '').slice(0, 40) : (mia ? p.pp.alias || '' : '');
       p.pp = { de: yo, alias, desde: mia && d.accion === 'reabrir' ? p.pp.desde : t, alta: null, fin: null };
       await guardarPersona(email, p); await db('SADD', 'propac:' + yo, email);
-      const link = await crearEnlace(email, 'g', 60 * 24 * 7), q = quien(pr);
+      const q = quien(pr);
       await enviarCorreo(email, 'Tus herramientas ya están abiertas', plantilla('g', 'Tus herramientas ya están abiertas', [
         `${q.charAt(0).toUpperCase() + q.slice(1)} te ha dado acceso a ${nombresApps(['g', 'm'])}: herramientas guiadas para acompañarte entre sesión y sesión, en los momentos difíciles y en tu día a día.`,
-        'Para entrar, toca este enlace desde tu móvil:', { enlace: ['Entrar en la app', link] }, T_CONSEJO,
+        ...(await enlacesEntrar(email, ['m', 'g'], 60 * 24 * 7)), T_CONSEJO,
         'Lo que escribas en las herramientas se guarda solo en tu móvil. Nadie más puede verlo: ni tu psicóloga ni nadie de Mi psicóloga en el bolsillo, salvo que tú decidas enseñarlo.',
         'Estas herramientas no sustituyen a tu proceso de terapia: son un apoyo para practicar lo que trabajáis juntas.'], null, FIRMA_PRO));
       return json(await estado(yo, pr));

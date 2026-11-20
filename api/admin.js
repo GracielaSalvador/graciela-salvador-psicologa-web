@@ -1,6 +1,6 @@
 // /api/admin → lo que usa la página de pacientes de Graciela (www.gracielasalvador.com/graciela/).
 // Solo funciona con la contraseña ADMIN_PASSWORD de Vercel.
-import { cuantosDispositivos, cerrarDispositivos, T_CONSEJO, enlacesPago, nombresApps, gratisConfig, FIJAS, db, esAdmin, crearAdmin, limpiaCorreo, correoValido, leerPersona, guardarPersona, accesos, crearEnlace, enviarCorreo, plantilla, APPS, fecha, DIA, MARGEN_ALTA, enlaceBaja, esc, leerPro, guardarPro, proActiva, plazaOcupada, cerrarPro, abrirPro, cuentaPropia } from './_comun.js';
+import { cuantosDispositivos, cerrarDispositivos, T_CONSEJO, enlacesPago, nombresApps, gratisConfig, FIJAS, db, esAdmin, crearAdmin, limpiaCorreo, correoValido, leerPersona, guardarPersona, accesos, crearEnlace, enlacesEntrar, enviarCorreo, plantilla, APPS, fecha, DIA, MARGEN_ALTA, enlaceBaja, esc, leerPro, guardarPro, proActiva, plazaOcupada, cerrarPro, abrirPro, cuentaPropia } from './_comun.js';
 export const config = { runtime: 'edge' };
 
 const json = (o, st = 200, cookies = []) => { const h = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }); for (const c of cookies) h.append('Set-Cookie', c); return new Response(JSON.stringify(o), { status: st, headers: h }); };
@@ -101,10 +101,9 @@ export default async function handler(req) {
       if (!apps.length) return json({ error: 'Elige al menos una app.' }, 400);
       p.pac = { apps, nombre: String(d.nombre || '').slice(0, 60), desde: Date.now(), alta: null };
       await guardarPersona(email, p); await db('SADD', 'pacientes', email);
-      const link = await crearEnlace(email, apps[0], 60 * 24 * 7);
       await enviarCorreo(email, 'Tus herramientas ya están abiertas', plantilla(apps[0], 'Tus herramientas ya están abiertas', [
         `Te he dado acceso a ${nombresApps(apps)} mientras estemos en terapia. Son herramientas que he preparado para acompañarte entre sesión y sesión: para los momentos difíciles, para entender lo que sientes y para practicar lo que vamos trabajando.`,
-        'Para entrar, toca este enlace desde tu móvil:', { enlace: ['Entrar en la app', link] }, T_CONSEJO,
+        ...(await enlacesEntrar(email, apps, 60 * 24 * 7)), T_CONSEJO,
         'Lo que escribas en las herramientas se guarda solo en tu móvil. Nadie más puede verlo, tampoco yo, salvo que tú decidas enseñármelo.',
         'Si te cuesta entrar o tienes cualquier duda, respóndeme a este correo.']));
       return json({ ok: true, persona: resumen(email, p) });
@@ -138,9 +137,8 @@ export default async function handler(req) {
     }
     if (d.accion === 'reactivar') {
       p.pac.alta = null; if (apps.length) p.pac.apps = apps; await guardarPersona(email, p);
-      const link = await crearEnlace(email, p.pac.apps[0], 60 * 24 * 7);
       await enviarCorreo(email, 'Tu acceso vuelve a estar abierto', plantilla(p.pac.apps[0], 'Tu acceso vuelve a estar abierto', [`Me alegra volver a acompañarte. He vuelto a abrir tu acceso a ${nombresApps(p.pac.apps)} mientras estemos en terapia.`,
-        'Lo que escribiste sigue en tu móvil, tal como lo dejaste. Para entrar, toca este enlace:', { enlace: ['Entrar en la app', link] }]));
+        'Lo que escribiste sigue en tu móvil, tal como lo dejaste.', ...(await enlacesEntrar(email, p.pac.apps, 60 * 24 * 7))]));
       return json({ ok: true, persona: resumen(email, p) });
     }
     if (d.accion === 'apps') { if (!apps.length) return json({ error: 'Elige al menos una app.' }, 400); p.pac.apps = apps; await guardarPersona(email, p); return json({ ok: true, persona: resumen(email, p) }); }

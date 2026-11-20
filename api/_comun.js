@@ -137,6 +137,13 @@ export const borrarCookies = [`${COOKIE}=; Path=/; Max-Age=0; HttpOnly; Secure; 
   `${COOKIE}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax`, 'gs_apps=; Path=/; Max-Age=0; Secure; SameSite=Lax'];
 
 /* Enlaces de un solo uso para entrar sin contraseña */
+// Enlaces para entrar: si tiene las dos apps, un botón para cada una
+export async function enlacesEntrar(email, apps, minutos) {
+  const dos = apps.includes('m') && apps.includes('g'), lista = dos ? ['m', 'g'] : [apps[0]];
+  const out = [dos ? 'Para entrar, toca el enlace de la app que quieras abrir desde tu móvil. Las dos funcionan con el mismo correo:' : 'Para entrar, toca este enlace desde tu móvil:'];
+  for (const a of lista) out.push({ enlace: [dos ? (a === 'm' ? 'Entrar en la edición La Madrería' : 'Entrar en Mi psicóloga en el bolsillo') : 'Entrar en la app', await crearEnlace(email, a, minutos)] });
+  return out;
+}
 export async function crearEnlace(email, app, minutos = 30) {
   const bytes = crypto.getRandomValues(new Uint8Array(24)), t = b64u(bytes);
   await db('SET', 'login:' + t, JSON.stringify({ e: email, a: app }), 'EX', String(minutos * 60));

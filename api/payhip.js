@@ -5,7 +5,7 @@
 //   «Anual» o «año» → periodo de un año; si no, mensual
 //   «Profesionales» → plan para psicólogas: «Consulta+» da 25 plazas; si no, 10
 // Las tarjetas regalo no pasan por aquí: se canjean con su código en /api/regalo.
-import { T_CONSEJO, T_PRIVADO, nombresApps, leerPersona, guardarPersona, limpiaCorreo, crearEnlace, enviarCorreo, plantilla, APPS, fecha, accesos, DIA, db, leerPro, guardarPro, abrirPro, cerrarPro, cuentaPropia, FIRMA_PRO, MARGEN_PRO } from './_comun.js';
+import { T_CONSEJO, T_PRIVADO, nombresApps, leerPersona, guardarPersona, limpiaCorreo, crearEnlace, enlacesEntrar, enviarCorreo, plantilla, APPS, fecha, accesos, DIA, db, leerPro, guardarPro, abrirPro, cerrarPro, cuentaPropia, FIRMA_PRO, MARGEN_PRO } from './_comun.js';
 export const config = { runtime: 'edge' };
 
 const sin = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
@@ -22,10 +22,10 @@ export function leerProducto(nombre) {
 async function hex(txt) { const h = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(txt)); return [...new Uint8Array(h)].map((b) => b.toString(16).padStart(2, '0')).join(''); }
 
 async function bienvenida(email, prod, nombre) {
-  const app = prod.apps[0], link = await crearEnlace(email, app, 60 * 24 * 3);
+  const app = prod.apps[0];
         await enviarCorreo(email, 'Te doy la bienvenida', plantilla(app, 'Te doy la bienvenida', [`Gracias por suscribirte a ${nombresApps(prod.apps)}. Ya tienes abiertas todas las herramientas.`,
           'Las he preparado para acompañarte en el día a día: para los momentos difíciles, para entender lo que sientes y para cuidarte un poco más. Úsalas a tu ritmo, cuando las necesites.',
-          'Para entrar, toca este enlace desde tu móvil:', { enlace: ['Entrar en la app', link] }, ...(/acompa|asesor/.test(sin(`${nombre}`)) ? ['Tu plan incluye una asesoría conmigo cada mes. Para reservar la primera, escríbeme cuando quieras a hola@gracielasalvador.com o por WhatsApp al 698 98 20 95, y buscamos juntas un hueco.'] : []), T_CONSEJO, T_PRIVADO,
+          ...(await enlacesEntrar(email, prod.apps, 60 * 24 * 3)), ...(/acompa|asesor/.test(sin(`${nombre}`)) ? ['Tu plan incluye una asesoría conmigo cada mes. Para reservar la primera, escríbeme cuando quieras a hola@gracielasalvador.com o por WhatsApp al 698 98 20 95, y buscamos juntas un hueco.'] : []), T_CONSEJO, T_PRIVADO,
           'Puedes cancelar tu suscripción cuando quieras con el enlace que viene en tu recibo de Payhip. Si no lo encuentras, o tienes cualquier duda, respóndeme a este correo y te ayudo.']));
 }
 const PANEL = 'https://www.gracielasalvador.com/profesionales/';
