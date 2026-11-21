@@ -18,6 +18,8 @@ body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Nunito
 h1 { font-family: Lora, Georgia, serif; font-weight: 500; color: var(--deep); font-size: 1.8rem; margin: 0; line-height: 1.2; }
 h2 { font-family: Lora, Georgia, serif; font-weight: 500; color: var(--deep); font-size: 1.25rem; margin: 6px 0 0; }
 p { margin: 0; color: var(--muted); }
+.card .top { display: flex; justify-content: space-between; gap: 8px; align-items: flex-start; }
+.pin { flex: none; border: 1px solid var(--line); background: transparent; color: var(--muted); border-radius: 999px; padding: 4px 10px; font-weight: 600; font-size: .75rem; font-family: inherit; cursor: pointer; } .pin.on { background: var(--tint, #E4EFF1); color: var(--deep, #0B4757); border-color: transparent; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
 label { font-weight: 700; font-size: .9rem; }
 input[type=email], input[type=text], input[type=password] { width: 100%; font: inherit; font-size: 1rem; padding: 12px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--bg); color: var(--ink); }
@@ -132,6 +134,13 @@ const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const fecha = (t) => new Date(t).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
 const NOM = { m: 'La Madrería', g: 'General' };
+// Personas fijadas arriba (solo en este navegador). «Graciela Admin» va siempre arriba.
+let FIJ = []; try { FIJ = JSON.parse(localStorage.getItem('adm.fijadas') || '[]'); } catch (e) {}
+const fija = (p) => FIJ.includes(p.email) || /graciela\s*admin/i.test(p.nombre || '');
+const rango = (p) => /graciela\s*admin/i.test(p.nombre || '') ? 2 : FIJ.includes(p.email) ? 1 : 0;
+const orden = (arr) => arr.map((p, i) => [p, i]).sort((a, b) => (rango(b[0]) - rango(a[0])) || (a[1] - b[1])).map((x) => x[0]);
+const pinBtn = (p) => /graciela\s*admin/i.test(p.nombre || '') ? '<span class="pin on" title="Siempre arriba">Fijada</span>' : `<button class="pin${fija(p) ? ' on' : ''}" data-pin="${esc(p.email)}" aria-pressed="${fija(p)}">${fija(p) ? 'Fijada' : 'Fijar arriba'}</button>`;
+function togglePin(e) { FIJ = FIJ.includes(e) ? FIJ.filter((x) => x !== e) : [...FIJ, e]; try { localStorage.setItem('adm.fijadas', JSON.stringify(FIJ)); } catch (er) {} pintaTodos(); pintaPac(); }
 async function api(o) { const r = await fetch('/api/admin', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(o), credentials: 'same-origin' }); const j = await r.json().catch(() => ({ error: 'Sin respuesta' })); if (r.status === 401 && j.error === 'entrar') { show(false); throw new Error('entrar'); } if (!r.ok) throw new Error(j.error || 'Algo ha fallado'); return j; }
 function show(dentro) { $('#login').hidden = dentro; $('#app').hidden = !dentro; $('#app').style.display = dentro ? 'flex' : 'none'; $('#out').hidden = !dentro; }
 const msg = (el, t, ok) => { el.innerHTML = t ? `<div class="msg ${ok ? 'o' : 'e'}" role="${ok ? 'status' : 'alert'}">${esc(t)}</div>` : ''; };
@@ -139,7 +148,7 @@ const msg = (el, t, ok) => { el.innerHTML = t ? `<div class="msg ${ok ? 'o' : 'e
 function tarjeta(p) {
   const t = Date.now(), alta = p.pac && p.pac.alta, hasta = Math.max(p.m, p.g);
   const estado = !alta ? '<span class="chip ok">En terapia</span>' : hasta > t ? `<span class="chip">Acceso hasta el ${fecha(hasta)}</span>` : '<span class="chip off">Sin acceso</span>';
-  return `<div class="card" data-e="${esc(p.email)}"><div class="top"><div><b>${esc(p.nombre || p.email)}</b>${p.nombre ? `<div class="mail">${esc(p.email)}</div>` : ''}</div></div>
+  return `<div class="card" data-e="${esc(p.email)}"><div class="top"><div><b>${esc(p.nombre || p.email)}</b>${p.nombre ? `<div class="mail">${esc(p.email)}</div>` : ''}</div>${pinBtn(p)}</div>
     <div class="chips">${(p.pac?.apps || []).map((a) => `<span class="chip ${a === 'm' ? 'm' : ''}">${NOM[a]}</span>`).join('')}${estado}${p.sub && p.sub.activa ? '<span class="chip ok">Suscrita</span>' : ''}</div>
     <small>Desde el ${fecha(p.pac.desde)}${alta ? ` · alta el ${fecha(alta)}` : ''}</small>
     <div class="acts">${!alta ? `<button data-x="alta">Dar el alta</button><button class="g" data-x="enlace">Reenviar enlace</button><button class="g" data-x="apps">Cambiar apps</button>` : `<button class="g" data-x="reactivar">Volver a abrir</button>`}<button class="w" data-x="quitar">${alta ? 'Quitar de la lista' : 'Quitar acceso'}</button></div><div class="m"></div></div>`;
@@ -160,7 +169,7 @@ function tarjetaT(p) {
   if (p.sub) chips.push(p.sub.activa ? `<span class="chip ok">Suscripción ${p.sub.periodo > 100 * 864e5 ? 'anual' : 'mensual'}</span>` : `<span class="chip off">Suscripción cancelada</span>`);
   (p.reg || []).filter((r) => r.hasta > t).forEach((r) => chips.push(`<span class="chip">Regalo de ${r.meses} meses</span>`));
   const acc = ['m', 'g'].filter((a) => p[a] > t).map((a) => `<span class="chip ${a === 'm' ? 'm' : ''}">${NOM[a]} · ${hastaTxt(p[a])}</span>`);
-  return `<div class="card" data-e="${esc(p.email)}"><div><b>${esc(p.nombre || p.email)}</b>${p.nombre ? `<div class="mail">${esc(p.email)}</div>` : ''}</div>
+  return `<div class="card" data-e="${esc(p.email)}"><div class="top"><div><b>${esc(p.nombre || p.email)}</b>${p.nombre ? `<div class="mail">${esc(p.email)}</div>` : ''}</div>${pinBtn(p)}</div>
     <div class="chips">${chips.join('')}</div><div class="chips">${acc.length ? acc.join('') : '<span class="chip off">Sin acceso ahora</span>'}${p.disp ? `<span class="chip${p.disp >= 4 ? ' off' : ''}">Sesión abierta en ${p.disp} ${p.disp === 1 ? 'dispositivo' : 'dispositivos'}</span>` : ''}</div>
     <div class="acts">${activa(p) ? '<button class="g" data-y="enlace">Reenviar enlace</button>' : ''}${!p.pac ? '<button class="g" data-y="pac">Darle acceso como paciente</button>' : ''}${p.disp ? '<button class="g" data-y="cerrar_sesiones">Cerrar sus sesiones</button>' : ''}<button class="g" data-y="borrar">Borrar</button></div><div class="m"></div></div>`;
 }
@@ -174,8 +183,9 @@ function pintaTodos() {
   const L = TODOS.filter((p) => { const ty = tipos(p);
     const ok = FIL === 'all' || (FIL === 'act' && activa(p)) || (FIL === 'sin' && !activa(p)) || (FIL === 'pac' && (ty.includes('pac') || ty.includes('alta'))) || (FIL === 'sub' && ty.includes('sub')) || (FIL === 'reg' && ty.includes('reg'));
     return ok && (!q || p.email.includes(q) || (p.nombre || '').toLowerCase().includes(q)); });
-  $('#tod').innerHTML = L.length ? L.map(tarjetaT).join('') : '<div class="empty">No hay nadie con este filtro.</div>';
+  $('#tod').innerHTML = L.length ? orden(L).map(tarjetaT).join('') : '<div class="empty">No hay nadie con este filtro.</div>';
   document.querySelectorAll('#tod [data-y]').forEach((b) => b.onclick = () => accionT(b));
+  document.querySelectorAll('#tod [data-pin]').forEach((b) => b.onclick = () => togglePin(b.dataset.pin));
 }
 async function accionT(b) {
   const card = b.closest('[data-e]'), email = card.dataset.e, m = card.querySelector('.m'); let o = { accion: 'enlace', email };
@@ -217,15 +227,19 @@ document.querySelectorAll('.tabs button').forEach((b) => b.onclick = () => { doc
   for (const v of ['pac', 'tod', 'gra', 'nov', 'pro']) { const on = b.dataset.t === v; $('#v-' + v).hidden = !on; $('#v-' + v).style.display = on ? 'flex' : 'none'; }
   if (b.dataset.t === 'gra') cargaGratis(); if (b.dataset.t === 'pro') cargaPros(); });
 
+function pintaPac() {
+  const lista = TODOS.filter((p) => p.pac);
+  const act = orden(lista.filter((p) => !p.pac.alta)), alt = orden(lista.filter((p) => p.pac.alta));
+  $('#act').innerHTML = act.length ? act.map(tarjeta).join('') : '<div class="empty">Todavía no hay nadie. Da acceso a tu primera paciente con el formulario de arriba.</div>';
+  $('#alt').innerHTML = alt.length ? alt.map(tarjeta).join('') : '<div class="empty">Nadie con el alta de momento.</div>';
+  document.querySelectorAll('#act [data-x], #alt [data-x]').forEach((b) => b.onclick = () => accion(b));
+  document.querySelectorAll('#act [data-pin], #alt [data-pin]').forEach((b) => b.onclick = () => togglePin(b.dataset.pin));
+}
 async function cargar() {
   const r = await api({ accion: 'lista' }), margenDias = r.margenDias; TODOS = r.lista; SIEMPRE = r.siempre || SIEMPRE;
   const lista = TODOS.filter((p) => p.pac);
   show(true); $('#mg').textContent = margenDias === 14 ? '2 semanas' : margenDias + ' días';
-  pintaTodos();
-  const act = lista.filter((p) => !p.pac.alta), alt = lista.filter((p) => p.pac.alta);
-  $('#act').innerHTML = act.length ? act.map(tarjeta).join('') : '<div class="empty">Todavía no hay nadie. Da acceso a tu primera paciente con el formulario de arriba.</div>';
-  $('#alt').innerHTML = alt.length ? alt.map(tarjeta).join('') : '<div class="empty">Nadie con el alta de momento.</div>';
-  document.querySelectorAll('[data-x]').forEach((b) => b.onclick = () => accion(b));
+  pintaTodos(); pintaPac();
 }
 async function accion(b) {
   const card = b.closest('[data-e]'), email = card.dataset.e, x = b.dataset.x, m = card.querySelector('.m');
