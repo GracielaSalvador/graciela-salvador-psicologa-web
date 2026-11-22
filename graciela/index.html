@@ -151,7 +151,7 @@ function tarjeta(p) {
   return `<div class="card" data-e="${esc(p.email)}"><div class="top"><div><b>${esc(p.nombre || p.email)}</b>${p.nombre ? `<div class="mail">${esc(p.email)}</div>` : ''}</div>${pinBtn(p)}</div>
     <div class="chips">${(p.pac?.apps || []).map((a) => `<span class="chip ${a === 'm' ? 'm' : ''}">${NOM[a]}</span>`).join('')}${estado}${p.sub && p.sub.activa ? '<span class="chip ok">Suscrita</span>' : ''}</div>
     <small>Desde el ${fecha(p.pac.desde)}${alta ? ` · alta el ${fecha(alta)}` : ''}</small>
-    <div class="acts">${!alta ? `<button data-x="alta">Dar el alta</button><button class="g" data-x="enlace">Reenviar enlace</button><button class="g" data-x="apps">Cambiar apps</button>` : `<button class="g" data-x="reactivar">Volver a abrir</button>`}<button class="w" data-x="quitar">${alta ? 'Quitar de la lista' : 'Quitar acceso'}</button></div><div class="m"></div></div>`;
+    <div class="acts">${!alta ? `<button data-x="alta">Dar el alta</button><button class="g" data-x="enlace">Reenviar enlace</button><button class="g" data-x="apps">Cambiar apps</button><button class="g" data-x="editar">Editar nombre o correo</button>` : `<button class="g" data-x="reactivar">Volver a abrir</button>`}<button class="w" data-x="quitar">${alta ? 'Quitar de la lista' : 'Quitar acceso'}</button></div><div class="m"></div></div>`;
 }
 // ---------- Todas las personas ----------
 let TODOS = [], SIEMPRE = 8e15, FIL = 'act';
@@ -171,7 +171,7 @@ function tarjetaT(p) {
   const acc = ['m', 'g'].filter((a) => p[a] > t).map((a) => `<span class="chip ${a === 'm' ? 'm' : ''}">${NOM[a]} · ${hastaTxt(p[a])}</span>`);
   return `<div class="card" data-e="${esc(p.email)}"><div class="top"><div><b>${esc(p.nombre || p.email)}</b>${p.nombre ? `<div class="mail">${esc(p.email)}</div>` : ''}</div>${pinBtn(p)}</div>
     <div class="chips">${chips.join('')}</div><div class="chips">${acc.length ? acc.join('') : '<span class="chip off">Sin acceso ahora</span>'}${p.disp ? `<span class="chip${p.disp >= 4 ? ' off' : ''}">Sesión abierta en ${p.disp} ${p.disp === 1 ? 'dispositivo' : 'dispositivos'}</span>` : ''}</div>
-    <div class="acts">${activa(p) ? '<button class="g" data-y="enlace">Reenviar enlace</button>' : ''}${!p.pac ? '<button class="g" data-y="pac">Darle acceso como paciente</button>' : ''}${p.disp ? '<button class="g" data-y="cerrar_sesiones">Cerrar sus sesiones</button>' : ''}<button class="g" data-y="borrar">Borrar</button></div><div class="m"></div></div>`;
+    <div class="acts">${activa(p) ? '<button class="g" data-y="enlace">Reenviar enlace</button>' : ''}${!p.pac ? '<button class="g" data-y="pac">Darle acceso como paciente</button>' : ''}${p.disp ? '<button class="g" data-y="cerrar_sesiones">Cerrar sus sesiones</button>' : ''}<button class="g" data-y="correo">Cambiar correo</button><button class="g" data-y="borrar">Borrar</button></div><div class="m"></div></div>`;
 }
 function pintaTodos() {
   const t = Date.now(), act = TODOS.filter(activa), n = (k) => act.filter((p) => tipos(p).includes(k)).length;
@@ -194,11 +194,12 @@ async function accionT(b) {
   if (b.dataset.y === 'cerrar_sesiones') {
     if (!confirm(`¿Cerrar la sesión de ${email} en todos sus dispositivos? Tendrá que volver a entrar con su correo. No pierde nada de lo que ha escrito.`)) return;
     o = { accion: 'cerrar_sesiones', email }; }
+  if (b.dataset.y === 'correo') { const nc = prompt('Correo nuevo. Le llegará el acceso a ese correo y se cerrarán sus sesiones abiertas:', email); if (nc === null || nc.trim().toLowerCase() === email) return; o = { accion: 'correo', email, nuevo: nc }; }
   if (b.dataset.y === 'borrar') { const p = TODOS.find((x) => x.email === email) || {};
     if (!confirm(`¿Borrar a ${email} por completo? Perderá el acceso y se borrarán sus datos de la lista.` + (p.sub && p.sub.activa ? '\n\nTiene una suscripción activa: cancélala también en Payhip, o se le volverá a cobrar.' : ''))) return;
     o = { accion: 'borrar', email }; }
   b.disabled = true;
-  try { await api(o); msg(m, o.accion === 'enlace' ? 'Enlace enviado.' : o.accion === 'borrar' ? 'Borrada.' : o.accion === 'cerrar_sesiones' ? 'Sesiones cerradas. Se notará en unas horas como mucho.' : 'Hecho. Ya está en tu lista de pacientes.', true); setTimeout(cargar, 1200); }
+  try { await api(o); msg(m, o.accion === 'enlace' ? 'Enlace enviado.' : o.accion === 'borrar' ? 'Borrada.' : o.accion === 'correo' ? 'Correo cambiado. Le hemos enviado el acceso al nuevo.' : o.accion === 'cerrar_sesiones' ? 'Sesiones cerradas. Se notará en menos de una hora.' : 'Hecho. Ya está en tu lista de pacientes.', true); setTimeout(cargar, 1200); }
   catch (e) { if (e.message !== 'entrar') msg(m, e.message); b.disabled = false; }
 }
 $('#q').oninput = () => pintaTodos();
@@ -245,8 +246,18 @@ async function accion(b) {
   const card = b.closest('[data-e]'), email = card.dataset.e, x = b.dataset.x, m = card.querySelector('.m');
   const nombre = card.querySelector('b').textContent;
   if (x === 'alta' && !confirm(`¿Dar el alta a ${nombre}? Conservará el acceso 2 semanas y le llegará un correo.`)) return;
-  if (x === 'quitar' && !confirm(`¿Quitar el acceso a ${nombre} ahora mismo? No se borra nada de su móvil.`)) return;
+  if (x === 'quitar' && !confirm(`¿Quitar el acceso a ${nombre}? Se le cerrará la app en todos sus dispositivos en menos de una hora. No se borra nada de su móvil.`)) return;
   let apps;
+  if (x === 'editar') {
+    const actual = card.querySelector('.mail') ? nombre : '';
+    const nn = prompt('Nombre para reconocerla (nada clínico):', actual); if (nn === null) return;
+    const nc = prompt('Correo con el que entra. Si lo cambias, le llegará el acceso al correo nuevo:', email); if (nc === null) return;
+    b.disabled = true;
+    try { if (nn.trim() !== actual) await api({ accion: 'nombre', email, nombre: nn });
+      if (nc.trim().toLowerCase() !== email) await api({ accion: 'correo', email, nuevo: nc });
+      msg(m, 'Hecho.', true); setTimeout(cargar, 600); }
+    catch (e) { if (e.message !== 'entrar') msg(m, e.message); b.disabled = false; }
+    return; }
   if (x === 'apps') { const r = prompt('¿Qué apps? Escribe M para La Madrería, G para la general o MG para las dos.', 'M'); if (!r) return; apps = [...new Set(r.toLowerCase().replace(/[^mg]/g, '').split(''))]; if (!apps.length) return; }
   b.disabled = true;
   try { await api({ accion: x, email, apps }); msg(m, x === 'enlace' ? 'Enlace enviado.' : 'Hecho.', true); setTimeout(cargar, x === 'enlace' ? 1500 : 500); }

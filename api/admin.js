@@ -1,6 +1,6 @@
 // /api/admin → lo que usa la página de pacientes de Graciela (www.gracielasalvador.com/graciela/).
 // Solo funciona con la contraseña ADMIN_PASSWORD de Vercel.
-import { cuantosDispositivos, cerrarDispositivos, T_CONSEJO, enlacesPago, nombresApps, gratisConfig, FIJAS, db, esAdmin, crearAdmin, limpiaCorreo, correoValido, leerPersona, guardarPersona, accesos, crearEnlace, enlacesEntrar, enviarCorreo, plantilla, APPS, fecha, DIA, MARGEN_ALTA, enlaceBaja, esc, leerPro, guardarPro, proActiva, plazaOcupada, cerrarPro, abrirPro, cuentaPropia } from './_comun.js';
+import { cambiarCorreo, cuantosDispositivos, cerrarDispositivos, T_CONSEJO, enlacesPago, nombresApps, gratisConfig, FIJAS, db, esAdmin, crearAdmin, limpiaCorreo, correoValido, leerPersona, guardarPersona, accesos, crearEnlace, enlacesEntrar, enviarCorreo, plantilla, APPS, fecha, DIA, MARGEN_ALTA, enlaceBaja, esc, leerPro, guardarPro, proActiva, plazaOcupada, cerrarPro, abrirPro, cuentaPropia } from './_comun.js';
 export const config = { runtime: 'edge' };
 
 const json = (o, st = 200, cookies = []) => { const h = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }); for (const c of cookies) h.append('Set-Cookie', c); return new Response(JSON.stringify(o), { status: st, headers: h }); };
@@ -123,6 +123,17 @@ export default async function handler(req) {
       return json({ ok: true }); }
     // Cerrar la sesión en todos sus dispositivos (tendrá que volver a entrar con su correo)
     if (d.accion === 'cerrar_sesiones') { await cerrarDispositivos(email); return json({ ok: true }); }
+    // Corregir o cambiar el correo (se le envía el acceso al correo nuevo)
+    if (d.accion === 'correo') {
+      const nuevo = limpiaCorreo(d.nuevo);
+      if (!correoValido(nuevo)) return json({ error: 'El correo nuevo no parece completo.' }, 400);
+      const err = await cambiarCorreo(email, nuevo); if (err) return json({ error: err }, 400);
+      const acc = accesos(p), t = Date.now(), ap = ['m', 'g'].filter((a) => acc[a] > t);
+      if (ap.length) await enviarCorreo(nuevo, 'Tu acceso, con tu correo nuevo', plantilla(ap[0], 'Tu acceso, con tu correo nuevo', [
+        'He actualizado el correo con el que entras en la app. A partir de ahora, entra con este.', ...(await enlacesEntrar(nuevo, ap, 60 * 24 * 7)),
+        'Lo que tenías escrito sigue en tu móvil, tal como lo dejaste.']));
+      return json({ ok: true });
+    }
     if (!p.pac) return json({ error: 'Este correo no está en tu lista de pacientes.' }, 404);
     if (d.accion === 'alta') {
       p.pac.alta = Date.now(); await guardarPersona(email, p);
@@ -141,6 +152,7 @@ export default async function handler(req) {
         'Lo que escribiste sigue en tu móvil, tal como lo dejaste.', ...(await enlacesEntrar(email, p.pac.apps, 60 * 24 * 7))]));
       return json({ ok: true, persona: resumen(email, p) });
     }
+    if (d.accion === 'nombre') { p.pac.nombre = String(d.nombre || '').trim().slice(0, 60); await guardarPersona(email, p); return json({ ok: true, persona: resumen(email, p) }); }
     if (d.accion === 'apps') { if (!apps.length) return json({ error: 'Elige al menos una app.' }, 400); p.pac.apps = apps; await guardarPersona(email, p); return json({ ok: true, persona: resumen(email, p) }); }
     if (d.accion === 'quitar') { delete p.pac; await db('SREM', 'pacientes', email);
       if (!p.sub && !p.pp && !(p.reg || []).length && !(p.mano || []).length) { await db('DEL', 'u:' + email); await db('SREM', 'personas', email); }

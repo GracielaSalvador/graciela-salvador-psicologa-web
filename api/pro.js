@@ -1,6 +1,6 @@
 // /api/pro → lo que usa el panel de las profesionales (www.gracielasalvador.com/profesionales/).
 // Entran con su correo y un código de 6 números. Cada una solo ve y gestiona a sus propias pacientes.
-import { soltarPaciente, db, limpiaCorreo, correoValido, leerPersona, guardarPersona, accesos, crearEnlace, enlacesEntrar, enviarCorreo, plantilla, nombresApps, fecha, DIA, MARGEN_ALTA, enlacesPago, T_CONSEJO,
+import { cambiarCorreo, soltarPaciente, db, limpiaCorreo, correoValido, leerPersona, guardarPersona, accesos, crearEnlace, enlacesEntrar, enviarCorreo, plantilla, nombresApps, fecha, DIA, MARGEN_ALTA, enlacesPago, T_CONSEJO,
   leerPro, guardarPro, proActiva, plazaOcupada, crearSesionPro, leerSesionPro, FIRMA_PRO, cuentaPropia } from './_comun.js';
 export const config = { runtime: 'edge' };
 
@@ -83,6 +83,16 @@ export default async function handler(req) {
       return json(await estado(yo, pr));
     }
     if (!mia) return json({ error: 'Este correo no está en tu lista.' }, 404);
+    if (d.accion === 'correo') {
+      const nuevo = limpiaCorreo(d.nuevo);
+      if (!correoValido(nuevo)) return json({ error: 'El correo nuevo no parece completo.' }, 400);
+      if (nuevo === yo) return json({ error: 'Ese es tu propio correo.' }, 400);
+      const err = await cambiarCorreo(email, nuevo); if (err) return json({ error: err }, 400);
+      if (accesos(p).m > t) await enviarCorreo(nuevo, 'Tu acceso, con tu correo nuevo', plantilla('g', 'Tu acceso, con tu correo nuevo', [
+        'Tu psicóloga ha actualizado el correo con el que entras en las apps. A partir de ahora, entra con este.', ...(await enlacesEntrar(nuevo, ['m', 'g'], 60 * 24 * 7)),
+        'Lo que tenías escrito sigue en tu móvil, tal como lo dejaste.'], null, FIRMA_PRO));
+      return json(await estado(yo, pr));
+    }
     if (d.accion === 'alias') { p.pp.alias = String(d.alias || '').slice(0, 40); await guardarPersona(email, p); return json(await estado(yo, pr)); }
     if (d.accion === 'enlace') {
       if (!(accesos(p).m > t)) return json({ error: 'Esta persona no tiene acceso ahora mismo.' }, 400);

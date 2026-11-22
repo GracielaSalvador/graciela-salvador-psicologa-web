@@ -145,7 +145,7 @@ function pinta(s) {
   $('#planTxt').textContent = `${s.plazas} plazas · ${s.activa ? 'activo' : 'inactivo'}${s.hasta ? ' hasta el ' + fmt(s.hasta) : ''}.`;
   const card = (p) => `<div class="card p" data-e="${esc(p.email)}"><div class="top"><div><b>${esc(p.alias || p.email)}</b>${p.alias ? `<div class="mail">${esc(p.email)}</div>` : ''}</div>
     <span class="chip ${p.ocupa ? 'ok' : p.hasta ? 'm' : 'off'}">${p.ocupa ? 'Con acceso' : p.hasta ? 'Hasta el ' + fmt(p.hasta) : 'Sin acceso'}</span></div>
-    <div class="acts">${p.ocupa ? `<button class="g" data-x="enlace">Reenviar enlace</button><button class="g" data-x="alta">Dar el alta</button>` : `<button class="g" data-x="reabrir">Volver a dar acceso</button>`}<button class="w" data-x="quitar">Quitar</button></div><div class="m"></div></div>`;
+    <div class="acts">${p.ocupa ? `<button class="g" data-x="enlace">Reenviar enlace</button><button class="g" data-x="alta">Dar el alta</button>` : `<button class="g" data-x="reabrir">Volver a dar acceso</button>`}<button class="g" data-x="editar">Editar</button><button class="w" data-x="quitar">Quitar</button></div><div class="m"></div></div>`;
   const act = s.lista.filter((p) => p.ocupa), alt = s.lista.filter((p) => !p.ocupa);
   $('#act').innerHTML = act.length ? act.map(card).join('') : '<div class="empty">Todavía no has dado acceso a ninguna paciente.</div>';
   $('#alt').innerHTML = alt.length ? alt.map(card).join('') : '<div class="empty">Aquí aparecerán las pacientes a las que des el alta.</div>';
@@ -160,7 +160,17 @@ function textoPac(s) {
 async function accion(b) {
   const c = b.closest('[data-e]'), email = c.dataset.e, x = b.dataset.x, m = c.querySelector('.m'), nombre = c.querySelector('b').textContent;
   if (x === 'alta' && !confirm(`¿Dar el alta a ${nombre}? Conservará el acceso 2 semanas y la plaza quedará libre ahora.`)) return;
-  if (x === 'quitar' && !confirm(`¿Quitar el acceso a ${nombre} ahora mismo? Úsalo si te equivocaste de correo. No se borra nada de su móvil.`)) return;
+  if (x === 'quitar' && !confirm(`¿Quitar el acceso a ${nombre}? Se le cerrará la app en todos sus dispositivos en menos de una hora. Si solo te equivocaste al escribir el correo, mejor usa «Editar». No se borra nada de su móvil.`)) return;
+  if (x === 'editar') {
+    const actual = c.querySelector('.mail') ? nombre : '';
+    const na = prompt('Alias para reconocerla (nada clínico):', actual); if (na === null) return;
+    const nc = prompt('Correo con el que entra. Si lo cambias, le llegará el acceso al correo nuevo:', email); if (nc === null) return;
+    b.disabled = true;
+    try { let r = null; if (na.trim() !== actual) r = await api({ accion: 'alias', email, alias: na.trim() });
+      if (nc.trim().toLowerCase() !== email) r = await api({ accion: 'correo', email, nuevo: nc });
+      if (r) pinta(r); else b.disabled = false; }
+    catch (e) { if (e.message !== 'entrar') msg(m, e.message); b.disabled = false; }
+    return; }
   b.disabled = true;
   try { const r = await api({ accion: x, email }); if (x === 'enlace') { msg(m, 'Enlace enviado.', true); b.disabled = false; } else pinta(r); }
   catch (e) { if (e.message !== 'entrar') msg(m, e.message); b.disabled = false; }

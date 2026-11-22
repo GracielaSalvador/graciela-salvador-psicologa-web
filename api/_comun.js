@@ -41,7 +41,7 @@ export const gratisConfig = async () => { try { const v = await db('GET', 'grati
 export const DIA = 86400000;
 export const MARGEN_ALTA = 14 * DIA;          // margen de una paciente al recibir el alta
 export const SESION_DIAS = 180;               // cuánto recuerda el móvil la sesión
-export const REVISAR_CADA = 6 * 3600000;      // cada cuánto se vuelve a mirar la base de datos
+export const REVISAR_CADA = 1 * 3600000;      // cada cuánto se vuelve a mirar la base de datos
 const SIEMPRE = 8.64e15;                      // «sin fecha de fin»
 
 const env = (k) => (typeof process !== 'undefined' && process.env ? process.env[k] : undefined);
@@ -63,6 +63,19 @@ export async function db(...cmd) {
 export async function leerPersona(email) { const v = await db('GET', 'u:' + email); return v ? JSON.parse(v) : null; }
 // Además, cada correo se apunta en «personas» para que Graciela vea a todo el mundo en su página (pacientes, suscripciones y regalos)
 export async function guardarPersona(email, p) { await db('SET', 'u:' + email, JSON.stringify(p)); await db('SADD', 'personas', email); }
+// Cambiar el correo de una persona (si se escribió mal o si quiere usar otro). Se mueve su ficha tal cual y se cierran sus sesiones abiertas.
+// Devuelve un texto de error, o null si ha ido bien.
+export async function cambiarCorreo(viejo, nuevo) {
+  if (viejo === nuevo) return 'Es el mismo correo que ya tiene.';
+  if (await leerPersona(nuevo)) return 'Ese correo ya está en la lista, con otra ficha.';
+  const p = await leerPersona(viejo); if (!p) return 'No encuentro a esta persona.';
+  if (p.sub) return 'Esta persona tiene una suscripción de Payhip con su correo. Para no perder la conexión con Payhip, ese correo no se puede cambiar desde aquí.';
+  await guardarPersona(nuevo, p);
+  if (await db('SREM', 'pacientes', viejo)) await db('SADD', 'pacientes', nuevo);
+  if (p.pp && !p.pp.propia) { await db('SREM', 'propac:' + p.pp.de, viejo); await db('SADD', 'propac:' + p.pp.de, nuevo); }
+  await db('DEL', 'u:' + viejo); await db('DEL', 'dev:' + viejo); await db('SREM', 'personas', viejo);
+  return null;
+}
 
 /* Hasta cuándo tiene acceso una persona a cada app, juntando todo lo que tenga (suscripción, paciente, regalos, acceso a mano) */
 export function accesos(p) {

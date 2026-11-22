@@ -6,6 +6,9 @@
 <script>(function(){try{var d=document.documentElement,t=localStorage.getItem('pref.theme'),s=localStorage.getItem('pref.text');if(t==='light'||t==='dark')d.setAttribute('data-theme',t);if(s==='l'||s==='xl')d.setAttribute('data-text',s);}catch(e){}})();</script>
 <style>html[data-text="l"]{font-size:112.5%}html[data-text="xl"]{font-size:125%}html[data-text]{overflow-x:clip}html[data-text] body{font-size:1rem}html[data-text] nav.tabs{flex-wrap:wrap;border-radius:18px}html[data-text] nav.tabs button{white-space:normal;line-height:1.2;border-radius:14px;min-width:0}html[data-text="xl"] nav.tabs button{flex:1 1 calc(50% - 4px)}</style>
 <meta name="robots" content="noindex">
+<script>/* Si la app se queda abierta (sin recargar) y el acceso termina, al volver a ella se comprueba y aparece el candado */
+(function(){var ult=Date.now();function rev(){if(document.visibilityState!=='visible'||!navigator.onLine||Date.now()-ult<5*60e3)return;ult=Date.now();fetch(location.pathname,{method:'HEAD',cache:'no-store',credentials:'same-origin'}).then(function(r){if(r.status===401)location.reload();}).catch(function(){});}
+document.addEventListener('visibilitychange',rev);setInterval(rev,15*60e3);})();</script>
 <script>/* Atajos «Para tener a mano»: #ir-xxx abre la pestaña y el apartado donde está ese elemento */
 addEventListener('load',function(){var h=location.hash;if(h.indexOf('#ir-')!==0)return;setTimeout(function(){var el=document.getElementById(h.slice(1));if(!el)return;var tab=null,grp=null,a=el;while(a&&a!==document.body){if(!tab&&a.matches&&a.matches('section.view[id^="view-"]'))tab=a.id.slice(5);if(!grp&&a.dataset&&a.dataset.grp)grp=a.dataset.grp;a=a.parentElement;}var b=tab&&document.querySelector('nav.tabs button[data-view="'+tab+'"]');if(b)b.click();setTimeout(function(){var g=grp&&document.querySelector('[data-rg="'+grp+'"]');if(g)g.click();setTimeout(function(){el.style.scrollMarginTop='96px';el.scrollIntoView({behavior:'smooth',block:'start'});},200);},150);},400);});</script>
 
@@ -633,9 +636,10 @@ renderAlerts(); setInterval(() => { if (!$('#view-cit').hidden && alerts.some(a 
 /* ================= RUTA ================= */
 const VALS = ['Coherencia', 'Curiosidad por mí', 'Saber pedir perdón', 'Respeto', 'Sentido del humor', 'Ternura', 'Compromiso', 'Honestidad', 'Que me cuide', 'Que tenga su vida', 'Calma', 'Que hable de lo que siente'];
 const NONEG = ['Que me falte al respeto', 'Mentiras', 'Que me controle', 'Que me aísle de mi gente', 'Que desaparezca sin explicación', 'Que me haga sentir menos'];
-const FEEL = [['Tranquila/o', 1], ['Vista/o', 1], ['Libre', 1], ['Yo misma/o', 1], ['Respetada/o', 1], ['En vilo', 0], ['Nerviosa/o', 0], ['Pendiente del móvil', 0]];
+const FEEL = [['Tranquila/o', 1], ['Vista/o', 1], ['Libre', 1], ['Yo misma/o', 1], ['Respetada/o', 1]];
 const LIFE = ['Mis amistades', 'Mi familia', 'Mi trabajo', 'Mis aficiones', 'Deporte', 'Mis proyectos', 'Mis ratos a solas'];
 let RT = Object.assign({ cur: 0, vals: [], noneg: [], feel: [], life: [], tasks: {}, resp: {}, rev: {}, open: 0 }, store.get('route', {}) || {});
+RT.feel = RT.feel.filter((f) => FEEL.some((x) => x[0] === f)); // quita opciones antiguas que ya no existen
 const saveRT = () => store.set('route', RT);
 const tk = (id, txt) => `<button class="task" data-tk="${id}" aria-pressed="${!!RT.tasks[id]}"><span class="box"></span><span>${txt}</span></button>`;
 const rc = (key, list, col) => `<div class="chips">${list.map(([o, good]) => `<button class="chip" data-rc="${key}" data-v="${esc(o)}" style="--c:${good === undefined ? col : good ? 'var(--green)' : 'var(--red)'}" aria-pressed="${RT.resp[key] === o}">${esc(o)}</button>`).join('')}</div>`;
@@ -646,7 +650,7 @@ const STAGES = [
       <span class="lbl">5 valores que necesito en una pareja <span class="muted small">(${RT.vals.length}/5)</span></span>${multi('vals', VALS, 5, 'var(--n6)')}
       <span class="lbl">3 cosas que no negocio <span class="muted small">(${RT.noneg.length}/3)</span></span>${multi('noneg', NONEG, 3, 'var(--red)')}
       <span class="lbl">Cómo quiero sentirme a su lado</span>${multi('feel', FEEL.map(f => f[0]), 9, 'var(--green)')}
-      ${RT.feel.some(f => FEEL.find(x => x[0] === f)[1] === 0) ? '<div class="warn small pop"><b>Ojo:</b> «en vilo», «nerviosa/o» o «pendiente del móvil» no es química. Suele ser tu sistema de alerta.</div>' : ''}
+      <div class="note small">Y fíjate en lo contrario: si a su lado te sientes en vilo, nerviosa/o o pendiente del móvil, no es química. Suele ser tu sistema de alerta.</div>
       <span class="lbl">Lo que hace valiosa mi vida sin pareja (esto no se suelta)</span>${multi('life', LIFE, 9, 'var(--n1)')}`, ok: () => RT.vals.length >= 3 && RT.noneg.length >= 1 },
   { t: 'Observar, no actuar', w: 'Primeras citas · semanas 1-4', r: () => `<p class="small">Tu tarea no es gustarle, es conocerle. Cambia el foco de «¿qué piensa de mí?» a «¿quién es?».</p>
       ${tk('2a', 'Le he preguntado por sus relaciones pasadas y cómo terminaron. ¿Reconoce algo suyo?')}${tk('2b', 'Me he fijado en cómo trata a otras personas (camareros, amistades, familia).')}${tk('2c', 'He observado si propone planes concretos y los cumple.')}
