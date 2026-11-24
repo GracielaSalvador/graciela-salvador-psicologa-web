@@ -609,7 +609,7 @@ const TIPOS = [
   { id: 'linterna', name: 'La linterna a oscuras', sub: 'Recorre a oscuras un desván o un jardín de noche y busca cosas con la linterna', esc: ['linterna', 'linternaJ'] },
   { id: 'contar', name: 'Contar lo que pasa', sub: 'Cuenta peces que saltan o estrellas fugaces sin dejarte despistar por lo demás', esc: ['contar', 'contarE'] },
   { id: 'luz', name: 'Sigue la luz', sub: 'Sigue con el dedo una luciérnaga que vuela despacio', esc: ['luz'] },
-  { id: 'pintar', name: 'Pintar despacio', sub: 'Colorea un dibujo, pinta libre o haz un mandala, despacio y con el dedo', esc: ['pintar'], desde: '2026-12-01T00:00:00+01:00' }].filter(t => !t.desde || /[?&]ver\b/.test(location.search) || Date.now() >= Date.parse(t.desde));
+  { id: 'pintar', name: 'Pintar despacio', sub: 'Colorea un dibujo, pinta libre o haz un mandala, despacio y con el dedo', esc: ['pintar'], desde: '2026-12-01T11:00:00+01:00' }].filter(t => !t.desde || /[?&]ver\b/.test(location.search) || Date.now() >= Date.parse(t.desde));
 const TIPO_DE = Object.fromEntries(TIPOS.flatMap(t => t.esc.map(e => [e, t])));
 const ESC = Object.fromEntries([...SCENES, ...EXTRA].map(s => [s.id, s]));
 const otroEsc = (t, sin) => { const op = t.esc.filter(e => e !== sin); return op.length ? pick(op) : t.esc[0]; };
