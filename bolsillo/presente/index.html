@@ -192,6 +192,25 @@ footer.foot { margin-top: 36px; display: flex; flex-direction: column; gap: 8px;
 .play { display: flex; flex-direction: column; gap: 12px; }
 .stage { position: relative; border-radius: 22px; overflow: hidden; border: 1.5px solid var(--line); background: #0d2430; touch-action: none; user-select: none; -webkit-user-select: none; }
 .stage svg { width: 100%; height: auto; display: block; max-height: calc(100vh - 170px); max-height: calc(100svh - 170px); }
+.pdibs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
+.pdibs button { flex: none; border: 1.5px solid var(--line); background: #FFFDF7; border-radius: 12px; padding: 4px; cursor: pointer; }
+.pdibs button[aria-pressed="true"] { border-color: var(--tc); box-shadow: 0 0 0 2px color-mix(in srgb, var(--tc) 30%, transparent); }
+.pdibs svg { display: block; width: 46px; height: 58px; }
+.pstage { position: relative; border-radius: 22px; overflow: hidden; border: 1.5px solid var(--line); background: #FFFDF7; touch-action: none; user-select: none; -webkit-user-select: none; aspect-ratio: 320 / 400; max-height: calc(100svh - 230px); margin: 0 auto; width: 100%; max-width: calc((100svh - 230px) * .8); }
+.pstage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.plines { position: absolute; inset: 0; pointer-events: none; } .plines svg { width: 100%; height: 100%; display: block; }
+.pwash { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, transparent, rgba(143,196,212,.35) 40%, rgba(143,196,212,.15) 60%, transparent); transform: translateY(-100%); }
+.pwash.go { animation: wash 2.6s ease-in-out; } @keyframes wash { to { transform: translateY(100%); } }
+.porb { position: absolute; right: 10px; top: 10px; display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,.85); border-radius: 999px; padding: 6px 12px 6px 6px; font-size: .8rem; font-weight: 700; color: #2C6E7E; pointer-events: none; }
+.porb i { width: 26px; height: 26px; border-radius: 50%; background: #8FC4D4; transform: scale(.55); transition: transform 4s ease-in-out; }
+.porb.in i { transform: scale(1); transition-duration: 4s; } .porb.out i { transform: scale(.55); transition-duration: 6s; }
+.pcols { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; }
+.pcols [data-pc] { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--surface); background: var(--c); box-shadow: 0 0 0 1.5px var(--line); cursor: pointer; }
+.pcols [data-pc][aria-pressed="true"] { box-shadow: 0 0 0 3px var(--tc); }
+.psep { width: 1px; height: 26px; background: var(--line); margin: 0 2px; }
+.psz { width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid var(--line); background: var(--surface); display: grid; place-items: center; cursor: pointer; }
+.psz i { border-radius: 50%; background: var(--ink); display: block; } .psz[aria-pressed="true"] { border-color: var(--tc); box-shadow: 0 0 0 2px color-mix(in srgb, var(--tc) 30%, transparent); }
+@media (prefers-reduced-motion: reduce) { .pwash.go { animation: none; } .porb i { transition: none; } }
 .goal { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--soft); border-radius: 16px; padding: 10px 14px; min-height: 58px; }
 .goal b { font-family: var(--display); font-weight: 500; font-size: 1.25rem; color: var(--tc); line-height: 1.2; }
 .goal small { display: block; color: var(--muted); font-size: .84rem; min-height: 1.2em; }
@@ -582,13 +601,15 @@ const LINT_G = { id: 'linterna', name: 'El desván a oscuras', sub: 'Recorre el 
 const LINT_J = { id: 'linternaJ', name: 'El jardín de noche', sub: 'Recorre un jardín a oscuras con la linterna: caracoles, flores cerradas y algún animal escondido' };
 const CONT = { id: 'contar', name: 'Peces que saltan', sub: 'Cuenta los peces que saltan del agua, entre ranas que también saltan' };
 const CONTE = { id: 'contarE', name: 'Estrellas fugaces', sub: 'Cuenta las estrellas fugaces, entre luciérnagas y aviones' };
-const EXTRA = [LINT_G, LINT_J, CONT, CONTE, LUZ];
+const PINT_E = { id: 'pintar', name: 'Pintar despacio', sub: 'Colorea un dibujo, pinta libre o haz un mandala, despacio y con el dedo' };
+const EXTRA = [LINT_G, LINT_J, CONT, CONTE, LUZ, PINT_E];
 // Los juegos se agrupan por tipo: cada vez toca un escenario al azar (distinto del de la última vez), y se puede cambiar
 const TIPOS = [
   { id: 'buscar', name: 'Buscar', sub: 'Busca cosas en un paisaje tranquilo: un estanque, un bosque, el cielo de noche o el fondo del mar', esc: ['estanque', 'bosque', 'noche', 'mar'] },
   { id: 'linterna', name: 'La linterna a oscuras', sub: 'Recorre a oscuras un desván o un jardín de noche y busca cosas con la linterna', esc: ['linterna', 'linternaJ'] },
   { id: 'contar', name: 'Contar lo que pasa', sub: 'Cuenta peces que saltan o estrellas fugaces sin dejarte despistar por lo demás', esc: ['contar', 'contarE'] },
-  { id: 'luz', name: 'Sigue la luz', sub: 'Sigue con el dedo una luciérnaga que vuela despacio', esc: ['luz'] }];
+  { id: 'luz', name: 'Sigue la luz', sub: 'Sigue con el dedo una luciérnaga que vuela despacio', esc: ['luz'] },
+  { id: 'pintar', name: 'Pintar despacio', sub: 'Colorea un dibujo, pinta libre o haz un mandala, despacio y con el dedo', esc: ['pintar'], desde: '2026-12-01T00:00:00+01:00' }].filter(t => !t.desde || /[?&]ver\b/.test(location.search) || Date.now() >= Date.parse(t.desde));
 const TIPO_DE = Object.fromEntries(TIPOS.flatMap(t => t.esc.map(e => [e, t])));
 const ESC = Object.fromEntries([...SCENES, ...EXTRA].map(s => [s.id, s]));
 const otroEsc = (t, sin) => { const op = t.esc.filter(e => e !== sin); return op.length ? pick(op) : t.esc[0]; };
@@ -600,6 +621,7 @@ function thumb(sc) {
   if (sc.id === 'linternaJ') return `<svg viewBox="0 0 160 100" aria-hidden="true"><defs><mask id="tmkJ"><rect width="160" height="100" fill="#fff"/><circle cx="70" cy="56" r="27" fill="#000"/></mask></defs><rect width="160" height="100" fill="#7FA86A"/><g transform="translate(62 60)">${D.gato()}</g><g transform="translate(84 66)">${D.caracol()}</g><rect width="160" height="100" fill="#070D14" opacity=".96" mask="url(#tmkJ)"/><circle cx="70" cy="56" r="27" fill="none" stroke="#F4DE8A" stroke-opacity=".5" stroke-width="2"/><circle cx="132" cy="18" r="7" fill="#F3EEDC" opacity=".5"/></svg>`;
   if (sc.id === 'contar') return `<svg viewBox="0 0 160 100" aria-hidden="true"><rect width="160" height="100" fill="#A9D3E3"/><path d="M30 70 q40 -60 80 0" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="3 4" fill="none" opacity=".8"/><g transform="translate(72 30) rotate(-10)">${D.pezE()}</g><circle cx="110" cy="72" r="10" fill="none" stroke="#FFFFFF" stroke-width="2" opacity=".7"/><circle cx="30" cy="72" r="6" fill="none" stroke="#FFFFFF" stroke-width="2" opacity=".5"/></svg>`;
   if (sc.id === 'contarE') return `<svg viewBox="0 0 160 100" aria-hidden="true"><rect width="160" height="100" fill="#1D2A4A"/><circle cx="30" cy="20" r="1" fill="#fff"/><circle cx="130" cy="14" r="1.2" fill="#fff"/><circle cx="70" cy="80" r="1" fill="#fff"/><g transform="translate(104 36) scale(1.4)">${D.fugaz()}</g><g transform="translate(44 66)">${D.luciernaga()}</g><path d="M0 90 Q80 70 160 86 V100 H0 Z" fill="#1B2A44"/></svg>`;
+  if (sc.id === 'pintar') return `<svg viewBox="0 0 160 100" aria-hidden="true"><rect width="160" height="100" fill="#FFFDF7"/><g opacity=".8"><circle cx="58" cy="46" r="26" fill="#E9A39C" opacity=".55"/><circle cx="96" cy="52" r="24" fill="#8FC4D4" opacity=".55"/><circle cx="76" cy="70" r="20" fill="#F1DE85" opacity=".6"/></g><g fill="none" stroke="#3C3A38" stroke-width="1.6"><circle cx="78" cy="54" r="10"/>${[0,60,120,180,240,300].map(a => `<ellipse cx="${(78+19*Math.cos(a*Math.PI/180)).toFixed(1)}" cy="${(54+19*Math.sin(a*Math.PI/180)).toFixed(1)}" rx="12" ry="7" transform="rotate(${a} ${(78+19*Math.cos(a*Math.PI/180)).toFixed(1)} ${(54+19*Math.sin(a*Math.PI/180)).toFixed(1)})"/>`).join('')}</g></svg>`;
   if (sc.id === 'luz') return `<svg viewBox="0 0 160 100" aria-hidden="true"><rect width="160" height="100" fill="#22304F"/><path d="M20 70 q40 -50 80 -20 t50 -10" stroke="#F2C744" stroke-width="2" stroke-dasharray="2 5" fill="none" opacity=".7"/><circle cx="118" cy="44" r="12" fill="#F2C744" opacity=".3"/><circle cx="118" cy="44" r="4.5" fill="#F2C744"/></svg>`;
   const big = sc.bg().replace(/id="(\w+)"/g, 'id="$1T"').replace(/url\(#(\w+)\)/g, 'url(#$1T)');
   const sample = { estanque: [['rana', 120, 220], ['nenufar', 200, 260], ['libelula', 230, 130]], bosque: [['seta', 90, 360], ['pajaro', 150, 196], ['erizo', 220, 370]], noche: [['estrella', 120, 120], ['luciernaga', 180, 330], ['buho', 262, 190]], mar: [['pezR', 140, 200], ['caracola', 100, 384], ['medusa', 220, 120]] }[sc.id];
@@ -615,7 +637,7 @@ function renderGames() {
 /* ---------- Flujo de una partida ---------- */
 let G = null, raf = 0;
 const LV = (v) => v <= 3 ? 'Tranquilo/a' : v <= 6 ? 'Algo activado/a' : v <= 8 ? 'Muy activado/a' : 'Desbordado/a';
-function stopAll() { cancelAnimationFrame(raf); raf = 0; }
+function stopAll() { cancelAnimationFrame(raf); raf = 0; if (typeof PT !== 'undefined' && PT.br) { clearTimeout(PT.br); PT.br = 0; } }
 function back() { stopAll(); G = null; $('#play').hidden = true; $('#pick').hidden = false; renderGames(); window.scrollTo(0, 0); }
 function start(id) { G = { id, a: null, b: null, h: null, t: Date.now(), nivel: store.get('nivel', 'reto'), manual: false }; $('#pick').hidden = true; $('#play').hidden = false; thermo('antes'); window.scrollTo(0, 0); }
 function head(t) { return `<div class="nav-row" style="justify-content:space-between;margin:0"><button class="btn ghost small" id="bk">← Otros juegos</button><span class="small muted">${t}</span></div>`; }
@@ -628,7 +650,7 @@ function thermo(when) {
     <input type="range" min="0" max="10" step="1" value="${v0}" id="tr" aria-label="Nivel de activación del 0 al 10">
     <div class="ends"><span>0 · Tranquilo/a</span><span>10 · Desbordado/a</span></div>
     <p class="small muted" id="tnote"></p>
-    ${when === 'antes' ? `<div class="lvl"><span class="small muted">Nivel del juego</span><div class="seg" id="lvSeg"><button data-l="suave">Suave</button><button data-l="reto">Con más reto</button></div><p class="small muted" id="lvTxt"></p></div>` : ''}
+    ${when === 'antes' && G.id !== 'pintar' ? `<div class="lvl"><span class="small muted">Nivel del juego</span><div class="seg" id="lvSeg"><button data-l="suave">Suave</button><button data-l="reto">Con más reto</button></div><p class="small muted" id="lvTxt"></p></div>` : ''}
     <div class="nav-row" style="margin:0"><button class="btn ghost" id="tskip">${when === 'antes' ? 'Saltar' : 'Prefiero no marcarlo'}</button><button class="btn" id="tok">${when === 'antes' ? 'Empezar' : 'Listo'}</button></div></div>`;
   $('#bk').onclick = back;
   if ($('#chg')) $('#chg').onclick = () => { G.id = otroEsc(TIPO_DE[G.id], G.id); TARDE = Math.random() < .5; $('#tthumb').innerHTML = thumbQ(ESC[G.id]); $('#tname').textContent = ESC[G.id].name; };
@@ -642,7 +664,7 @@ function thermo(when) {
   $('#tskip').onclick = () => { if (when === 'antes') { if (!G.manual) G.nivel = store.get('nivel', 'reto'); game(); } else finish(); };
   $('#tok').onclick = () => { if (when === 'antes') { G.a = +$('#tr').value; game(); } else { G.b = +$('#tr').value; finish(); } };
 }
-function game() { store.set('ult.' + TIPO_DE[G.id].id, G.id); if (G.id === 'luz') return luz(); if (G.id === 'linterna') return linterna(DESVAN, LINT_G.name); if (G.id === 'linternaJ') return linterna(JARDIN, LINT_J.name); if (G.id === 'contar') return contar('peces'); if (G.id === 'contarE') return contar('estrellas'); search(SCENES.find(s => s.id === G.id)); }
+function game() { store.set('ult.' + TIPO_DE[G.id].id, G.id); if (G.id === 'luz') return luz(); if (G.id === 'pintar') return pintar(); if (G.id === 'linterna') return linterna(DESVAN, LINT_G.name); if (G.id === 'linternaJ') return linterna(JARDIN, LINT_J.name); if (G.id === 'contar') return contar('peces'); if (G.id === 'contarE') return contar('estrellas'); search(SCENES.find(s => s.id === G.id)); }
 
 /* Buscar: cuenta atrás (5·4·3·2·1 con más reto, 3·2·1 en suave), con cosas parecidas que no cuentan y plantas que tapan un poco */
 function place(sc, lv, Rd) {
@@ -819,13 +841,120 @@ function luz() {
   raf = requestAnimationFrame(frame);
 }
 
+/* ---------- Pintar despacio: colorear sin salirse, libre o mandala, con acuarela ---------- */
+const PINT = PINT_E;
+const PW = 320, PH = 400, PS = 2, PCX = PW * PS, PCY = PH * PS;
+const PCOL = ['#E9A39C', '#F2C38A', '#F1DE85', '#A9D4B2', '#8FC4D4', '#A7B2DF', '#C8A6D8', '#D7B696'];
+const PCOLN = ['rosa', 'naranja', 'amarillo', 'verde', 'azul', 'lila', 'morado', 'marrón'];
+const pol = (r, a, cx = 160, cy = 200) => [cx + r * Math.cos(a), cy + r * Math.sin(a)].map(v => v.toFixed(1)).join(' ');
+const lens = (r1, r2, a, w, cx, cy) => `M${pol(r1, a, cx, cy)} Q${pol((r1 + r2) / 2, a - w, cx, cy)} ${pol(r2, a, cx, cy)} Q${pol((r1 + r2) / 2, a + w, cx, cy)} ${pol(r1, a, cx, cy)} Z`;
+const starP = (cx, cy, R, r) => 'M' + Array.from({ length: 10 }, (_, i) => { const a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? r : R; return `${(cx + rr * Math.cos(a)).toFixed(1)} ${(cy + rr * Math.sin(a)).toFixed(1)}`; }).join(' L') + ' Z';
+const leaf = (tx, ty, rot, sc) => `<g transform="translate(${tx} ${ty}) rotate(${rot}) scale(${sc})"><path d="M0 0 C30 -42 90 -42 120 0 C90 42 30 42 0 0 Z"/><path d="M-4 0 L124 0 M30 0 L44 -32 M60 0 L74 -34 M88 0 L100 -26 M30 0 L44 32 M60 0 L74 34 M88 0 L100 26"/></g>`;
+const DIBUJOS = [
+  { id: 'mandala', n: 'Mandala', svg: () => [28, 62, 104, 140].map(r => `<circle cx="160" cy="200" r="${r}"/>`).join('') +
+      Array.from({ length: 8 }, (_, i) => `<path d="${lens(28, 62, i * Math.PI / 4, .32, 160, 200)}"/><path d="M${pol(62, i * Math.PI / 4 + Math.PI / 8)} L${pol(104, i * Math.PI / 4 + Math.PI / 8)}"/><circle cx="${pol(83, i * Math.PI / 4).split(' ')[0]}" cy="${pol(83, i * Math.PI / 4).split(' ')[1]}" r="9"/>`).join('') +
+      Array.from({ length: 16 }, (_, i) => `<path d="${lens(104, 140, i * Math.PI / 8, .12, 160, 200)}"/>`).join('') + '<circle cx="160" cy="200" r="10"/>' },
+  { id: 'flor', n: 'Flor', svg: () => Array.from({ length: 6 }, (_, i) => { const a = i * 60; return `<ellipse cx="${(160 + 46 * Math.cos(a * Math.PI / 180)).toFixed(1)}" cy="${(150 + 46 * Math.sin(a * Math.PI / 180)).toFixed(1)}" rx="36" ry="22" transform="rotate(${a} ${(160 + 46 * Math.cos(a * Math.PI / 180)).toFixed(1)} ${(150 + 46 * Math.sin(a * Math.PI / 180)).toFixed(1)})"/>`; }).join('') +
+      '<circle cx="160" cy="150" r="24"/><path d="M155 196 C150 250 162 300 156 364 L166 364 C172 300 160 250 165 196 Z"/>' + leaf(158, 290, 200, .8) + leaf(162, 250, -20, .7) + '<path d="M0 364 Q160 338 320 364"/>' },
+  { id: 'taza', n: 'Taza caliente', svg: () => '<ellipse cx="160" cy="322" rx="122" ry="24"/><ellipse cx="160" cy="322" rx="70" ry="12"/><path d="M68 190 H252 C252 272 216 314 160 314 C104 314 68 272 68 190 Z"/><ellipse cx="160" cy="190" rx="92" ry="16"/>' +
+      '<path d="M246 212 C298 206 298 276 232 276"/><path d="M244 230 C272 228 272 260 237 260"/><path d="M160 268 C128 246 134 222 151 226 C157 228 160 234 160 237 C160 234 163 228 169 226 C186 222 192 246 160 268 Z"/>' +
+      '<path d="M128 150 C116 128 146 118 130 92 M160 150 C148 126 178 116 162 86 M192 150 C180 128 210 118 194 92"/>' },
+  { id: 'paisaje', n: 'Paisaje con luna', svg: () => '<circle cx="236" cy="92" r="36"/><circle cx="226" cy="84" r="7"/><circle cx="248" cy="104" r="5"/>' + [[70, 70], [130, 46], [40, 140], [180, 120]].map(([x, y]) => `<path d="${starP(x, y, 11, 5)}"/>`).join('') +
+      '<path d="M0 250 C70 205 150 214 205 246 C248 222 292 214 320 232"/><path d="M0 302 C90 268 190 282 320 296"/><path d="M0 352 C120 330 220 344 320 336"/>' +
+      '<path d="M78 268 L58 296 L72 296 L54 322 L102 322 L84 296 L98 296 Z"/><path d="M74 322 H82 V336 H74 Z"/>' },
+  { id: 'hojas', n: 'Hojas', svg: () => leaf(30, 120, 20, 1.3) + leaf(150, 250, -35, 1.25) + leaf(40, 330, -10, 1.1) },
+  { id: 'arbol', n: 'Árbol de Navidad', svg: () => `<path d="${starP(160, 56, 24, 10)}"/><path d="M160 82 L95 160 L125 160 L75 240 L110 240 L55 320 L265 320 L210 240 L245 240 L195 160 L225 160 Z"/><path d="M146 320 H174 V362 H146 Z"/>` +
+      '<path d="M96 146 Q160 172 224 146"/><path d="M76 226 Q160 262 244 226"/><path d="M58 302 Q160 330 262 302"/>' + [[132, 124, 8], [190, 196, 9], [118, 200, 8], [204, 282, 9], [104, 284, 8], [160, 260, 8], [172, 132, 7]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}"/>`).join('') },
+  
+];
+const PT = { mode: 'col', dib: 'mandala', col: PCOL[4], size: 'gru', br: 0, cache: {}, masks: {} };
+const lineSvg = (d, w = PW, h = PH, sw = 3) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${PW} ${PH}" width="${w}" height="${h}"><g fill="none" stroke="#3C3A38" stroke-width="${sw}" stroke-linejoin="round" stroke-linecap="round">${d.svg()}</g></svg>`;
+function prepDib(d) {
+  if (PT.cache[d.id]) return Promise.resolve(PT.cache[d.id]);
+  return new Promise(res => { const im = new Image(); im.onload = () => {
+    const c = document.createElement('canvas'); c.width = PCX; c.height = PCY; const x = c.getContext('2d'); x.drawImage(im, 0, 0, PCX, PCY);
+    const px = x.getImageData(0, 0, PCX, PCY).data, N = PCX * PCY, lab = new Int32Array(N), st = new Int32Array(N);
+    for (let i = 0; i < N; i++) lab[i] = px[i * 4 + 3] > 40 ? -1 : 0;
+    let n = 0; for (let i = 0; i < N; i++) { if (lab[i] !== 0) continue; n++; let sp = 0; st[sp++] = i; lab[i] = n;
+      while (sp) { const p = st[--sp], X = p % PCX; const nb = [X > 0 ? p - 1 : -1, X < PCX - 1 ? p + 1 : -1, p - PCX, p + PCX];
+        for (const q of nb) if (q >= 0 && q < N && lab[q] === 0) { lab[q] = n; st[sp++] = q; } } }
+    PT.cache[d.id] = lab; res(lab); };
+    im.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(lineSvg(d, PCX, PCY, 3 * PS)); });
+}
+function maskFor(id, r) {
+  const k = id + ':' + r; if (PT.masks[k]) return PT.masks[k];
+  const lab = PT.cache[id], c = document.createElement('canvas'); c.width = PCX; c.height = PCY; const x = c.getContext('2d'), im = x.createImageData(PCX, PCY), d = im.data;
+  for (let i = 0; i < lab.length; i++) if (lab[i] === r) d[i * 4 + 3] = 255;
+  x.putImageData(im, 0, 0);
+  /* se ensancha 3 px para que el color llegue hasta debajo de la línea, sin pasar a la zona de al lado */
+  const c2 = document.createElement('canvas'); c2.width = PCX; c2.height = PCY; const x2 = c2.getContext('2d');
+  for (let dx = -3; dx <= 3; dx++) for (let dy = -3; dy <= 3; dy++) if (dx * dx + dy * dy <= 10) x2.drawImage(c, dx, dy);
+  return PT.masks[k] = c2;
+}
+function pintar() {
+  const dibs = DIBUJOS; PT.cnt = {};
+  $('#play').innerHTML = head(PINT.name) + `<div class="goal fade"><div><b>Pinta despacio</b><small id="ls">Ve y ven con el dedo, sin prisa. No hay nada que conseguir.</small></div></div>
+    <div class="seg" id="pmSeg"><button data-pm="col">Colorear</button><button data-pm="lib">Libre</button><button data-pm="man">Mandala</button></div>
+    <div class="pdibs" id="pdibs">${dibs.map(d => `<button data-dib="${d.id}" aria-label="${d.n}">${lineSvg(d, 54, 68, 5)}</button>`).join('')}</div>
+    <div class="pstage" id="pst"><canvas id="pc" width="${PCX}" height="${PCY}"></canvas><div id="pl" class="plines"></div><div class="pwash" id="pwash"></div><div class="porb" id="porb" hidden><i></i><span id="porbT">Toma aire</span></div></div>
+    <div class="pcols" id="pcols">${PCOL.map(c => `<button data-pc="${c}" style="--c:${c}" aria-label="Color"></button>`).join('')}<span class="psep"></span><button class="psz" data-sz="fin" aria-label="Pincel fino"><i style="width:8px;height:8px"></i></button><button class="psz" data-sz="gru" aria-label="Pincel grueso"><i style="width:16px;height:16px"></i></button></div>
+    <button class="btn ghost small" id="pbr" aria-pressed="false" style="align-self:flex-start">Pintar al ritmo de la respiración</button>
+    <div class="nav-row" style="margin:0" id="pend"><button class="btn ghost" id="pagua">Borrar con agua</button><button class="btn" id="pfin">He terminado</button></div>`;
+  $('#bk').onclick = back;
+  const cv = $('#pc'), ctx = cv.getContext('2d'), scr = document.createElement('canvas'); scr.width = PCX; scr.height = PCY; const sx = scr.getContext('2d');
+  let lab = null, reg = 0, last = null, busy = false;
+  const setMode = async (m) => { PT.mode = m; $$('#pmSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.pm === m)); $('#pdibs').hidden = m !== 'col';
+    ctx.clearRect(0, 0, PCX, PCY); lab = null;
+    if (m === 'col') { const d = dibs.find(x => x.id === PT.dib) || dibs[0]; $$('#pdibs button').forEach(b => b.setAttribute('aria-pressed', b.dataset.dib === d.id)); $('#pl').innerHTML = lineSvg(d); busy = true; lab = await prepDib(d); busy = false;
+      $('#ls').textContent = 'Empieza dentro de una zona: el color se queda dentro, aunque el dedo se pase de la línea.'; }
+    else if (m === 'man') { $('#pl').innerHTML = `<svg viewBox="0 0 ${PW} ${PH}">${Array.from({ length: 8 }, (_, i) => `<path d="M160 200 L${pol(240, i * Math.PI / 4 + Math.PI / 8)}" stroke="#3C3A38" stroke-opacity=".08" stroke-width="1"/>`).join('')}<circle cx="160" cy="200" r="3" fill="#3C3A38" fill-opacity=".2"/></svg>`; $('#ls').textContent = 'Lo que pintes se repite alrededor del centro, como una flor.'; }
+    else { $('#pl').innerHTML = ''; $('#ls').textContent = 'Pinta lo que te apetezca. Si pasas varias veces, el color se hace más intenso.'; } };
+  const setCol = (c) => { PT.col = c; $$('#pcols [data-pc]').forEach(b => b.setAttribute('aria-pressed', b.dataset.pc === c)); };
+  const setSz = (s) => { PT.size = s; $$('#pcols [data-sz]').forEach(b => b.setAttribute('aria-pressed', b.dataset.sz === s)); };
+  $$('#pmSeg button').forEach(b => b.onclick = () => setMode(b.dataset.pm));
+  $$('#pdibs button').forEach(b => b.onclick = () => { PT.dib = b.dataset.dib; setMode('col'); });
+  $$('#pcols [data-pc]').forEach(b => b.onclick = () => setCol(b.dataset.pc)); $$('#pcols [data-sz]').forEach(b => b.onclick = () => setSz(b.dataset.sz));
+  const R = () => (PT.size === 'fin' ? 7 : 15) * PS;
+  const dab = (x2, X, Y, r) => { const g = x2.createRadialGradient(X, Y, 0, X, Y, r); g.addColorStop(0, PT.col + '2a'); g.addColorStop(.6, PT.col + '1c'); g.addColorStop(1, PT.col + '00'); x2.fillStyle = g; x2.beginPath(); x2.arc(X, Y, r, 0, 7); x2.fill(); };
+  const pts = (a, b, r) => { const d = Math.hypot(b[0] - a[0], b[1] - a[1]), n = Math.max(1, Math.ceil(d / (r / 3))); return Array.from({ length: n }, (_, i) => [a[0] + (b[0] - a[0]) * (i + 1) / n, a[1] + (b[1] - a[1]) * (i + 1) / n]); };
+  const paint = (a, b) => { const r = R(), P = pts(a, b, r); PT.cnt[PT.col] = (PT.cnt[PT.col] || 0) + P.length;
+    if (PT.mode === 'col' && lab) { if (!reg) return; const xs = P.map(p => p[0]), ys = P.map(p => p[1]);
+      const bx = Math.max(0, Math.floor(Math.min(...xs) - r)), by = Math.max(0, Math.floor(Math.min(...ys) - r)), bw = Math.min(PCX, Math.ceil(Math.max(...xs) + r)) - bx, bh = Math.min(PCY, Math.ceil(Math.max(...ys) + r)) - by; if (bw <= 0 || bh <= 0) return;
+      sx.globalCompositeOperation = 'source-over'; sx.clearRect(bx, by, bw, bh); P.forEach(p => dab(sx, p[0], p[1], r));
+      sx.globalCompositeOperation = 'destination-in'; sx.drawImage(maskFor(PT.dib, reg), bx, by, bw, bh, bx, by, bw, bh);
+      ctx.drawImage(scr, bx, by, bw, bh, bx, by, bw, bh); }
+    else if (PT.mode === 'man') { P.forEach(([x, y]) => { const dx = x - 160 * PS, dy = y - 200 * PS, rr = Math.hypot(dx, dy), a0 = Math.atan2(dy, dx);
+        for (let k = 0; k < 8; k++) for (const s of [1, -1]) { const a = s * a0 + k * Math.PI / 4; dab(ctx, 160 * PS + rr * Math.cos(a), 200 * PS + rr * Math.sin(a), r); } }); }
+    else P.forEach(p => dab(ctx, p[0], p[1], r));
+    ctx.globalCompositeOperation = 'source-over'; };
+  const at = (e) => { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width * PCX, (e.clientY - r.top) / r.height * PCY]; };
+  cv.onpointerdown = (e) => { if (busy) return; cv.setPointerCapture(e.pointerId); last = at(e);
+    if (PT.mode === 'col' && lab) { const [x, y] = last.map(Math.round), v = lab[Math.min(PCY - 1, y) * PCX + Math.min(PCX - 1, x)]; reg = v > 0 ? v : 0;
+      if (!reg) { const near = [[4, 0], [-4, 0], [0, 4], [0, -4], [8, 0], [-8, 0], [0, 8], [0, -8]].map(([a, b]) => lab[Math.min(PCY - 1, Math.max(0, y + b)) * PCX + Math.min(PCX - 1, Math.max(0, x + a))]).find(q => q > 0); reg = near || 0; } }
+    paint(last, [last[0] + .1, last[1]]); };
+  cv.onpointermove = (e) => { if (!last) return; const p = at(e); paint(last, p); last = p; };
+  cv.onpointerup = cv.onpointercancel = () => { last = null; reg = 0; };
+  $('#pbr').onclick = () => { const on = $('#pbr').getAttribute('aria-pressed') !== 'true'; $('#pbr').setAttribute('aria-pressed', on); $('#porb').hidden = !on; clearTimeout(PT.br); PT.br = 0;
+    if (on) { const cyc = (inh) => { $('#porbT').textContent = inh ? 'Toma aire' : 'Suelta despacio'; $('#porb').className = 'porb ' + (inh ? 'in' : 'out'); PT.br = setTimeout(() => cyc(!inh), inh ? 4000 : 6000); }; cyc(true); } };
+  $('#pagua').onclick = () => { let f = 0; $('#pwash').classList.remove('go'); void $('#pwash').offsetWidth; $('#pwash').classList.add('go'); $('#ls').textContent = 'El agua se lo lleva todo, despacio.';
+    const step = () => { ctx.globalCompositeOperation = 'destination-out'; ctx.fillStyle = 'rgba(0,0,0,.035)'; ctx.fillRect(0, 0, PCX, PCY); ctx.globalCompositeOperation = 'source-over'; f++;
+      if (f < (reduce ? 1 : 150)) raf = requestAnimationFrame(step); else { ctx.clearRect(0, 0, PCX, PCY); $('#ls').textContent = 'La hoja está limpia otra vez. Puedes volver a empezar o terminar.'; } };
+    raf = requestAnimationFrame(step); };
+  $('#pfin').onclick = () => { clearTimeout(PT.br); PT.br = 0; $('#porb').hidden = true; $('#ls').textContent = 'Has estado aquí un momento, contigo.';
+    $('#pend').outerHTML = `<div class="nav-row fade" style="margin:0"><button class="btn" id="go">Ahora, a lo que tienes alrededor →</button></div>`; $('#go').onclick = real; $('#go').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' }); };
+  setCol(PT.col); setSz(PT.size); setMode(PT.mode);
+  $('#play').scrollIntoView({ block: 'start' });
+}
+
 /* ---------- El puente a la vida real: 3 · 2 · 1, distinto cada vez ---------- */
 const VER = ['de color azul', 'de color verde', 'blancas', 'redondas', 'de madera', 'que tengan letras', 'de color rojo o rosa', 'que brillen un poco'];
 const OIR = [['Escucha 2 sonidos: uno cerca de ti y otro más lejos.'], ['Escucha 2 sonidos: uno que se repita y otro que aparezca de vez en cuando.'], ['Escucha 2 sonidos: uno fuerte y otro muy suave.']];
 const UNO = [['Toca 1 cosa que tengas cerca y fíjate en cómo es: fría o templada, lisa o rugosa.', 'toc'], ['Nota 1 punto en el que tu cuerpo se apoya: los pies en el suelo, la espalda en la silla o el brazo sobre algo.', 'cue'], ['Busca 1 olor a tu alrededor: tu ropa, tus manos o el aire de la habitación.', 'ole'], ['Apoya bien las plantas de los pies en el suelo y nota su peso durante un momento.', 'cue'], ['Coge 1 objeto que tengas a mano y míralo como si fuera la primera vez: su forma, su color, su peso.', 'toc']];
 function real() {
   stopAll();
-  const steps = [[3, `Levanta la vista del móvil. Busca 3 cosas ${pick(VER)} a tu alrededor.`, 'ver', 'Toca un círculo por cada una que encuentres.'],
+  const usados = G.id === 'pintar' && PT.cnt ? Object.entries(PT.cnt).filter(e => e[1] > 20).sort((a, b) => b[1] - a[1]).slice(0, 2).map(e => PCOLN[PCOL.indexOf(e[0])]) : [];
+  const ver = usados.length ? 'de color ' + usados.join(' o ') : pick(VER), pista = usados.length ? 'Los mismos colores con los que has pintado. Toca un círculo por cada una que encuentres.' : 'Toca un círculo por cada una que encuentres.';
+  const steps = [[3, `Levanta la vista del móvil. Busca 3 cosas ${ver} a tu alrededor.`, 'ver', pista],
     [2, pick(OIR)[0], 'oir', 'Si hay mucho silencio, fíjate en el roce de tu ropa o en el zumbido de algún aparato.'], (() => { const u = pick(UNO); return [1, u[0], u[1], 'Quédate un momento ahí, sin prisa.']; })()];
   let i = 0;
   const show = () => { const [n, txt, , hint] = steps[i];
