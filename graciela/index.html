@@ -283,12 +283,13 @@ function pintaPros() {
   $('#prl').innerHTML = PROS.length ? orden(PROS).map((p) => `<div class="card p" data-pe="${esc(p.email)}"><div class="top"><div><b>${esc(p.nombre || p.email)}</b>${p.nombre ? `<div class="mail">${esc(p.email)}</div>` : ''}</div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><span class="chip ${p.activa ? 'ok' : 'off'}">${p.suspendida ? 'Suspendida' : p.activa ? (p.hasta ? 'Activa hasta el ' + f(p.hasta) : 'Activa') : 'Inactiva'}</span>${pinBtn(p)}</div></div>
       <div class="chips"><span class="chip">${p.usadas} de ${p.plazas} plazas</span><span class="chip">${esc(p.plan || 'Payhip')}</span></div>
-      <div class="acts"><button class="g" data-y="pro_plazas">Cambiar plazas</button>${p.suspendida ? '<button class="g" data-y="pro_reactivar">Reactivar</button>' : '<button class="w" data-y="pro_suspender">Suspender</button>'}</div><div class="m"></div></div>`).join('')
+      <div class="acts"><button class="g" data-y="pro_plazas">Cambiar plazas</button>${p.suspendida ? '<button class="g" data-y="pro_reactivar">Reactivar</button>' : '<button class="w" data-y="pro_suspender">Suspender</button>'}${p.usadas === 0 ? '<button class="w" data-y="pro_borrar">Borrar</button>' : ''}</div><div class="m"></div></div>`).join('')
       : '<div class="empty">Todavía no hay ninguna profesional.</div>';
   document.querySelectorAll('#prl [data-pin]').forEach((b) => b.onclick = () => togglePin(b.dataset.pin));
   document.querySelectorAll('#prl [data-y]').forEach((b) => b.onclick = async () => {
       const c = b.closest('[data-pe]'), email = c.dataset.pe, x = b.dataset.y, o = { accion: x, email };
       if (x === 'pro_plazas') { const n = prompt('¿Cuántas plazas?', ''); if (!n) return; o.plazas = +n; }
+      if (x === 'pro_borrar' && !confirm('¿Borrar esta cuenta de profesional? Úsalo si la creaste por error. Deja de poder entrar al panel y se le quitan las apps que tenía como profesional. Si además es paciente tuya, eso no se toca.')) return;
       if (x === 'pro_suspender' && !confirm('¿Suspender esta cuenta? Sus pacientes conservarán el acceso 2 semanas y le dejará de funcionar el panel para dar nuevos accesos.')) return;
       try { await api(o); cargaPros(); } catch (e) { if (e.message !== 'entrar') msg(c.querySelector('.m'), e.message); } }); }
 $('#prf').onsubmit = async (ev) => { ev.preventDefault(); const h = $('#prh').value ? new Date($('#prh').value + 'T23:59:00').getTime() : 0;

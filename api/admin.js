@@ -1,6 +1,6 @@
 // /api/admin → lo que usa la página de pacientes de Graciela (www.gracielasalvador.com/graciela/).
 // Solo funciona con la contraseña ADMIN_PASSWORD de Vercel.
-import { cambiarCorreo, cuantosDispositivos, cerrarDispositivos, T_CONSEJO, enlacesPago, nombresApps, gratisConfig, FIJAS, db, esAdmin, crearAdmin, limpiaCorreo, correoValido, leerPersona, guardarPersona, accesos, crearEnlace, enlacesEntrar, enviarCorreo, plantilla, APPS, fecha, DIA, MARGEN_ALTA, enlaceBaja, esc, leerPro, guardarPro, proActiva, plazaOcupada, cerrarPro, abrirPro, cuentaPropia } from './_comun.js';
+import { soltarPaciente, cambiarCorreo, cuantosDispositivos, cerrarDispositivos, T_CONSEJO, enlacesPago, nombresApps, gratisConfig, FIJAS, db, esAdmin, crearAdmin, limpiaCorreo, correoValido, leerPersona, guardarPersona, accesos, crearEnlace, enlacesEntrar, enviarCorreo, plantilla, APPS, fecha, DIA, MARGEN_ALTA, enlaceBaja, esc, leerPro, guardarPro, proActiva, plazaOcupada, cerrarPro, abrirPro, cuentaPropia } from './_comun.js';
 export const config = { runtime: 'edge' };
 
 const json = (o, st = 200, cookies = []) => { const h = new Headers({ 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }); for (const c of cookies) h.append('Set-Cookie', c); return new Response(JSON.stringify(o), { status: st, headers: h }); };
@@ -81,6 +81,14 @@ export default async function handler(req) {
       if (!pr) return json({ error: 'No hay ninguna profesional con ese correo.' }, 404);
       if (d.accion === 'pro_plazas') { pr.plazas = Math.max(1, Math.min(500, +d.plazas || pr.plazas)); await guardarPro(pe, pr); return json({ ok: true }); }
       if (d.accion === 'pro_suspender') { pr.suspendida = true; await guardarPro(pe, pr); if (!pr.cerrada) await cerrarPro(pe, pr); return json({ ok: true }); }
+      if (d.accion === 'pro_borrar') {
+        // Borrar una cuenta de profesional creada por error. Solo si no tiene pacientes (aparte de su propia cuenta).
+        const otras = ((await db('SMEMBERS', 'propac:' + pe)) || []).filter((e) => e !== pe);
+        if (otras.length) return json({ error: `Tiene ${otras.length} ${otras.length === 1 ? 'paciente' : 'pacientes'} con acceso. Suspéndela en lugar de borrarla.` }, 400);
+        await db('DEL', 'pro:' + pe); await db('SREM', 'pros', pe); await db('DEL', 'pinpro:' + pe);
+        await soltarPaciente(pe, pe, await leerPersona(pe)); await db('DEL', 'propac:' + pe);
+        return json({ ok: true });
+      }
       if (d.accion === 'pro_reactivar') { pr.suspendida = false; await guardarPro(pe, pr); if (pr.cerrada && proActiva(pr)) await abrirPro(pe, pr); return json({ ok: true }); }
       return json({ error: 'Acción desconocida.' }, 400);
     }
