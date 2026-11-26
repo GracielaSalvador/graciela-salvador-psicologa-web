@@ -25,7 +25,7 @@ addEventListener('load',function(){var h=location.hash;if(h.indexOf('#ir-')!==0)
 :root {
   --bg: #F5F9F9; --surface: #FFFFFF; --ink: #17343B; --muted: #5C747A; --line: #D7E5E8;
   --accent: #166A7E; --deep: #0F4C5C; --tint: #E4EFF1; --on-accent: #FFFFFF;
-  --e-alegria: #D9A23A; --e-tristeza: #5F84B8; --e-miedo: #8470B0; --e-rabia: #C45F45; --e-asco: #6F9A5C; --e-sorpresa: #3E9C9E; --e-calma: #7FA39B;
+  --e-alegria: #D9A23A; --e-tristeza: #5F84B8; --e-miedo: #8470B0; --e-rabia: #C45F45; --e-asco: #6F9A5C; --e-sorpresa: #3E9C9E; --e-calma: #7FA39B; --e-ilusion: #D97C9E; --e-cansancio: #A3896B; --e-singanas: #6F808D; --e-agobio: #9A5A8A; --e-mezcla: #DD9455;
   --warn: #F4E3DA; --warn-ink: #8E4E33; --onc: #FFFFFF; --ok: #E2EFEA; --ok-ink: #2C6E5D;
   --display: "Lora", Georgia, "Times New Roman", serif;
   --body: "Nunito Sans", "Segoe UI", system-ui, sans-serif;
@@ -33,12 +33,12 @@ addEventListener('load',function(){var h=location.hash;if(h.indexOf('#ir-')!==0)
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #0C1C21; --surface: #12282E; --ink: #E2EEF0; --muted: #9AB2B8; --line: #234046;
   --accent: #5FB2C3; --deep: #9AD3DE; --tint: #18343B; --on-accent: #0C1C21;
-  --e-alegria: #E7B95A; --e-tristeza: #86A6D6; --e-miedo: #A794D2; --e-rabia: #DE8466; --e-asco: #93BC80; --e-sorpresa: #67BFC0; --e-calma: #8FC2B6;
+  --e-alegria: #E7B95A; --e-tristeza: #86A6D6; --e-miedo: #A794D2; --e-rabia: #DE8466; --e-asco: #93BC80; --e-sorpresa: #67BFC0; --e-calma: #8FC2B6; --e-ilusion: #EBA0BB; --e-cansancio: #C4AC8E; --e-singanas: #98A9B5; --e-agobio: #C487B3; --e-mezcla: #EDB27F;
   --warn: #3A2A23; --warn-ink: #E8B39A; --onc: #0C1C21; --ok: #183530; --ok-ink: #8CCDB6; color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #0C1C21; --surface: #12282E; --ink: #E2EEF0; --muted: #9AB2B8; --line: #234046;
   --accent: #5FB2C3; --deep: #9AD3DE; --tint: #18343B; --on-accent: #0C1C21;
-  --e-alegria: #E7B95A; --e-tristeza: #86A6D6; --e-miedo: #A794D2; --e-rabia: #DE8466; --e-asco: #93BC80; --e-sorpresa: #67BFC0; --e-calma: #8FC2B6;
+  --e-alegria: #E7B95A; --e-tristeza: #86A6D6; --e-miedo: #A794D2; --e-rabia: #DE8466; --e-asco: #93BC80; --e-sorpresa: #67BFC0; --e-calma: #8FC2B6; --e-ilusion: #EBA0BB; --e-cansancio: #C4AC8E; --e-singanas: #98A9B5; --e-agobio: #C487B3; --e-mezcla: #EDB27F;
   --warn: #3A2A23; --warn-ink: #E8B39A; --onc: #0C1C21; --ok: #183530; --ok-ink: #8CCDB6; color-scheme: dark }
 
 * { box-sizing: border-box; }
@@ -783,7 +783,7 @@ $('#guideList').innerHTML = ORDER.map(k => `<div class="card emo-card" style="--
 
 // ----- Diario -----
 // Mi mes en colores
-const PIX = [['alegria', 'Alegría'], ['calma', 'Calma'], ['tristeza', 'Tristeza'], ['miedo', 'Miedo o nervios'], ['rabia', 'Rabia'], ['sorpresa', 'Sorpresa'], ['asco', 'Rechazo']];
+const PIX = [['alegria', 'Alegría'], ['ilusion', 'Ilusión'], ['calma', 'Calma'], ['cansancio', 'Cansancio'], ['singanas', 'Sin ganas'], ['tristeza', 'Tristeza'], ['miedo', 'Miedo o nervios'], ['agobio', 'Agobio'], ['rabia', 'Rabia'], ['sorpresa', 'Sorpresa'], ['asco', 'Rechazo'], ['mezcla', 'Una mezcla']];
 let dias = store.get('dias', {}) || {};
 const kDia = (dt) => dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0') + '-' + String(dt.getDate()).padStart(2, '0');
 const HOY = kDia(new Date(Date.now() - 5 * 36e5));  // el día cambia a las 5 de la mañana: lo de madrugada cuenta como el día anterior
