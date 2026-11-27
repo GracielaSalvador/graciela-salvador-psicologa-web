@@ -130,7 +130,18 @@
     .menu-toggle.open span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
     .menu-toggle.open span:nth-child(2){ opacity:0; }
     .menu-toggle.open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
-    .nav-right{ display:flex; align-items:center; gap:12px; }
+    .nav-right{ display:flex; align-items:center; gap:12px; flex-shrink:0; }
+    .nav{ padding:14px 18px; gap:10px; }
+    .brand{ font-size:17px; gap:8px; min-width:0; }
+    .brand-logo{ height:32px; }
+    .nav-mobile-cta{ white-space:nowrap; padding:8px 14px; font-size:13px; }
+  }
+  @media(max-width:400px){
+    .nav{ padding:12px 14px; }
+    .brand{ font-size:15px; gap:6px; }
+    .brand-logo{ height:28px; }
+    .nav-right{ gap:8px; }
+    .nav-mobile-cta{ padding:7px 12px; font-size:12.5px; }
   }
 
   /* ---------- Hero ---------- */
